@@ -1,0 +1,150 @@
+<section class="animation-lab" aria-labelledby="animation-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="animation-lab-title">Animation Keyframe Lab</h2>
+    <p>
+      Pick an animation, adjust its timing, and restart it. CSS animations use
+      keyframes to define a reusable sequence of visual states.
+    </p>
+  </div>
+
+  <div class="animation-lab__controls" aria-label="Animation controls">
+    <label>
+      Animation
+      <select data-animation-control="name">
+        <option value="fade">fade</option>
+        <option value="bounce">bounce</option>
+        <option value="spin">spin</option>
+        <option value="pulse">pulse</option>
+      </select>
+    </label>
+
+    <label>
+      Duration
+      <input data-animation-control="duration" type="range" min="300" max="2400" step="100" value="900" />
+    </label>
+
+    <label>
+      Iteration
+      <select data-animation-control="iteration">
+        <option value="1">once</option>
+        <option value="infinite">infinite</option>
+      </select>
+    </label>
+
+    <label>
+      Direction
+      <select data-animation-control="direction">
+        <option value="normal">normal</option>
+        <option value="alternate">alternate</option>
+        <option value="reverse">reverse</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="animation-lab__stage">
+    <button type="button" class="animation-lab__trigger" data-animation-trigger>
+      Restart animation
+    </button>
+    <div class="animation-lab__target" data-animation-target>
+      Animate
+    </div>
+    <p class="animation-lab__readout" data-animation-readout>
+      fade / 900ms / once / normal
+    </p>
+  </div>
+
+  <pre aria-live="polite"><code data-animation-code>{`@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.element {
+  animation: fade 900ms ease-in-out 1 normal both;
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Keyframes define the states of the animation.</li>
+        <li>The animation property applies the keyframes to an element.</li>
+        <li>Iteration and direction change how the sequence repeats.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Compare bounce with pulse.</li>
+        <li>Set iteration to infinite, then change direction to alternate.</li>
+        <li>Copy one @keyframes block into your own stylesheet.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.animation-lab');
+
+  if (lab) {
+    const target = lab.querySelector('[data-animation-target]');
+    const trigger = lab.querySelector('[data-animation-trigger]');
+    const readout = lab.querySelector('[data-animation-readout]');
+    const code = lab.querySelector('[data-animation-code]');
+    const controls = {
+      name: lab.querySelector('[data-animation-control="name"]'),
+      duration: lab.querySelector('[data-animation-control="duration"]'),
+      iteration: lab.querySelector('[data-animation-control="iteration"]'),
+      direction: lab.querySelector('[data-animation-control="direction"]'),
+    };
+
+    const keyframes = {
+      fade: `@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}`,
+      bounce: `@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-40px); }
+}`,
+      spin: `@keyframes spin {
+  to { transform: rotate(360deg); }
+}`,
+      pulse: `@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}`,
+    };
+
+    function updateAnimationLab() {
+      const name = controls.name.value;
+      const duration = `${controls.duration.value}ms`;
+      const iteration = controls.iteration.value;
+      const direction = controls.direction.value;
+      const animationValue = `${name} ${duration} ease-in-out ${iteration} ${direction} both`;
+
+      readout.textContent = `${name} / ${duration} / ${iteration === '1' ? 'once' : iteration} / ${direction}`;
+      target.style.animation = animationValue;
+      target.dataset.animation = name;
+      code.textContent = `${keyframes[name]}
+
+.element {
+  animation: ${animationValue};
+}`;
+    }
+
+    function restartAnimation() {
+      target.style.animation = 'none';
+      target.offsetHeight;
+      updateAnimationLab();
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateAnimationLab);
+      control.addEventListener('change', updateAnimationLab);
+    });
+
+    trigger.addEventListener('click', restartAnimation);
+    updateAnimationLab();
+  }
+</script>

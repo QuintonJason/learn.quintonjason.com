@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AccessibilityCheckLab from '../../components/AccessibilityCheckLab.astro';
+import AnimationKeyframeLab from '../../components/AnimationKeyframeLab.astro';
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
 import DomInteractionLab from '../../components/DomInteractionLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
@@ -79,6 +80,10 @@ const nextLesson = lessons[currentIndex + 1];
 
         {
           lesson.slug === 'css-transitions' && <TransitionPlayground />
+        }
+
+        {
+          lesson.slug === 'css-animation' && <AnimationKeyframeLab />
         }
 
         {

@@ -383,7 +383,8 @@ ol {
 .a11y-lab,
 .responsive-lab,
 .selector-lab,
-.transition-lab {
+.transition-lab,
+.animation-lab {
   background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -787,6 +788,124 @@ ol {
   font-weight: 800;
 }
 
+.animation-lab__controls {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.animation-lab__controls label {
+  color: var(--color-muted);
+  display: grid;
+  font-size: 0.85rem;
+  font-weight: 800;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+.animation-lab__controls select,
+.animation-lab__controls input {
+  accent-color: var(--color-brand);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  font: inherit;
+  padding: 0.6rem;
+}
+
+.animation-lab__stage {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.animation-lab__trigger {
+  background: var(--color-surface-raised);
+  border: 2px solid var(--color-brand);
+  border-radius: 4px;
+  color: var(--color-brand-dark);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  justify-self: start;
+  padding: 0.7rem 0.8rem;
+  text-transform: uppercase;
+}
+
+.animation-lab__trigger:hover,
+.animation-lab__trigger:focus {
+  background: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+  color: #fff;
+}
+
+.animation-lab__target {
+  align-content: center;
+  background: var(--color-brand);
+  border: 2px solid var(--color-brand-dark);
+  border-radius: 999px;
+  color: #fff;
+  display: grid;
+  font-family: var(--font-display);
+  font-weight: 900;
+  min-block-size: 7rem;
+  place-items: center;
+  inline-size: 7rem;
+}
+
+.animation-lab__target[data-animation="spin"] {
+  border-radius: 18px;
+}
+
+.animation-lab__readout {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.18);
+  }
+}
+
 .interactive-notes {
   display: grid;
   gap: 1rem;
@@ -1003,6 +1122,10 @@ ol {
   }
 
   .transition-lab__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .animation-lab__controls {
     grid-template-columns: 1fr;
   }
 

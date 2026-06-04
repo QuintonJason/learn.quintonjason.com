@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AccessibilityCheckLab from '../../components/AccessibilityCheckLab.astro';
+import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
+import DomInteractionLab from '../../components/DomInteractionLab.astro';
+import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
 import { lessons } from '../../data/lessons';
 
 export function getStaticPaths() {
@@ -45,6 +49,22 @@ const nextLesson = lessons[currentIndex + 1];
             {lesson.goals.map((goal) => <li>{goal}</li>)}
           </ul>
         </section>
+
+        {
+          lesson.slug === 'box-model-and-layout' && <BoxModelVisualizer />
+        }
+
+        {
+          lesson.slug === 'flexbox' && <FlexboxPlayground />
+        }
+
+        {
+          lesson.slug === 'javascript-in-the-dom' && <DomInteractionLab />
+        }
+
+        {
+          lesson.slug === 'web-accessibility' && <AccessibilityCheckLab />
+        }
 
         {
           lesson.sections.map((section) => (

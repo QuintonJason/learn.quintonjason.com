@@ -1,0 +1,141 @@
+<section class="flex-playground" aria-labelledby="flex-playground-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="flex-playground-title">Flexbox Playground</h2>
+    <p>
+      Change the controls and watch how the flex items respond. Pay close
+      attention to the main axis and cross axis when you switch direction.
+    </p>
+  </div>
+
+  <div class="flex-playground__controls" aria-label="Flexbox controls">
+    <label>
+      Direction
+      <select data-flex-control="direction">
+        <option value="row">row</option>
+        <option value="row-reverse">row-reverse</option>
+        <option value="column">column</option>
+        <option value="column-reverse">column-reverse</option>
+      </select>
+    </label>
+
+    <label>
+      Wrap
+      <select data-flex-control="wrap">
+        <option value="nowrap">nowrap</option>
+        <option value="wrap">wrap</option>
+      </select>
+    </label>
+
+    <label>
+      Justify Content
+      <select data-flex-control="justify">
+        <option value="flex-start">flex-start</option>
+        <option value="center">center</option>
+        <option value="space-between">space-between</option>
+        <option value="space-around">space-around</option>
+        <option value="flex-end">flex-end</option>
+      </select>
+    </label>
+
+    <label>
+      Align Items
+      <select data-flex-control="align">
+        <option value="stretch">stretch</option>
+        <option value="flex-start">flex-start</option>
+        <option value="center">center</option>
+        <option value="flex-end">flex-end</option>
+      </select>
+    </label>
+
+    <label>
+      Gap
+      <input data-flex-control="gap" type="range" min="0" max="48" value="16" />
+    </label>
+  </div>
+
+  <div class="flex-playground__stage" data-flex-stage>
+    <div class="flex-playground__axis flex-playground__axis--main">Main axis</div>
+    <div class="flex-playground__axis flex-playground__axis--cross">Cross axis</div>
+    <div class="flex-playground__item">1</div>
+    <div class="flex-playground__item">2</div>
+    <div class="flex-playground__item">3</div>
+    <div class="flex-playground__item">4</div>
+    <div class="flex-playground__item">5</div>
+  </div>
+
+  <pre aria-live="polite"><code data-flex-code>{`.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 16px;
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>justify-content follows the main axis.</li>
+        <li>align-items follows the cross axis.</li>
+        <li>flex-direction changes which axis is which.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Switch direction from row to column.</li>
+        <li>Predict where center alignment will move the items.</li>
+        <li>Copy the generated CSS into a practice file.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const playground = document.querySelector('.flex-playground');
+
+  if (playground) {
+    const stage = playground.querySelector('[data-flex-stage]');
+    const code = playground.querySelector('[data-flex-code]');
+    const controls = {
+      direction: playground.querySelector('[data-flex-control="direction"]'),
+      wrap: playground.querySelector('[data-flex-control="wrap"]'),
+      justify: playground.querySelector('[data-flex-control="justify"]'),
+      align: playground.querySelector('[data-flex-control="align"]'),
+      gap: playground.querySelector('[data-flex-control="gap"]'),
+    };
+
+    function updateFlexPlayground() {
+      const direction = controls.direction.value;
+      const wrap = controls.wrap.value;
+      const justify = controls.justify.value;
+      const align = controls.align.value;
+      const gap = `${controls.gap.value}px`;
+
+      stage.style.flexDirection = direction;
+      stage.style.flexWrap = wrap;
+      stage.style.justifyContent = justify;
+      stage.style.alignItems = align;
+      stage.style.gap = gap;
+      stage.dataset.direction = direction.includes('column') ? 'column' : 'row';
+
+      code.textContent = `.flex-container {
+  display: flex;
+  flex-direction: ${direction};
+  flex-wrap: ${wrap};
+  justify-content: ${justify};
+  align-items: ${align};
+  gap: ${gap};
+}`;
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateFlexPlayground);
+      control.addEventListener('change', updateFlexPlayground);
+    });
+
+    updateFlexPlayground();
+  }
+</script>

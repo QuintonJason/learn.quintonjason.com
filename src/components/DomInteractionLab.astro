@@ -1,0 +1,144 @@
+<section class="dom-lab" aria-labelledby="dom-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="dom-lab-title">DOM Interaction Lab</h2>
+    <p>
+      Use the controls to change content, classes, attributes, and elements in
+      the preview. The code updates to show the JavaScript behind the action.
+    </p>
+  </div>
+
+  <div class="dom-lab__grid">
+    <div class="dom-lab__preview" data-dom-card>
+      <p class="dom-lab__status" data-dom-status>Ready</p>
+      <h3 data-dom-title>Original card title</h3>
+      <p data-dom-description>
+        JavaScript can select this text and update it after the page loads.
+      </p>
+      <a href="https://www.lsu.edu/" data-dom-link>Visit LSU</a>
+      <ul data-dom-list>
+        <li>Existing list item</li>
+      </ul>
+    </div>
+
+    <div class="dom-lab__controls" aria-label="DOM interaction controls">
+      <button type="button" data-dom-action="text">Update textContent</button>
+      <button type="button" data-dom-action="class">Toggle class</button>
+      <button type="button" data-dom-action="attribute">Change attribute</button>
+      <button type="button" data-dom-action="add">Add list item</button>
+      <button type="button" data-dom-action="reset">Reset</button>
+    </div>
+  </div>
+
+  <pre aria-live="polite"><code data-dom-code>{`const title = document.querySelector('[data-dom-title]');
+title.textContent = 'Updated by JavaScript';`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>JavaScript selects elements before it changes them.</li>
+        <li>classList changes styling without rewriting the HTML.</li>
+        <li>createElement and appendChild add new content to the page.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Click each action and read the generated code.</li>
+        <li>Reset the demo, then predict what each action will change.</li>
+        <li>Rebuild one action in your own script.js file.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.dom-lab');
+
+  if (lab) {
+    const card = lab.querySelector('[data-dom-card]');
+    const status = lab.querySelector('[data-dom-status]');
+    const title = lab.querySelector('[data-dom-title]');
+    const description = lab.querySelector('[data-dom-description]');
+    const link = lab.querySelector('[data-dom-link]');
+    const list = lab.querySelector('[data-dom-list]');
+    const code = lab.querySelector('[data-dom-code]');
+    let itemCount = 1;
+
+    const initialState = {
+      status: 'Ready',
+      title: 'Original card title',
+      description: 'JavaScript can select this text and update it after the page loads.',
+      href: 'https://www.lsu.edu/',
+      linkText: 'Visit LSU',
+      code: `const title = document.querySelector('[data-dom-title]');
+title.textContent = 'Updated by JavaScript';`,
+    };
+
+    function setCode(snippet) {
+      code.textContent = snippet;
+    }
+
+    function resetLab() {
+      itemCount = 1;
+      card.classList.remove('is-highlighted');
+      status.textContent = initialState.status;
+      title.textContent = initialState.title;
+      description.textContent = initialState.description;
+      link.href = initialState.href;
+      link.textContent = initialState.linkText;
+      list.innerHTML = '<li>Existing list item</li>';
+      setCode(initialState.code);
+    }
+
+    lab.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-dom-action]');
+
+      if (!button) return;
+
+      const action = button.dataset.domAction;
+
+      if (action === 'text') {
+        title.textContent = 'Updated by JavaScript';
+        description.textContent = 'textContent changes text without replacing the element.';
+        status.textContent = 'Text updated';
+        setCode(`const title = document.querySelector('[data-dom-title]');
+title.textContent = 'Updated by JavaScript';`);
+      }
+
+      if (action === 'class') {
+        card.classList.toggle('is-highlighted');
+        status.textContent = card.classList.contains('is-highlighted')
+          ? 'Class added'
+          : 'Class removed';
+        setCode(`const card = document.querySelector('[data-dom-card]');
+card.classList.toggle('is-highlighted');`);
+      }
+
+      if (action === 'attribute') {
+        link.href = 'https://www.lsu.edu/art/';
+        link.textContent = 'Visit LSU School of Art';
+        status.textContent = 'Attribute changed';
+        setCode(`const link = document.querySelector('[data-dom-link]');
+link.setAttribute('href', 'https://www.lsu.edu/art/');
+link.textContent = 'Visit LSU School of Art';`);
+      }
+
+      if (action === 'add') {
+        itemCount += 1;
+        const item = document.createElement('li');
+        item.textContent = `New list item ${itemCount}`;
+        list.appendChild(item);
+        status.textContent = 'List item added';
+        setCode(`const item = document.createElement('li');
+item.textContent = 'New list item';
+list.appendChild(item);`);
+      }
+
+      if (action === 'reset') {
+        resetLab();
+      }
+    });
+  }
+</script>

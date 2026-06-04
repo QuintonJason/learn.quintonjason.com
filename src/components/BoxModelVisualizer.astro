@@ -1,0 +1,130 @@
+<section class="box-visualizer" aria-labelledby="box-visualizer-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="box-visualizer-title">Box Model Visualizer</h2>
+    <p>
+      Adjust the controls to see how width, padding, border, margin, and
+      box-sizing change the space an element occupies.
+    </p>
+  </div>
+
+  <div class="box-visualizer__controls" aria-label="Box model controls">
+    <label>
+      Width
+      <input data-box-control="width" type="range" min="120" max="320" value="220" />
+    </label>
+
+    <label>
+      Padding
+      <input data-box-control="padding" type="range" min="0" max="48" value="24" />
+    </label>
+
+    <label>
+      Border
+      <input data-box-control="border" type="range" min="0" max="20" value="6" />
+    </label>
+
+    <label>
+      Margin
+      <input data-box-control="margin" type="range" min="0" max="48" value="24" />
+    </label>
+
+    <label>
+      Box Sizing
+      <select data-box-control="sizing">
+        <option value="content-box">content-box</option>
+        <option value="border-box">border-box</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="box-visualizer__stage">
+    <div class="box-visualizer__margin" data-box-margin>
+      <span>margin</span>
+      <div class="box-visualizer__border" data-box-border>
+        <span>border</span>
+        <div class="box-visualizer__padding" data-box-padding>
+          <span>padding</span>
+          <div class="box-visualizer__content" data-box-content>
+            content
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <pre aria-live="polite"><code data-box-code>{`.box {
+  box-sizing: content-box;
+  width: 220px;
+  padding: 24px;
+  border: 6px solid;
+  margin: 24px;
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Padding creates space inside the border.</li>
+        <li>Margin creates space outside the border.</li>
+        <li>box-sizing changes how width is calculated.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Increase padding and watch the content move inward.</li>
+        <li>Switch between content-box and border-box.</li>
+        <li>Recreate the generated CSS in your own card component.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const visualizer = document.querySelector('.box-visualizer');
+
+  if (visualizer) {
+    const marginBox = visualizer.querySelector('[data-box-margin]');
+    const borderBox = visualizer.querySelector('[data-box-border]');
+    const paddingBox = visualizer.querySelector('[data-box-padding]');
+    const contentBox = visualizer.querySelector('[data-box-content]');
+    const code = visualizer.querySelector('[data-box-code]');
+    const controls = {
+      width: visualizer.querySelector('[data-box-control="width"]'),
+      padding: visualizer.querySelector('[data-box-control="padding"]'),
+      border: visualizer.querySelector('[data-box-control="border"]'),
+      margin: visualizer.querySelector('[data-box-control="margin"]'),
+      sizing: visualizer.querySelector('[data-box-control="sizing"]'),
+    };
+
+    function updateBoxVisualizer() {
+      const width = `${controls.width.value}px`;
+      const padding = `${controls.padding.value}px`;
+      const border = `${controls.border.value}px`;
+      const margin = `${controls.margin.value}px`;
+      const sizing = controls.sizing.value;
+
+      marginBox.style.padding = margin;
+      borderBox.style.borderWidth = border;
+      paddingBox.style.padding = padding;
+      contentBox.style.width = width;
+      contentBox.style.boxSizing = sizing;
+
+      code.textContent = `.box {
+  box-sizing: ${sizing};
+  width: ${width};
+  padding: ${padding};
+  border: ${border} solid;
+  margin: ${margin};
+}`;
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateBoxVisualizer);
+      control.addEventListener('change', updateBoxVisualizer);
+    });
+
+    updateBoxVisualizer();
+  }
+</script>

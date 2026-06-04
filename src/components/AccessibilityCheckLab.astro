@@ -1,0 +1,162 @@
+<section class="a11y-lab" aria-labelledby="a11y-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="a11y-lab-title">Accessibility Check Lab</h2>
+    <p>
+      Toggle common accessibility issues and watch the checklist update. The
+      goal is to practice noticing problems before they ship.
+    </p>
+  </div>
+
+  <div class="a11y-lab__grid">
+    <div class="a11y-lab__preview" data-a11y-preview>
+      <article class="a11y-lab__card">
+        <div class="a11y-lab__image" role="img" data-a11y-image aria-label="Student project preview">
+          Preview
+        </div>
+        <h3>Student Project Feature</h3>
+        <p data-a11y-copy>
+          This paragraph has enough contrast to stay readable for more people.
+        </p>
+        <button type="button" data-a11y-button>Save project</button>
+      </article>
+    </div>
+
+    <div class="a11y-lab__controls" aria-label="Accessibility issue toggles">
+      <label>
+        <input type="checkbox" data-a11y-toggle="alt" checked />
+        Image has text alternative
+      </label>
+      <label>
+        <input type="checkbox" data-a11y-toggle="contrast" checked />
+        Text contrast passes
+      </label>
+      <label>
+        <input type="checkbox" data-a11y-toggle="focus" checked />
+        Focus style is visible
+      </label>
+      <label>
+        <input type="checkbox" data-a11y-toggle="button" checked />
+        Control uses a real button
+      </label>
+    </div>
+  </div>
+
+  <ul class="a11y-lab__checklist" aria-live="polite" data-a11y-checklist>
+    <li data-a11y-result="alt">Alt text: Pass</li>
+    <li data-a11y-result="contrast">Contrast: Pass</li>
+    <li data-a11y-result="focus">Focus style: Pass</li>
+    <li data-a11y-result="button">Semantic control: Pass</li>
+  </ul>
+
+  <pre aria-live="polite"><code data-a11y-code>{`<img src="project.jpg" alt="Student project preview">
+<button type="button">Save project</button>`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Accessibility issues often look small but change who can use the page.</li>
+        <li>Native HTML solves many problems before ARIA is needed.</li>
+        <li>Visible focus and contrast are part of the interface design.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Turn off one checkbox and explain what broke.</li>
+        <li>Use the Tab key to test focus visibility.</li>
+        <li>Apply the checklist to a page from your own project.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.a11y-lab');
+
+  if (lab) {
+    const preview = lab.querySelector('[data-a11y-preview]');
+    const image = lab.querySelector('[data-a11y-image]');
+    const copy = lab.querySelector('[data-a11y-copy]');
+    let button = lab.querySelector('[data-a11y-button]');
+    const code = lab.querySelector('[data-a11y-code]');
+    const toggles = {
+      alt: lab.querySelector('[data-a11y-toggle="alt"]'),
+      contrast: lab.querySelector('[data-a11y-toggle="contrast"]'),
+      focus: lab.querySelector('[data-a11y-toggle="focus"]'),
+      button: lab.querySelector('[data-a11y-toggle="button"]'),
+    };
+    const results = {
+      alt: lab.querySelector('[data-a11y-result="alt"]'),
+      contrast: lab.querySelector('[data-a11y-result="contrast"]'),
+      focus: lab.querySelector('[data-a11y-result="focus"]'),
+      button: lab.querySelector('[data-a11y-result="button"]'),
+    };
+
+    function updateResult(key, label, passes) {
+      results[key].textContent = `${label}: ${passes ? 'Pass' : 'Needs work'}`;
+      results[key].dataset.state = passes ? 'pass' : 'fail';
+    }
+
+    function updateAccessibilityLab() {
+      const hasAlt = toggles.alt.checked;
+      const hasContrast = toggles.contrast.checked;
+      const hasFocus = toggles.focus.checked;
+      const hasButton = toggles.button.checked;
+
+      if (hasAlt) {
+        image.setAttribute('aria-label', 'Student project preview');
+      } else {
+        image.removeAttribute('aria-label');
+      }
+
+      copy.classList.toggle('is-low-contrast', !hasContrast);
+      preview.classList.toggle('has-weak-focus', !hasFocus);
+
+      if (hasButton && button.tagName.toLowerCase() !== 'button') {
+        const realButton = document.createElement('button');
+        realButton.type = 'button';
+        realButton.dataset.a11yButton = '';
+        realButton.textContent = button.textContent;
+        button.replaceWith(realButton);
+      }
+
+      if (!hasButton && button.tagName.toLowerCase() === 'button') {
+        const fakeButton = document.createElement('div');
+        fakeButton.dataset.a11yButton = '';
+        fakeButton.className = 'a11y-lab__fake-button';
+        fakeButton.textContent = button.textContent;
+        button.replaceWith(fakeButton);
+      }
+
+      const currentButton = lab.querySelector('[data-a11y-button]');
+
+      updateResult('alt', 'Alt text', hasAlt);
+      updateResult('contrast', 'Contrast', hasContrast);
+      updateResult('focus', 'Focus style', hasFocus);
+      updateResult('button', 'Semantic control', hasButton);
+
+      code.textContent = `${hasAlt
+        ? '<img src="project.jpg" alt="Student project preview">'
+        : '<img src="project.jpg" alt="">'}
+${hasButton
+  ? '<button type="button">Save project</button>'
+  : '<div class="button">Save project</div>'}
+${hasContrast
+  ? '/* Text contrast passes WCAG AA */'
+  : '/* Low contrast makes text hard to read */'}
+${hasFocus
+  ? ':focus-visible { outline: 3px solid currentColor; }'
+  : '/* Missing visible focus style */'}`;
+
+      button = currentButton;
+    }
+
+    Object.values(toggles).forEach((toggle) => {
+      toggle.addEventListener('change', updateAccessibilityLab);
+    });
+
+    updateAccessibilityLab();
+  }
+</script>

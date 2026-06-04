@@ -297,15 +297,24 @@ export const lessons: Lesson[] = [
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'What This Teaches',
         body: [
-          "Before we dive into writing actual HTML code, it's crucial to understand how files are organized on a computer and how this relates to how your web browser finds the resources your webpage needs.",
+          'This lesson teaches how a website is organized as a folder of connected files.',
+          'You will learn how browsers find CSS files, JavaScript files, images, and other pages by reading the paths you write in HTML.',
         ],
       },
       {
-        title: 'Think of a Website as a Folder',
+        title: 'Why It Matters',
         body: [
-          'Imagine a website as a folder on your computer. This folder can contain various files:',
+          'Broken images, missing styles, and JavaScript that does not run are often file path problems.',
+          'If the browser cannot find a file, the page may still load, but parts of the site will look or behave broken.',
+          'Learning file paths early makes debugging much easier because you can ask one clear question: where is this file in relation to the page asking for it?',
+        ],
+      },
+      {
+        title: 'Core Concept: A Website Is a Folder',
+        body: [
+          'Imagine a website as a folder on your computer. That folder can contain different kinds of files that work together to create the site.',
         ],
         bullets: [
           'HTML files: These files contain the structure and content of your webpages. The main page of a website is often named index.html.',
@@ -316,118 +325,101 @@ export const lessons: Lesson[] = [
         ],
       },
       {
-        title: 'File Paths: Navigating Within the Folder',
+        title: 'Core Concept: Paths Tell the Browser Where to Look',
         body: [
-          "To access a file within the website's folder, you need to specify its path. A path tells the browser the location of the file relative to the current file.",
+          "To access a file within the website's folder, you need to specify its path.",
+          'A path tells the browser the location of the file relative to the current file.',
         ],
       },
       {
-        title: 'Example Folder Structure',
+        title: 'Example Site Folder',
+        body: [
+          'A small site might use a structure like this:',
+        ],
+        code: `my-website/
+|-- index.html
+|-- about.html
+|-- styles.css
+|-- script.js
+|-- icon.png
+|-- img/
+|   |-- gizmo.jpg
+|-- images/
+|   |-- logo.png`,
+      },
+      {
+        title: 'What Each File Does',
         bullets: [
           'index.html: This is the main page of your website. Your home page.',
-          'css/main.css: This file contains the CSS styles for your website.',
-          'main.js: This file contains JavaScript code for your website.',
+          'about.html: This is another page on your website.',
+          'styles.css: This file contains the CSS styles for your website.',
+          'script.js: This file contains JavaScript code for your website.',
           'img/gizmo.jpg: This is an image file located within the img subfolder.',
+          'images/logo.png: This is an image file located within the images subfolder.',
           'icon.png: This is an image file that will serve as our favicon, located within the root directory.',
-          'about.html: This is a page about your website.',
         ],
       },
       {
-        title: 'Examples',
+        title: 'Code Example: Link a CSS File',
         body: [
-          'To access the main.css file from within index.html:',
+          'If styles.css sits next to index.html, the path is just the file name.',
         ],
-        code: `<link rel="stylesheet" href="css/main.css">`,
+        code: `<link rel="stylesheet" href="styles.css">`,
+        bullets: [
+          'rel="stylesheet": Tells the browser this file is a stylesheet.',
+          'href="styles.css": Tells the browser where the CSS file is located.',
+        ],
       },
       {
-        title: 'Image Path Example',
+        title: 'Code Example: Link an Image',
         body: [
-          'To access the logo.png image from within index.html:',
+          'If an image is inside a folder, include the folder name in the path.',
         ],
         code: `<img src="images/logo.png" alt="My Website Logo">`,
+        bullets: [
+          'src="images/logo.png": Tells the browser to look inside the images folder for logo.png.',
+          'alt="My Website Logo": Describes the image for screen readers and browsers that cannot display it.',
+        ],
       },
       {
-        title: 'Internal Page Example',
+        title: 'Code Example: Link to Another Page',
         body: [
-          'To access about.html from within index.html:',
+          'If about.html sits next to index.html, link to it by file name.',
         ],
         code: `<a href="about.html">Link to About page</a>`,
       },
       {
         title: 'Relative vs. Absolute Paths',
+        body: [
+          'Most class projects will use relative paths. A relative path describes where a file is located compared with the current HTML file.',
+          'An absolute path uses the complete URL to a file or page.',
+        ],
         bullets: [
-          "Relative Paths: The paths we've seen so far are called relative paths because they are relative to the current file's location.",
-          'Absolute Paths: Absolute paths specify the complete file path from the root of the website. For example: https://www.example.com/images/logo.png.',
+          'Relative path: images/logo.png',
+          'Relative path: about.html',
+          'Absolute path: https://www.example.com/images/logo.png',
         ],
         note:
-          'Important Note: Understanding file paths is crucial for writing correct HTML code. In the next lesson, we will learn how to use these paths to link CSS, JavaScript, and images to your HTML files.',
+          'Use relative paths for files inside your own project. Use absolute URLs when linking to outside websites or hosted resources.',
       },
       {
-        title: 'Linking CSS, JS, and Images in HTML',
+        title: 'Code Example: Link JavaScript',
         body: [
-          'Once you understand paths, you can use them to connect external stylesheets, JavaScript files, images, and pages to your HTML.',
+          'JavaScript files add interactivity to webpages.',
+          'A common pattern is to load your script near the end of the body so the HTML exists before the script runs.',
         ],
-      },
-      {
-        title: 'Linking CSS',
-        body: [
-          'Purpose: CSS files contain the styling rules that define the appearance of our webpages.',
-          'Method: We use the link tag in the head section of our HTML document.',
-        ],
-        code: `<head>
-  <title>My Website</title>
-  <link rel="stylesheet" href="styles.css">
-</head>`,
-        bullets: [
-          'rel="stylesheet": Specifies that the linked file is a stylesheet.',
-          'href="styles.css": Specifies the path to the CSS file.',
-        ],
-      },
-      {
-        title: 'Linking JavaScript',
-        body: [
-          'Purpose: JavaScript files contain scripts that add interactivity to our webpages.',
-          'Method: We use the script tag in the body section.',
-        ],
-        code: `<head>
-  <title>My Website</title>
-</head>
-<body>
+        code: `<body>
+  <h1>Welcome to My Website</h1>
   <script src="script.js"></script>
 </body>`,
         bullets: [
-          'src="script.js": Specifies the path to the JavaScript file.',
+          'src="script.js": Tells the browser where the JavaScript file is located.',
         ],
       },
       {
-        title: 'Linking Images',
+        title: 'Complete HTML Example',
         body: [
-          'Purpose: Images enhance the visual appeal and provide visual information on our webpages.',
-          'Method: We use the img tag.',
-        ],
-        code: `<img src="images/logo.png" alt="My Website Logo">`,
-        bullets: [
-          'src="images/logo.png": Specifies the path to the image file.',
-          'alt="My Website Logo": Provides alternative text for screen readers and browsers that cannot display images.',
-        ],
-      },
-      {
-        title: 'Complete Example',
-        body: [
-          "Let's consider the following folder structure:",
-        ],
-        code: `my-website/
-|-- index.html
-|-- styles.css
-|-- script.js
-|-- images/
-|   |-- logo.png
-|-- about.html`,
-      },
-      {
-        title: 'index.html',
-        body: [
-          "Here's how index.html might look:",
+          'Here is how index.html might connect a stylesheet, image, internal page, and JavaScript file.',
         ],
         code: `<!DOCTYPE html>
 <html>
@@ -442,6 +434,39 @@ export const lessons: Lesson[] = [
   <script src="script.js"></script>
 </body>
 </html>`,
+      },
+      {
+        title: 'Common Mistakes',
+        bullets: [
+          'The file name in HTML does not exactly match the real file name.',
+          'The file is in a folder, but the folder name is missing from the path.',
+          'The path uses the wrong folder name, such as image instead of images.',
+          'The file extension is missing or incorrect, such as logo.jpg when the real file is logo.png.',
+          'The project works locally but breaks online because file names use inconsistent capitalization.',
+        ],
+      },
+      {
+        title: 'Debugging Checklist',
+        bullets: [
+          'Find the HTML file that is asking for the resource.',
+          'Find the resource file in your project folder.',
+          'Trace the path from the HTML file to the resource file.',
+          'Check spelling, capitalization, folder names, and file extensions.',
+          'Open browser developer tools and look for 404 errors in the Console or Network tab.',
+        ],
+      },
+      {
+        title: 'Resources',
+        resources: [
+          {
+            label: 'MDN: Creating hyperlinks',
+            href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links',
+          },
+          {
+            label: 'MDN: HTML images',
+            href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images',
+          },
+        ],
       },
     ],
     practice: [
@@ -751,9 +776,24 @@ export const lessons: Lesson[] = [
     ],
     sections: [
       {
-        title: 'Site Layers',
+        title: 'What This Teaches',
         body: [
-          'CSS works in tandem with HTML and JavaScript to build web pages.',
+          'This lesson introduces CSS as the language that controls how HTML looks.',
+          'You will learn where CSS can live, how selectors target HTML, how declarations change appearance, and why the cascade matters.',
+        ],
+      },
+      {
+        title: 'Why It Matters',
+        body: [
+          'HTML gives a page structure, but CSS gives that structure visual hierarchy, spacing, rhythm, color, and layout.',
+          'Good CSS makes a site easier to read, easier to use, and easier to maintain.',
+          'The goal is not just to make a page pretty. The goal is to make visual decisions clearly and consistently.',
+        ],
+      },
+      {
+        title: 'Core Concept: Site Layers',
+        body: [
+          'CSS works with HTML and JavaScript to build web pages. Each layer has a different job.',
         ],
         bullets: [
           'HTML: Defines the content and structure of the page. This includes elements such as headings, paragraphs, images, lists, and forms.',
@@ -762,9 +802,10 @@ export const lessons: Lesson[] = [
         ],
       },
       {
-        title: 'Ways to Target a Site',
+        title: 'Core Concept: Where CSS Can Live',
         body: [
           'CSS can be applied directly to an element, written inside an HTML document, or placed in an external stylesheet.',
+          'In class projects, external stylesheets should usually be your default because they keep structure and presentation separated.',
         ],
       },
       {
@@ -805,16 +846,16 @@ export const lessons: Lesson[] = [
           'Recommended: External stylesheets improve code organization and reuse.',
       },
       {
-        title: 'External Stylesheet Example',
+        title: 'Code Example: External Stylesheet Rule',
         code: `h1 {
   color: green;
   font-family: Arial, sans-serif;
 }`,
       },
       {
-        title: 'Selectors',
+        title: 'Core Concept: Selectors and Declarations',
         body: [
-          'CSS syntax uses selectors and declarations.',
+          'CSS syntax uses selectors and declarations. The selector chooses what to style. The declarations say how it should look.',
         ],
         bullets: [
           'Selector: Defines the elements to be styled.',
@@ -822,9 +863,12 @@ export const lessons: Lesson[] = [
           'Property: The style to be applied, such as color.',
           'Value: The setting for the property, such as red.',
         ],
+        code: `selector {
+  property: value;
+}`,
       },
       {
-        title: 'Type Selector',
+        title: 'Code Example: Type Selector',
         body: [
           'Targets all elements of a given type. For example, targeting all h1 tags.',
         ],
@@ -833,7 +877,7 @@ export const lessons: Lesson[] = [
 }`,
       },
       {
-        title: 'ID Selector',
+        title: 'Code Example: ID Selector',
         body: [
           'Targets a single element with a specific ID, defined using the # symbol.',
         ],
@@ -842,7 +886,7 @@ export const lessons: Lesson[] = [
 }`,
       },
       {
-        title: 'Class Selector',
+        title: 'Code Example: Class Selector',
         body: [
           'Targets any elements that use a given class, defined using the . symbol.',
         ],
@@ -852,16 +896,16 @@ export const lessons: Lesson[] = [
 }`,
       },
       {
-        title: 'Descendant Selector',
+        title: 'Code Example: Descendant Selector',
         body: [
-          'Targets elements that are nested within another element.',
+          'Targets elements that are nested within another element. This example targets only paragraphs inside div elements.',
         ],
         code: `div p {
   color: green;
 }`,
       },
       {
-        title: 'Pseudo-Classes',
+        title: 'Code Example: Pseudo-Class',
         body: [
           'Targets elements in a particular state, like when a user hovers over a link.',
         ],
@@ -888,7 +932,7 @@ a:hover {
           'CSS uses /* */ for comments. The // single-line comment style is common in some languages, but it is not valid standard CSS.',
       },
       {
-        title: 'Common CSS Properties',
+        title: 'Core Concept: Common CSS Properties',
         body: [
           'These are frequently used CSS properties to control layout, text, and element appearance.',
         ],
@@ -926,7 +970,7 @@ div {
 }`,
       },
       {
-        title: 'Container / Wrapper',
+        title: 'Code Example: Container / Wrapper',
         body: [
           'Used to center content and limit maximum width for layout consistency.',
         ],
@@ -937,7 +981,7 @@ div {
 }`,
       },
       {
-        title: 'Centering in CSS',
+        title: 'Code Example: Centering in CSS',
         body: [
           'Text can be centered with text-align. Block elements can be centered using auto margins.',
         ],
@@ -952,7 +996,11 @@ div {
 }`,
       },
       {
-        title: 'The Cascade',
+        title: 'Core Concept: The Cascade',
+        body: [
+          'The cascade is how the browser decides which CSS rule wins when more than one rule applies to the same element.',
+          'When CSS feels confusing, the issue is often order, specificity, or inheritance.',
+        ],
         bullets: [
           'Last Rule: Later rules override earlier ones if selectors match.',
           'Specificity: More specific selectors take precedence.',
@@ -960,9 +1008,10 @@ div {
         ],
       },
       {
-        title: 'Inheritance',
+        title: 'Core Concept: Inheritance',
         body: [
           'Some properties, like color and font-family, are inherited by child elements.',
+          'Inheritance lets you set broad defaults on the body, then override them when needed.',
         ],
         code: `body {
   color: red;
@@ -973,12 +1022,46 @@ p {
 }`,
       },
       {
-        title: 'CSS Resources',
+        title: 'Common Mistakes',
         bullets: [
-          'MDN (Mozilla Developer Network)',
-          'W3Schools',
-          'CSS Tricks',
-          'CSS MDN Reference',
+          'Forgetting to link the CSS file in the HTML.',
+          'Writing a selector that does not match the HTML.',
+          'Using an ID selector when a reusable class would be better.',
+          'Forgetting a semicolon between declarations.',
+          'Expecting an earlier rule to win when a later rule overrides it.',
+          'Using !important instead of understanding the cascade.',
+        ],
+      },
+      {
+        title: 'Debugging Checklist',
+        bullets: [
+          'Confirm the CSS file path is correct in the link tag.',
+          'Open browser developer tools and inspect the element.',
+          'Check whether the selector matches the element you are trying to style.',
+          'Look for crossed-out styles in developer tools to see which rules are being overridden.',
+          'Check spelling, punctuation, braces, colons, and semicolons.',
+          'Simplify the selector and test one property at a time.',
+        ],
+      },
+      {
+        title: 'Resources',
+        resources: [
+          {
+            label: 'MDN: CSS basics',
+            href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics',
+          },
+          {
+            label: 'MDN: CSS selectors',
+            href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors',
+          },
+          {
+            label: 'CSS-Tricks',
+            href: 'https://css-tricks.com/',
+          },
+          {
+            label: 'W3Schools CSS',
+            href: 'https://www.w3schools.com/css/',
+          },
         ],
       },
     ],
@@ -1444,14 +1527,23 @@ p {
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'What This Teaches',
         body: [
-          'The CSS Box Model is a fundamental concept in web design. It describes how elements are visually rendered and how their dimensions are calculated, including content, padding, borders, and margins.',
-          'Understanding the box model is crucial for controlling the layout and spacing of elements on a web page.',
+          'This lesson teaches how every visible element on a webpage is drawn as a box.',
+          'You will learn how content, padding, border, margin, and box-sizing affect the space an element takes up.',
+          'You will also learn how basic layout techniques like display, float, flexbox, and grid change how elements arrange themselves.',
         ],
       },
       {
-        title: 'Block vs. Inline: Element Behavior',
+        title: 'Why It Matters',
+        body: [
+          'Most layout problems are box model problems first.',
+          'When spacing looks strange, elements overflow, columns do not line up, or a card is wider than expected, the answer is often padding, margin, border, or box-sizing.',
+          'Understanding the box model gives you a reliable way to debug layout instead of guessing at random CSS properties.',
+        ],
+      },
+      {
+        title: 'Core Concept: Block vs. Inline Behavior',
         body: [
           'HTML elements are broadly categorized as either block-level or inline elements, each with distinct behaviors.',
         ],
@@ -1478,19 +1570,19 @@ p {
         ],
       },
       {
-        title: 'The CSS Box Model: Understanding the Layers',
+        title: 'Core Concept: The CSS Box Model',
         body: [
           'Every element on a web page is treated as a rectangular box, composed of content, padding, border, and margin.',
         ],
       },
       {
-        title: 'Content',
+        title: 'Box Layer: Content',
         body: [
           "The actual content of the element, such as text, images, or other media. The height and width of the content area determine the element's natural size.",
         ],
       },
       {
-        title: 'Padding',
+        title: 'Box Layer: Padding',
         body: [
           'The space between the content and the border. Padding is transparent and expands the background color of the element.',
         ],
@@ -1500,7 +1592,7 @@ p {
 }`,
       },
       {
-        title: 'Border',
+        title: 'Box Layer: Border',
         body: [
           'A visual boundary surrounding the padding and content. Borders can have different styles, colors, and thicknesses.',
         ],
@@ -1509,7 +1601,7 @@ p {
 }`,
       },
       {
-        title: 'Margin',
+        title: 'Box Layer: Margin',
         body: [
           'The space outside the border, creating separation between elements. Margins are transparent and collapse with adjacent margins.',
         ],
@@ -1518,9 +1610,10 @@ p {
 }`,
       },
       {
-        title: 'box-sizing: Controlling Box Dimensions',
+        title: 'Core Concept: box-sizing',
         body: [
           'The box-sizing property determines how the width and height of an element are calculated.',
+          'Many developers prefer border-box because it makes element sizing easier to predict.',
         ],
         bullets: [
           'content-box: The default. Width and height include only the content area.',
@@ -1534,19 +1627,28 @@ p {
 }`,
       },
       {
-        title: 'CSS Layout Techniques: Positioning and Arranging Elements',
+        title: 'Core Concept: Layout Techniques',
         body: [
           'CSS includes several layout techniques for controlling how elements are displayed and arranged.',
+          'Different layout tools solve different layout problems. The trick is choosing the right one.',
         ],
       },
       {
-        title: 'display Property',
+        title: 'Code Example: display Property',
         bullets: [
           'display: none; hides the element completely.',
           'display: block; makes the element a block-level element.',
           'display: inline; makes the element inline.',
           'display: inline-block; combines block and inline behaviors.',
         ],
+        code: `.hidden {
+  display: none;
+}
+
+.button-like-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+}`,
       },
       {
         title: 'Float',
@@ -1559,11 +1661,59 @@ p {
         body: [
           'display: flex; enables the Flexbox layout model for one-dimensional layouts.',
         ],
+        code: `.card-row {
+  display: flex;
+  gap: 1rem;
+}`,
       },
       {
         title: 'Grid',
         body: [
           'display: grid; allows for two-dimensional layouts with rows and columns.',
+        ],
+        code: `.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}`,
+      },
+      {
+        title: 'Common Mistakes',
+        bullets: [
+          'Forgetting that padding and border can increase the final size of an element when using content-box.',
+          'Using margin when padding would better create internal space.',
+          'Using padding when margin would better separate two elements.',
+          'Trying to set width or height on inline elements and expecting it to work like a block.',
+          'Using float for modern page layout when flexbox or grid would be simpler.',
+          'Not accounting for margin collapse between vertical block elements.',
+        ],
+      },
+      {
+        title: 'Debugging Checklist',
+        bullets: [
+          'Inspect the element in browser developer tools and look at the box model diagram.',
+          'Check whether the element is block, inline, inline-block, flex, or grid.',
+          'Temporarily add a border or background color to see the real size of the element.',
+          'Check whether spacing is coming from padding, margin, gap, or line-height.',
+          'Set box-sizing: border-box when sizing feels unpredictable.',
+          'Remove layout rules one at a time to find which property is creating the issue.',
+        ],
+      },
+      {
+        title: 'Resources',
+        resources: [
+          {
+            label: 'MDN: The box model',
+            href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model',
+          },
+          {
+            label: 'MDN: display',
+            href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/display',
+          },
+          {
+            label: 'CSS-Tricks: box-sizing',
+            href: 'https://css-tricks.com/box-sizing/',
+          },
         ],
       },
     ],
@@ -1586,14 +1736,22 @@ p {
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'What This Teaches',
         body: [
-          "CSS Flexbox is a powerful layout system that allows you to arrange items flexibly within a container. It's particularly useful for creating responsive designs and dynamic layouts.",
-          'Unlike CSS Grid, Flexbox is primarily used for one-dimensional layouts, meaning rows or columns.',
+          'This lesson teaches how to use CSS Flexbox to arrange items inside a container.',
+          'You will learn how flex containers, flex items, axes, wrapping, spacing, alignment, and ordering work together.',
         ],
       },
       {
-        title: 'Key Concepts',
+        title: 'Why It Matters',
+        body: [
+          'Flexbox is one of the most useful layout tools for everyday interface work.',
+          'It is especially good for navigation bars, button rows, card layouts, media objects, and centering content.',
+          'Unlike CSS Grid, Flexbox is primarily used for one-dimensional layouts, meaning a row or a column.',
+        ],
+      },
+      {
+        title: 'Core Concept: Flexbox Vocabulary',
         bullets: [
           'Flex Container: The parent element that contains flex items.',
           'Flex Item: The child elements within the flex container.',
@@ -1609,7 +1767,7 @@ p {
         ],
       },
       {
-        title: 'Creating a Basic Flex Container',
+        title: 'Core Concept: Container and Items',
         body: [
           'To begin using Flexbox, set the display property of a container to flex. All direct child elements will become flex items.',
         ],
@@ -1618,7 +1776,7 @@ p {
 }`,
       },
       {
-        title: 'Flex Direction',
+        title: 'Code Example: Flex Direction',
         body: [
           'The flex-direction property sets the direction of the main axis, defining how flex items are placed in the flex container.',
         ],
@@ -1629,7 +1787,7 @@ p {
 }`,
       },
       {
-        title: 'Flex Wrap',
+        title: 'Code Example: Flex Wrap',
         body: [
           'Use flex-wrap to specify whether the flex items should wrap onto multiple lines or stay on a single line.',
         ],
@@ -1639,7 +1797,7 @@ p {
 }`,
       },
       {
-        title: 'Justify Content',
+        title: 'Code Example: Justify Content',
         body: [
           'justify-content aligns flex items along the main axis. It controls the alignment and spacing between items.',
         ],
@@ -1649,7 +1807,7 @@ p {
 }`,
       },
       {
-        title: 'Align Items',
+        title: 'Code Example: Align Items',
         body: [
           'The align-items property aligns items along the cross axis, perpendicular to the main axis.',
         ],
@@ -1659,14 +1817,31 @@ p {
 }`,
       },
       {
-        title: 'Practical Examples',
-        bullets: [
-          'Creating a Responsive Navigation Bar',
-          'Creating a Flexible Card Layout',
-        ],
+        title: 'Practical Example: Responsive Navigation Bar',
+        code: `.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}`,
       },
       {
-        title: 'Advanced Techniques',
+        title: 'Practical Example: Flexible Card Layout',
+        code: `.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.card {
+  flex: 1 1 16rem;
+}`,
+      },
+      {
+        title: 'Core Concept: Advanced Item Control',
         body: [
           'Flexbox also includes properties for controlling how individual items grow, shrink, and appear within a container.',
         ],
@@ -1678,11 +1853,15 @@ p {
           'Flex Shrink: Controls how much a flex item should shrink relative to other items.',
           'Flex Basis: Sets the initial size of a flex item.',
         ],
+        code: `.item {
+  flex: 1 1 12rem;
+}`,
       },
       {
-        title: 'Align Content',
+        title: 'Core Concept: Align Content',
         body: [
-          'Aligns multiple lines of items within a flex container.',
+          'align-content controls the spacing between multiple flex lines.',
+          'It only has a visible effect when flex items wrap onto more than one line.',
         ],
         bullets: [
           'flex-start',
@@ -1694,13 +1873,39 @@ p {
         ],
       },
       {
-        title: 'Order Property',
+        title: 'Core Concept: Order Property',
         body: [
           'The order property controls the order in which flex items appear within the container, regardless of their source order.',
+          'Use this carefully. Visual order and source order can become different, which can confuse keyboard and screen reader users.',
+        ],
+        code: `.featured-item {
+  order: -1;
+}`,
+      },
+      {
+        title: 'Common Mistakes',
+        bullets: [
+          'Putting display: flex on the wrong element.',
+          'Forgetting that only direct children become flex items.',
+          'Using justify-content when the issue is actually cross-axis alignment.',
+          'Using align-items when there are multiple wrapped lines and align-content is needed.',
+          'Expecting gap to work on older browser versions without checking support.',
+          'Using order to fix visual layout while creating confusing keyboard or reading order.',
         ],
       },
       {
-        title: 'Additional Resources',
+        title: 'Debugging Checklist',
+        bullets: [
+          'Inspect the parent and confirm it has display: flex.',
+          'Check which elements are direct children of the flex container.',
+          'Identify the main axis from flex-direction.',
+          'Use justify-content for the main axis and align-items for the cross axis.',
+          'Check whether items are wrapping before using align-content.',
+          'Temporarily add outlines or background colors to see each flex item.',
+        ],
+      },
+      {
+        title: 'Resources',
         resources: [
           { label: 'Flexbox Froggy', href: 'https://flexboxfroggy.com/' },
           { label: 'MDN Web Docs: CSS Flexbox', href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox' },

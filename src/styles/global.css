@@ -382,7 +382,8 @@ ol {
 .dom-lab,
 .a11y-lab,
 .responsive-lab,
-.selector-lab {
+.selector-lab,
+.transition-lab {
   background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -710,6 +711,82 @@ ol {
   outline-offset: 3px;
 }
 
+.transition-lab__controls {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.transition-lab__controls label {
+  color: var(--color-muted);
+  display: grid;
+  font-size: 0.85rem;
+  font-weight: 800;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+.transition-lab__controls select,
+.transition-lab__controls input {
+  accent-color: var(--color-brand);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  font: inherit;
+  padding: 0.6rem;
+}
+
+.transition-lab__stage {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.transition-lab__trigger {
+  background: var(--color-surface-raised);
+  border: 2px solid var(--color-brand);
+  border-radius: 4px;
+  color: var(--color-brand-dark);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  justify-self: start;
+  padding: 0.7rem 0.8rem;
+  text-transform: uppercase;
+}
+
+.transition-lab__trigger:hover,
+.transition-lab__trigger:focus {
+  background: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+  color: #fff;
+}
+
+.transition-lab__box {
+  align-content: center;
+  background: var(--color-brand);
+  border: 2px solid var(--color-brand-dark);
+  border-radius: 8px;
+  color: #fff;
+  display: grid;
+  font-family: var(--font-display);
+  font-weight: 900;
+  min-block-size: 6rem;
+  place-items: center;
+  inline-size: 9rem;
+}
+
+.transition-lab__readout {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
 .interactive-notes {
   display: grid;
   gap: 1rem;
@@ -922,6 +999,10 @@ ol {
   }
 
   .responsive-lab__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .transition-lab__controls {
     grid-template-columns: 1fr;
   }
 

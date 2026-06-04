@@ -6,6 +6,7 @@ import DomInteractionLab from '../../components/DomInteractionLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
+import TransitionPlayground from '../../components/TransitionPlayground.astro';
 import { lessons } from '../../data/lessons';
 
 export function getStaticPaths() {
@@ -74,6 +75,10 @@ const nextLesson = lessons[currentIndex + 1];
 
         {
           lesson.slug === 'web-accessibility' && <AccessibilityCheckLab />
+        }
+
+        {
+          lesson.slug === 'css-transitions' && <TransitionPlayground />
         }
 
         {

@@ -1,0 +1,158 @@
+<section class="transition-lab" aria-labelledby="transition-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="transition-lab-title">Transition Timing Playground</h2>
+    <p>
+      Change the timing values, then trigger the preview. Transitions are about
+      how a change feels between two states.
+    </p>
+  </div>
+
+  <div class="transition-lab__controls" aria-label="Transition controls">
+    <label>
+      Property
+      <select data-transition-control="property">
+        <option value="transform">transform</option>
+        <option value="opacity">opacity</option>
+        <option value="background-color">background-color</option>
+      </select>
+    </label>
+
+    <label>
+      Duration
+      <input data-transition-control="duration" type="range" min="100" max="1600" step="100" value="400" />
+    </label>
+
+    <label>
+      Delay
+      <input data-transition-control="delay" type="range" min="0" max="1000" step="100" value="0" />
+    </label>
+
+    <label>
+      Easing
+      <select data-transition-control="easing">
+        <option value="ease">ease</option>
+        <option value="linear">linear</option>
+        <option value="ease-in">ease-in</option>
+        <option value="ease-out">ease-out</option>
+        <option value="cubic-bezier(0.68, -0.55, 0.27, 1.55)">springy cubic-bezier</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="transition-lab__stage">
+    <button type="button" class="transition-lab__trigger" data-transition-trigger>
+      Trigger transition
+    </button>
+    <div class="transition-lab__box" data-transition-box>
+      Change me
+    </div>
+    <p class="transition-lab__readout" data-transition-readout>
+      duration: 400ms / delay: 0ms / easing: ease
+    </p>
+  </div>
+
+  <pre aria-live="polite"><code data-transition-code>{`.box {
+  transition: transform 400ms ease 0ms;
+}
+
+.box.is-active {
+  transform: translateX(120px) scale(1.1);
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Duration changes how long the transition takes.</li>
+        <li>Delay changes when the transition begins.</li>
+        <li>Easing changes the personality of the motion.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Compare linear with ease-out.</li>
+        <li>Add a delay and notice how the interface feels less immediate.</li>
+        <li>Use transform or opacity for smoother motion.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.transition-lab');
+
+  if (lab) {
+    const box = lab.querySelector('[data-transition-box]');
+    const trigger = lab.querySelector('[data-transition-trigger]');
+    const readout = lab.querySelector('[data-transition-readout]');
+    const code = lab.querySelector('[data-transition-code]');
+    const controls = {
+      property: lab.querySelector('[data-transition-control="property"]'),
+      duration: lab.querySelector('[data-transition-control="duration"]'),
+      delay: lab.querySelector('[data-transition-control="delay"]'),
+      easing: lab.querySelector('[data-transition-control="easing"]'),
+    };
+
+    const activeStyles = {
+      transform: 'translateX(120px) scale(1.1)',
+      opacity: '0.35',
+      'background-color': '#166534',
+    };
+
+    function resetActiveStyles() {
+      box.style.transform = '';
+      box.style.opacity = '';
+      box.style.backgroundColor = '';
+    }
+
+    function updateTransitionLab() {
+      const property = controls.property.value;
+      const duration = `${controls.duration.value}ms`;
+      const delay = `${controls.delay.value}ms`;
+      const easing = controls.easing.value;
+      const activeValue = activeStyles[property];
+
+      resetActiveStyles();
+      box.classList.remove('is-active');
+      box.style.transition = `${property} ${duration} ${easing} ${delay}`;
+      readout.textContent = `duration: ${duration} / delay: ${delay} / easing: ${easing}`;
+
+      code.textContent = `.box {
+  transition: ${property} ${duration} ${easing} ${delay};
+}
+
+.box.is-active {
+  ${property}: ${activeValue};
+}`;
+    }
+
+    function triggerTransition() {
+      const property = controls.property.value;
+      const activeValue = activeStyles[property];
+
+      if (box.classList.contains('is-active')) {
+        resetActiveStyles();
+        box.classList.remove('is-active');
+        return;
+      }
+
+      box.classList.add('is-active');
+
+      if (property === 'background-color') {
+        box.style.backgroundColor = activeValue;
+      } else {
+        box.style[property] = activeValue;
+      }
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateTransitionLab);
+      control.addEventListener('change', updateTransitionLab);
+    });
+
+    trigger.addEventListener('click', triggerTransition);
+    updateTransitionLab();
+  }
+</script>

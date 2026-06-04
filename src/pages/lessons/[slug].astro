@@ -4,6 +4,8 @@ import AccessibilityCheckLab from '../../components/AccessibilityCheckLab.astro'
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
 import DomInteractionLab from '../../components/DomInteractionLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
+import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
+import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import { lessons } from '../../data/lessons';
 
 export function getStaticPaths() {
@@ -55,7 +57,15 @@ const nextLesson = lessons[currentIndex + 1];
         }
 
         {
+          lesson.slug === 'intro-to-css' && <SelectorPlayground />
+        }
+
+        {
           lesson.slug === 'flexbox' && <FlexboxPlayground />
+        }
+
+        {
+          lesson.slug === 'responsive-web-design' && <ResponsiveLayoutVisualizer />
         }
 
         {

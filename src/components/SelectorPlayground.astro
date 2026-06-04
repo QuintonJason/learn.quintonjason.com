@@ -1,0 +1,107 @@
+<section class="selector-lab" aria-labelledby="selector-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="selector-lab-title">Selector Playground</h2>
+    <p>
+      Choose a selector and watch which elements match. Selectors are how CSS
+      finds the HTML you want to style.
+    </p>
+  </div>
+
+  <div class="selector-lab__controls">
+    <label>
+      Selector
+      <select data-selector-control>
+        <option value="p">Type selector: p</option>
+        <option value=".card">Class selector: .card</option>
+        <option value="#featured">ID selector: #featured</option>
+        <option value=".card p">Descendant selector: .card p</option>
+        <option value="a:hover">Pseudo-class: a:hover</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="selector-lab__preview" data-selector-preview>
+    <h3 data-selector-item="h3">Project Gallery</h3>
+    <p data-selector-item="p">This paragraph sits outside the card.</p>
+    <article class="card" data-selector-item=".card">
+      <h4>Card title</h4>
+      <p data-selector-item=".card p">This paragraph is inside the card.</p>
+      <a href="#" data-selector-item="a:hover">View project</a>
+    </article>
+    <article id="featured" class="card" data-selector-item="#featured .card">
+      <h4>Featured card</h4>
+      <p data-selector-item=".card p">This card has an ID and a class.</p>
+    </article>
+  </div>
+
+  <pre aria-live="polite"><code data-selector-code>{`p {
+  color: green;
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Type selectors can match many elements at once.</li>
+        <li>Class selectors are reusable across multiple elements.</li>
+        <li>ID selectors should be unique on a page.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Compare .card with .card p.</li>
+        <li>Notice how #featured only targets one element.</li>
+        <li>Copy one generated selector into your stylesheet.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.selector-lab');
+
+  if (lab) {
+    const control = lab.querySelector('[data-selector-control]');
+    const preview = lab.querySelector('[data-selector-preview]');
+    const code = lab.querySelector('[data-selector-code]');
+
+    const snippets = {
+      p: `p {
+  color: green;
+}`,
+      '.card': `.card {
+  border: 1px solid black;
+  padding: 1rem;
+}`,
+      '#featured': `#featured {
+  background-color: lightyellow;
+}`,
+      '.card p': `.card p {
+  font-weight: bold;
+}`,
+      'a:hover': `a:hover {
+  color: blue;
+}`,
+    };
+
+    function updateSelectorLab() {
+      const selector = control.value;
+      const matches = preview.querySelectorAll(selector === 'a:hover' ? 'a' : selector);
+
+      preview.querySelectorAll('[data-selector-item]').forEach((item) => {
+        item.classList.remove('is-selector-match');
+      });
+
+      matches.forEach((item) => {
+        item.classList.add('is-selector-match');
+      });
+
+      code.textContent = snippets[selector];
+    }
+
+    control.addEventListener('change', updateSelectorLab);
+    updateSelectorLab();
+  }
+</script>

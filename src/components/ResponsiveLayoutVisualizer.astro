@@ -1,0 +1,139 @@
+<section class="responsive-lab" aria-labelledby="responsive-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="responsive-lab-title">Responsive Layout Visualizer</h2>
+    <p>
+      Drag the viewport width slider to see how the same HTML can adapt across
+      mobile, tablet, and desktop layouts.
+    </p>
+  </div>
+
+  <div class="responsive-lab__controls" aria-label="Responsive layout controls">
+    <label>
+      Viewport width
+      <input data-responsive-width type="range" min="320" max="1200" value="640" />
+    </label>
+    <output data-responsive-output>640px</output>
+  </div>
+
+  <div class="responsive-lab__viewport" data-responsive-viewport>
+    <div class="responsive-lab__toolbar">
+      <span data-responsive-label>Tablet</span>
+    </div>
+    <div class="responsive-lab__preview" data-responsive-preview>
+      <article>
+        <h3>Feature One</h3>
+        <p>Content stacks first, then expands when space allows.</p>
+      </article>
+      <article>
+        <h3>Feature Two</h3>
+        <p>Breakpoints should respond to the layout, not random device names.</p>
+      </article>
+      <article>
+        <h3>Feature Three</h3>
+        <p>The HTML stays the same while CSS changes the presentation.</p>
+      </article>
+    </div>
+  </div>
+
+  <pre aria-live="polite"><code data-responsive-code>{`.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Mobile-first CSS starts with the smallest layout.</li>
+        <li>Breakpoints should happen when the content needs more room.</li>
+        <li>The layout changes while the HTML stays the same.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Move slowly from 320px to 1200px.</li>
+        <li>Notice when the layout changes from one to two to three columns.</li>
+        <li>Copy the generated CSS into a practice page.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.responsive-lab');
+
+  if (lab) {
+    const slider = lab.querySelector('[data-responsive-width]');
+    const output = lab.querySelector('[data-responsive-output]');
+    const viewport = lab.querySelector('[data-responsive-viewport]');
+    const preview = lab.querySelector('[data-responsive-preview]');
+    const label = lab.querySelector('[data-responsive-label]');
+    const code = lab.querySelector('[data-responsive-code]');
+
+    function updateResponsiveLab() {
+      const width = Number(slider.value);
+      output.textContent = `${width}px`;
+      viewport.style.maxWidth = `${width}px`;
+
+      let columns = '1fr';
+      let mode = 'Mobile';
+      let snippet = `.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}`;
+
+      if (width >= 1000) {
+        columns = 'repeat(3, 1fr)';
+        mode = 'Desktop';
+        snippet = `.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}`;
+      } else if (width >= 700) {
+        columns = 'repeat(2, 1fr)';
+        mode = 'Tablet';
+        snippet = `.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}`;
+      }
+
+      preview.style.gridTemplateColumns = columns;
+      label.textContent = mode;
+      code.textContent = snippet;
+    }
+
+    slider.addEventListener('input', updateResponsiveLab);
+    updateResponsiveLab();
+  }
+</script>

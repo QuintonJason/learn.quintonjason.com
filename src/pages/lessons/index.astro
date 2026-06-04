@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lessons } from '../../data/lessons';
+---
+
+<BaseLayout title="Lessons | Learn Web Design With Quinton Jason">
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Lessons</p>
+        <h1>Course lessons</h1>
+        <p class="lede">
+          A guided path through web foundations, accessibility, UX, and systems
+          thinking.
+        </p>
+      </div>
+      <div class="lesson-grid">
+        {
+          lessons.map((lesson) => (
+            <a class="lesson-card" href={`/lessons/${lesson.slug}/`}>
+              <span class="lesson-card__number">
+                Lesson {lesson.number} · {lesson.eyebrow}
+              </span>
+              <h2>{lesson.title}</h2>
+              <p>{lesson.summary}</p>
+              <span class="lesson-card__footer">Open lesson</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

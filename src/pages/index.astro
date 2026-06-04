@@ -1,17 +1,79 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { lessons } from '../data/lessons';
 
+const featuredLessons = lessons.slice(1, 7);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div>
+        <p class="eyebrow">ART 3020 Course Guide</p>
+        <h1>Learn web design with systems thinking.</h1>
+        <p class="lede">
+          A practical guide to HTML, CSS, accessibility, responsive design, UX
+          foundations, JavaScript, and the decisions that make web interfaces
+          durable.
+        </p>
+        <div class="button-row">
+          <a class="button button--primary" href="/lessons/">Start Learning</a>
+          <a class="button" href="/projects/">View Projects</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Course focus">
+        <h2>What this course teaches</h2>
+        <ol>
+          <li>Structure content with semantic HTML.</li>
+          <li>Use CSS to design adaptable interfaces.</li>
+          <li>Build with accessibility from the beginning.</li>
+          <li>Connect UX decisions to reusable patterns.</li>
+        </ol>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Lessons</p>
+        <h2>Web foundations for design students and early frontend developers.</h2>
+        <p>
+          The lessons move from structure to presentation, then into layout,
+          accessibility, interaction, and systems thinking.
+        </p>
+      </div>
+      <div class="lesson-grid">
+        {
+          featuredLessons.map((lesson) => (
+            <a class="lesson-card" href={`/lessons/${lesson.slug}/`}>
+              <span class="lesson-card__number">
+                Lesson {lesson.number} · {lesson.eyebrow}
+              </span>
+              <h3>{lesson.title}</h3>
+              <p>{lesson.summary}</p>
+              <span class="lesson-card__footer">Open lesson</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="callout">
+        <div>
+          <p class="eyebrow">Teaching Philosophy</p>
+          <h2>Code is a design material.</h2>
+        </div>
+        <p>
+          This course treats HTML, CSS, and JavaScript as tools for making
+          decisions visible. Students learn to build pages, but they also learn
+          to explain structure, hierarchy, accessibility, constraints, and
+          tradeoffs.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

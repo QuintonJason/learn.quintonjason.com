@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { lessons } from '../../data/lessons';
+
+export function getStaticPaths() {
+  return lessons.map((lesson) => ({
+    params: { slug: lesson.slug },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+const currentIndex = lessons.findIndex((item) => item.slug === lesson.slug);
+const previousLesson = lessons[currentIndex - 1];
+const nextLesson = lessons[currentIndex + 1];
+---
+
+<BaseLayout title={`${lesson.title} | Learn Web Design With Quinton Jason`}>
+  <article class="lesson-page">
+    <div class="container lesson-layout">
+      <aside class="lesson-sidebar" aria-label="Lesson navigation">
+        <p class="eyebrow">Lessons</p>
+        <ul>
+          {
+            lessons.map((item) => (
+              <li>
+                <a href={`/lessons/${item.slug}/`} aria-current={item.slug === lesson.slug ? 'page' : undefined}>
+                  {item.number}. {item.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+      <div class="lesson-content">
+        <header>
+          <p class="eyebrow">Lesson {lesson.number} · {lesson.eyebrow}</p>
+          <h1>{lesson.title}</h1>
+          <p class="lede">{lesson.summary}</p>
+        </header>
+
+        <section>
+          <h2>Learning Goals</h2>
+          <ul>
+            {lesson.goals.map((goal) => <li>{goal}</li>)}
+          </ul>
+        </section>
+
+        <section>
+          <h2>Core Ideas</h2>
+          <p>
+            This page is ready for the expanded material from the ART 3020 book:
+            definitions, examples, critique prompts, code exercises, and project
+            checkpoints.
+          </p>
+        </section>
+
+        <section>
+          <h2>Practice</h2>
+          <p>
+            Add a small assignment here that asks students to make something,
+            explain the decision, and revise it after feedback.
+          </p>
+        </section>
+
+        <nav class="button-row" aria-label="Lesson pagination">
+          {previousLesson && <a class="button" href={`/lessons/${previousLesson.slug}/`}>Previous</a>}
+          {nextLesson && <a class="button button--primary" href={`/lessons/${nextLesson.slug}/`}>Next lesson</a>}
+        </nav>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

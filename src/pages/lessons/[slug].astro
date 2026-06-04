@@ -5,6 +5,7 @@ import AnimationKeyframeLab from '../../components/AnimationKeyframeLab.astro';
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
 import DomInteractionLab from '../../components/DomInteractionLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
+import FormAccessibilityLab from '../../components/FormAccessibilityLab.astro';
 import GsapTimelineLab from '../../components/GsapTimelineLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
@@ -69,6 +70,10 @@ const nextLesson = lessons[currentIndex + 1];
 
         {
           lesson.slug === 'responsive-web-design' && <ResponsiveLayoutVisualizer />
+        }
+
+        {
+          lesson.slug === 'html-forms-building-interactive-user-interfaces' && <FormAccessibilityLab />
         }
 
         {

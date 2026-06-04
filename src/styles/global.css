@@ -383,6 +383,7 @@ ol {
 .a11y-lab,
 .responsive-lab,
 .selector-lab,
+.form-lab,
 .transition-lab,
 .animation-lab,
 .gsap-lab {
@@ -711,6 +712,114 @@ ol {
 .selector-lab__preview .is-selector-match {
   outline: 3px solid var(--color-brand);
   outline-offset: 3px;
+}
+
+.form-lab__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.45fr);
+}
+
+.form-lab__preview {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.form-lab__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-lab__field label,
+.form-lab__controls label {
+  font-weight: 800;
+}
+
+.form-lab__field input {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+}
+
+.form-lab__field input[aria-invalid="true"] {
+  border-color: #9c4636;
+}
+
+.form-lab__error {
+  color: #9c4636;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.form-lab__preview button {
+  background: var(--color-brand);
+  border: 2px solid var(--color-brand);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  justify-self: start;
+  padding: 0.7rem 0.8rem;
+  text-transform: uppercase;
+}
+
+.form-lab__preview button:hover,
+.form-lab__preview button:focus {
+  background: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+}
+
+.form-lab__controls {
+  align-content: start;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.form-lab__controls label {
+  align-items: start;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.75rem;
+}
+
+.form-lab__controls input {
+  accent-color: var(--color-brand);
+  margin-top: 0.2rem;
+}
+
+.form-lab__checklist {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.form-lab__checklist li {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-weight: 800;
+  padding: 0.65rem 0.75rem;
+}
+
+.form-lab__checklist li[data-state="pass"] {
+  background: rgb(48 178 74 / 0.14);
+  border-color: var(--color-brand);
+}
+
+.form-lab__checklist li[data-state="fail"] {
+  background: rgb(156 70 54 / 0.12);
+  border-color: #9c4636;
 }
 
 .transition-lab__controls {
@@ -1203,6 +1312,10 @@ ol {
   }
 
   .responsive-lab__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .form-lab__grid {
     grid-template-columns: 1fr;
   }
 

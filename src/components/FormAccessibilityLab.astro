@@ -1,0 +1,181 @@
+<section class="form-lab" aria-labelledby="form-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="form-lab-title">Form Accessibility Lab</h2>
+    <p>
+      Toggle form details on and off to see how small markup choices change
+      usability, validation, and screen reader support.
+    </p>
+  </div>
+
+  <div class="form-lab__grid">
+    <form class="form-lab__preview" data-form-preview>
+      <div class="form-lab__field">
+        <label for="lab-name" data-form-label>Name</label>
+        <input
+          id="lab-name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          placeholder="Quinton Jason"
+          required
+          data-form-input
+        />
+      </div>
+
+      <div class="form-lab__field">
+        <label for="lab-email">Email</label>
+        <input
+          id="lab-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="quinton@example.com"
+          required
+        />
+      </div>
+
+      <p class="form-lab__error" id="lab-error" data-form-error>
+        Enter your name before submitting.
+      </p>
+
+      <button type="submit">Submit form</button>
+    </form>
+
+    <div class="form-lab__controls" aria-label="Form quality toggles">
+      <label>
+        <input type="checkbox" data-form-toggle="label" checked />
+        Name field has a real label
+      </label>
+      <label>
+        <input type="checkbox" data-form-toggle="required" checked />
+        Required fields use required
+      </label>
+      <label>
+        <input type="checkbox" data-form-toggle="error" checked />
+        Error text is connected to the field
+      </label>
+      <label>
+        <input type="checkbox" data-form-toggle="confirmation" checked />
+        Form points to thank-you.html
+      </label>
+    </div>
+  </div>
+
+  <ul class="form-lab__checklist" aria-live="polite" data-form-checklist>
+    <li data-form-result="label">Label: Pass</li>
+    <li data-form-result="required">Required state: Pass</li>
+    <li data-form-result="error">Error message: Pass</li>
+    <li data-form-result="confirmation">Submission target: Pass</li>
+  </ul>
+
+  <pre aria-live="polite"><code data-form-code>{`<form action="thank-you.html" method="get">
+  <label for="name">Name</label>
+  <input id="name" name="name" required aria-describedby="name-error">
+  <p id="name-error">Enter your name before submitting.</p>
+  <button type="submit">Submit form</button>
+</form>`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Placeholder text is not a replacement for a visible label.</li>
+        <li>Required fields should be communicated in code and visually.</li>
+        <li>Error messages need to be associated with the field they describe.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Turn off the label and explain what information disappears.</li>
+        <li>Submit with an empty name field and watch native validation respond.</li>
+        <li>Compare the generated markup to your own project forms.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const formLab = document.querySelector('.form-lab');
+
+  if (formLab) {
+    const form = formLab.querySelector('[data-form-preview]');
+    const label = formLab.querySelector('[data-form-label]');
+    const input = formLab.querySelector('[data-form-input]');
+    const error = formLab.querySelector('[data-form-error]');
+    const code = formLab.querySelector('[data-form-code]');
+    const toggles = {
+      label: formLab.querySelector('[data-form-toggle="label"]'),
+      required: formLab.querySelector('[data-form-toggle="required"]'),
+      error: formLab.querySelector('[data-form-toggle="error"]'),
+      confirmation: formLab.querySelector('[data-form-toggle="confirmation"]'),
+    };
+    const results = {
+      label: formLab.querySelector('[data-form-result="label"]'),
+      required: formLab.querySelector('[data-form-result="required"]'),
+      error: formLab.querySelector('[data-form-result="error"]'),
+      confirmation: formLab.querySelector('[data-form-result="confirmation"]'),
+    };
+
+    function updateResult(key, labelText, passes) {
+      results[key].textContent = `${labelText}: ${passes ? 'Pass' : 'Needs work'}`;
+      results[key].dataset.state = passes ? 'pass' : 'fail';
+    }
+
+    function updateFormLab() {
+      const hasLabel = toggles.label.checked;
+      const hasRequired = toggles.required.checked;
+      const hasError = toggles.error.checked;
+      const hasConfirmation = toggles.confirmation.checked;
+
+      label.hidden = !hasLabel;
+
+      if (hasRequired) {
+        input.setAttribute('required', '');
+      } else {
+        input.removeAttribute('required');
+      }
+
+      error.hidden = !hasError;
+
+      if (hasError) {
+        input.setAttribute('aria-describedby', 'lab-error');
+        input.setAttribute('aria-invalid', 'true');
+      } else {
+        input.removeAttribute('aria-describedby');
+        input.removeAttribute('aria-invalid');
+      }
+
+      if (hasConfirmation) {
+        form.setAttribute('action', 'thank-you.html');
+        form.setAttribute('method', 'get');
+      } else {
+        form.removeAttribute('action');
+        form.removeAttribute('method');
+      }
+
+      updateResult('label', 'Label', hasLabel);
+      updateResult('required', 'Required state', hasRequired);
+      updateResult('error', 'Error message', hasError);
+      updateResult('confirmation', 'Submission target', hasConfirmation);
+
+      code.textContent = `<form${hasConfirmation ? ' action="thank-you.html" method="get"' : ''}>
+  ${hasLabel ? '<label for="name">Name</label>' : '<!-- Missing visible label -->'}
+  <input id="name" name="name"${hasRequired ? ' required' : ''}${hasError ? ' aria-describedby="name-error" aria-invalid="true"' : ''}>
+  ${hasError ? '<p id="name-error">Enter your name before submitting.</p>' : '<!-- Missing connected error message -->'}
+  <button type="submit">Submit form</button>
+</form>`;
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+    });
+
+    Object.values(toggles).forEach((toggle) => {
+      toggle.addEventListener('change', updateFormLab);
+    });
+
+    updateFormLab();
+  }
+</script>

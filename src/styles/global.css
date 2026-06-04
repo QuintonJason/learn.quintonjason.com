@@ -384,7 +384,8 @@ ol {
 .responsive-lab,
 .selector-lab,
 .transition-lab,
-.animation-lab {
+.animation-lab,
+.gsap-lab {
   background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -868,6 +869,90 @@ ol {
   font-weight: 800;
 }
 
+.gsap-lab__controls {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gsap-lab__controls label {
+  color: var(--color-muted);
+  display: grid;
+  font-size: 0.85rem;
+  font-weight: 800;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+.gsap-lab__controls select,
+.gsap-lab__controls input {
+  accent-color: var(--color-brand);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  font: inherit;
+  padding: 0.6rem;
+}
+
+.gsap-lab__stage {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+.gsap-lab__trigger {
+  background: var(--color-surface-raised);
+  border: 2px solid var(--color-brand);
+  border-radius: 4px;
+  color: var(--color-brand-dark);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  justify-self: start;
+  padding: 0.7rem 0.8rem;
+  text-transform: uppercase;
+}
+
+.gsap-lab__trigger:hover,
+.gsap-lab__trigger:focus {
+  background: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+  color: #fff;
+}
+
+.gsap-lab__items {
+  align-items: end;
+  display: flex;
+  gap: 1rem;
+  min-block-size: 9rem;
+}
+
+.gsap-lab__item {
+  align-content: center;
+  background: var(--color-brand);
+  border: 2px solid var(--color-brand-dark);
+  border-radius: 8px;
+  color: #fff;
+  display: grid;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  min-block-size: 5.5rem;
+  place-items: center;
+  inline-size: 5.5rem;
+}
+
+.gsap-lab__readout {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
 @keyframes fade {
   from {
     opacity: 0;
@@ -1126,6 +1211,10 @@ ol {
   }
 
   .animation-lab__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .gsap-lab__controls {
     grid-template-columns: 1fr;
   }
 

@@ -1,0 +1,142 @@
+<section class="gsap-lab" aria-labelledby="gsap-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="gsap-lab-title">GSAP Timeline Lab</h2>
+    <p>
+      Adjust the timeline settings and replay the sequence. The preview uses
+      plain JavaScript, while the code shows the GSAP timeline you would write.
+    </p>
+  </div>
+
+  <div class="gsap-lab__controls" aria-label="GSAP timeline controls">
+    <label>
+      Duration
+      <input data-gsap-control="duration" type="range" min="0.2" max="1.5" step="0.1" value="0.6" />
+    </label>
+
+    <label>
+      Stagger
+      <input data-gsap-control="stagger" type="range" min="0" max="0.6" step="0.1" value="0.2" />
+    </label>
+
+    <label>
+      Ease
+      <select data-gsap-control="ease">
+        <option value="power2.out">power2.out</option>
+        <option value="back.out(1.7)">back.out(1.7)</option>
+        <option value="elastic.out(1, 0.3)">elastic.out(1, 0.3)</option>
+        <option value="none">none</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="gsap-lab__stage">
+    <button type="button" class="gsap-lab__trigger" data-gsap-trigger>
+      Replay timeline
+    </button>
+    <div class="gsap-lab__items" data-gsap-items>
+      <div class="gsap-lab__item">1</div>
+      <div class="gsap-lab__item">2</div>
+      <div class="gsap-lab__item">3</div>
+    </div>
+    <p class="gsap-lab__readout" data-gsap-readout>
+      duration: 0.6s / stagger: 0.2s / ease: power2.out
+    </p>
+  </div>
+
+  <pre aria-live="polite"><code data-gsap-code>{`const timeline = gsap.timeline();
+
+timeline.from('.item', {
+  duration: 0.6,
+  opacity: 0,
+  y: 32,
+  stagger: 0.2,
+  ease: 'power2.out',
+});`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>A timeline coordinates multiple animations as one sequence.</li>
+        <li>Stagger creates a delay between similar elements.</li>
+        <li>Ease changes the feel without changing the layout.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Set stagger to 0, then replay the timeline.</li>
+        <li>Compare power2.out with elastic.out.</li>
+        <li>Copy the GSAP snippet into a page that loads GSAP.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const lab = document.querySelector('.gsap-lab');
+
+  if (lab) {
+    const trigger = lab.querySelector('[data-gsap-trigger]');
+    const items = Array.from(lab.querySelectorAll('.gsap-lab__item'));
+    const readout = lab.querySelector('[data-gsap-readout]');
+    const code = lab.querySelector('[data-gsap-code]');
+    const controls = {
+      duration: lab.querySelector('[data-gsap-control="duration"]'),
+      stagger: lab.querySelector('[data-gsap-control="stagger"]'),
+      ease: lab.querySelector('[data-gsap-control="ease"]'),
+    };
+
+    const easingPreview = {
+      'power2.out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+      'back.out(1.7)': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      'elastic.out(1, 0.3)': 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+      none: 'linear',
+    };
+
+    function updateGsapLab() {
+      const duration = controls.duration.value;
+      const stagger = controls.stagger.value;
+      const ease = controls.ease.value;
+
+      readout.textContent = `duration: ${duration}s / stagger: ${stagger}s / ease: ${ease}`;
+      code.textContent = `const timeline = gsap.timeline();
+
+timeline.from('.item', {
+  duration: ${duration},
+  opacity: 0,
+  y: 32,
+  stagger: ${stagger},
+  ease: '${ease}',
+});`;
+    }
+
+    function replayTimeline() {
+      const duration = Number(controls.duration.value);
+      const stagger = Number(controls.stagger.value);
+      const ease = easingPreview[controls.ease.value];
+
+      items.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(32px)';
+        item.style.transition = 'none';
+
+        window.setTimeout(() => {
+          item.style.transition = `opacity ${duration}s ${ease}, transform ${duration}s ${ease}`;
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0)';
+        }, index * stagger * 1000);
+      });
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateGsapLab);
+      control.addEventListener('change', updateGsapLab);
+    });
+
+    trigger.addEventListener('click', replayTimeline);
+    updateGsapLab();
+    replayTimeline();
+  }
+</script>

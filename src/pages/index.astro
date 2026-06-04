@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { lessons } from '../data/lessons';
-
-const featuredLessons = lessons.slice(1, 7);
 ---
 
 <BaseLayout>
@@ -10,11 +8,11 @@ const featuredLessons = lessons.slice(1, 7);
     <div class="container hero__grid">
       <div>
         <p class="eyebrow">ART 3020 Course Guide</p>
-        <h1>Learn web design with systems thinking.</h1>
+        <h1>ART 3020 Web Design.</h1>
         <p class="lede">
-          A practical guide to HTML, CSS, accessibility, responsive design, UX
-          foundations, JavaScript, and the decisions that make web interfaces
-          durable.
+          A web version of the class book for developer environment setup,
+          website process, HTML, CSS, JavaScript, animation, image optimization,
+          templates, navigation, and carousels.
         </p>
         <div class="button-row">
           <a class="button button--primary" href="/lessons/">Start Learning</a>
@@ -24,10 +22,10 @@ const featuredLessons = lessons.slice(1, 7);
       <aside class="hero-card" aria-label="Course focus">
         <h2>What this course teaches</h2>
         <ol>
-          <li>Structure content with semantic HTML.</li>
-          <li>Use CSS to design adaptable interfaces.</li>
-          <li>Build with accessibility from the beginning.</li>
-          <li>Connect UX decisions to reusable patterns.</li>
+          <li>Set up and publish class websites with GitHub Pages.</li>
+          <li>Plan websites around audience, goals, content, and structure.</li>
+          <li>Build pages with HTML, CSS, JavaScript, and media.</li>
+          <li>Add motion, navigation, templates, and interaction responsibly.</li>
         </ol>
       </aside>
     </div>
@@ -37,15 +35,15 @@ const featuredLessons = lessons.slice(1, 7);
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">Lessons</p>
-        <h2>Web foundations for design students and early frontend developers.</h2>
+        <h2>The class sequence, adapted from the ART 3020 book.</h2>
         <p>
-          The lessons move from structure to presentation, then into layout,
-          accessibility, interaction, and systems thinking.
+          These lessons follow the actual course material from setup through
+          carousels.
         </p>
       </div>
       <div class="lesson-grid">
         {
-          featuredLessons.map((lesson) => (
+          lessons.slice(0, 6).map((lesson) => (
             <a class="lesson-card" href={`/lessons/${lesson.slug}/`}>
               <span class="lesson-card__number">
                 Lesson {lesson.number} · {lesson.eyebrow}
@@ -65,13 +63,12 @@ const featuredLessons = lessons.slice(1, 7);
       <div class="callout">
         <div>
           <p class="eyebrow">Teaching Philosophy</p>
-          <h2>Code is a design material.</h2>
+          <h2>The class is the class.</h2>
         </div>
         <p>
-          This course treats HTML, CSS, and JavaScript as tools for making
-          decisions visible. Students learn to build pages, but they also learn
-          to explain structure, hierarchy, accessibility, constraints, and
-          tradeoffs.
+          The goal of this site is to make the existing class book easier to
+          navigate, read, and update on the web while preserving the course
+          sequence, assignments, and practical classroom focus.
         </p>
       </div>
     </div>

@@ -34,7 +34,7 @@ const nextLesson = lessons[currentIndex + 1];
       </aside>
       <div class="lesson-content">
         <header>
-          <p class="eyebrow">Lesson {lesson.number} · {lesson.eyebrow}</p>
+          <p class="eyebrow">Lesson {lesson.number} / {lesson.eyebrow}</p>
           <h1>{lesson.title}</h1>
           <p class="lede">{lesson.summary}</p>
         </header>
@@ -46,22 +46,71 @@ const nextLesson = lessons[currentIndex + 1];
           </ul>
         </section>
 
-        <section>
-          <h2>Core Ideas</h2>
-          <p>
-            This page is ready for the expanded material from the ART 3020 book:
-            definitions, examples, critique prompts, code exercises, and project
-            checkpoints.
-          </p>
-        </section>
+        {
+          lesson.sections.map((section) => (
+            <section>
+              <h2>{section.title}</h2>
+              {section.body?.map((paragraph) => <p>{paragraph}</p>)}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                </ul>
+              )}
+              {section.note && <p>{section.note}</p>}
+              {section.code && (
+                <pre><code>{section.code}</code></pre>
+              )}
+              {section.resources && (
+                <p class="lesson-section-resources">
+                  {
+                    section.resources.map((resource, index) => (
+                      <>
+                        {index > 0 && ' | '}
+                        {typeof resource === 'string' ? (
+                          <span>{resource}</span>
+                        ) : (
+                          <a href={resource.href}>{resource.label}</a>
+                        )}
+                      </>
+                    ))
+                  }
+                </p>
+              )}
+            </section>
+          ))
+        }
 
-        <section>
-          <h2>Practice</h2>
-          <p>
-            Add a small assignment here that asks students to make something,
-            explain the decision, and revise it after feedback.
-          </p>
-        </section>
+        {
+          lesson.practice && (
+            <section>
+              <h2>Practice</h2>
+              <ul>
+                {lesson.practice.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          lesson.resources && (
+            <section>
+              <h2>Resources</h2>
+              <ul>
+                {lesson.resources.map((resource) => (
+                  <li>
+                    {
+                      typeof resource === 'string'
+                        ? resource.startsWith('http')
+                          ? <a href={resource}>{resource}</a>
+                          : resource
+                        : <a href={resource.href}>{resource.label}</a>
+                    }
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
 
         <nav class="button-row" aria-label="Lesson pagination">
           {previousLesson && <a class="button" href={`/lessons/${previousLesson.slug}/`}>Previous</a>}

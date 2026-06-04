@@ -72,6 +72,21 @@ p {
   margin: 0;
 }
 
+pre {
+  background: #101914;
+  border-radius: 8px;
+  color: #f4fff6;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
 ul,
 ol {
   margin: 0;
@@ -335,6 +350,17 @@ ol {
 .lesson-content {
   display: grid;
   gap: 2rem;
+}
+
+.lesson-content section {
+  display: grid;
+  gap: 1rem;
+}
+
+.lesson-section-resources {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .lesson-content h2 {

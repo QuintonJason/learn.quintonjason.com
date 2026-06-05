@@ -13,6 +13,7 @@ import NavigationPatternLab from '../../components/NavigationPatternLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
+import { getDemoSourceUrl, getLessonMeta } from '../../data/lessonMeta';
 import { lessons } from '../../data/lessons';
 
 export function getStaticPaths() {
@@ -26,25 +27,8 @@ const { lesson } = Astro.props;
 const currentIndex = lessons.findIndex((item) => item.slug === lesson.slug);
 const previousLesson = lessons[currentIndex - 1];
 const nextLesson = lessons[currentIndex + 1];
-const demoSourceLinks = {
-  'intro-to-css': 'SelectorPlayground.astro',
-  'html-forms-building-interactive-user-interfaces': 'FormAccessibilityLab.astro',
-  'box-model-and-layout': 'BoxModelVisualizer.astro',
-  flexbox: 'FlexboxPlayground.astro',
-  'responsive-web-design': 'ResponsiveLayoutVisualizer.astro',
-  'javascript-in-the-dom': 'DomInteractionLab.astro',
-  'css-transitions': 'TransitionPlayground.astro',
-  'css-animation': 'AnimationKeyframeLab.astro',
-  'gsap-web-animation': 'GsapTimelineLab.astro',
-  'image-optimization': 'ImageOptimizationLab.astro',
-  'building-effective-site-navigation': 'NavigationPatternLab.astro',
-  'mastering-carousels': 'CarouselAccessibilityLab.astro',
-  'web-accessibility': 'AccessibilityCheckLab.astro',
-};
-const demoSourceFile = demoSourceLinks[lesson.slug];
-const demoSourceUrl = demoSourceFile
-  ? `https://github.com/QuintonJason/learn.quintonjason.com/blob/master/src/components/${demoSourceFile}`
-  : undefined;
+const demoSourceUrl = getDemoSourceUrl(lesson);
+const lessonMeta = getLessonMeta(lesson, currentIndex);
 ---
 
 <BaseLayout title={`${lesson.title} | Learn Web Design With Quinton Jason`}>
@@ -68,8 +52,36 @@ const demoSourceUrl = demoSourceFile
         <header>
           <p class="eyebrow">Lesson {lesson.number} / {lesson.eyebrow}</p>
           <h1>{lesson.title}</h1>
+          <dl class="lesson-meta" aria-label="Lesson details">
+            <div>
+              <dt>Time</dt>
+              <dd>{lessonMeta.estimatedMinutes} min</dd>
+            </div>
+            <div>
+              <dt>Type</dt>
+              <dd>{lessonMeta.type}</dd>
+            </div>
+            <div>
+              <dt>Level</dt>
+              <dd>{lessonMeta.difficulty}</dd>
+            </div>
+          </dl>
           <p class="lede">{lesson.summary}</p>
         </header>
+
+        <nav class="lesson-toolbar" aria-label="Lesson quick navigation">
+          <p>Lesson {currentIndex + 1} of {lessons.length}</p>
+          <div>
+            {previousLesson && <a href={`/lessons/${previousLesson.slug}/`}>Previous</a>}
+            <a href="/lessons/">All lessons</a>
+            {nextLesson && <a href={`/lessons/${nextLesson.slug}/`}>Next</a>}
+          </div>
+        </nav>
+
+        <label class="lesson-progress">
+          <input type="checkbox" data-lesson-complete data-lesson-slug={lesson.slug} />
+          <span data-lesson-progress-label>Mark lesson complete</span>
+        </label>
 
         <section>
           <h2>Learning Goals</h2>
@@ -135,7 +147,7 @@ const demoSourceUrl = demoSourceFile
             <p class="demo-source">
               This demo uses extra JavaScript for teaching. The code sample shows the pattern to practice.
               {' '}
-              <a href={demoSourceUrl}>View full demo source</a>.
+              <a href={demoSourceUrl} target="_blank" rel="noopener noreferrer">View full demo source (opens in a new tab)</a>.
             </p>
           )
         }
@@ -214,3 +226,48 @@ const demoSourceUrl = demoSourceFile
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  const progressCheckbox = document.querySelector('[data-lesson-complete]');
+  const progressLabel = document.querySelector('[data-lesson-progress-label]');
+  const progressStorageKey = 'qj-learn-completed-lessons';
+
+  function getCompletedLessons() {
+    try {
+      const saved = window.localStorage.getItem(progressStorageKey);
+      return new Set(saved ? JSON.parse(saved) : []);
+    } catch {
+      return new Set();
+    }
+  }
+
+  function saveCompletedLessons(completedLessons) {
+    window.localStorage.setItem(progressStorageKey, JSON.stringify([...completedLessons]));
+  }
+
+  function updateProgressLabel(isComplete) {
+    if (!progressLabel) return;
+    progressLabel.textContent = isComplete ? 'Lesson complete' : 'Mark lesson complete';
+  }
+
+  if (progressCheckbox instanceof HTMLInputElement) {
+    const lessonSlug = progressCheckbox.dataset.lessonSlug;
+    const completedLessons = getCompletedLessons();
+
+    progressCheckbox.checked = lessonSlug ? completedLessons.has(lessonSlug) : false;
+    updateProgressLabel(progressCheckbox.checked);
+
+    progressCheckbox.addEventListener('change', () => {
+      const nextCompletedLessons = getCompletedLessons();
+
+      if (lessonSlug && progressCheckbox.checked) {
+        nextCompletedLessons.add(lessonSlug);
+      } else if (lessonSlug) {
+        nextCompletedLessons.delete(lessonSlug);
+      }
+
+      saveCompletedLessons(nextCompletedLessons);
+      updateProgressLabel(progressCheckbox.checked);
+    });
+  }
+</script>

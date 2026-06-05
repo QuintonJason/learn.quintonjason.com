@@ -30,7 +30,7 @@ const {
           <a href="/lessons/">Lessons</a>
           <a href="/projects/">Projects</a>
           <a href="/resources/">Resources</a>
-          <a href="https://quintonjason.com/">Portfolio</a>
+          <a href="https://quintonjason.com/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio, opens in a new tab">Portfolio</a>
         </nav>
       </div>
     </header>
@@ -43,5 +43,49 @@ const {
         <p>HTML, CSS, accessibility, responsive design, UX, and systems thinking.</p>
       </div>
     </footer>
+    <script>
+      const codeBlocks = Array.from(document.querySelectorAll('pre'));
+
+      codeBlocks.forEach((block, index) => {
+        if (block.closest('.code-copy')) return;
+
+        const code = block.querySelector('code');
+        if (!code) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-copy';
+        wrapper.dataset.copyIndex = String(index);
+
+        const button = document.createElement('button');
+        button.className = 'code-copy__button';
+        button.type = 'button';
+        button.textContent = 'Copy';
+        button.setAttribute('aria-label', 'Copy code example');
+
+        const status = document.createElement('span');
+        status.className = 'visually-hidden';
+        status.setAttribute('aria-live', 'polite');
+
+        block.parentNode?.insertBefore(wrapper, block);
+        wrapper.append(button, block, status);
+
+        button.addEventListener('click', async () => {
+          const text = code.textContent ?? '';
+
+          try {
+            await navigator.clipboard.writeText(text);
+            button.textContent = 'Copied';
+            status.textContent = 'Code copied to clipboard.';
+          } catch {
+            button.textContent = 'Copy failed';
+            status.textContent = 'Code could not be copied.';
+          }
+
+          window.setTimeout(() => {
+            button.textContent = 'Copy';
+          }, 1800);
+        });
+      });
+    </script>
   </body>
 </html>

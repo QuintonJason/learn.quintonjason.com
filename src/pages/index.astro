@@ -1,6 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { lessons } from '../data/lessons';
+
+const startPath = [
+  {
+    title: 'Set up your tools',
+    lesson: lessons.find((lesson) => lesson.slug === 'developer-environment-setup'),
+  },
+  {
+    title: 'Plan the website',
+    lesson: lessons.find((lesson) => lesson.slug === 'website-process'),
+  },
+  {
+    title: 'Learn HTML structure',
+    lesson: lessons.find((lesson) => lesson.slug === 'basic-html-structure-and-elements'),
+  },
+  {
+    title: 'Add CSS',
+    lesson: lessons.find((lesson) => lesson.slug === 'intro-to-css'),
+  },
+  {
+    title: 'Build layouts',
+    lesson: lessons.find((lesson) => lesson.slug === 'flexbox'),
+  },
+  {
+    title: 'Make it responsive',
+    lesson: lessons.find((lesson) => lesson.slug === 'responsive-web-design'),
+  },
+  {
+    title: 'Add interaction',
+    lesson: lessons.find((lesson) => lesson.slug === 'javascript-in-the-dom'),
+  },
+  {
+    title: 'Test accessibility',
+    lesson: lessons.find((lesson) => lesson.slug === 'web-accessibility'),
+  },
+].filter((item) => item.lesson);
 ---
 
 <BaseLayout>
@@ -31,6 +66,33 @@ import { lessons } from '../data/lessons';
     </div>
   </section>
 
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Start Here</p>
+        <h2>A guided path through the first pass.</h2>
+        <p>
+          Use this sequence when you are starting the course, catching up, or
+          reviewing the foundation before a project.
+        </p>
+      </div>
+
+      <ol class="path-list">
+        {
+          startPath.map((item) => (
+            <li>
+              <a href={`/lessons/${item.lesson.slug}/`}>
+                <span>Lesson {item.lesson.number}</span>
+                <strong>{item.title}</strong>
+                <small>{item.lesson.title}</small>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <div class="section-heading">
@@ -46,7 +108,7 @@ import { lessons } from '../data/lessons';
           lessons.slice(0, 6).map((lesson) => (
             <a class="lesson-card" href={`/lessons/${lesson.slug}/`}>
               <span class="lesson-card__number">
-                Lesson {lesson.number} · {lesson.eyebrow}
+                Lesson {lesson.number} / {lesson.eyebrow}
               </span>
               <h3>{lesson.title}</h3>
               <p>{lesson.summary}</p>

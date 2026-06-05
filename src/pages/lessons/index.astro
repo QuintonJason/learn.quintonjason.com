@@ -1,22 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { lessons } from '../../data/lessons';
-
-const interactiveLessons = new Set([
-  'intro-to-css',
-  'html-forms-building-interactive-user-interfaces',
-  'box-model-and-layout',
-  'flexbox',
-  'responsive-web-design',
-  'javascript-in-the-dom',
-  'css-transitions',
-  'css-animation',
-  'gsap-web-animation',
-  'image-optimization',
-  'building-effective-site-navigation',
-  'mastering-carousels',
-  'web-accessibility',
-]);
+import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLabels } from '../../data/lessonMeta';
 ---
 
 <BaseLayout title="Lessons | Learn Web Design With Quinton Jason">
@@ -30,21 +15,131 @@ const interactiveLessons = new Set([
           thinking.
         </p>
       </div>
-      <div class="lesson-grid">
+
+      <div class="lesson-filters" role="group" aria-label="Filter lessons">
         {
-          lessons.map((lesson) => (
-            <a class="lesson-card" href={`/lessons/${lesson.slug}/`}>
+          filterOptions.map((filter, index) => (
+            <button
+              type="button"
+              class="lesson-filter"
+              data-lesson-filter={filter.value}
+              aria-pressed={index === 0 ? 'true' : 'false'}
+            >
+              {filter.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <p class="lesson-filter-status" aria-live="polite" data-lesson-filter-status>
+        Showing all lessons.
+      </p>
+
+      <p class="lesson-progress-summary" aria-live="polite" data-lesson-progress-summary>
+        Progress saves in this browser.
+      </p>
+
+      <div class="lesson-grid" data-lesson-grid>
+        {
+          lessons.map((lesson, index) => {
+            const tags = getLessonTags(lesson);
+            const meta = getLessonMeta(lesson, index);
+
+            return (
+            <a
+              class="lesson-card"
+              href={`/lessons/${lesson.slug}/`}
+              data-lesson-card
+              data-lesson-slug={lesson.slug}
+              data-tags={tags.join(' ')}
+            >
               <span class="lesson-card__number">
                 Lesson {lesson.number} / {lesson.eyebrow}
               </span>
-              {interactiveLessons.has(lesson.slug) && <span class="lesson-card__badge">Interactive</span>}
+              <span class="lesson-card__complete" data-lesson-complete-badge hidden>Completed</span>
+              {isInteractiveLesson(lesson) && <span class="lesson-card__badge">Interactive</span>}
               <h2>{lesson.title}</h2>
+              <span class="lesson-card__meta" aria-label="Lesson details">
+                <span>{meta.estimatedMinutes} min</span>
+                <span>{meta.type}</span>
+                <span>{meta.difficulty}</span>
+              </span>
               <p>{lesson.summary}</p>
+              <span class="lesson-card__tags" aria-label="Lesson tags">
+                {tags.map((tag) => <span>{tagLabels[tag]}</span>)}
+              </span>
               <span class="lesson-card__footer">Open lesson</span>
             </a>
-          ))
+            );
+          })
         }
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const lessonFilters = Array.from(document.querySelectorAll('[data-lesson-filter]'));
+  const lessonCards = Array.from(document.querySelectorAll('[data-lesson-card]'));
+  const lessonStatus = document.querySelector('[data-lesson-filter-status]');
+  const progressSummary = document.querySelector('[data-lesson-progress-summary]');
+  const progressStorageKey = 'qj-learn-completed-lessons';
+
+  function getCompletedLessons() {
+    try {
+      const saved = window.localStorage.getItem(progressStorageKey);
+      return new Set(saved ? JSON.parse(saved) : []);
+    } catch {
+      return new Set();
+    }
+  }
+
+  function updateProgressSummary() {
+    const completedLessons = getCompletedLessons();
+
+    lessonCards.forEach((card) => {
+      const lessonSlug = card.dataset.lessonSlug;
+      const isComplete = lessonSlug ? completedLessons.has(lessonSlug) : false;
+      const badge = card.querySelector('[data-lesson-complete-badge]');
+
+      card.classList.toggle('is-complete', isComplete);
+      if (badge) badge.hidden = !isComplete;
+    });
+
+    if (!progressSummary) return;
+
+    progressSummary.textContent = completedLessons.size === 0
+      ? 'No lessons marked complete yet. Progress saves in this browser.'
+      : `${completedLessons.size} of ${lessonCards.length} lessons marked complete on this device.`;
+  }
+
+  function filterLessons(filter) {
+    let visibleCount = 0;
+
+    lessonCards.forEach((card) => {
+      const tags = card.dataset.tags?.split(' ') ?? [];
+      const isVisible = filter === 'all' || tags.includes(filter);
+
+      card.hidden = !isVisible;
+      if (isVisible) visibleCount += 1;
+    });
+
+    lessonFilters.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.lessonFilter === filter));
+    });
+
+    const activeFilter = lessonFilters.find((button) => button.dataset.lessonFilter === filter);
+    const filterLabel = activeFilter?.textContent?.trim().toLowerCase() ?? 'all lessons';
+    lessonStatus.textContent = filter === 'all'
+      ? 'Showing all lessons.'
+      : `Showing ${visibleCount} ${filterLabel} ${visibleCount === 1 ? 'lesson' : 'lessons'}.`;
+  }
+
+  lessonFilters.forEach((button) => {
+    button.addEventListener('click', () => {
+      filterLessons(button.dataset.lessonFilter ?? 'all');
+    });
+  });
+
+  updateProgressSummary();
+</script>

@@ -98,6 +98,25 @@ const nextProject = projects[currentIndex + 1];
           </div>
         </section>
 
+        <section class="project-brief-section project-starter-kit">
+          <div>
+            <p class="eyebrow">Starter Kit</p>
+            <h2>Start with the right files.</h2>
+            <p>{project.starterKit.description}</p>
+          </div>
+          <ul>
+            {
+              project.starterKit.files.map((file) => (
+                <li>
+                  <a href={file.href} target="_blank" rel="noopener noreferrer">
+                    {file.label} <span>(opens in a new tab)</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
         <section class="project-brief-section">
           <h2>Submission Guidelines</h2>
           <ul>
@@ -125,21 +144,21 @@ const nextProject = projects[currentIndex + 1];
         <section class="project-brief-section">
           <h2>Rubric</h2>
           <p>Use these quality levels to understand what stronger work looks like without tying the brief to a specific point scale.</p>
-          <div class="project-rubric">
+          <div class="project-rubric" role="list">
             {
               project.rubric.map((item) => (
-                <article>
+                <article role="listitem">
                   <h3>{item.category}</h3>
-                  <dl>
-                    <div>
+                  <dl class="rubric-scale">
+                    <div class="rubric-scale__level rubric-scale__level--strong">
                       <dt>Strong</dt>
                       <dd>{item.strong}</dd>
                     </div>
-                    <div>
+                    <div class="rubric-scale__level">
                       <dt>Meets</dt>
                       <dd>{item.meets}</dd>
                     </div>
-                    <div>
+                    <div class="rubric-scale__level rubric-scale__level--needs-work">
                       <dt>Needs Work</dt>
                       <dd>{item.needsWork}</dd>
                     </div>
@@ -152,7 +171,7 @@ const nextProject = projects[currentIndex + 1];
 
         {
           project.models && (
-            <section class="project-brief-section">
+            <section class="project-brief-section" id="example-models">
               <h2>Example Models</h2>
               <p>Use these low-fidelity models to calibrate what stronger, acceptable, and unfinished work can look like.</p>
               <div class="project-models">

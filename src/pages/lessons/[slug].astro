@@ -15,6 +15,7 @@ import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
 import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes } from '../../data/lessonMeta';
 import { lessons } from '../../data/lessons';
+import { projects } from '../../data/projects';
 
 export function getStaticPaths() {
   return lessons.map((lesson) => ({
@@ -32,11 +33,15 @@ const demoGuidance = getDemoGuidance(lesson);
 const lessonMeta = getLessonMeta(lesson, currentIndex);
 const lessonCheckpoint = getLessonCheckpoint(lesson);
 const teacherNotes = getTeacherNotes(lesson);
+const supportingProjects = projects.filter((project) =>
+  project.supportingLessons.some((supportingLesson) => supportingLesson.href === `/lessons/${lesson.slug}/`)
+);
 const pageSections = [
   { href: '#learning-goals', label: 'Learning Goals' },
   ...(demoSourceUrl ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
   { href: '#lesson-content', label: 'Lesson Content' },
   { href: '#checkpoint', label: 'Checkpoint' },
+  ...(supportingProjects.length ? [{ href: '#supports-projects', label: 'Supports Projects' }] : []),
   ...(lesson.practice ? [{ href: '#practice', label: 'Practice' }] : []),
   ...(lesson.resources ? [{ href: '#resources', label: 'Resources' }] : []),
 ];
@@ -260,6 +265,26 @@ const pageSections = [
             {lessonCheckpoint.map((item) => <li>{item}</li>)}
           </ul>
         </section>
+
+        {
+          supportingProjects.length > 0 && (
+            <section class="lesson-supports-projects" id="supports-projects">
+              <p class="eyebrow">Project Connection</p>
+              <h2>This lesson supports current class projects.</h2>
+              <div class="mini-card-grid">
+                {
+                  supportingProjects.map((project) => (
+                    <a class="mini-card" href={`/projects/${project.slug}/`}>
+                      <span>Project {project.number}</span>
+                      <strong>{project.shortTitle}</strong>
+                      <small>{project.summary}</small>
+                    </a>
+                  ))
+                }
+              </div>
+            </section>
+          )
+        }
 
         {
           lesson.practice && (

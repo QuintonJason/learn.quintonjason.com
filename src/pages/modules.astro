@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { courseModules } from '../data/modules';
+---
+
+<BaseLayout title="Modules | Learn Web Design With Quinton Jason">
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Modules</p>
+        <h1>A date-free path through the course.</h1>
+        <p class="lede">
+          Use modules when you need to know what to work on next. Each module
+          groups lessons, project progress, in-class focus, and a before-you-leave
+          checklist without tying the course to semester dates.
+        </p>
+      </div>
+
+      <nav class="module-index" aria-labelledby="module-index-title">
+        <div class="section-heading">
+          <p class="eyebrow">Course Path</p>
+          <h2 id="module-index-title">Move through the course in order.</h2>
+        </div>
+        <ol class="module-index__list">
+          {
+            courseModules.map((module) => (
+              <li>
+                <a href={`#module-${module.number}`}>
+                  <span>Module {module.number}</span>
+                  <strong>{module.title}</strong>
+                  <small>{module.projectCheckpoint.title}</small>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div class="module-list">
+        {
+          courseModules.map((module) => (
+            <article class="module-card" id={`module-${module.number}`}>
+              <header class="module-card__header">
+                <p class="eyebrow">Module {module.number}</p>
+                <h2>{module.title}</h2>
+                <p>{module.summary}</p>
+              </header>
+
+              <div class="module-card__grid">
+                <section>
+                  <h3>Focus</h3>
+                  <ul>
+                    {module.focus.map((item) => <li>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section>
+                  <h3>Lessons</h3>
+                  <ol>
+                    {module.lessons.map((lesson) => <li><a href={lesson.href}>{lesson.title}</a></li>)}
+                  </ol>
+                </section>
+
+                <section class="module-project">
+                  <h3>Project Checkpoint</h3>
+                  <p><a href={module.projectCheckpoint.href}>{module.projectCheckpoint.title}</a></p>
+                  <ul>
+                    {module.projectCheckpoint.tasks.map((item) => <li>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section>
+                  <h3>In Class</h3>
+                  <ul>
+                    {module.inClass.map((item) => <li>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section>
+                  <h3>Before You Leave</h3>
+                  <ul>
+                    {module.beforeYouLeave.map((item) => <li>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section>
+                  <h3>Common Fixes</h3>
+                  <ul class="debug-link-list">
+                    {module.fixes.map((fix) => <li><a href={fix.href}>{fix.title}</a></li>)}
+                  </ul>
+                </section>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { debuggingFixes } from '../data/debugging';
+---
+
+<BaseLayout title="Common Fixes | Learn Web Design With Quinton Jason">
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Common Fixes</p>
+        <h1>Debug the usual web design problems.</h1>
+        <p class="lede">
+          Use this page when something breaks and you need a calm sequence:
+          identify the symptom, check the likely causes, fix one thing, then
+          verify in the browser.
+        </p>
+      </div>
+
+      <div class="debug-principles" aria-label="Debugging principles">
+        <article>
+          <span>01</span>
+          <h2>Name the symptom</h2>
+          <p>Say what is happening before changing code. Broken images, missing CSS, and dead buttons have different paths.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2>Check the browser</h2>
+          <p>Use DevTools, the Console, the Network tab, and responsive mode. The browser is usually telling you something.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h2>Fix one thing</h2>
+          <p>Make one change, save, refresh, and test again. Random edits make bugs harder to understand.</p>
+        </article>
+      </div>
+
+      <nav class="debug-index" aria-labelledby="debug-index-title">
+        <div class="section-heading">
+          <p class="eyebrow">Start Here</p>
+          <h2 id="debug-index-title">Pick the problem that looks closest.</h2>
+        </div>
+        <div class="mini-card-grid">
+          {
+            debuggingFixes.map((fix) => (
+              <a class="mini-card" href={`#${fix.slug}`}>
+                <span>Fix</span>
+                <strong>{fix.title}</strong>
+                <small>{fix.symptom}</small>
+              </a>
+            ))
+          }
+        </div>
+      </nav>
+
+      <div class="debug-fix-list">
+        {
+          debuggingFixes.map((fix) => (
+            <article class="debug-fix" id={fix.slug}>
+              <header>
+                <p class="eyebrow">Troubleshooting</p>
+                <h2>{fix.title}</h2>
+                <p>{fix.symptom}</p>
+              </header>
+
+              <div class="debug-fix__grid">
+                <section>
+                  <h3>Likely Causes</h3>
+                  <ul>
+                    {fix.likelyCauses.map((item) => <li>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section>
+                  <h3>Check First</h3>
+                  <ul>
+                    {fix.checks.map((item) => <li>{item}</li>)}
+                  </ul>
+                </section>
+
+                <section>
+                  <h3>Fix It</h3>
+                  <ol>
+                    {fix.fix.map((item) => <li>{item}</li>)}
+                  </ol>
+                </section>
+
+                <section>
+                  <h3>Related Lessons</h3>
+                  <ul class="debug-link-list">
+                    {fix.relatedLessons.map((lesson) => <li><a href={lesson.href}>{lesson.title}</a></li>)}
+                  </ul>
+
+                  {
+                    fix.relatedProjects && (
+                      <>
+                        <h3>Related Projects</h3>
+                        <ul class="debug-link-list">
+                          {fix.relatedProjects.map((project) => <li><a href={project.href}>{project.title}</a></li>)}
+                        </ul>
+                      </>
+                    )
+                  }
+                </section>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

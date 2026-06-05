@@ -1,0 +1,56 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #17201a;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.site-header {
+  align-items: center;
+  border-bottom: 1px solid #d9e5dc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.site-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero,
+.page {
+  margin-inline: auto;
+  max-width: 1100px;
+  padding: 4rem 1rem;
+}
+
+.project-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.project-grid article {
+  border: 1px solid #d9e5dc;
+  padding: 1rem;
+}
+
+form {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 36rem;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}

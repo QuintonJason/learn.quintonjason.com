@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #17201a;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.page {
+  margin-inline: auto;
+  max-width: 720px;
+  padding: 2rem 1rem;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

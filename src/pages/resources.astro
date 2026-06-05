@@ -3,6 +3,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const resourceGroups = [
   {
+    title: 'Troubleshooting',
+    summary: 'Use these when something breaks and you need a calm debugging sequence.',
+    resources: [
+      {
+        name: 'Common Fixes',
+        href: '/debugging/',
+        use: 'Debug missing CSS, broken images, GitHub Pages updates, mobile overflow, JavaScript, forms, carousels, and keyboard issues.',
+        lesson: 'File Paths and Site Structure',
+        lessonHref: '/lessons/file-paths-and-site-structure/',
+        internal: true,
+      },
+    ],
+  },
+  {
     title: 'Setup',
     summary: 'Tools students need before project work can move smoothly.',
     resources: [
@@ -198,9 +212,13 @@ const resourceGroups = [
                   group.resources.map((resource) => (
                     <article class="resource-item">
                       <h3>
-                        <a href={resource.href} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={resource.href}
+                          target={resource.internal ? undefined : '_blank'}
+                          rel={resource.internal ? undefined : 'noopener noreferrer'}
+                        >
                           {resource.name}
-                          <span class="visually-hidden"> opens in a new tab</span>
+                          {!resource.internal && <span class="visually-hidden"> opens in a new tab</span>}
                         </a>
                       </h3>
                       <p>{resource.use}</p>

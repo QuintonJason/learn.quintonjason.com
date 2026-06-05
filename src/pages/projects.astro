@@ -26,6 +26,7 @@ import { projects } from '../data/projects';
               </ul>
               <div class="project-card__links">
                 <a href={`/projects/${project.slug}/`}>View project brief</a>
+                <a href={project.starterKit.files[0].href}>Open starter kit</a>
                 {project.supportingLessons.slice(0, 3).map((lesson) => (
                   <a href={lesson.href}>{lesson.title}</a>
                 ))}
@@ -34,6 +35,28 @@ import { projects } from '../data/projects';
           ))
         }
       </div>
+
+      <section class="project-examples-overview" aria-labelledby="examples-title">
+        <div class="section-heading">
+          <p class="eyebrow">Examples Library</p>
+          <h2 id="examples-title">See what strong, acceptable, and unfinished work can look like.</h2>
+          <p>
+            These are low-fidelity models for calibration. They show structure,
+            decisions, and common issues without turning into templates to copy.
+          </p>
+        </div>
+        <div class="mini-card-grid">
+          {
+            projects.filter((project) => project.models).map((project) => (
+              <a class="mini-card" href={`/projects/${project.slug}/#example-models`}>
+                <span>Project {project.number}</span>
+                <strong>{project.shortTitle}</strong>
+                <small>{project.models?.length ?? 0} example models</small>
+              </a>
+            ))
+          }
+        </div>
+      </section>
     </div>
   </section>
 </BaseLayout>

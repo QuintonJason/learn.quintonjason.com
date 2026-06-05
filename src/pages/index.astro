@@ -106,8 +106,10 @@ const helpPaths = [
           templates, navigation, and carousels.
         </p>
         <div class="button-row">
-          <a class="button button--primary" href="/lessons/">Start Learning</a>
+          <a class="button button--primary" href="/modules/">Start Modules</a>
+          <a class="button" href="/lessons/">Browse Lessons</a>
           <a class="button" href="/projects/">View Projects</a>
+          <a class="button" href="/debugging/">Common Fixes</a>
         </div>
       </div>
       <aside class="hero-card" aria-label="Course focus">
@@ -128,9 +130,21 @@ const helpPaths = [
         <p class="eyebrow">Start Here</p>
         <h2>A guided path through the first pass.</h2>
         <p>
-          Use this sequence when you are starting the course, catching up, or
-          reviewing the foundation before a project.
+          Use modules for the full class rhythm, or use this shorter path when
+          you are catching up and need the foundation before a project.
         </p>
+      </div>
+
+      <div class="callout callout--compact">
+        <div>
+          <p class="eyebrow">Course Sequence</p>
+          <h3>Need the full week-by-week path?</h3>
+        </div>
+        <p>
+          The modules page groups lessons, project checkpoints, in-class focus,
+          and exit checks without using semester-specific dates.
+        </p>
+        <a class="button button--primary" href="/modules/">Open Modules</a>
       </div>
 
       <ol class="path-list">
@@ -161,6 +175,16 @@ const helpPaths = [
       </div>
 
       <div class="help-path-grid">
+        <article class="help-path-card help-path-card--highlight">
+          <h3>Something is broken</h3>
+          <p>
+            Start with the common fixes page when CSS, images, JavaScript,
+            GitHub Pages, forms, carousels, or mobile layouts are misbehaving.
+          </p>
+          <ol>
+            <li><a href="/debugging/">Open Common Fixes</a></li>
+          </ol>
+        </article>
         {
           helpPaths.map((path) => (
             <article class="help-path-card">

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
 ---
 
 <BaseLayout title="Projects | Learn Web Design With Quinton Jason">
@@ -7,103 +8,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">Projects</p>
-        <h1>Class projects and checkpoints.</h1>
+        <h1>Class projects and briefs.</h1>
         <p class="lede">
-          A practical path through the course work: setup, structure, styling,
-          layout, interaction, motion, media, navigation, and accessibility.
+          The four major ART 3020 projects, organized with requirements,
+          deliverables, grading criteria, and supporting lessons.
         </p>
       </div>
       <div class="project-list">
-        <article class="project-card">
-          <p class="project-card__meta">Project 1 / Setup and publishing</p>
-          <h2>Launch a starter website</h2>
-          <p>
-            Set up GitHub, GitHub Desktop, VS Code, a starter repository, and a
-            live GitHub Pages URL.
-          </p>
-          <ul>
-            <li>Working local project folder</li>
-            <li>Published repository</li>
-            <li>Live site URL</li>
-          </ul>
-          <div class="project-card__links">
-            <a href="/lessons/developer-environment-setup/">Developer Environment Setup</a>
-            <a href="/lessons/file-paths-and-site-structure/">File Paths and Site Structure</a>
-          </div>
-        </article>
-        <article class="project-card">
-          <p class="project-card__meta">Project 2 / HTML foundation</p>
-          <h2>Build a small multi-page site</h2>
-          <p>
-            Create a simple site with meaningful page structure, headings,
-            paragraphs, images, lists, internal links, and external links.
-          </p>
-          <ul>
-            <li>Home page</li>
-            <li>About or contact page</li>
-            <li>Correct relative paths</li>
-          </ul>
-          <div class="project-card__links">
-            <a href="/lessons/basic-html-structure-and-elements/">HTML Structure and Elements</a>
-            <a href="/lessons/intro-to-css/">Intro to CSS</a>
-          </div>
-        </article>
-        <article class="project-card">
-          <p class="project-card__meta">Project 3 / Visual system</p>
-          <h2>Design and style a complete page</h2>
-          <p>
-            Apply typography, spacing, color, box model decisions, and layout
-            systems so the page feels intentional instead of default.
-          </p>
-          <ul>
-            <li>External stylesheet</li>
-            <li>Readable type scale</li>
-            <li>Flexbox or grid layout</li>
-          </ul>
-          <div class="project-card__links">
-            <a href="/lessons/styling-text-with-css/">Styling Text with CSS</a>
-            <a href="/lessons/box-model-and-layout/">Box Model and Layout</a>
-            <a href="/lessons/flexbox/">Flexbox</a>
-          </div>
-        </article>
-        <article class="project-card">
-          <p class="project-card__meta">Project 4 / Responsive interaction</p>
-          <h2>Add navigation and JavaScript behavior</h2>
-          <p>
-            Build responsive navigation and small DOM interactions while keeping
-            controls semantic, keyboard friendly, and understandable.
-          </p>
-          <ul>
-            <li>Responsive layout adjustments</li>
-            <li>Navigation pattern</li>
-            <li>DOM interaction</li>
-          </ul>
-          <div class="project-card__links">
-            <a href="/lessons/responsive-web-design/">Responsive Web Design</a>
-            <a href="/lessons/javascript-in-the-dom/">JavaScript in the DOM</a>
-            <a href="/lessons/building-effective-site-navigation/">Effective Site Navigation</a>
-          </div>
-        </article>
-        <article class="project-card">
-          <p class="project-card__meta">Project 5 / Polish and accessibility</p>
-          <h2>Refine motion, media, and accessibility</h2>
-          <p>
-            Add thoughtful transitions, animation, optimized images, carousel
-            behavior, and an accessibility pass before final presentation.
-          </p>
-          <ul>
-            <li>Motion that respects reduced motion</li>
-            <li>Optimized images and media</li>
-            <li>Keyboard and contrast testing</li>
-          </ul>
-          <div class="project-card__links">
-            <a href="/lessons/css-transitions/">CSS Transitions</a>
-            <a href="/lessons/css-animation/">CSS Animation</a>
-            <a href="/lessons/image-optimization/">Image Optimization</a>
-            <a href="/lessons/mastering-carousels/">Mastering Carousels</a>
-            <a href="/lessons/web-accessibility/">Web Accessibility</a>
-          </div>
-        </article>
+        {
+          projects.map((project) => (
+            <article class="project-card">
+              <p class="project-card__meta">Project {project.number}</p>
+              <h2>{project.shortTitle}</h2>
+              <p>{project.summary}</p>
+              <ul>
+                {project.requirements.slice(0, 3).map((requirement) => <li>{requirement.title}</li>)}
+              </ul>
+              <div class="project-card__links">
+                <a href={`/projects/${project.slug}/`}>View project brief</a>
+                {project.supportingLessons.slice(0, 3).map((lesson) => (
+                  <a href={lesson.href}>{lesson.title}</a>
+                ))}
+              </div>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>

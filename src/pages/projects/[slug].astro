@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+const previousProject = projects[currentIndex - 1];
+const nextProject = projects[currentIndex + 1];
+---
+
+<BaseLayout title={`${project.title} | Learn Web Design With Quinton Jason`}>
+  <article class="project-page">
+    <div class="container project-detail-layout">
+      <aside class="project-sidebar" aria-label="Project navigation">
+        <p class="eyebrow">Projects</p>
+        <ul>
+          {
+            projects.map((item) => (
+              <li>
+                <a href={`/projects/${item.slug}/`} aria-current={item.slug === project.slug ? 'page' : undefined}>
+                  {item.number}. {item.shortTitle}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+
+      <div class="project-detail">
+        <header>
+          <p class="eyebrow">Project {project.number}</p>
+          <h1>{project.shortTitle}</h1>
+          <dl class="project-meta" aria-label="Project details">
+            <div>
+              <dt>Brief</dt>
+              <dd>{project.title}</dd>
+            </div>
+          </dl>
+          <p class="lede">{project.summary}</p>
+        </header>
+
+        <nav class="lesson-toolbar" aria-label="Project quick navigation">
+          <p>Project {currentIndex + 1} of {projects.length}</p>
+          <div>
+            {previousProject && <a href={`/projects/${previousProject.slug}/`}>Previous</a>}
+            <a href="/projects/">All projects</a>
+            {nextProject && <a href={`/projects/${nextProject.slug}/`}>Next</a>}
+          </div>
+        </nav>
+
+        <section class="project-brief-section">
+          <h2>Overview</h2>
+          <p>{project.overview}</p>
+        </section>
+
+        <section class="project-brief-section">
+          <h2>Considerations</h2>
+          <ul>
+            {project.considerations.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+
+        <section class="project-brief-section">
+          <h2>Milestones</h2>
+          <div class="project-milestones">
+            {
+              project.milestones.map((milestone, index) => (
+                <article>
+                  <p class="project-milestones__number">Step {index + 1}</p>
+                  <h3>{milestone.title}</h3>
+                  <p>{milestone.description}</p>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="project-brief-section">
+          <h2>Project Requirements</h2>
+          <div class="project-requirements">
+            {
+              project.requirements.map((requirement) => (
+                <article>
+                  <h3>{requirement.title}</h3>
+                  <ul>
+                    {requirement.items.map((item) => <li>{item}</li>)}
+                  </ul>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="project-brief-section">
+          <h2>Submission Guidelines</h2>
+          <ul>
+            {project.submission.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+
+        <section class="project-brief-section project-checklist">
+          <h2>Before You Submit</h2>
+          <ul>
+            <li>I can explain the goal of the project and the design choices I made.</li>
+            <li>I checked the work in the browser, not only in the editor.</li>
+            <li>I verified links, images, responsive behavior, and accessibility basics.</li>
+            <li>I committed the final version and can provide the repository or public URL when required.</li>
+          </ul>
+        </section>
+
+        <section class="project-brief-section">
+          <h2>Grading Criteria</h2>
+          <ul>
+            {project.grading.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+
+        <section class="project-brief-section">
+          <h2>Rubric</h2>
+          <p>Use these quality levels to understand what stronger work looks like without tying the brief to a specific point scale.</p>
+          <div class="project-rubric">
+            {
+              project.rubric.map((item) => (
+                <article>
+                  <h3>{item.category}</h3>
+                  <dl>
+                    <div>
+                      <dt>Strong</dt>
+                      <dd>{item.strong}</dd>
+                    </div>
+                    <div>
+                      <dt>Meets</dt>
+                      <dd>{item.meets}</dd>
+                    </div>
+                    <div>
+                      <dt>Needs Work</dt>
+                      <dd>{item.needsWork}</dd>
+                    </div>
+                  </dl>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        {
+          project.models && (
+            <section class="project-brief-section">
+              <h2>Example Models</h2>
+              <p>Use these low-fidelity models to calibrate what stronger, acceptable, and unfinished work can look like.</p>
+              <div class="project-models">
+                {
+                  project.models.map((model) => (
+                    <article>
+                      <p class="project-models__type">{model.title}</p>
+                      <h3>{model.label}</h3>
+                      <p>{model.description}</p>
+                      <div class="project-models__columns">
+                        <div>
+                          <h4>Possible Structure</h4>
+                          <ul>
+                            {model.structure.map((item) => <li>{item}</li>)}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4>What To Notice</h4>
+                          <ul>
+                            {model.notes.map((item) => <li>{item}</li>)}
+                          </ul>
+                        </div>
+                      </div>
+                    </article>
+                  ))
+                }
+              </div>
+            </section>
+          )
+        }
+
+        {
+          project.examples && (
+            <section class="project-brief-section">
+              <h2>Idea Starters</h2>
+              <div class="project-requirements">
+                {
+                  project.examples.map((example) => (
+                    <article>
+                      <h3>{example.title}</h3>
+                      <ul>
+                        {example.items.map((item) => <li>{item}</li>)}
+                      </ul>
+                    </article>
+                  ))
+                }
+              </div>
+            </section>
+          )
+        }
+
+        <section class="project-brief-section">
+          <h2>Supporting Lessons</h2>
+          <div class="project-card__links">
+            {project.supportingLessons.map((lesson) => <a href={lesson.href}>{lesson.title}</a>)}
+          </div>
+        </section>
+
+        <nav class="button-row" aria-label="Project pagination">
+          {previousProject && <a class="button" href={`/projects/${previousProject.slug}/`}>Previous</a>}
+          <a class="button" href="/projects/">All projects</a>
+          {nextProject && <a class="button button--primary" href={`/projects/${nextProject.slug}/`}>Next project</a>}
+        </nav>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

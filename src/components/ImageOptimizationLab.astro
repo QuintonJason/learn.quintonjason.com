@@ -1,0 +1,185 @@
+<section class="image-lab" aria-labelledby="image-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="image-lab-title">Image Optimization Lab</h2>
+    <p>
+      Change the format, displayed width, loading behavior, and alt text purpose.
+      Watch how the markup and performance notes respond.
+    </p>
+  </div>
+
+  <div class="image-lab__grid">
+    <div class="image-lab__stage">
+      <div class="image-lab__browser">
+        <div class="image-lab__toolbar">
+          <span>Preview</span>
+          <span data-image-source>800w WebP</span>
+        </div>
+        <figure class="image-lab__figure" data-image-figure>
+          <div class="image-lab__art" role="img" aria-label="Campus walkway at sunset">
+            <span>ART 3020</span>
+          </div>
+          <figcaption data-image-caption>
+            Optimized hero image with useful alt text.
+          </figcaption>
+        </figure>
+      </div>
+
+      <dl class="image-lab__metrics">
+        <div>
+          <dt>Estimated file</dt>
+          <dd data-image-size>160 KB</dd>
+        </div>
+        <div>
+          <dt>Selected source</dt>
+          <dd data-image-selected>800w</dd>
+        </div>
+        <div>
+          <dt>Loading</dt>
+          <dd data-image-loading>Lazy</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="image-lab__controls" aria-label="Image optimization controls">
+      <label>
+        Format
+        <select data-image-control="format">
+          <option value="webp">WebP</option>
+          <option value="jpg">JPG</option>
+          <option value="png">PNG</option>
+          <option value="svg">SVG</option>
+        </select>
+      </label>
+
+      <label>
+        Display width
+        <input data-image-control="width" type="range" min="320" max="1200" step="40" value="720" />
+      </label>
+
+      <label>
+        Loading
+        <select data-image-control="loading">
+          <option value="lazy">Lazy</option>
+          <option value="eager">Eager</option>
+        </select>
+      </label>
+
+      <label>
+        Alt text purpose
+        <select data-image-control="alt">
+          <option value="descriptive">Descriptive</option>
+          <option value="decorative">Decorative</option>
+          <option value="functional">Functional</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <pre aria-live="polite"><code data-image-code>{`<img
+  src="campus-800.webp"
+  srcset="campus-400.webp 400w, campus-800.webp 800w, campus-1200.webp 1200w"
+  sizes="(max-width: 720px) 100vw, 720px"
+  alt="Campus walkway at sunset"
+  loading="lazy"
+>`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Format affects file size, transparency support, and image quality.</li>
+        <li>Displayed width should guide the source sizes you export.</li>
+        <li>Lazy loading helps most when images start below the first screen.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Switch from WebP to PNG and compare the estimated file size.</li>
+        <li>Increase the display width and watch the selected source change.</li>
+        <li>Change the alt text purpose and explain which version fits the image.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const imageLab = document.querySelector('.image-lab');
+
+  if (imageLab) {
+    const controls = {
+      format: imageLab.querySelector('[data-image-control="format"]'),
+      width: imageLab.querySelector('[data-image-control="width"]'),
+      loading: imageLab.querySelector('[data-image-control="loading"]'),
+      alt: imageLab.querySelector('[data-image-control="alt"]'),
+    };
+    const output = {
+      source: imageLab.querySelector('[data-image-source]'),
+      selected: imageLab.querySelector('[data-image-selected]'),
+      size: imageLab.querySelector('[data-image-size]'),
+      loading: imageLab.querySelector('[data-image-loading]'),
+      caption: imageLab.querySelector('[data-image-caption]'),
+      figure: imageLab.querySelector('[data-image-figure]'),
+      code: imageLab.querySelector('[data-image-code]'),
+    };
+
+    const formatWeights = {
+      webp: 0.22,
+      jpg: 0.34,
+      png: 0.76,
+      svg: 0.08,
+    };
+
+    const formatNotes = {
+      webp: 'Good default for photos when browser support is acceptable.',
+      jpg: 'Strong fallback for photos, but usually larger than WebP.',
+      png: 'Useful for transparency, often heavy for photos.',
+      svg: 'Best for logos, icons, and simple vector artwork.',
+    };
+
+    const altText = {
+      descriptive: 'Campus walkway at sunset',
+      decorative: '',
+      functional: 'Open campus photography gallery',
+    };
+
+    function getSelectedSource(width) {
+      if (width <= 420) return 400;
+      if (width <= 860) return 800;
+      return 1200;
+    }
+
+    function updateImageLab() {
+      const format = controls.format.value;
+      const width = Number(controls.width.value);
+      const loading = controls.loading.value;
+      const alt = controls.alt.value;
+      const selectedSource = getSelectedSource(width);
+      const estimatedSize = Math.round(selectedSource * formatWeights[format]);
+      const extension = format === 'jpg' ? 'jpg' : format;
+
+      output.figure.style.maxInlineSize = `${width}px`;
+      output.source.textContent = `${selectedSource}w ${format.toUpperCase()}`;
+      output.selected.textContent = `${selectedSource}w`;
+      output.size.textContent = `${estimatedSize} KB`;
+      output.loading.textContent = loading === 'lazy' ? 'Lazy' : 'Eager';
+      output.caption.textContent = `${formatNotes[format]} ${alt === 'decorative' ? 'Decorative images still need alt="".' : 'Alt text should match the image purpose.'}`;
+
+      output.code.textContent = `<img
+  src="campus-${selectedSource}.${extension}"
+  srcset="campus-400.${extension} 400w, campus-800.${extension} 800w, campus-1200.${extension} 1200w"
+  sizes="(max-width: ${width}px) 100vw, ${width}px"
+  alt="${altText[alt]}"
+  loading="${loading}"
+>`;
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateImageLab);
+      control.addEventListener('change', updateImageLab);
+    });
+
+    updateImageLab();
+  }
+</script>

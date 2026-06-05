@@ -1,0 +1,206 @@
+<section class="nav-lab" aria-labelledby="nav-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="nav-lab-title">Navigation Pattern Lab</h2>
+    <p>
+      Toggle common navigation features and watch the preview, accessibility
+      checklist, and starter markup update together.
+    </p>
+  </div>
+
+  <div class="nav-lab__grid">
+    <div class="nav-lab__stage">
+      <a class="nav-lab__skip" href="#nav-lab-content" data-nav-skip>Skip to content</a>
+
+      <header class="nav-lab__header">
+        <a class="nav-lab__brand" href="/">Student Site</a>
+        <button
+          class="nav-lab__toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-lab-menu"
+          data-nav-toggle
+        >
+          Menu
+        </button>
+      </header>
+
+      <nav class="nav-lab__nav" id="nav-lab-menu" aria-label="Primary" data-nav-region>
+        <ul>
+          <li><a href="/" data-nav-link="home">Home</a></li>
+          <li><a href="/work/" data-nav-link="work" aria-current="page">Work</a></li>
+          <li><a href="/about/" data-nav-link="about">About</a></li>
+          <li><a href="/contact/" data-nav-link="contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <main class="nav-lab__content" id="nav-lab-content">
+        <h3>Work</h3>
+        <p>
+          The current page should be visible, reachable by keyboard, and clear
+          in the markup.
+        </p>
+      </main>
+    </div>
+
+    <div class="nav-lab__controls" aria-label="Navigation feature toggles">
+      <label>
+        <input type="checkbox" data-nav-toggle-control="semantic" checked />
+        Semantic nav region
+      </label>
+      <label>
+        <input type="checkbox" data-nav-toggle-control="current" checked />
+        Current page indicator
+      </label>
+      <label>
+        <input type="checkbox" data-nav-toggle-control="focus" checked />
+        Visible focus state
+      </label>
+      <label>
+        <input type="checkbox" data-nav-toggle-control="skip" checked />
+        Skip link
+      </label>
+      <label>
+        <input type="checkbox" data-nav-toggle-control="mobile" checked />
+        Mobile menu button
+      </label>
+      <label>
+        <input type="checkbox" data-nav-toggle-control="expanded" />
+        Mobile menu open
+      </label>
+    </div>
+  </div>
+
+  <ul class="nav-lab__checklist" aria-live="polite">
+    <li data-nav-result="semantic">Semantic region: Pass</li>
+    <li data-nav-result="current">Current page: Pass</li>
+    <li data-nav-result="focus">Focus state: Pass</li>
+    <li data-nav-result="skip">Skip link: Pass</li>
+    <li data-nav-result="mobile">Mobile menu state: Pass</li>
+  </ul>
+
+  <pre aria-live="polite"><code data-nav-code>{`<a href="#main">Skip to content</a>
+<button aria-expanded="false" aria-controls="primary-menu">Menu</button>
+<nav id="primary-menu" aria-label="Primary">
+  <ul>
+    <li><a href="/" aria-current="page">Home</a></li>
+  </ul>
+</nav>`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Navigation should be built from links inside a semantic navigation region.</li>
+        <li>The current page needs more than color. Use visible styling and `aria-current`.</li>
+        <li>Mobile menus need a real button that communicates open and closed state.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Turn off the current page indicator and explain what gets harder.</li>
+        <li>Open the mobile menu and watch `aria-expanded` change.</li>
+        <li>Use Tab to confirm focus is visible on links and buttons.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const navLab = document.querySelector('.nav-lab');
+
+  if (navLab) {
+    const stage = navLab.querySelector('.nav-lab__stage');
+    const skipLink = navLab.querySelector('[data-nav-skip]');
+    const navRegion = navLab.querySelector('[data-nav-region]');
+    const mobileButton = navLab.querySelector('[data-nav-toggle]');
+    const currentLink = navLab.querySelector('[data-nav-link="work"]');
+    const code = navLab.querySelector('[data-nav-code]');
+    const controls = {
+      semantic: navLab.querySelector('[data-nav-toggle-control="semantic"]'),
+      current: navLab.querySelector('[data-nav-toggle-control="current"]'),
+      focus: navLab.querySelector('[data-nav-toggle-control="focus"]'),
+      skip: navLab.querySelector('[data-nav-toggle-control="skip"]'),
+      mobile: navLab.querySelector('[data-nav-toggle-control="mobile"]'),
+      expanded: navLab.querySelector('[data-nav-toggle-control="expanded"]'),
+    };
+    const results = {
+      semantic: navLab.querySelector('[data-nav-result="semantic"]'),
+      current: navLab.querySelector('[data-nav-result="current"]'),
+      focus: navLab.querySelector('[data-nav-result="focus"]'),
+      skip: navLab.querySelector('[data-nav-result="skip"]'),
+      mobile: navLab.querySelector('[data-nav-result="mobile"]'),
+    };
+
+    function updateResult(key, label, passes) {
+      results[key].textContent = `${label}: ${passes ? 'Pass' : 'Needs work'}`;
+      results[key].dataset.state = passes ? 'pass' : 'fail';
+    }
+
+    function updateNavLab() {
+      const hasSemantic = controls.semantic.checked;
+      const hasCurrent = controls.current.checked;
+      const hasFocus = controls.focus.checked;
+      const hasSkip = controls.skip.checked;
+      const hasMobile = controls.mobile.checked;
+      const isExpanded = controls.expanded.checked;
+
+      stage.classList.toggle('has-weak-focus', !hasFocus);
+      stage.classList.toggle('is-mobile-open', hasMobile && isExpanded);
+
+      skipLink.hidden = !hasSkip;
+      mobileButton.hidden = !hasMobile;
+      controls.expanded.disabled = !hasMobile;
+
+      if (hasSemantic) {
+        navRegion.setAttribute('aria-label', 'Primary');
+      } else {
+        navRegion.removeAttribute('aria-label');
+      }
+
+      if (hasCurrent) {
+        currentLink.setAttribute('aria-current', 'page');
+      } else {
+        currentLink.removeAttribute('aria-current');
+      }
+
+      if (hasMobile) {
+        mobileButton.setAttribute('aria-expanded', String(isExpanded));
+        mobileButton.setAttribute('aria-controls', 'nav-lab-menu');
+      } else {
+        mobileButton.removeAttribute('aria-expanded');
+        mobileButton.removeAttribute('aria-controls');
+      }
+
+      updateResult('semantic', 'Semantic region', hasSemantic);
+      updateResult('current', 'Current page', hasCurrent);
+      updateResult('focus', 'Focus state', hasFocus);
+      updateResult('skip', 'Skip link', hasSkip);
+      updateResult('mobile', 'Mobile menu state', hasMobile);
+
+      code.textContent = `${hasSkip ? '<a href="#main">Skip to content</a>\n' : '<!-- Missing skip link -->\n'}${hasMobile
+  ? `<button aria-expanded="${isExpanded}" aria-controls="primary-menu">Menu</button>\n`
+  : '<!-- Mobile menu button missing -->\n'}<nav id="primary-menu"${hasSemantic ? ' aria-label="Primary"' : ''}>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/work/"${hasCurrent ? ' aria-current="page"' : ''}>Work</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+</nav>
+${hasFocus ? ':focus-visible { outline: 3px solid currentColor; }' : '/* Missing visible focus state */'}`;
+    }
+
+    mobileButton.addEventListener('click', () => {
+      controls.expanded.checked = !controls.expanded.checked;
+      updateNavLab();
+    });
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('change', updateNavLab);
+    });
+
+    updateNavLab();
+  }
+</script>

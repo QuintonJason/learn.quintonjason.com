@@ -1,0 +1,295 @@
+<section class="carousel-lab" aria-labelledby="carousel-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="carousel-lab-title">Carousel Responsibility Lab</h2>
+    <p>
+      Carousels are more than moving slides. Toggle the expected controls and
+      watch the accessibility checklist and starter code change.
+    </p>
+  </div>
+
+  <div class="carousel-lab__grid">
+    <div class="carousel-lab__stage">
+      <div
+        class="carousel-lab__viewport"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Featured student work"
+        tabindex="0"
+        data-carousel-viewport
+      >
+        <article class="carousel-lab__slide is-active" data-carousel-slide aria-hidden="false">
+          <p class="eyebrow">Slide 1</p>
+          <h3>Portfolio homepage</h3>
+          <p>A student homepage with a clear value proposition and call to action.</p>
+        </article>
+        <article class="carousel-lab__slide" data-carousel-slide aria-hidden="true">
+          <p class="eyebrow">Slide 2</p>
+          <h3>Restaurant listing</h3>
+          <p>A responsive item listing with images, filters, and detail links.</p>
+        </article>
+        <article class="carousel-lab__slide" data-carousel-slide aria-hidden="true">
+          <p class="eyebrow">Slide 3</p>
+          <h3>Accessible form</h3>
+          <p>A contact form with labels, helpful errors, and keyboard support.</p>
+        </article>
+      </div>
+
+      <p class="carousel-lab__status" aria-live="polite" data-carousel-status>
+        Slide 1 of 3
+      </p>
+
+      <div class="carousel-lab__buttons" data-carousel-buttons>
+        <button type="button" data-carousel-action="previous">Previous</button>
+        <button type="button" data-carousel-action="next">Next</button>
+      </div>
+
+      <div class="carousel-lab__dots" data-carousel-dots aria-label="Choose slide">
+        <button type="button" aria-label="Show slide 1" aria-current="true" data-carousel-dot="0"></button>
+        <button type="button" aria-label="Show slide 2" data-carousel-dot="1"></button>
+        <button type="button" aria-label="Show slide 3" data-carousel-dot="2"></button>
+      </div>
+    </div>
+
+    <div class="carousel-lab__controls" aria-label="Carousel feature toggles">
+      <label>
+        <input type="checkbox" data-carousel-toggle="buttons" checked />
+        Previous and next buttons
+      </label>
+      <label>
+        <input type="checkbox" data-carousel-toggle="dots" checked />
+        Pagination dots
+      </label>
+      <label>
+        <input type="checkbox" data-carousel-toggle="status" checked />
+        Visible slide status
+      </label>
+      <label>
+        <input type="checkbox" data-carousel-toggle="keyboard" checked />
+        Arrow key support
+      </label>
+      <label>
+        <input type="checkbox" data-carousel-toggle="autoplay" />
+        Autoplay
+      </label>
+      <label>
+        <input type="checkbox" data-carousel-toggle="pause" checked />
+        Pause on hover or focus
+      </label>
+    </div>
+  </div>
+
+  <ul class="carousel-lab__checklist" aria-live="polite" data-carousel-checklist>
+    <li data-carousel-result="buttons">Controls: Pass</li>
+    <li data-carousel-result="dots">Pagination: Pass</li>
+    <li data-carousel-result="status">Status: Pass</li>
+    <li data-carousel-result="keyboard">Keyboard: Pass</li>
+    <li data-carousel-result="motion">Motion: Pass</li>
+  </ul>
+
+  <pre aria-live="polite"><code data-carousel-code>{`$('.work-slideshow').slick({
+  dots: true,
+  arrows: true,
+  autoplay: false,
+  accessibility: true
+});`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>Users need a way to move forward, move backward, and understand where they are.</li>
+        <li>Autoplay creates motion and timing problems if it cannot pause.</li>
+        <li>Keyboard support matters because carousel buttons are real controls.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Turn autoplay on, then turn pause behavior off and inspect the checklist.</li>
+        <li>Focus the carousel and use the left and right arrow keys.</li>
+        <li>Hide the status text and explain what context disappears.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const carouselLab = document.querySelector('.carousel-lab');
+
+  if (carouselLab) {
+    const slides = Array.from(carouselLab.querySelectorAll('[data-carousel-slide]'));
+    const dots = Array.from(carouselLab.querySelectorAll('[data-carousel-dot]'));
+    const viewport = carouselLab.querySelector('[data-carousel-viewport]');
+    const buttons = carouselLab.querySelector('[data-carousel-buttons]');
+    const dotsWrapper = carouselLab.querySelector('[data-carousel-dots]');
+    const status = carouselLab.querySelector('[data-carousel-status]');
+    const code = carouselLab.querySelector('[data-carousel-code]');
+    const toggles = {
+      buttons: carouselLab.querySelector('[data-carousel-toggle="buttons"]'),
+      dots: carouselLab.querySelector('[data-carousel-toggle="dots"]'),
+      status: carouselLab.querySelector('[data-carousel-toggle="status"]'),
+      keyboard: carouselLab.querySelector('[data-carousel-toggle="keyboard"]'),
+      autoplay: carouselLab.querySelector('[data-carousel-toggle="autoplay"]'),
+      pause: carouselLab.querySelector('[data-carousel-toggle="pause"]'),
+    };
+    const results = {
+      buttons: carouselLab.querySelector('[data-carousel-result="buttons"]'),
+      dots: carouselLab.querySelector('[data-carousel-result="dots"]'),
+      status: carouselLab.querySelector('[data-carousel-result="status"]'),
+      keyboard: carouselLab.querySelector('[data-carousel-result="keyboard"]'),
+      motion: carouselLab.querySelector('[data-carousel-result="motion"]'),
+    };
+
+    let currentSlide = 0;
+    let timer;
+    let isPaused = false;
+
+    function updateResult(key, label, passes) {
+      results[key].textContent = `${label}: ${passes ? 'Pass' : 'Needs work'}`;
+      results[key].dataset.state = passes ? 'pass' : 'fail';
+    }
+
+    function goToSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === currentSlide;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', String(!isActive));
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        if (dotIndex === currentSlide) {
+          dot.setAttribute('aria-current', 'true');
+        } else {
+          dot.removeAttribute('aria-current');
+        }
+      });
+
+      status.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+    }
+
+    function stopAutoplay() {
+      window.clearInterval(timer);
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+
+      if (!toggles.autoplay.checked) return;
+
+      timer = window.setInterval(() => {
+        if (!isPaused) {
+          goToSlide(currentSlide + 1);
+        }
+      }, 2500);
+    }
+
+    function updateCode() {
+      const hasButtons = toggles.buttons.checked;
+      const hasDots = toggles.dots.checked;
+      const hasStatus = toggles.status.checked;
+      const hasAutoplay = toggles.autoplay.checked;
+      const hasPause = toggles.pause.checked;
+
+      code.textContent = `$('.work-slideshow').slick({
+  dots: ${hasDots},
+  arrows: ${hasButtons},
+  autoplay: ${hasAutoplay},
+  accessibility: true,
+  ${hasAutoplay ? `pauseOnHover: ${hasPause},\n  pauseOnFocus: ${hasPause},` : '// Autoplay is off, so pause settings are not needed.'}
+});
+
+${hasStatus
+  ? '$(".carousel-status").text("Slide 1 of 3");'
+  : '// Add visible slide status for users who need orientation.'}`;
+    }
+
+    function updateCarouselLab() {
+      const hasButtons = toggles.buttons.checked;
+      const hasDots = toggles.dots.checked;
+      const hasStatus = toggles.status.checked;
+      const hasKeyboard = toggles.keyboard.checked;
+      const hasAutoplay = toggles.autoplay.checked;
+      const hasPause = toggles.pause.checked;
+
+      buttons.hidden = !hasButtons;
+      dotsWrapper.hidden = !hasDots;
+      status.hidden = !hasStatus;
+
+      if (hasKeyboard) {
+        viewport.setAttribute('tabindex', '0');
+      } else {
+        viewport.removeAttribute('tabindex');
+      }
+
+      updateResult('buttons', 'Controls', hasButtons);
+      updateResult('dots', 'Pagination', hasDots);
+      updateResult('status', 'Status', hasStatus);
+      updateResult('keyboard', 'Keyboard', hasKeyboard);
+      updateResult('motion', 'Motion', !hasAutoplay || hasPause);
+
+      updateCode();
+      startAutoplay();
+    }
+
+    carouselLab.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+
+      if (!button || !carouselLab.contains(button)) return;
+
+      const action = button.dataset.carouselAction;
+      const dot = button.dataset.carouselDot;
+
+      if (action === 'previous') {
+        goToSlide(currentSlide - 1);
+      }
+
+      if (action === 'next') {
+        goToSlide(currentSlide + 1);
+      }
+
+      if (dot !== undefined) {
+        goToSlide(Number(dot));
+      }
+    });
+
+    viewport.addEventListener('keydown', (event) => {
+      if (!toggles.keyboard.checked) return;
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goToSlide(currentSlide - 1);
+      }
+
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goToSlide(currentSlide + 1);
+      }
+    });
+
+    carouselLab.addEventListener('pointerenter', () => {
+      if (toggles.pause.checked) isPaused = true;
+    });
+
+    carouselLab.addEventListener('pointerleave', () => {
+      isPaused = false;
+    });
+
+    carouselLab.addEventListener('focusin', () => {
+      if (toggles.pause.checked) isPaused = true;
+    });
+
+    carouselLab.addEventListener('focusout', () => {
+      isPaused = false;
+    });
+
+    Object.values(toggles).forEach((toggle) => {
+      toggle.addEventListener('change', updateCarouselLab);
+    });
+
+    goToSlide(0);
+    updateCarouselLab();
+  }
+</script>

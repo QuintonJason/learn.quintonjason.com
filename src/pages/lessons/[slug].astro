@@ -3,10 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AccessibilityCheckLab from '../../components/AccessibilityCheckLab.astro';
 import AnimationKeyframeLab from '../../components/AnimationKeyframeLab.astro';
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
+import CarouselAccessibilityLab from '../../components/CarouselAccessibilityLab.astro';
 import DomInteractionLab from '../../components/DomInteractionLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
 import FormAccessibilityLab from '../../components/FormAccessibilityLab.astro';
 import GsapTimelineLab from '../../components/GsapTimelineLab.astro';
+import ImageOptimizationLab from '../../components/ImageOptimizationLab.astro';
+import NavigationPatternLab from '../../components/NavigationPatternLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
@@ -23,6 +26,25 @@ const { lesson } = Astro.props;
 const currentIndex = lessons.findIndex((item) => item.slug === lesson.slug);
 const previousLesson = lessons[currentIndex - 1];
 const nextLesson = lessons[currentIndex + 1];
+const demoSourceLinks = {
+  'intro-to-css': 'SelectorPlayground.astro',
+  'html-forms-building-interactive-user-interfaces': 'FormAccessibilityLab.astro',
+  'box-model-and-layout': 'BoxModelVisualizer.astro',
+  flexbox: 'FlexboxPlayground.astro',
+  'responsive-web-design': 'ResponsiveLayoutVisualizer.astro',
+  'javascript-in-the-dom': 'DomInteractionLab.astro',
+  'css-transitions': 'TransitionPlayground.astro',
+  'css-animation': 'AnimationKeyframeLab.astro',
+  'gsap-web-animation': 'GsapTimelineLab.astro',
+  'image-optimization': 'ImageOptimizationLab.astro',
+  'building-effective-site-navigation': 'NavigationPatternLab.astro',
+  'mastering-carousels': 'CarouselAccessibilityLab.astro',
+  'web-accessibility': 'AccessibilityCheckLab.astro',
+};
+const demoSourceFile = demoSourceLinks[lesson.slug];
+const demoSourceUrl = demoSourceFile
+  ? `https://github.com/QuintonJason/learn.quintonjason.com/blob/master/src/components/${demoSourceFile}`
+  : undefined;
 ---
 
 <BaseLayout title={`${lesson.title} | Learn Web Design With Quinton Jason`}>
@@ -94,6 +116,28 @@ const nextLesson = lessons[currentIndex + 1];
 
         {
           lesson.slug === 'gsap-web-animation' && <GsapTimelineLab />
+        }
+
+        {
+          lesson.slug === 'image-optimization' && <ImageOptimizationLab />
+        }
+
+        {
+          lesson.slug === 'building-effective-site-navigation' && <NavigationPatternLab />
+        }
+
+        {
+          lesson.slug === 'mastering-carousels' && <CarouselAccessibilityLab />
+        }
+
+        {
+          demoSourceUrl && (
+            <p class="demo-source">
+              This demo uses extra JavaScript for teaching. The code sample shows the pattern to practice.
+              {' '}
+              <a href={demoSourceUrl}>View full demo source</a>.
+            </p>
+          )
         }
 
         {

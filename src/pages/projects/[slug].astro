@@ -15,7 +15,11 @@ const previousProject = projects[currentIndex - 1];
 const nextProject = projects[currentIndex + 1];
 ---
 
-<BaseLayout title={`${project.title} | Learn Web Design With Quinton Jason`}>
+<BaseLayout
+  title={`${project.title} | Learn Web Design With Quinton Jason`}
+  description={project.summary}
+  type="article"
+>
   <article class="project-page">
     <div class="container project-detail-layout">
       <aside class="project-sidebar" aria-label="Project navigation">

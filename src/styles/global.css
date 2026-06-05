@@ -1,7 +1,8 @@
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --color-brand: #41b649;
   --color-brand-dark: #24752b;
+  --color-brand-strong: #166534;
   --color-ink: #17201a;
   --color-text: #334139;
   --color-muted: #647168;
@@ -10,9 +11,47 @@
   --color-surface-raised: #ffffff;
   --color-border: #d9e5dc;
   --color-accent: #0b55b7;
+  --color-danger: #9c4636;
+  --color-danger-soft: rgb(156 70 54 / 0.12);
+  --color-success-soft: rgb(48 178 74 / 0.14);
+  --color-code-surface: #101914;
+  --color-code-text: #f4fff6;
+  --color-header-surface: rgb(255 255 255 / 0.92);
+  --color-focus-ring: rgb(65 182 73 / 0.24);
+  --color-hero-glow: rgb(65 182 73 / 0.14);
+  --color-grid-line: rgb(48 178 74 / 0.12);
+  --color-overlay-light: rgb(255 255 255 / 0.72);
+  --color-inverse-text: #ffffff;
   --shadow-subtle: 0 18px 44px rgb(23 32 26 / 0.08);
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Avenir Next", Montserrat, var(--font-sans);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-brand: #45c957;
+  --color-brand-dark: #7ee08a;
+  --color-brand-strong: #2fad40;
+  --color-ink: #f4fbf5;
+  --color-text: #d9e5dc;
+  --color-muted: #a5b5aa;
+  --color-surface: #08140d;
+  --color-surface-soft: #0d1f14;
+  --color-surface-raised: #12271a;
+  --color-border: #294333;
+  --color-accent: #8ab8ff;
+  --color-danger: #ffad9f;
+  --color-danger-soft: rgb(255 173 159 / 0.14);
+  --color-success-soft: rgb(69 201 87 / 0.14);
+  --color-code-surface: #030805;
+  --color-code-text: #edfff0;
+  --color-header-surface: rgb(8 20 13 / 0.9);
+  --color-focus-ring: rgb(69 201 87 / 0.36);
+  --color-hero-glow: rgb(69 201 87 / 0.18);
+  --color-grid-line: rgb(69 201 87 / 0.14);
+  --color-overlay-light: rgb(244 251 245 / 0.08);
+  --color-inverse-text: #08140d;
+  --shadow-subtle: 0 18px 44px rgb(0 0 0 / 0.34);
 }
 
 *,
@@ -28,6 +67,7 @@ html {
 }
 
 body {
+  background: var(--color-surface);
   color: var(--color-text);
   font-size: 18px;
   line-height: 1.6;
@@ -74,9 +114,9 @@ p {
 }
 
 pre {
-  background: #101914;
+  background: var(--color-code-surface);
   border-radius: 8px;
-  color: #f4fff6;
+  color: var(--color-code-text);
   font-size: 0.9rem;
   line-height: 1.55;
   margin: 0;
@@ -86,6 +126,12 @@ pre {
 
 code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+input,
+select,
+textarea {
+  background: var(--color-surface-raised);
 }
 
 .visually-hidden {
@@ -130,7 +176,7 @@ code {
 .code-copy__button:hover,
 .code-copy__button:focus {
   background: var(--color-brand);
-  color: #fff;
+  color: var(--color-inverse-text);
 }
 
 ul,
@@ -148,7 +194,7 @@ ol {
 
 .skip-link {
   background: var(--color-ink);
-  color: #fff;
+  color: var(--color-surface);
   left: 1rem;
   padding: 0.65rem 0.85rem;
   position: fixed;
@@ -162,8 +208,9 @@ ol {
 }
 
 .site-header {
-  background: rgb(255 255 255 / 0.92);
+  background: var(--color-header-surface);
   border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
   z-index: 4;
@@ -209,6 +256,14 @@ ol {
   justify-content: flex-end;
 }
 
+.site-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: flex-end;
+}
+
 .site-nav a {
   color: var(--color-ink);
   font-size: 0.82rem;
@@ -224,10 +279,87 @@ ol {
   text-decoration: underline;
 }
 
+.theme-toggle {
+  align-items: center;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-ink), transparent 78%);
+  border-radius: 999px;
+  color: var(--color-ink);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 0.1rem;
+  height: 30px;
+  justify-content: space-between;
+  padding: 0.18rem;
+  position: relative;
+  width: 58px;
+}
+
+.theme-toggle::before {
+  background: var(--color-ink);
+  border-radius: 50%;
+  content: "";
+  height: 22px;
+  left: 3px;
+  position: absolute;
+  top: 3px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  width: 22px;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  outline: 0;
+}
+
+.theme-toggle__icon {
+  align-items: center;
+  color: var(--color-ink);
+  display: block;
+  font-size: 0.78rem;
+  height: 22px;
+  line-height: 22px;
+  position: relative;
+  text-align: center;
+  transition: color 0.2s ease;
+  width: 22px;
+  z-index: 1;
+}
+
+.theme-toggle__sun {
+  color: var(--color-surface);
+}
+
+.theme-toggle__moon {
+  color: var(--color-muted);
+}
+
+:root[data-theme="dark"] .theme-toggle {
+  background: rgb(243 204 91 / 0.08);
+  border-color: color-mix(in srgb, var(--color-brand), transparent 55%);
+}
+
+:root[data-theme="dark"] .theme-toggle::before {
+  background: #f3cc5b;
+  box-shadow: 0 0 16px rgb(243 204 91 / 0.45);
+  transform: translateX(28px);
+}
+
+:root[data-theme="dark"] .theme-toggle__sun {
+  color: var(--color-muted);
+}
+
+:root[data-theme="dark"] .theme-toggle__moon {
+  color: var(--color-surface);
+}
+
 .hero {
   background:
     linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-soft) 72%),
-    radial-gradient(circle at 82% 20%, rgb(65 182 73 / 0.14), transparent 30%);
+    radial-gradient(circle at 82% 20%, var(--color-hero-glow), transparent 30%);
   border-bottom: 1px solid var(--color-border);
   padding-block: clamp(4rem, 9vw, 7.5rem);
 }
@@ -327,7 +459,7 @@ ol {
 
 .lesson-search input:focus {
   border-color: var(--color-brand);
-  outline: 3px solid rgb(65 182 73 / 0.18);
+  outline: 3px solid var(--color-focus-ring);
 }
 
 .lesson-filters {
@@ -356,7 +488,7 @@ ol {
 .lesson-filter[aria-pressed="true"] {
   background: var(--color-brand);
   border-color: var(--color-brand);
-  color: #fff;
+  color: var(--color-inverse-text);
 }
 
 .lesson-filter-status {
@@ -401,7 +533,7 @@ ol {
 
 .lesson-card__badge {
   align-self: start;
-  background: rgb(48 178 74 / 0.14);
+  background: var(--color-success-soft);
   border: 1px solid var(--color-brand);
   border-radius: 999px;
   color: var(--color-brand-dark);
@@ -418,7 +550,7 @@ ol {
   background: var(--color-brand);
   border: 1px solid var(--color-brand);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-inverse-text);
   font-size: 0.72rem;
   font-weight: 900;
   justify-self: start;
@@ -530,7 +662,7 @@ ol {
   background: var(--color-brand);
   block-size: 2rem;
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-inverse-text);
   content: counter(path);
   display: inline-flex;
   font-family: var(--font-display);
@@ -624,14 +756,14 @@ ol {
 
 .button--primary {
   background: var(--color-brand);
-  color: #fff;
+  color: var(--color-inverse-text);
 }
 
 .button:hover,
 .button:focus {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .lesson-page {
@@ -1042,7 +1174,7 @@ ol {
 .dom-lab__controls button:focus {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
-  color: #fff;
+  color: var(--color-inverse-text);
 }
 
 .a11y-lab__grid {
@@ -1072,7 +1204,7 @@ ol {
   aspect-ratio: 16 / 9;
   background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
   border-radius: 6px;
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-size: 1.4rem;
@@ -1085,7 +1217,7 @@ ol {
   background: var(--color-brand);
   border: 2px solid var(--color-brand);
   border-radius: 4px;
-  color: #fff;
+  color: var(--color-inverse-text);
   cursor: pointer;
   display: inline-block;
   font: inherit;
@@ -1106,7 +1238,7 @@ ol {
 }
 
 .a11y-lab .is-low-contrast {
-  color: #aeb8b0;
+  color: var(--color-muted);
 }
 
 .a11y-lab__controls {
@@ -1146,13 +1278,13 @@ ol {
 }
 
 .a11y-lab__checklist li[data-state="pass"] {
-  background: rgb(48 178 74 / 0.14);
+  background: var(--color-success-soft);
   border-color: var(--color-brand);
 }
 
 .a11y-lab__checklist li[data-state="fail"] {
-  background: rgb(156 70 54 / 0.12);
-  border-color: #9c4636;
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger);
 }
 
 .responsive-lab__controls {
@@ -1196,7 +1328,7 @@ ol {
 .responsive-lab__toolbar {
   align-items: center;
   background: var(--color-ink);
-  color: #fff;
+  color: var(--color-surface);
   display: flex;
   font-size: 0.75rem;
   font-weight: 900;
@@ -1305,11 +1437,11 @@ ol {
 }
 
 .form-lab__field input[aria-invalid="true"] {
-  border-color: #9c4636;
+  border-color: var(--color-danger);
 }
 
 .form-lab__error {
-  color: #9c4636;
+  color: var(--color-danger);
   font-size: 0.9rem;
   font-weight: 800;
 }
@@ -1318,7 +1450,7 @@ ol {
   background: var(--color-brand);
   border: 2px solid var(--color-brand);
   border-radius: 4px;
-  color: #fff;
+  color: var(--color-inverse-text);
   cursor: pointer;
   font: inherit;
   font-size: 0.82rem;
@@ -1370,13 +1502,13 @@ ol {
 }
 
 .form-lab__checklist li[data-state="pass"] {
-  background: rgb(48 178 74 / 0.14);
+  background: var(--color-success-soft);
   border-color: var(--color-brand);
 }
 
 .form-lab__checklist li[data-state="fail"] {
-  background: rgb(156 70 54 / 0.12);
-  border-color: #9c4636;
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger);
 }
 
 .transition-lab__controls {
@@ -1432,7 +1564,7 @@ ol {
 .transition-lab__trigger:focus {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .transition-lab__box {
@@ -1440,7 +1572,7 @@ ol {
   background: var(--color-brand);
   border: 2px solid var(--color-brand-dark);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-weight: 900;
@@ -1508,7 +1640,7 @@ ol {
 .animation-lab__trigger:focus {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .animation-lab__target {
@@ -1516,7 +1648,7 @@ ol {
   background: var(--color-brand);
   border: 2px solid var(--color-brand-dark);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-weight: 900;
@@ -1588,7 +1720,7 @@ ol {
 .gsap-lab__trigger:focus {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .gsap-lab__items {
@@ -1603,7 +1735,7 @@ ol {
   background: var(--color-brand);
   border: 2px solid var(--color-brand-dark);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-size: 1.4rem;
@@ -1640,7 +1772,7 @@ ol {
 .image-lab__toolbar {
   align-items: center;
   background: var(--color-ink);
-  color: #fff;
+  color: var(--color-surface);
   display: flex;
   font-size: 0.75rem;
   font-weight: 900;
@@ -1665,7 +1797,7 @@ ol {
     linear-gradient(135deg, rgb(11 85 183 / 0.2), transparent 45%),
     linear-gradient(160deg, var(--color-brand) 0 38%, var(--color-surface-raised) 38% 46%, var(--color-brand-dark) 46% 100%);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 5vw, 3rem);
@@ -1762,7 +1894,7 @@ ol {
 .nav-lab__skip {
   background: var(--color-ink);
   border-radius: 4px;
-  color: #fff;
+  color: var(--color-surface);
   font-weight: 800;
   justify-self: start;
   padding: 0.5rem 0.7rem;
@@ -1891,13 +2023,13 @@ ol {
 }
 
 .nav-lab__checklist li[data-state="pass"] {
-  background: rgb(48 178 74 / 0.14);
+  background: var(--color-success-soft);
   border-color: var(--color-brand);
 }
 
 .nav-lab__checklist li[data-state="fail"] {
-  background: rgb(156 70 54 / 0.12);
-  border-color: #9c4636;
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger);
 }
 
 .carousel-lab__grid {
@@ -1983,7 +2115,7 @@ ol {
 .carousel-lab__dots button:focus {
   background: var(--color-brand-dark);
   border-color: var(--color-brand-dark);
-  color: #fff;
+  color: var(--color-surface);
 }
 
 .carousel-lab__dots {
@@ -2039,13 +2171,13 @@ ol {
 }
 
 .carousel-lab__checklist li[data-state="pass"] {
-  background: rgb(48 178 74 / 0.14);
+  background: var(--color-success-soft);
   border-color: var(--color-brand);
 }
 
 .carousel-lab__checklist li[data-state="fail"] {
-  background: rgb(156 70 54 / 0.12);
-  border-color: #9c4636;
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger);
 }
 
 @keyframes fade {
@@ -2113,8 +2245,8 @@ ol {
 .flex-playground__stage {
   align-items: stretch;
   background:
-    linear-gradient(90deg, rgb(48 178 74 / 0.12) 1px, transparent 1px),
-    linear-gradient(0deg, rgb(48 178 74 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px),
+    linear-gradient(0deg, var(--color-grid-line) 1px, transparent 1px),
     var(--color-surface-soft);
   background-size: 24px 24px;
   border: 1px solid var(--color-border);
@@ -2127,7 +2259,7 @@ ol {
 
 .flex-playground__axis {
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-surface);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -2163,7 +2295,7 @@ ol {
   background: var(--color-brand);
   border: 2px solid var(--color-brand-dark);
   border-radius: 6px;
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-size: 1.4rem;
@@ -2176,8 +2308,8 @@ ol {
 
 .box-visualizer__stage {
   background:
-    linear-gradient(90deg, rgb(48 178 74 / 0.12) 1px, transparent 1px),
-    linear-gradient(0deg, rgb(48 178 74 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px),
+    linear-gradient(0deg, var(--color-grid-line) 1px, transparent 1px),
     var(--color-surface-soft);
   background-size: 24px 24px;
   border: 1px solid var(--color-border);
@@ -2197,7 +2329,7 @@ ol {
 }
 
 .box-visualizer__margin {
-  background: rgb(48 178 74 / 0.15);
+  background: var(--color-success-soft);
   border: 1px dashed var(--color-brand-dark);
 }
 
@@ -2208,13 +2340,13 @@ ol {
 }
 
 .box-visualizer__padding {
-  background: rgb(255 255 255 / 0.72);
+  background: var(--color-overlay-light);
 }
 
 .box-visualizer__content {
   align-content: center;
   background: var(--color-brand);
-  color: #fff;
+  color: var(--color-inverse-text);
   display: grid;
   font-family: var(--font-display);
   font-weight: 900;
@@ -2227,7 +2359,7 @@ ol {
 .box-visualizer__padding span {
   background: var(--color-ink);
   border-radius: 999px;
-  color: #fff;
+  color: var(--color-surface);
   font-size: 0.7rem;
   font-weight: 800;
   inset-block-start: 0.35rem;

@@ -47,7 +47,11 @@ const pageSections = [
 ];
 ---
 
-<BaseLayout title={`${lesson.title} | Learn Web Design With Quinton Jason`}>
+<BaseLayout
+  title={`${lesson.title} | Learn Web Design With Quinton Jason`}
+  description={lesson.summary}
+  type="article"
+>
   <article class="lesson-page">
     <div class="container lesson-layout">
       <aside class="lesson-sidebar" aria-label="Lesson navigation">

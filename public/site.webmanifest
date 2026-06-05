@@ -1,0 +1,17 @@
+{
+  "name": "Learn Web Design With Quinton Jason",
+  "short_name": "QJ Learn",
+  "description": "A practical ART 3020 course guide for HTML, CSS, accessibility, responsive design, UX, JavaScript, animation, and front-end project work.",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#ffffff",
+  "theme_color": "#41b649",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

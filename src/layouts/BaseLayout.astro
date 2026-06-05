@@ -3,8 +3,13 @@ import '../styles/global.css';
 
 const {
   title = 'Learn Web Design With Quinton Jason',
-  description = 'A practical guide to HTML, CSS, accessibility, responsive design, UX foundations, and systems thinking.',
+  description = 'A practical ART 3020 course guide for HTML, CSS, accessibility, responsive design, UX, JavaScript, animation, and front-end project work.',
+  image = '/og-image.png',
+  type = 'website',
 } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
+const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
 ---
 
 <!doctype html>
@@ -13,10 +18,55 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta name="author" content="Quinton Jason" />
+    <meta name="theme-color" content="#41b649" data-theme-color />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256.png" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="author" href="https://quintonjason.com/" />
+    <meta property="og:site_name" content="Learn Web Design With Quinton Jason" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content="Learn Web Design With Quinton Jason" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content="Learn Web Design With Quinton Jason" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const storageKey = 'qj-learn-theme';
+        const root = document.documentElement;
+        const themeColor = document.querySelector('[data-theme-color]');
+        const darkThemeColor = '#08140d';
+        const lightThemeColor = '#41b649';
+
+        const getPreferredTheme = () => {
+          let storedTheme;
+
+          try {
+            storedTheme = window.localStorage.getItem(storageKey);
+          } catch {
+            storedTheme = null;
+          }
+
+          if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        const theme = getPreferredTheme();
+        root.dataset.theme = theme;
+        themeColor?.setAttribute('content', theme === 'dark' ? darkThemeColor : lightThemeColor);
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -35,14 +85,21 @@ const {
           </svg>
           <span>Learn</span>
         </a>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="/modules/">Modules</a>
-          <a href="/lessons/">Lessons</a>
-          <a href="/projects/">Projects</a>
-          <a href="/debugging/">Fixes</a>
-          <a href="/resources/">Resources</a>
-          <a href="https://quintonjason.com/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio, opens in a new tab">Portfolio</a>
-        </nav>
+        <div class="site-actions">
+          <nav class="site-nav" aria-label="Primary">
+            <a href="/modules/">Modules</a>
+            <a href="/lessons/">Lessons</a>
+            <a href="/projects/">Projects</a>
+            <a href="/debugging/">Fixes</a>
+            <a href="/resources/">Resources</a>
+            <a href="https://quintonjason.com/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio, opens in a new tab">Portfolio</a>
+          </nav>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">
+            <span class="theme-toggle__icon theme-toggle__sun" aria-hidden="true">☀</span>
+            <span class="theme-toggle__icon theme-toggle__moon" aria-hidden="true">◐</span>
+            <span class="visually-hidden" data-theme-toggle-label>Theme</span>
+          </button>
+        </div>
       </div>
     </header>
     <main id="main-content" tabindex="-1">
@@ -55,6 +112,39 @@ const {
       </div>
     </footer>
     <script>
+      const themeToggle = document.querySelector('[data-theme-toggle]');
+      const themeToggleLabel = document.querySelector('[data-theme-toggle-label]');
+      const themeStorageKey = 'qj-learn-theme';
+      const themeColor = document.querySelector('[data-theme-color]');
+      const darkThemeColor = '#08140d';
+      const lightThemeColor = '#41b649';
+
+      function setTheme(theme) {
+        const isDark = theme === 'dark';
+
+        document.documentElement.dataset.theme = theme;
+        themeToggle?.setAttribute('aria-pressed', String(isDark));
+        themeToggle?.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+        themeToggleLabel?.replaceChildren(isDark ? 'Dark' : 'Light');
+        themeColor?.setAttribute('content', isDark ? darkThemeColor : lightThemeColor);
+      }
+
+      if (themeToggle) {
+        setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+
+        themeToggle.addEventListener('click', () => {
+          const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+
+          try {
+            window.localStorage.setItem(themeStorageKey, nextTheme);
+          } catch {
+            // The visible theme can still change even when storage is unavailable.
+          }
+
+          setTheme(nextTheme);
+        });
+      }
+
       const codeBlocks = Array.from(document.querySelectorAll('pre'));
 
       codeBlocks.forEach((block, index) => {

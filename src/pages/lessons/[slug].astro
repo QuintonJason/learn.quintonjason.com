@@ -13,7 +13,7 @@ import NavigationPatternLab from '../../components/NavigationPatternLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
-import { getDemoSourceUrl, getLessonMeta } from '../../data/lessonMeta';
+import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes } from '../../data/lessonMeta';
 import { lessons } from '../../data/lessons';
 
 export function getStaticPaths() {
@@ -28,7 +28,18 @@ const currentIndex = lessons.findIndex((item) => item.slug === lesson.slug);
 const previousLesson = lessons[currentIndex - 1];
 const nextLesson = lessons[currentIndex + 1];
 const demoSourceUrl = getDemoSourceUrl(lesson);
+const demoGuidance = getDemoGuidance(lesson);
 const lessonMeta = getLessonMeta(lesson, currentIndex);
+const lessonCheckpoint = getLessonCheckpoint(lesson);
+const teacherNotes = getTeacherNotes(lesson);
+const pageSections = [
+  { href: '#learning-goals', label: 'Learning Goals' },
+  ...(demoSourceUrl ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
+  { href: '#lesson-content', label: 'Lesson Content' },
+  { href: '#checkpoint', label: 'Checkpoint' },
+  ...(lesson.practice ? [{ href: '#practice', label: 'Practice' }] : []),
+  ...(lesson.resources ? [{ href: '#resources', label: 'Resources' }] : []),
+];
 ---
 
 <BaseLayout title={`${lesson.title} | Learn Web Design With Quinton Jason`}>
@@ -78,12 +89,53 @@ const lessonMeta = getLessonMeta(lesson, currentIndex);
           </div>
         </nav>
 
+        <nav class="lesson-on-this-page" aria-labelledby="lesson-outline-title">
+          <h2 id="lesson-outline-title">On This Page</h2>
+          <ul>
+            {pageSections.map((section) => (
+              <li>
+                <a href={section.href}>{section.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <label class="lesson-progress">
           <input type="checkbox" data-lesson-complete data-lesson-slug={lesson.slug} />
           <span data-lesson-progress-label>Mark lesson complete</span>
         </label>
 
-        <section>
+        <details class="teacher-notes">
+          <summary>Teacher Notes / In-Class Use</summary>
+          <div class="teacher-notes__grid">
+            <section>
+              <h2>Demo Live</h2>
+              <ul>
+                {teacherNotes.demo.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+            <section>
+              <h2>Try In Class</h2>
+              <ul>
+                {teacherNotes.tryInClass.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+            <section>
+              <h2>Submit Or Check</h2>
+              <ul>
+                {teacherNotes.check.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+            <section>
+              <h2>Watch For</h2>
+              <ul>
+                {teacherNotes.watchFor.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+          </div>
+        </details>
+
+        <section id="learning-goals">
           <h2>Learning Goals</h2>
           <ul>
             {lesson.goals.map((goal) => <li>{goal}</li>)}
@@ -91,104 +143,127 @@ const lessonMeta = getLessonMeta(lesson, currentIndex);
         </section>
 
         {
-          lesson.slug === 'box-model-and-layout' && <BoxModelVisualizer />
-        }
-
-        {
-          lesson.slug === 'intro-to-css' && <SelectorPlayground />
-        }
-
-        {
-          lesson.slug === 'flexbox' && <FlexboxPlayground />
-        }
-
-        {
-          lesson.slug === 'responsive-web-design' && <ResponsiveLayoutVisualizer />
-        }
-
-        {
-          lesson.slug === 'html-forms-building-interactive-user-interfaces' && <FormAccessibilityLab />
-        }
-
-        {
-          lesson.slug === 'javascript-in-the-dom' && <DomInteractionLab />
-        }
-
-        {
-          lesson.slug === 'web-accessibility' && <AccessibilityCheckLab />
-        }
-
-        {
-          lesson.slug === 'css-transitions' && <TransitionPlayground />
-        }
-
-        {
-          lesson.slug === 'css-animation' && <AnimationKeyframeLab />
-        }
-
-        {
-          lesson.slug === 'gsap-web-animation' && <GsapTimelineLab />
-        }
-
-        {
-          lesson.slug === 'image-optimization' && <ImageOptimizationLab />
-        }
-
-        {
-          lesson.slug === 'building-effective-site-navigation' && <NavigationPatternLab />
-        }
-
-        {
-          lesson.slug === 'mastering-carousels' && <CarouselAccessibilityLab />
-        }
-
-        {
           demoSourceUrl && (
-            <p class="demo-source">
-              This demo uses extra JavaScript for teaching. The code sample shows the pattern to practice.
-              {' '}
-              <a href={demoSourceUrl} target="_blank" rel="noopener noreferrer">View full demo source (opens in a new tab)</a>.
-            </p>
+            <div id="interactive-demo" class="lesson-anchor-block">
+              <section class="demo-guide" aria-labelledby="demo-guide-title">
+                <div class="demo-guide__heading">
+                  <p class="eyebrow">Interactive Demo</p>
+                  <h2 id="demo-guide-title">How to use this demo.</h2>
+                  <p>
+                    Use the demo as a small lab. Change one thing, observe the result,
+                    then connect it back to your own project.
+                  </p>
+                </div>
+                <div class="demo-guide__grid">
+                  <section>
+                    <h3>What To Try</h3>
+                    <ul>
+                      {demoGuidance.try.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </section>
+                  <section>
+                    <h3>What Changes</h3>
+                    <ul>
+                      {demoGuidance.changes.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </section>
+                  <section>
+                    <h3>What To Notice</h3>
+                    <ul>
+                      {demoGuidance.notice.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </section>
+                  <section>
+                    <h3>Apply It</h3>
+                    <ul>
+                      {demoGuidance.apply.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </section>
+                </div>
+              </section>
+
+              {lesson.slug === 'box-model-and-layout' && <BoxModelVisualizer />}
+
+              {lesson.slug === 'intro-to-css' && <SelectorPlayground />}
+
+              {lesson.slug === 'flexbox' && <FlexboxPlayground />}
+
+              {lesson.slug === 'responsive-web-design' && <ResponsiveLayoutVisualizer />}
+
+              {lesson.slug === 'html-forms-building-interactive-user-interfaces' && <FormAccessibilityLab />}
+
+              {lesson.slug === 'javascript-in-the-dom' && <DomInteractionLab />}
+
+              {lesson.slug === 'web-accessibility' && <AccessibilityCheckLab />}
+
+              {lesson.slug === 'css-transitions' && <TransitionPlayground />}
+
+              {lesson.slug === 'css-animation' && <AnimationKeyframeLab />}
+
+              {lesson.slug === 'gsap-web-animation' && <GsapTimelineLab />}
+
+              {lesson.slug === 'image-optimization' && <ImageOptimizationLab />}
+
+              {lesson.slug === 'building-effective-site-navigation' && <NavigationPatternLab />}
+
+              {lesson.slug === 'mastering-carousels' && <CarouselAccessibilityLab />}
+
+              <p class="demo-source">
+                This demo uses extra JavaScript for teaching. The code sample shows the pattern to practice.
+                {' '}
+                <a href={demoSourceUrl} target="_blank" rel="noopener noreferrer">View full demo source (opens in a new tab)</a>.
+              </p>
+            </div>
           )
         }
 
-        {
-          lesson.sections.map((section) => (
-            <section>
-              <h2>{section.title}</h2>
-              {section.body?.map((paragraph) => <p>{paragraph}</p>)}
-              {section.bullets && (
-                <ul>
-                  {section.bullets.map((bullet) => <li>{bullet}</li>)}
-                </ul>
-              )}
-              {section.note && <p>{section.note}</p>}
-              {section.code && (
-                <pre><code>{section.code}</code></pre>
-              )}
-              {section.resources && (
-                <p class="lesson-section-resources">
-                  {
-                    section.resources.map((resource, index) => (
-                      <>
-                        {index > 0 && ' | '}
-                        {typeof resource === 'string' ? (
-                          <span>{resource}</span>
-                        ) : (
-                          <a href={resource.href}>{resource.label}</a>
-                        )}
-                      </>
-                    ))
-                  }
-                </p>
-              )}
-            </section>
-          ))
-        }
+        <div id="lesson-content" class="lesson-content-sections">
+          {
+            lesson.sections.map((section) => (
+              <section>
+                <h2>{section.title}</h2>
+                {section.body?.map((paragraph) => <p>{paragraph}</p>)}
+                {section.bullets && (
+                  <ul>
+                    {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                  </ul>
+                )}
+                {section.note && <p>{section.note}</p>}
+                {section.code && (
+                  <pre><code>{section.code}</code></pre>
+                )}
+                {section.resources && (
+                  <p class="lesson-section-resources">
+                    {
+                      section.resources.map((resource, index) => (
+                        <>
+                          {index > 0 && ' | '}
+                          {typeof resource === 'string' ? (
+                            <span>{resource}</span>
+                          ) : (
+                            <a href={resource.href}>{resource.label}</a>
+                          )}
+                        </>
+                      ))
+                    }
+                  </p>
+                )}
+              </section>
+            ))
+          }
+        </div>
+
+        <section class="lesson-checkpoint" id="checkpoint">
+          <h2>Checkpoint</h2>
+          <p>Before moving on, make sure these feel true.</p>
+          <ul>
+            {lessonCheckpoint.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
 
         {
           lesson.practice && (
-            <section>
+            <section id="practice">
               <h2>Practice</h2>
               <ul>
                 {lesson.practice.map((item) => <li>{item}</li>)}
@@ -199,7 +274,7 @@ const lessonMeta = getLessonMeta(lesson, currentIndex);
 
         {
           lesson.resources && (
-            <section>
+            <section id="resources">
               <h2>Resources</h2>
               <ul>
                 {lesson.resources.map((resource) => (

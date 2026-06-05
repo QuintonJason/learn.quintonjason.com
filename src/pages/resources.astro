@@ -1,5 +1,177 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const resourceGroups = [
+  {
+    title: 'Setup',
+    summary: 'Tools students need before project work can move smoothly.',
+    resources: [
+      {
+        name: 'GitHub',
+        href: 'https://github.com/',
+        use: 'Create repositories, publish code, and manage project history.',
+        lesson: 'Developer Environment Setup',
+        lessonHref: '/lessons/developer-environment-setup/',
+      },
+      {
+        name: 'GitHub Desktop',
+        href: 'https://desktop.github.com/',
+        use: 'Commit and push project changes without needing the command line.',
+        lesson: 'Developer Environment Setup',
+        lessonHref: '/lessons/developer-environment-setup/',
+      },
+      {
+        name: 'Visual Studio Code',
+        href: 'https://code.visualstudio.com/download',
+        use: 'Edit HTML, CSS, JavaScript, and project files locally.',
+        lesson: 'Developer Environment Setup',
+        lessonHref: '/lessons/developer-environment-setup/',
+      },
+    ],
+  },
+  {
+    title: 'HTML & CSS References',
+    summary: 'Reference material for structure, styling, and browser behavior.',
+    resources: [
+      {
+        name: 'MDN HTML',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+        use: 'Look up elements, attributes, forms, links, images, and semantic HTML.',
+        lesson: 'Basic HTML Structure and Elements',
+        lessonHref: '/lessons/basic-html-structure-and-elements/',
+      },
+      {
+        name: 'MDN CSS',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+        use: 'Look up CSS properties, selectors, layout systems, and browser support.',
+        lesson: 'Intro to CSS',
+        lessonHref: '/lessons/intro-to-css/',
+      },
+      {
+        name: 'CSS-Tricks',
+        href: 'https://css-tricks.com/',
+        use: 'Find practical examples and explanations for common CSS patterns.',
+        lesson: 'Box Model and Layout',
+        lessonHref: '/lessons/box-model-and-layout/',
+      },
+    ],
+  },
+  {
+    title: 'Layout Practice',
+    summary: 'Low-pressure games and guides for learning layout behavior.',
+    resources: [
+      {
+        name: 'Flexbox Froggy',
+        href: 'https://flexboxfroggy.com/',
+        use: 'Practice flexbox alignment, direction, wrapping, and ordering.',
+        lesson: 'Flexbox',
+        lessonHref: '/lessons/flexbox/',
+      },
+      {
+        name: 'Grid Garden',
+        href: 'https://cssgridgarden.com/',
+        use: 'Practice CSS Grid placement concepts through short challenges.',
+        lesson: 'Responsive Web Design',
+        lessonHref: '/lessons/responsive-web-design/',
+      },
+      {
+        name: 'Can I Use',
+        href: 'https://caniuse.com/',
+        use: 'Check browser support before relying on newer CSS or HTML features.',
+        lesson: 'Responsive Web Design',
+        lessonHref: '/lessons/responsive-web-design/',
+      },
+    ],
+  },
+  {
+    title: 'Accessibility',
+    summary: 'Manual and automated tools for testing inclusive interfaces.',
+    resources: [
+      {
+        name: 'WebAIM',
+        href: 'https://webaim.org/resources/',
+        use: 'Learn accessibility principles, testing methods, and common patterns.',
+        lesson: 'Web Accessibility',
+        lessonHref: '/lessons/web-accessibility/',
+      },
+      {
+        name: 'WAVE',
+        href: 'https://wave.webaim.org/',
+        use: 'Run a visual accessibility scan and review errors in context.',
+        lesson: 'Web Accessibility',
+        lessonHref: '/lessons/web-accessibility/',
+      },
+      {
+        name: 'WebAIM Contrast Checker',
+        href: 'https://webaim.org/resources/contrastchecker/',
+        use: 'Check whether foreground and background colors meet contrast guidance.',
+        lesson: 'Styling Text with CSS',
+        lessonHref: '/lessons/styling-text-with-css/',
+      },
+      {
+        name: 'WCAG Quick Reference',
+        href: 'https://www.w3.org/WAI/WCAG22/quickref/',
+        use: 'Look up accessibility requirements and techniques by guideline.',
+        lesson: 'Web Accessibility',
+        lessonHref: '/lessons/web-accessibility/',
+      },
+    ],
+  },
+  {
+    title: 'Design & Process',
+    summary: 'Planning and review tools for the work before and after coding.',
+    resources: [
+      {
+        name: 'Figma',
+        href: 'https://www.figma.com/',
+        use: 'Create wireframes, layouts, visual systems, and design references.',
+        lesson: 'Website Process',
+        lessonHref: '/lessons/website-process/',
+      },
+      {
+        name: 'Responsive Design Mode',
+        href: 'https://firefox-source-docs.mozilla.org/devtools-user/responsive_design_mode/',
+        use: 'Test a page at different viewport sizes while refining layout.',
+        lesson: 'Responsive Web Design',
+        lessonHref: '/lessons/responsive-web-design/',
+      },
+      {
+        name: 'PageSpeed Insights',
+        href: 'https://pagespeed.web.dev/',
+        use: 'Review performance, accessibility, SEO, and best-practice signals after publishing.',
+        lesson: 'Image Optimization',
+        lessonHref: '/lessons/image-optimization/',
+      },
+    ],
+  },
+  {
+    title: 'Libraries',
+    summary: 'Third-party tools used when native browser features need help.',
+    resources: [
+      {
+        name: 'Slick Carousel',
+        href: 'https://kenwheeler.github.io/slick/',
+        use: 'Build carousel behavior with a plugin when a project calls for rotating content.',
+        lesson: 'Mastering Carousels',
+        lessonHref: '/lessons/mastering-carousels/',
+      },
+      {
+        name: 'GSAP',
+        href: 'https://gsap.com/',
+        use: 'Create more controlled web animation timelines and interactive motion.',
+        lesson: 'GSAP Web Animation',
+        lessonHref: '/lessons/gsap-web-animation/',
+      },
+      {
+        name: 'jQuery',
+        href: 'https://jquery.com/',
+        use: 'Understand legacy plugin setup, including tools like Slick that depend on it.',
+        lesson: 'Mastering Carousels',
+        lessonHref: '/lessons/mastering-carousels/',
+      },
+    ],
+  },
+];
 ---
 
 <BaseLayout title="Resources | Learn Web Design With Quinton Jason">
@@ -9,23 +181,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p class="eyebrow">Resources</p>
         <h1>Class references.</h1>
         <p class="lede">
-          A living collection of the tools, links, and references used across
-          ART 3020.
+          Curated tools, links, and references for ART 3020. Use this page when
+          you need the right resource without hunting through every lesson.
         </p>
       </div>
-      <div class="resource-grid">
-        <article class="resource-card">
-          <h2>Setup</h2>
-          <p>GitHub, GitHub Desktop, Visual Studio Code, class demo repos, and GitHub Pages.</p>
-        </article>
-        <article class="resource-card">
-          <h2>HTML and CSS</h2>
-          <p>Document structure, file paths, selectors, text styling, box model, flexbox, and grid.</p>
-        </article>
-        <article class="resource-card">
-          <h2>Interaction and Media</h2>
-          <p>JavaScript, CSS motion, GSAP, responsive images, lazy loading, navigation, and carousels.</p>
-        </article>
+      <div class="resource-hub">
+        {
+          resourceGroups.map((group) => (
+            <section class="resource-group">
+              <div class="resource-group__heading">
+                <h2>{group.title}</h2>
+                <p>{group.summary}</p>
+              </div>
+              <div class="resource-list">
+                {
+                  group.resources.map((resource) => (
+                    <article class="resource-item">
+                      <h3>
+                        <a href={resource.href} target="_blank" rel="noopener noreferrer">
+                          {resource.name}
+                          <span class="visually-hidden"> opens in a new tab</span>
+                        </a>
+                      </h3>
+                      <p>{resource.use}</p>
+                      <p class="resource-item__lesson">
+                        Supports <a href={resource.lessonHref}>{resource.lesson}</a>
+                      </p>
+                    </article>
+                  ))
+                }
+              </div>
+            </section>
+          ))
+        }
       </div>
     </div>
   </section>

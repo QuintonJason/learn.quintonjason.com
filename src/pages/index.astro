@@ -36,6 +36,62 @@ const startPath = [
     lesson: lessons.find((lesson) => lesson.slug === 'web-accessibility'),
   },
 ].filter((item) => item.lesson);
+
+const helpPaths = [
+  {
+    title: 'Publishing your site',
+    description: 'Use this when GitHub Pages, commits, or live URLs are the blocker.',
+    lessons: [
+      lessons.find((lesson) => lesson.slug === 'developer-environment-setup'),
+      lessons.find((lesson) => lesson.slug === 'file-paths-and-site-structure'),
+    ],
+  },
+  {
+    title: 'Fixing broken images or links',
+    description: 'Start here when something works locally but disappears after publishing.',
+    lessons: [
+      lessons.find((lesson) => lesson.slug === 'file-paths-and-site-structure'),
+      lessons.find((lesson) => lesson.slug === 'image-optimization'),
+    ],
+  },
+  {
+    title: 'Cleaning up layout',
+    description: 'Use this path when spacing, boxes, alignment, or responsiveness feels off.',
+    lessons: [
+      lessons.find((lesson) => lesson.slug === 'box-model-and-layout'),
+      lessons.find((lesson) => lesson.slug === 'flexbox'),
+      lessons.find((lesson) => lesson.slug === 'responsive-web-design'),
+    ],
+  },
+  {
+    title: 'Adding interaction',
+    description: 'Use this when buttons, menus, or dynamic page behavior need to work.',
+    lessons: [
+      lessons.find((lesson) => lesson.slug === 'javascript-in-the-dom'),
+      lessons.find((lesson) => lesson.slug === 'building-effective-site-navigation'),
+    ],
+  },
+  {
+    title: 'Fixing carousel behavior',
+    description: 'Use this when slides all show, buttons do nothing, or autoplay gets messy.',
+    lessons: [
+      lessons.find((lesson) => lesson.slug === 'javascript-in-the-dom'),
+      lessons.find((lesson) => lesson.slug === 'mastering-carousels'),
+    ],
+  },
+  {
+    title: 'Checking accessibility',
+    description: 'Use this before final submission or any time a UI feels hard to use.',
+    lessons: [
+      lessons.find((lesson) => lesson.slug === 'html-forms-building-interactive-user-interfaces'),
+      lessons.find((lesson) => lesson.slug === 'building-effective-site-navigation'),
+      lessons.find((lesson) => lesson.slug === 'web-accessibility'),
+    ],
+  },
+].map((path) => ({
+  ...path,
+  lessons: path.lessons.filter(Boolean),
+}));
 ---
 
 <BaseLayout>
@@ -90,6 +146,41 @@ const startPath = [
           ))
         }
       </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Need Help With...</p>
+        <h2>Jump to the lessons that match the problem.</h2>
+        <p>
+          Use these paths when you are stuck in the middle of a project and do
+          not need to move through the full course sequence.
+        </p>
+      </div>
+
+      <div class="help-path-grid">
+        {
+          helpPaths.map((path) => (
+            <article class="help-path-card">
+              <h3>{path.title}</h3>
+              <p>{path.description}</p>
+              <ol>
+                {
+                  path.lessons.map((lesson) => (
+                    <li>
+                      <a href={`/lessons/${lesson.slug}/`}>
+                        Lesson {lesson.number}: {lesson.title}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ol>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 

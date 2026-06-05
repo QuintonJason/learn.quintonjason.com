@@ -16,6 +16,16 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
         </p>
       </div>
 
+      <div class="lesson-search">
+        <label for="lesson-search">Find a lesson</label>
+        <input
+          id="lesson-search"
+          type="search"
+          placeholder="Search forms, GitHub, images, flexbox..."
+          data-lesson-search
+        />
+      </div>
+
       <div class="lesson-filters" role="group" aria-label="Filter lessons">
         {
           filterOptions.map((filter, index) => (
@@ -44,6 +54,13 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
           lessons.map((lesson, index) => {
             const tags = getLessonTags(lesson);
             const meta = getLessonMeta(lesson, index);
+            const searchText = [
+              lesson.number,
+              lesson.eyebrow,
+              lesson.title,
+              lesson.summary,
+              ...tags.map((tag) => tagLabels[tag]),
+            ].join(' ');
 
             return (
             <a
@@ -51,6 +68,7 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
               href={`/lessons/${lesson.slug}/`}
               data-lesson-card
               data-lesson-slug={lesson.slug}
+              data-search={searchText.toLowerCase()}
               data-tags={tags.join(' ')}
             >
               <span class="lesson-card__number">
@@ -81,9 +99,11 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
 <script>
   const lessonFilters = Array.from(document.querySelectorAll('[data-lesson-filter]'));
   const lessonCards = Array.from(document.querySelectorAll('[data-lesson-card]'));
+  const lessonSearch = document.querySelector('[data-lesson-search]');
   const lessonStatus = document.querySelector('[data-lesson-filter-status]');
   const progressSummary = document.querySelector('[data-lesson-progress-summary]');
   const progressStorageKey = 'qj-learn-completed-lessons';
+  let activeFilter = 'all';
 
   function getCompletedLessons() {
     try {
@@ -113,12 +133,19 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
       : `${completedLessons.size} of ${lessonCards.length} lessons marked complete on this device.`;
   }
 
-  function filterLessons(filter) {
+  function filterLessons(filter = activeFilter) {
+    activeFilter = filter;
     let visibleCount = 0;
+    const query = lessonSearch instanceof HTMLInputElement
+      ? lessonSearch.value.trim().toLowerCase()
+      : '';
 
     lessonCards.forEach((card) => {
       const tags = card.dataset.tags?.split(' ') ?? [];
-      const isVisible = filter === 'all' || tags.includes(filter);
+      const searchText = card.dataset.search ?? '';
+      const matchesFilter = filter === 'all' || tags.includes(filter);
+      const matchesSearch = query.length === 0 || searchText.includes(query);
+      const isVisible = matchesFilter && matchesSearch;
 
       card.hidden = !isVisible;
       if (isVisible) visibleCount += 1;
@@ -128,11 +155,21 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
       button.setAttribute('aria-pressed', String(button.dataset.lessonFilter === filter));
     });
 
-    const activeFilter = lessonFilters.find((button) => button.dataset.lessonFilter === filter);
-    const filterLabel = activeFilter?.textContent?.trim().toLowerCase() ?? 'all lessons';
-    lessonStatus.textContent = filter === 'all'
-      ? 'Showing all lessons.'
-      : `Showing ${visibleCount} ${filterLabel} ${visibleCount === 1 ? 'lesson' : 'lessons'}.`;
+    const activeFilterButton = lessonFilters.find((button) => button.dataset.lessonFilter === filter);
+    const filterLabel = activeFilterButton?.textContent?.trim().toLowerCase() ?? 'all lessons';
+    const lessonWord = visibleCount === 1 ? 'lesson' : 'lessons';
+
+    if (!lessonStatus) return;
+
+    if (query && filter !== 'all') {
+      lessonStatus.textContent = `Showing ${visibleCount} ${filterLabel} ${lessonWord} matching "${query}".`;
+    } else if (query) {
+      lessonStatus.textContent = `Showing ${visibleCount} ${lessonWord} matching "${query}".`;
+    } else if (filter !== 'all') {
+      lessonStatus.textContent = `Showing ${visibleCount} ${filterLabel} ${lessonWord}.`;
+    } else {
+      lessonStatus.textContent = 'Showing all lessons.';
+    }
   }
 
   lessonFilters.forEach((button) => {
@@ -140,6 +177,12 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
       filterLessons(button.dataset.lessonFilter ?? 'all');
     });
   });
+
+  if (lessonSearch instanceof HTMLInputElement) {
+    lessonSearch.addEventListener('input', () => {
+      filterLessons();
+    });
+  }
 
   updateProgressSummary();
 </script>

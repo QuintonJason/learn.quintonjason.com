@@ -672,14 +672,14 @@ export const lessons: Lesson[] = [
       {
         title: 'Link Examples',
         code: `<a href="about.html">About Us</a>
-<a href="https://www.example.com" target="_blank">Visit Example Website</a>
+<a href="https://www.example.com" target="_blank" rel="noopener noreferrer">Visit Example Website</a>
 <a href="images/logo.png">View Logo</a>
 <a href="#contact">Contact Us</a>
 <h2 id="contact">Contact Information</h2>
 <a href="tel:+15551234567">Call Us</a>
 <a href="mailto:contact@example.com">Contact Us</a>`,
         note:
-          'External links can use target="_blank" to open the link in a new browser tab or window.',
+          'External links can use target="_blank" to open in a new tab. When you do that, include rel="noopener noreferrer" and tell users when a link opens a new tab.',
       },
       {
         title: 'Other Elements',
@@ -2194,7 +2194,8 @@ p {
       {
         title: 'Inline',
         body: [
-          'JavaScript code can be embedded directly in an HTML element using an event attribute like onclick.',
+          'JavaScript code can be embedded directly in an HTML element using an event attribute like onclick, but this is mostly useful to recognize in older examples.',
+          'For class projects, prefer external JavaScript files and addEventListener so behavior stays separate from markup.',
         ],
         code: `<button onclick="alert('Hello!')">Click me</button>`,
       },
@@ -2237,6 +2238,8 @@ p {
         title: 'Modifying Content',
         code: `element.textContent = 'New content'; // Updates the text content
 element.innerHTML = '<p>New HTML content</p>'; // Updates the HTML content`,
+        note:
+          'Use textContent when inserting plain text. Use innerHTML carefully because inserting untrusted content can create security and accessibility problems.',
       },
       {
         title: 'Modifying Attributes',
@@ -4363,7 +4366,12 @@ autoplay();`,
       'Build the vanilla JavaScript autoplay example.',
       'Add alt text, keyboard support, or pause controls to improve accessibility.',
     ],
-    resources: ['Slick documentation'],
+    resources: [
+      {
+        label: 'Slick documentation',
+        href: 'https://kenwheeler.github.io/slick/',
+      },
+    ],
   },
   {
     slug: 'web-accessibility',

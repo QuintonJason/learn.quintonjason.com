@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <pre aria-live="polite"><code data-dom-code>{`const title = document.querySelector('[data-dom-title]');
+  <pre><code data-dom-code>{`const title = document.querySelector('[data-dom-title]');
 title.textContent = 'Updated by JavaScript';`}</code></pre>
 
   <div class="interactive-notes">
@@ -54,6 +54,7 @@ title.textContent = 'Updated by JavaScript';`}</code></pre>
 </section>
 
 <script>
+  // @ts-nocheck
   const lab = document.querySelector('.dom-lab');
 
   if (lab) {

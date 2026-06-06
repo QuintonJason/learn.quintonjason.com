@@ -1,7 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const resourceGroups = [
+type Resource = {
+  name: string;
+  href: string;
+  use: string;
+  lesson: string;
+  lessonHref: string;
+  internal?: boolean;
+};
+
+type ResourceGroup = {
+  title: string;
+  summary: string;
+  resources: Resource[];
+};
+
+const resourceGroups: ResourceGroup[] = [
   {
     title: 'Troubleshooting',
     summary: 'Use these when something breaks and you need a calm debugging sequence.',

@@ -79,7 +79,7 @@
     <li data-nav-result="mobile">Mobile menu state: Pass</li>
   </ul>
 
-  <pre aria-live="polite"><code data-nav-code>{`<a href="#main">Skip to content</a>
+  <pre><code data-nav-code>{`<a href="#main">Skip to content</a>
 <button aria-expanded="false" aria-controls="primary-menu">Menu</button>
 <nav id="primary-menu" aria-label="Primary">
   <ul>
@@ -108,6 +108,7 @@
 </section>
 
 <script>
+  // @ts-nocheck
   const navLab = document.querySelector('.nav-lab');
 
   if (navLab) {

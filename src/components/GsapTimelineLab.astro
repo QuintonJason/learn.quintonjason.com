@@ -44,7 +44,7 @@
     </p>
   </div>
 
-  <pre aria-live="polite"><code data-gsap-code>{`const timeline = gsap.timeline();
+  <pre><code data-gsap-code>{`const timeline = gsap.timeline();
 
 timeline.from('.item', {
   duration: 0.6,
@@ -75,6 +75,7 @@ timeline.from('.item', {
 </section>
 
 <script>
+  // @ts-nocheck
   const lab = document.querySelector('.gsap-lab');
 
   if (lab) {

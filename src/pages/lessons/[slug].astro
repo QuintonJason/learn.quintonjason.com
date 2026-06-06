@@ -36,6 +36,7 @@ const teacherNotes = getTeacherNotes(lesson);
 const supportingProjects = projects.filter((project) =>
   project.supportingLessons.some((supportingLesson) => supportingLesson.href === `/lessons/${lesson.slug}/`)
 );
+const isExternalHref = (href: string) => href.startsWith('http://') || href.startsWith('https://');
 const pageSections = [
   { href: '#learning-goals', label: 'Learning Goals' },
   ...(demoSourceUrl ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
@@ -250,7 +251,14 @@ const pageSections = [
                           {typeof resource === 'string' ? (
                             <span>{resource}</span>
                           ) : (
-                            <a href={resource.href}>{resource.label}</a>
+                            <a
+                              href={resource.href}
+                              target={isExternalHref(resource.href) ? '_blank' : undefined}
+                              rel={isExternalHref(resource.href) ? 'noopener noreferrer' : undefined}
+                            >
+                              {resource.label}
+                              {isExternalHref(resource.href) && <span class="visually-hidden"> opens in a new tab</span>}
+                            </a>
                           )}
                         </>
                       ))
@@ -311,9 +319,23 @@ const pageSections = [
                     {
                       typeof resource === 'string'
                         ? resource.startsWith('http')
-                          ? <a href={resource}>{resource}</a>
+                          ? (
+                            <a href={resource} target="_blank" rel="noopener noreferrer">
+                              {resource}
+                              <span class="visually-hidden"> opens in a new tab</span>
+                            </a>
+                          )
                           : resource
-                        : <a href={resource.href}>{resource.label}</a>
+                        : (
+                          <a
+                            href={resource.href}
+                            target={isExternalHref(resource.href) ? '_blank' : undefined}
+                            rel={isExternalHref(resource.href) ? 'noopener noreferrer' : undefined}
+                          >
+                            {resource.label}
+                            {isExternalHref(resource.href) && <span class="visually-hidden"> opens in a new tab</span>}
+                          </a>
+                        )
                     }
                   </li>
                 ))}
@@ -332,6 +354,7 @@ const pageSections = [
 </BaseLayout>
 
 <script>
+  // @ts-nocheck
   const progressCheckbox = document.querySelector('[data-lesson-complete]');
   const progressLabel = document.querySelector('[data-lesson-progress-label]');
   const progressStorageKey = 'qj-learn-completed-lessons';

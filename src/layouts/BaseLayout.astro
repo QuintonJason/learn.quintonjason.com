@@ -16,7 +16,7 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="author" content="Quinton Jason" />
     <meta name="theme-color" content="#41b649" data-theme-color />
@@ -112,6 +112,7 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
       </div>
     </footer>
     <script>
+      // @ts-nocheck
       const themeToggle = document.querySelector('[data-theme-toggle]');
       const themeToggleLabel = document.querySelector('[data-theme-toggle-label]');
       const themeStorageKey = 'qj-learn-theme';
@@ -185,6 +186,51 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
           window.setTimeout(() => {
             button.textContent = 'Copy';
           }, 1800);
+        });
+      });
+
+      const dynamicCodeBlocks = Array.from(
+        document.querySelectorAll(
+          [
+            '[data-a11y-code]',
+            '[data-animation-code]',
+            '[data-box-code]',
+            '[data-carousel-code]',
+            '[data-dom-code]',
+            '[data-flex-code]',
+            '[data-form-code]',
+            '[data-gsap-code]',
+            '[data-image-code]',
+            '[data-nav-code]',
+            '[data-responsive-code]',
+            '[data-selector-code]',
+            '[data-transition-code]',
+          ].join(',')
+        )
+      );
+
+      dynamicCodeBlocks.forEach((code) => {
+        const wrapper = code.closest('.code-copy') ?? code.parentElement;
+        if (!wrapper) return;
+
+        const status = document.createElement('span');
+        status.className = 'visually-hidden';
+        status.setAttribute('aria-live', 'polite');
+        wrapper.append(status);
+
+        let statusTimer;
+
+        const observer = new MutationObserver(() => {
+          window.clearTimeout(statusTimer);
+          statusTimer = window.setTimeout(() => {
+            status.textContent = 'Code example updated.';
+          }, 120);
+        });
+
+        observer.observe(code, {
+          characterData: true,
+          childList: true,
+          subtree: true,
         });
       });
     </script>

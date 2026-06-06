@@ -14,11 +14,19 @@ type DemoGuidance = {
   apply: string[];
 };
 
+export type LessonTag =
+  | 'accessibility'
+  | 'css'
+  | 'html'
+  | 'interactive'
+  | 'javascript'
+  | 'ux-process';
+
 type LessonMetadata = {
   checkpoint?: string[];
   demoGuidance?: Partial<DemoGuidance>;
   demoSourceFile?: string;
-  tags: string[];
+  tags: LessonTag[];
   teacherNotes?: Partial<TeacherNotes>;
 };
 
@@ -557,9 +565,9 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
   },
 };
 
-export function getLessonTags(lesson: Lesson) {
+export function getLessonTags(lesson: Lesson): LessonTag[] {
   const metadata = lessonMetadata[lesson.slug] ?? { tags: [] };
-  const tags = [...metadata.tags];
+  const tags: LessonTag[] = [...metadata.tags];
 
   if (metadata.demoSourceFile) {
     tags.push('interactive');

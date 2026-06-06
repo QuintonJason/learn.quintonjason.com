@@ -1,6 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Lesson } from '../data/lessons';
 import { lessons } from '../data/lessons';
+
+type StartPathItem = {
+  title: string;
+  lesson: Lesson;
+};
+
+type HelpPath = {
+  title: string;
+  description: string;
+  lessons: Lesson[];
+};
+
+const isLesson = (lesson: Lesson | undefined): lesson is Lesson => Boolean(lesson);
 
 const startPath = [
   {
@@ -35,7 +49,7 @@ const startPath = [
     title: 'Test accessibility',
     lesson: lessons.find((lesson) => lesson.slug === 'web-accessibility'),
   },
-].filter((item) => item.lesson);
+].filter((item): item is StartPathItem => isLesson(item.lesson));
 
 const helpPaths = [
   {
@@ -88,9 +102,9 @@ const helpPaths = [
       lessons.find((lesson) => lesson.slug === 'web-accessibility'),
     ],
   },
-].map((path) => ({
+].map((path): HelpPath => ({
   ...path,
-  lessons: path.lessons.filter(Boolean),
+  lessons: path.lessons.filter(isLesson),
 }));
 ---
 

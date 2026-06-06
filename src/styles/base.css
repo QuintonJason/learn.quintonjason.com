@@ -1,0 +1,120 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-surface);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+a {
+  color: var(--color-brand-dark);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--color-brand);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 7vw, 5.8rem);
+  margin: 0;
+  max-width: 13ch;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  margin: 0 0 1rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin: 0 0 0.65rem;
+}
+
+p {
+  margin: 0;
+}
+
+pre {
+  background: var(--color-code-surface);
+  border-radius: 8px;
+  color: var(--color-code-text);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+input,
+select,
+textarea {
+  background: var(--color-surface-raised);
+}
+
+ul,
+ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.visually-hidden {
+  block-size: 1px;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.container {
+  margin-inline: auto;
+  max-width: 1120px;
+  padding-inline: clamp(1rem, 3vw, 2rem);
+  width: 100%;
+}
+
+.skip-link {
+  background: var(--color-ink);
+  color: var(--color-surface);
+  left: 1rem;
+  padding: 0.65rem 0.85rem;
+  position: fixed;
+  top: 1rem;
+  transform: translateY(-150%);
+  z-index: 10;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}

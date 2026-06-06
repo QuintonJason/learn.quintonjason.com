@@ -56,18 +56,21 @@ const pageSections = [
   <article class="lesson-page">
     <div class="container lesson-layout">
       <aside class="lesson-sidebar" aria-label="Lesson navigation">
-        <p class="eyebrow">Lessons</p>
-        <ul>
-          {
-            lessons.map((item) => (
-              <li>
-                <a href={`/lessons/${item.slug}/`} aria-current={item.slug === lesson.slug ? 'page' : undefined}>
-                  {item.number}. {item.title}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+        <details class="lesson-sidebar__drawer" data-lesson-nav open>
+          <summary class="lesson-sidebar__summary">Lessons</summary>
+          <p class="eyebrow">Lessons</p>
+          <ul>
+            {
+              lessons.map((item) => (
+                <li>
+                  <a href={`/lessons/${item.slug}/`} aria-current={item.slug === lesson.slug ? 'page' : undefined}>
+                    {item.number}. {item.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </details>
       </aside>
       <div class="lesson-content">
         <header>
@@ -355,9 +358,21 @@ const pageSections = [
 
 <script>
   // @ts-nocheck
+  const lessonNav = document.querySelector('[data-lesson-nav]');
+  const lessonNavMedia = window.matchMedia('(max-width: 820px)');
   const progressCheckbox = document.querySelector('[data-lesson-complete]');
   const progressLabel = document.querySelector('[data-lesson-progress-label]');
   const progressStorageKey = 'qj-learn-completed-lessons';
+
+  function syncLessonNav(event) {
+    if (!(lessonNav instanceof HTMLDetailsElement)) return;
+    lessonNav.open = !event.matches;
+  }
+
+  if (lessonNav instanceof HTMLDetailsElement) {
+    syncLessonNav(lessonNavMedia);
+    lessonNavMedia.addEventListener('change', syncLessonNav);
+  }
 
   function getCompletedLessons() {
     try {

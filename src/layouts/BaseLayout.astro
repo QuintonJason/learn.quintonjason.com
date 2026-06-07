@@ -86,7 +86,16 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
           <span>Learn</span>
         </a>
         <div class="site-actions">
-          <nav class="site-nav" aria-label="Primary">
+          <button
+            class="site-nav-toggle"
+            type="button"
+            aria-controls="primary-navigation"
+            aria-expanded="false"
+            data-site-nav-toggle
+          >
+            Menu
+          </button>
+          <nav class="site-nav" id="primary-navigation" aria-label="Primary" data-site-nav>
             <a href="/modules/">Modules</a>
             <a href="/lessons/">Lessons</a>
             <a href="/projects/">Projects</a>
@@ -115,6 +124,9 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
       // @ts-nocheck
       const themeToggle = document.querySelector('[data-theme-toggle]');
       const themeToggleLabel = document.querySelector('[data-theme-toggle-label]');
+      const siteNavToggle = document.querySelector('[data-site-nav-toggle]');
+      const siteNav = document.querySelector('[data-site-nav]');
+      const siteNavMedia = window.matchMedia('(max-width: 560px)');
       const themeStorageKey = 'qj-learn-theme';
       const themeColor = document.querySelector('[data-theme-color]');
       const darkThemeColor = '#08140d';
@@ -143,6 +155,33 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
           }
 
           setTheme(nextTheme);
+        });
+      }
+
+      function setSiteNavState(isOpen) {
+        if (!(siteNav instanceof HTMLElement) || !(siteNavToggle instanceof HTMLButtonElement)) return;
+        siteNav.dataset.mobileNav = isOpen ? 'open' : 'closed';
+        siteNavToggle.setAttribute('aria-expanded', String(isOpen));
+      }
+
+      function syncSiteNav(event) {
+        if (!(siteNav instanceof HTMLElement) || !(siteNavToggle instanceof HTMLButtonElement)) return;
+
+        if (event.matches) {
+          setSiteNavState(false);
+        } else {
+          siteNav.removeAttribute('data-mobile-nav');
+          siteNavToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (siteNav instanceof HTMLElement && siteNavToggle instanceof HTMLButtonElement) {
+        syncSiteNav(siteNavMedia);
+        siteNavMedia.addEventListener('change', syncSiteNav);
+
+        siteNavToggle.addEventListener('click', () => {
+          const isOpen = siteNav.dataset.mobileNav === 'open';
+          setSiteNavState(!isOpen);
         });
       }
 

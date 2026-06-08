@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="How To Submit Projects | Learn Web Design With Quinton Jason"
+  description="A project submission checklist for ART 3020 students covering GitHub repositories, GitHub Pages URLs, pushed changes, required files, links, and images."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">How To Submit</p>
+        <h1>Submit the version that actually works online.</h1>
+        <p class="lede">
+          Every project submission needs two things: the GitHub repository URL
+          and the live GitHub Pages URL. Check both before submitting.
+        </p>
+      </div>
+
+      <section class="project-brief-section project-checklist">
+        <h2>Submission Checklist</h2>
+        <ul>
+          <li>□ GitHub repository exists.</li>
+          <li>□ GitHub Pages URL works.</li>
+          <li>□ Latest changes are committed and pushed.</li>
+          <li>□ Required pages are complete.</li>
+          <li>□ Images and links work on the live site.</li>
+          <li>□ The live site matches the version you see locally.</li>
+        </ul>
+      </section>
+
+      <section class="project-brief-section">
+        <h2>What To Submit</h2>
+        <div class="project-requirements">
+          <article>
+            <h3>GitHub Repository URL</h3>
+            <p>
+              This is the code repository. It usually looks like
+              <code>https://github.com/username/project-name</code>.
+            </p>
+          </article>
+          <article>
+            <h3>Live GitHub Pages URL</h3>
+            <p>
+              This is the public website. It usually looks like
+              <code>https://username.github.io/project-name/</code>.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="project-brief-section">
+        <h2>Common Submission Mistakes</h2>
+        <ul>
+          <li>Forgot to push changes after committing.</li>
+          <li>Submitted the wrong repository.</li>
+          <li>GitHub Pages was not enabled.</li>
+          <li>GitHub Pages is publishing from the wrong branch.</li>
+          <li>The local site is updated, but the live site is still old.</li>
+          <li>Images work locally but fail online because paths or capitalization are wrong.</li>
+        </ul>
+      </section>
+
+      <section class="callout">
+        <div>
+          <p class="eyebrow">Before You Submit</p>
+          <h2>Open the live site in a fresh browser tab.</h2>
+        </div>
+        <p>
+          If the live URL does not show the final work, the submission is not
+          ready yet. Use the GitHub Pages common fix before turning it in.
+        </p>
+        <div class="button-row">
+          <a class="button button--primary" href="/debugging/#github-pages-not-updating">Fix GitHub Pages</a>
+          <a class="button" href="/qa-checklist/">Run Final QA</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

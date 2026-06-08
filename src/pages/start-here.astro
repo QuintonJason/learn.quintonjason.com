@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Start Here | Learn Web Design With Quinton Jason"
+  description="A first-day setup guide for ART 3020 students covering GitHub, VS Code, GitHub Desktop, starter files, GitHub Pages, and what to do when stuck."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Start Here</p>
+        <h1>Begin the course without getting lost.</h1>
+        <p class="lede">
+          Use this page on the first day of class or any time you need to reset
+          your setup. The goal is simple: get your tools working, publish a
+          first site, and know where to go when something breaks.
+        </p>
+      </div>
+
+      <div class="debug-principles" aria-label="First day steps">
+        <article>
+          <span>01</span>
+          <h2>Create a GitHub account</h2>
+          <p>
+            Go to <a href="https://github.com/" target="_blank" rel="noopener noreferrer">github.com<span class="visually-hidden"> opens in a new tab</span></a>
+            and create an account you can use for class projects.
+          </p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2>Install your tools</h2>
+          <p>
+            Install <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener noreferrer">VS Code<span class="visually-hidden"> opens in a new tab</span></a>
+            and <a href="https://desktop.github.com/" target="_blank" rel="noopener noreferrer">GitHub Desktop<span class="visually-hidden"> opens in a new tab</span></a>.
+          </p>
+        </article>
+        <article>
+          <span>03</span>
+          <h2>Get starter files</h2>
+          <p>
+            Clone or download the starter files for the current project and keep
+            them inside the repository folder you will publish.
+          </p>
+        </article>
+        <article>
+          <span>04</span>
+          <h2>Publish with GitHub Pages</h2>
+          <p>
+            Commit your files, push them to GitHub, enable GitHub Pages, and wait
+            for the public site URL to appear.
+          </p>
+        </article>
+        <article>
+          <span>05</span>
+          <h2>Verify the live URL</h2>
+          <p>
+            Open the public URL in a browser. Do not submit until the live site,
+            not only your local files, shows the latest work.
+          </p>
+        </article>
+        <article>
+          <span>06</span>
+          <h2>Complete the first lesson</h2>
+          <p>
+            Start with <a href="/lessons/developer-environment-setup/">Developer Environment Setup</a>
+            and mark it complete when your tools and live URL work.
+          </p>
+        </article>
+      </div>
+
+      <section class="project-brief-section project-checklist">
+        <h2>First-Day Checklist</h2>
+        <ul>
+          <li>I can sign in to GitHub.</li>
+          <li>VS Code opens on my computer.</li>
+          <li>GitHub Desktop is installed and connected to my GitHub account.</li>
+          <li>I know where my class project folder is saved.</li>
+          <li>I can open the project folder in VS Code.</li>
+          <li>I can commit and push a small change.</li>
+          <li>My GitHub Pages URL opens in the browser.</li>
+        </ul>
+      </section>
+
+      <section class="callout">
+        <div>
+          <p class="eyebrow">What To Do If You Get Stuck</p>
+          <h2>Pause, name the problem, then use the right help path.</h2>
+        </div>
+        <p>
+          Start with the symptom. Is CSS missing? Is the image broken? Did the
+          live site fail to update? Use Common Fixes first, then ask for help
+          with the exact thing you tried and what happened.
+        </p>
+        <div class="button-row">
+          <a class="button button--primary" href="/debugging/">Open Common Fixes</a>
+          <a class="button" href="/resources/">Open Resources</a>
+          <a class="button" href="/resources/#contact-instructor">Contact Instructor</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

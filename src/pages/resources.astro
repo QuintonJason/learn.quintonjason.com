@@ -18,6 +18,60 @@ type ResourceGroup = {
 
 const resourceGroups: ResourceGroup[] = [
   {
+    title: 'Student Success',
+    summary: 'Use these pages to start the course, plan projects, submit correctly, and recover when you fall behind.',
+    resources: [
+      {
+        name: 'Start Here',
+        href: '/start-here/',
+        use: 'Set up tools, publish the first site, and complete the first lesson.',
+        lesson: 'Developer Environment Setup',
+        lessonHref: '/lessons/developer-environment-setup/',
+        internal: true,
+      },
+      {
+        name: 'How To Submit',
+        href: '/how-to-submit/',
+        use: 'Verify repository URLs, live URLs, pushed changes, GitHub Pages, links, and images before submitting.',
+        lesson: 'Developer Environment Setup',
+        lessonHref: '/lessons/developer-environment-setup/',
+        internal: true,
+      },
+      {
+        name: 'Project Planner',
+        href: '/project-planner/',
+        use: 'Plan goals, audience, pages, content, accessibility, and success criteria before building.',
+        lesson: 'Website Process',
+        lessonHref: '/lessons/website-process/',
+        internal: true,
+      },
+      {
+        name: 'Accessibility Checklist',
+        href: '/accessibility-checklist/',
+        use: 'Run a manual accessibility review before project submission.',
+        lesson: 'Web Accessibility',
+        lessonHref: '/lessons/web-accessibility/',
+        internal: true,
+      },
+      {
+        name: 'Final QA Checklist',
+        href: '/qa-checklist/',
+        use: 'Check links, images, responsiveness, console errors, accessibility, live URLs, and required files.',
+        lesson: 'Web Accessibility',
+        lessonHref: '/lessons/web-accessibility/',
+        internal: true,
+      },
+      {
+        name: "I'm Behind",
+        href: '/im-behind/',
+        use: 'Recover by focusing on the current project requirements and the lessons tied to that project.',
+        lesson: 'Course Modules',
+        lessonHref: '/modules/',
+        internal: true,
+      },
+    ],
+  },
+  {
     title: 'Troubleshooting',
     summary: 'Use these when something breaks and you need a calm debugging sequence.',
     resources: [
@@ -251,6 +305,18 @@ const resourceGroups: ResourceGroup[] = [
           ))
         }
       </div>
+
+      <section class="callout" id="contact-instructor">
+        <div>
+          <p class="eyebrow">Contact Instructor</p>
+          <h2>Bring the exact problem, not just “it does not work.”</h2>
+        </div>
+        <p>
+          When asking for help, include your repository URL, live URL, what you
+          expected to happen, what happened instead, and one thing you already
+          tried from Common Fixes.
+        </p>
+      </section>
     </div>
   </section>
 </BaseLayout>

@@ -2898,6 +2898,34 @@
   padding: 1rem;
 }
 
+.planner-actions {
+  margin-bottom: 1.5rem;
+}
+
+.planner-sheet {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.planner-sheet section {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  min-height: 11rem;
+  padding: 1rem;
+}
+
+.planner-sheet h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+
+.planner-sheet p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
 .site-footer {
   background: var(--color-footer-surface);
   color: var(--color-footer-text);
@@ -3066,6 +3094,10 @@
   .project-models__columns {
     grid-template-columns: 1fr;
   }
+
+  .planner-sheet {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 560px) {
@@ -3149,5 +3181,32 @@
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .planner-actions,
+  .skip-link {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .section {
+    padding-block: 0;
+  }
+
+  .planner-sheet {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .planner-sheet section {
+    break-inside: avoid;
+    min-height: 2.2in;
   }
 }

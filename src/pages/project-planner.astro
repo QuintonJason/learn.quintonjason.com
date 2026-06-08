@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Project Planner | Learn Web Design With Quinton Jason"
+  description="A printable project planning template for ART 3020 students covering goals, audience, pages, content, tasks, calls to action, inspiration, accessibility, and success criteria."
+>
+  <section class="section planner-page">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Project Planner</p>
+        <h1>Plan before you build.</h1>
+        <p class="lede">
+          Use this template before starting a project. A few clear decisions now
+          will save confusion later.
+        </p>
+      </div>
+
+      <div class="button-row planner-actions">
+        <button class="button button--primary" type="button" onclick="window.print()">Print Planner</button>
+        <a class="button" href="/projects/">View Projects</a>
+      </div>
+
+      <div class="planner-sheet" aria-label="Project planning worksheet">
+        <section>
+          <h2>Project Goal</h2>
+          <p>What should this project accomplish?</p>
+        </section>
+        <section>
+          <h2>Target Audience</h2>
+          <p>Who is this for? What do they need, know, or care about?</p>
+        </section>
+        <section>
+          <h2>Pages Needed</h2>
+          <p>List each page you need to build.</p>
+        </section>
+        <section>
+          <h2>Content Inventory</h2>
+          <p>What text, images, links, media, and files do you need?</p>
+        </section>
+        <section>
+          <h2>Primary User Task</h2>
+          <p>What is the main thing a visitor should be able to do?</p>
+        </section>
+        <section>
+          <h2>Call To Action</h2>
+          <p>What should the visitor click, read, submit, or explore next?</p>
+        </section>
+        <section>
+          <h2>Visual Inspiration</h2>
+          <p>What visual references, moods, or design patterns fit the project?</p>
+        </section>
+        <section>
+          <h2>Accessibility Considerations</h2>
+          <p>What needs labels, alt text, keyboard support, contrast, or reduced motion?</p>
+        </section>
+        <section>
+          <h2>Success Criteria</h2>
+          <p>How will you know the project is complete and working?</p>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

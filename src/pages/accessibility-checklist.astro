@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Accessibility Checklist | Learn Web Design With Quinton Jason"
+  description="A final accessibility checklist for ART 3020 projects covering headings, alt text, labels, keyboard navigation, focus states, contrast, and reduced motion."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Accessibility Checklist</p>
+        <h1>Review accessibility before every submission.</h1>
+        <p class="lede">
+          Accessibility is not one final tool scan. Use this checklist manually
+          before submitting each project.
+        </p>
+      </div>
+
+      <section class="project-brief-section project-checklist">
+        <h2>Manual Checklist</h2>
+        <ul>
+          <li>Headings are in order and describe the page structure.</li>
+          <li>Images have useful alt text or are intentionally decorative.</li>
+          <li>Form fields have visible labels connected to their inputs.</li>
+          <li>Keyboard navigation works with Tab, Shift+Tab, Enter, Space, and Escape when needed.</li>
+          <li>Focus states are visible on links, buttons, form fields, and custom controls.</li>
+          <li>Color contrast is sufficient for body text, links, buttons, and important UI states.</li>
+          <li>Animations respect reduced motion when motion is heavy or repeated.</li>
+          <li>Links and buttons use clear text that makes sense out of context.</li>
+        </ul>
+      </section>
+
+      <section class="callout">
+        <div>
+          <p class="eyebrow">Tools Help, But They Do Not Finish The Job</p>
+          <h2>Use Lighthouse and WAVE as support, not substitutes.</h2>
+        </div>
+        <p>
+          Lighthouse and WAVE can catch useful issues, but they cannot tell
+          whether your content makes sense, your alt text is useful, or your
+          interaction is understandable. Always do a manual pass.
+        </p>
+        <div class="button-row">
+          <a class="button button--primary" href="https://wave.webaim.org/" target="_blank" rel="noopener noreferrer">Open WAVE<span class="visually-hidden"> opens in a new tab</span></a>
+          <a class="button" href="/lessons/web-accessibility/">Review Accessibility Lesson</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

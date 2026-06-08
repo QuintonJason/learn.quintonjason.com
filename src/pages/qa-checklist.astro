@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Final QA Checklist | Learn Web Design With Quinton Jason"
+  description="A final project QA checklist for ART 3020 students covering links, images, responsive layout, console errors, HTML validation, accessibility, live site checks, and repository files."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Final QA Checklist</p>
+        <h1>Check the work before you submit it.</h1>
+        <p class="lede">
+          Run this checklist before every project submission. The goal is to
+          catch routine problems before they become grading problems.
+        </p>
+      </div>
+
+      <section class="project-brief-section project-checklist">
+        <h2>Project QA</h2>
+        <ul>
+          <li>Links work.</li>
+          <li>Images load on the live site.</li>
+          <li>Responsive layout works on narrow and wide screens.</li>
+          <li>No console errors appear in DevTools.</li>
+          <li>HTML validates or known errors are understood.</li>
+          <li>Accessibility checklist has been reviewed.</li>
+          <li>Live site matches the local version.</li>
+          <li>Repository contains all required files.</li>
+          <li>Final changes are committed and pushed.</li>
+        </ul>
+      </section>
+
+      <section class="callout">
+        <div>
+          <p class="eyebrow">Submission Rule</p>
+          <h2>If it only works locally, it is not ready.</h2>
+        </div>
+        <p>
+          Always verify the public URL. Your live site is the version someone
+          else can actually review.
+        </p>
+        <div class="button-row">
+          <a class="button button--primary" href="/how-to-submit/">How To Submit</a>
+          <a class="button" href="/accessibility-checklist/">Accessibility Checklist</a>
+          <a class="button" href="/debugging/">Common Fixes</a>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

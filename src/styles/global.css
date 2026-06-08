@@ -2656,6 +2656,25 @@
   gap: 2rem;
 }
 
+.project-support-callout {
+  border-color: var(--color-brand);
+  grid-template-columns: 1fr;
+}
+
+.project-support-callout h2 {
+  font-size: clamp(1.6rem, 3vw, 2.35rem);
+  line-height: 1.12;
+  max-width: 42rem;
+}
+
+.project-support-callout p:not(.eyebrow) {
+  max-width: 42rem;
+}
+
+.project-support-callout .button-row {
+  margin-top: 0.5rem;
+}
+
 .project-meta {
   display: flex;
   flex-wrap: wrap;

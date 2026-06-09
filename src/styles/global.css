@@ -485,6 +485,16 @@
   margin: 0;
 }
 
+.start-help-callout > p {
+  align-self: center;
+  margin-block-start: clamp(1rem, 3vw, 2.5rem);
+}
+
+.contact-instructor-callout > p,
+.submission-rule-callout > p {
+  align-self: center;
+}
+
 .path-list {
   counter-reset: path;
   display: grid;
@@ -2342,6 +2352,7 @@
   border-radius: 8px;
   display: grid;
   gap: 0.65rem;
+  grid-template-rows: auto minmax(3.1rem, auto) 1fr;
   padding: 1.25rem;
 }
 
@@ -2354,6 +2365,7 @@
 
 .debug-principles h2 {
   font-size: 1.35rem;
+  line-height: 1.15;
   margin: 0;
 }
 
@@ -2499,6 +2511,7 @@
 .module-card__grid section {
   align-content: start;
   align-items: start;
+  align-self: stretch;
   background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -2779,15 +2792,25 @@
   border-radius: 8px;
   display: grid;
   gap: 1rem;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 1fr;
   padding: clamp(1.1rem, 3vw, 1.5rem);
+}
+
+.project-starter-kit h2 {
+  font-size: clamp(1.6rem, 3vw, 2.35rem);
+  line-height: 1.12;
+  max-width: 34rem;
+}
+
+.project-starter-kit p:not(.eyebrow) {
+  max-width: 36rem;
 }
 
 .project-starter-kit ul {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  justify-content: flex-end;
+  justify-content: flex-start;
   list-style: none;
   padding: 0;
 }
@@ -2973,6 +2996,10 @@
 
   .callout--compact {
     align-items: start;
+  }
+
+  .start-help-callout > p {
+    margin-block-start: 0;
   }
 
   .lesson-grid,

@@ -43,6 +43,20 @@ const supportingProjects = projects.filter((project) =>
   project.supportingLessons.some((supportingLesson) => supportingLesson.href === `/lessons/${lesson.slug}/`)
 );
 const isExternalHref = (href: string) => href.startsWith('http://') || href.startsWith('https://');
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+const renderInlineLinks = (value: string) =>
+  escapeHtml(value).replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, (_match, label, href) => {
+    const isExternal = href.startsWith('http://') || href.startsWith('https://');
+    const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+
+    return `<a href="${href}"${target}>${label}</a>`;
+  });
 const pageSections = [
   { href: '#learning-goals', label: 'Learning Goals' },
   ...(hasInteractiveDemo ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
@@ -255,13 +269,13 @@ const pageSections = [
             lesson.sections.map((section) => (
               <section>
                 <h2>{section.title}</h2>
-                {section.body?.map((paragraph) => <p>{paragraph}</p>)}
+                {section.body?.map((paragraph) => <p set:html={renderInlineLinks(paragraph)} />)}
                 {section.bullets && (
                   <ul>
-                    {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                    {section.bullets.map((bullet) => <li set:html={renderInlineLinks(bullet)} />)}
                   </ul>
                 )}
-                {section.note && <p>{section.note}</p>}
+                {section.note && <p set:html={renderInlineLinks(section.note)} />}
                 {section.code && (
                   <pre><code>{section.code}</code></pre>
                 )}

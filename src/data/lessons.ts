@@ -38,39 +38,39 @@ export const lessons: Lesson[] = [
       {
         title: 'Step-by-Step Environment Setup for Web Development',
         body: [
-          'This guide walks you through setting up a professional-grade developer environment using GitHub, GitHub Desktop, and Visual Studio Code.',
+          'This guide walks you through setting up a professional-grade developer environment using [GitHub](https://github.com/), [GitHub Desktop](https://desktop.github.com/), and [Visual Studio Code](https://code.visualstudio.com/download).',
           'By the end of the lesson, you will be prepared to manage code collaboratively and deploy websites.',
         ],
       },
       {
         title: '1. Create a GitHub Account',
         body: [
-          'Visit https://github.com/ and click "Sign Up" to create your account.',
+          'Visit [GitHub](https://github.com/) and click "Sign Up" to create your account.',
         ],
       },
       {
         title: '2. Download and Install GitHub Desktop',
         body: [
-          'Visit https://desktop.github.com/ to download GitHub Desktop.',
+          'Visit [GitHub Desktop](https://desktop.github.com/) to download the app.',
           'After installation, open Settings, go to the Accounts tab, and sign in with your GitHub credentials.',
         ],
       },
       {
         title: '3. Download Visual Studio Code',
         body: [
-          'Visit https://code.visualstudio.com/download to download and install the editor.',
+          'Visit the [Visual Studio Code download page](https://code.visualstudio.com/download) to download and install the editor.',
         ],
       },
       {
         title: '4. Access Class Demo Repositories',
         body: [
-          'Navigate to https://github.com/LSUWebDesign to browse class demos.',
+          'Navigate to the [LSU Web Design GitHub organization](https://github.com/LSUWebDesign) to browse class demos.',
         ],
       },
       {
         title: '5. Download the Starter Repository',
         body: [
-          'Go to https://github.com/LSUWebDesign/starter-site-22.',
+          'Go to the [starter-site-22 repository](https://github.com/LSUWebDesign/starter-site-22).',
           'Click the "Code" button, then "Download ZIP." Extract the ZIP file and remember its location.',
         ],
       },
@@ -84,7 +84,7 @@ export const lessons: Lesson[] = [
       {
         title: '7. Create a New Repository in GitHub Desktop',
         body: [
-          'Open GitHub Desktop.',
+          'Open [GitHub Desktop](https://desktop.github.com/).',
           'Click File -> New Repository.',
           'Name your site using dashes instead of spaces, such as my-website.',
           'Click "Create Repository."',
@@ -99,7 +99,7 @@ export const lessons: Lesson[] = [
       {
         title: '9. Understanding the GitHub Desktop Interface',
         bullets: [
-          'Open in Visual Studio Code: opens the project in VS Code.',
+          'Open in Visual Studio Code: opens the project in [VS Code](https://code.visualstudio.com/download).',
           'Show in Finder: opens the local folder.',
           'View on GitHub: opens the GitHub page in the browser.',
         ],

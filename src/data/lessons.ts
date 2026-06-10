@@ -5971,53 +5971,110 @@ html {
     title: 'Item Listing and Details',
     eyebrow: 'Page Types',
     summary:
-      'Design item listing pages and detail pages that help users compare, evaluate, and act.',
+      'Design listing pages and detail pages that help users browse, compare, evaluate, and take action.',
     goals: [
-      'Identify the key components of an item listing page',
-      'Compare grid and list layout patterns',
-      'Explain what belongs on a strong item detail page',
+      'Explain how listing pages and detail pages work together',
+      'Choose between `grid`, `list`, table, and hybrid listing layouts',
+      'Build semantic item cards, filters, sorting controls, pagination, empty states, and detail-page sections',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          'Item listings are the digital storefronts of your website, showcasing products or services in an organized and visually appealing manner.',
-          'A well-designed item listing page can significantly impact user engagement and conversions.',
+          'A listing page helps users browse, compare, filter, and choose from many items. A detail page helps users evaluate one item and decide what to do next.',
+          'These two page types usually work as a pair. The listing page helps users find an item, and the detail page gives them enough information to act.',
         ],
       },
       {
-        title: 'Key Components of an Item Listing',
+        title: 'Listing Page vs Detail Page',
+        table: {
+          headers: ['Page Type', 'Primary Job', 'User Actions', 'Connects To'],
+          rows: [
+            ['Listing page', 'Show many related items', 'Browse, compare, filter, sort, search', 'Detail pages'],
+            ['Detail page', 'Explain one item in depth', 'Evaluate, save, contact, buy, apply, view more', 'Listing page, related items, next action'],
+          ],
+        },
+      },
+      {
+        title: 'User Goals',
+        body: [
+          'Before designing the layout, decide what users need to accomplish. The page structure should support those goals directly.',
+        ],
         bullets: [
-          'Thumbnail Image: A visually appealing image that represents the item.',
-          "Product Title: A concise and informative title.",
-          "Brief Description: A brief overview of the product's features and benefits.",
-          'Price: The price of the product or service.',
-          'Call to Action: A button or link that encourages users to learn more or make a purchase.',
+          'Find a specific item quickly.',
+          'Compare several options.',
+          'Narrow choices with `filter` controls.',
+          'Change order with `sort` controls.',
+          'Understand one item deeply on a detail page.',
+          'Take a clear next action.',
         ],
       },
       {
-        title: 'Common Layout Patterns',
-        body: [
-          'Item listings usually use either a grid layout or a list layout. The right choice depends on how users need to scan and compare content.',
+        title: 'Listing Page Anatomy',
+        bullets: [
+          'Clear page title and short description.',
+          'Result count, such as `24 projects` or `8 articles`.',
+          '`filter` controls for narrowing the set.',
+          '`sort` controls for changing item order.',
+          'Item cards, rows, or table entries.',
+          '`pagination`, `load more`, or infinite scroll when there are many items.',
+          'Empty state when no items match.',
+          'Selected filter summary and reset action.',
         ],
       },
       {
-        title: 'Grid Layout',
+        title: 'Detail Page Anatomy',
+        bullets: [
+          'Title or item name.',
+          'Media, gallery, or featured image.',
+          'Short summary or value proposition.',
+          'Key details, specs, tags, metadata, or attributes.',
+          'Primary call to action.',
+          'Supporting content such as description, process, reviews, or requirements.',
+          'Related items, next item, or back link.',
+          'Breadcrumbs when the site hierarchy is deep.',
+        ],
+      },
+      {
+        title: 'Choosing a Listing Layout',
+        table: {
+          headers: ['Layout', 'Best For', 'Why'],
+          rows: [
+            ['`grid`', 'Visual browsing', 'Images and cards can be scanned quickly.'],
+            ['`list`', 'Detail-heavy comparison', 'Rows allow more text and metadata per item.'],
+            ['Table', 'Dense structured data', 'Columns make precise comparison easier.'],
+            ['Map/list hybrid', 'Location-based content', 'Users compare places by geography and details.'],
+          ],
+        },
+      },
+      {
+        title: 'Semantic Item Card Markup',
         body: [
-          'This pattern arranges items in a structured grid, making efficient use of space and visual hierarchy.',
+          'Use a list for a group of related items. Each item can contain an `article` with a clear heading, image, summary, and link.',
         ],
         code: `<ul class="item-grid">
-  <li class="item-card">
-    <a href="project-detail.html">
-      <img src="project1.jpg" alt="Project 1">
-      <h4>Project 1: Website Design</h4>
-      <p>A modern, responsive website design for a tech startup.</p>
-    </a>
+  <li>
+    <article class="item-card">
+      <img
+        src="portfolio-dashboard.webp"
+        width="640"
+        height="420"
+        alt="Dashboard project with charts and activity cards"
+      >
+      <h2>
+        <a href="portfolio-dashboard.html">Portfolio Dashboard</a>
+      </h2>
+      <p>A responsive dashboard interface for tracking project progress.</p>
+      <p class="item-meta">UI Design · Responsive Layout</p>
+    </article>
   </li>
 </ul>`,
       },
       {
         title: 'Grid Layout CSS',
+        body: [
+          'A responsive grid works well for visual browsing. Use `gap` for spacing and stable image dimensions to avoid layout shift.',
+        ],
         code: `.item-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
@@ -6030,64 +6087,178 @@ html {
 .item-card img {
   aspect-ratio: 4 / 3;
   width: 100%;
+  height: auto;
   object-fit: cover;
 }`,
       },
       {
-        title: 'List Layout',
+        title: 'List Layout Markup',
         body: [
-          'This layout displays items vertically, which is useful for detailed reading or mobile views.',
+          'A list layout is better when the summary, metadata, or comparison details matter more than the image grid.',
         ],
-        code: `<ul class="project-list">
+        code: `<ul class="item-list">
   <li>
-    <a href="project-detail.html">
-      <img src="project1.jpg" alt="Project 1">
-      <h4>Project 1: Website Design</h4>
-      <p>A modern, responsive website design for a tech startup.</p>
-    </a>
+    <article class="item-row">
+      <img
+        src="course-card.webp"
+        width="240"
+        height="160"
+        alt="Course landing page with pricing cards"
+      >
+      <div>
+        <h2><a href="course-landing-page.html">Course Landing Page</a></h2>
+        <p>Landing page design with pricing, testimonials, and enrollment CTA.</p>
+        <p class="item-meta">Landing Page · HTML · CSS</p>
+      </div>
+    </article>
   </li>
 </ul>`,
       },
       {
         title: 'List Layout CSS',
-        code: `.project-list {
-  list-style-type: none;
+        code: `.item-list {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
   padding: 0;
 }
 
-.project-list li {
-  margin-bottom: 20px;
+.item-row {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.item-row img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }`,
       },
       {
-        title: 'Additional Considerations',
+        title: 'Filter and Sort Controls',
+        body: [
+          'Filters and sorting controls should use real form controls with labels. This keeps the interface understandable and keyboard accessible.',
+        ],
+        code: `<form class="listing-controls" aria-label="Project filters">
+  <label for="category">Category</label>
+  <select id="category" name="category">
+    <option value="">All categories</option>
+    <option value="web">Web design</option>
+    <option value="app">App design</option>
+  </select>
+
+  <fieldset>
+    <legend>Features</legend>
+    <label><input type="checkbox" name="feature" value="responsive"> Responsive</label>
+    <label><input type="checkbox" name="feature" value="animation"> Animation</label>
+  </fieldset>
+
+  <label for="sort">Sort by</label>
+  <select id="sort" name="sort">
+    <option value="newest">Newest</option>
+    <option value="name">Name</option>
+  </select>
+</form>`,
+      },
+      {
+        title: 'Pagination',
+        body: [
+          'Use `nav` with `aria-label` for pagination. Mark the current page with `aria-current="page"`.',
+        ],
+        code: `<nav class="pagination" aria-label="Pagination">
+  <a href="?page=1">Previous</a>
+  <a href="?page=1">1</a>
+  <a href="?page=2" aria-current="page">2</a>
+  <a href="?page=3">3</a>
+  <a href="?page=3">Next</a>
+</nav>`,
+      },
+      {
+        title: 'Empty State',
+        body: [
+          'An empty state explains what happened and gives users a way to recover. This is especially important when filters return no results.',
+        ],
+        code: `<section class="empty-state" aria-live="polite">
+  <h2>No projects match these filters</h2>
+  <p>Try removing a filter or viewing all projects.</p>
+  <a href="/work/">Reset filters</a>
+</section>`,
+      },
+      {
+        title: 'Detail Page Structure',
+        body: [
+          'A detail page should answer the user\'s biggest questions first, then provide supporting information and a clear next step.',
+        ],
+        code: `<article class="project-detail">
+  <a href="/work/">Back to all projects</a>
+  <h1>Portfolio Dashboard</h1>
+  <p>A responsive dashboard interface for tracking project progress.</p>
+
+  <img
+    src="portfolio-dashboard-large.webp"
+    width="1200"
+    height="800"
+    alt="Portfolio dashboard interface with charts and project cards"
+  >
+
+  <dl>
+    <div>
+      <dt>Role</dt>
+      <dd>UX design and front-end development</dd>
+    </div>
+    <div>
+      <dt>Tools</dt>
+      <dd>HTML, CSS, JavaScript</dd>
+    </div>
+  </dl>
+
+  <a href="/contact/">Start a project</a>
+</article>`,
+      },
+      {
+        title: 'Accessibility Guidance',
         bullets: [
-          'Responsive Design: Use media queries to adjust the grid layout for different screen sizes.',
-          'Image Aspect Ratios: Consider using aspect ratio boxes to maintain consistent proportions of images within the grid.',
-          'JavaScript Libraries: For more complex masonry layouts, you can use libraries like Masonry or Isotope.',
-          'Accessibility: Ensure that your masonry layout is accessible to users with disabilities by using appropriate ARIA attributes and keyboard navigation.',
+          'Make card links clear. The link text should identify the item, not just say `View more`.',
+          'Avoid putting buttons, selects, or other interactive controls inside one giant card link.',
+          'Use labels for every filter and sort control.',
+          'Use `aria-current="page"` for the current pagination link.',
+          'Use meaningful `alt` text for informative images and empty `alt=""` for decorative images.',
+          'Preserve logical heading order, such as `h1` for the page title and `h2` for item titles.',
         ],
       },
       {
-        title: 'The Product Detail Page',
+        title: 'Advanced Layout Note',
         body: [
-          'The product detail page provides a more in-depth look at a specific item.',
-          'It should help users evaluate the item, understand its value, and decide what to do next.',
+          'Masonry layouts can look interesting, but they can also create confusing reading order and uneven keyboard flow. Treat Masonry or Isotope-style layouts as advanced patterns and test them carefully.',
         ],
-        bullets: [
-          'High-Quality Images',
-          'Detailed Description',
-          'Pricing and Availability',
-          'Customer Reviews',
-          'Related Products',
-          'Call to Action',
-        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Cards with vague links', 'Users cannot predict where the link goes', 'Use the item title as the main link.'],
+            ['No empty state', 'Users may think the page is broken', 'Explain no results and provide a reset action.'],
+            ['Filters without labels', 'Controls are harder to understand and use', 'Pair each filter with a visible `label` or `legend`.'],
+            ['Layout shifts from images', 'Cards jump while images load', 'Use image dimensions and stable aspect ratios.'],
+            ['Pagination without accessible labels', 'Users may not understand page navigation', 'Use `nav aria-label="Pagination"` and `aria-current`.'],
+            ['Detail page missing a clear CTA', 'Users do not know the next step', 'Add one primary action near the decision point.'],
+            ['Too many items without filtering or search', 'Users cannot narrow choices', 'Add filters, search, sort, or pagination.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Build one item listing using a responsive grid.',
-      'Build the same content as a vertical list layout.',
+      'Build one semantic listing card with `article`, `h2`, `img`, and a clear link.',
+      'Create both a `grid` and `list` variation for the same items.',
+      'Add filter and sort controls with `form`, `label`, `select`, and checkboxes.',
+      'Add `pagination` or a load-more pattern.',
+      'Design an empty state for no matching results.',
       'Sketch the information hierarchy for a product or project detail page.',
+      'Add related items, breadcrumbs, or a back link to a detail page.',
     ],
   },
   {

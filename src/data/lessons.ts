@@ -4407,79 +4407,100 @@ buttons.forEach((button) => {
     title: 'CSS Transitions',
     eyebrow: 'Motion',
     summary:
-      'Use CSS transitions to create smooth state changes, hover effects, menu movement, and polished interface feedback.',
+      'Use CSS transitions to animate changes between interface states with smooth, accessible feedback.',
     goals: [
-      'Explain the core properties that make a CSS transition work',
-      'Create transitions with shorthand and individual properties',
-      'Apply transitions in ways that respect accessibility and performance',
+      'Explain the CSS state change that makes a `transition` run',
+      'Create transitions with shorthand and individual `transition-*` properties',
+      'Choose transition-friendly properties while respecting accessibility and performance',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          'CSS transitions provide a smooth and visually appealing way to change the properties of elements over time.',
-          'By understanding the fundamentals of transitions, you can create dynamic and interactive user interfaces.',
-          'This guide explores the key concepts of CSS transitions, provides practical examples, and offers strategies for creating effective and polished effects.',
+          'A CSS transition animates the change between two CSS states. Instead of jumping instantly from one value to another, the browser draws the in-between frames for you.',
+          'Transitions are useful for hover states, focus states, menus, accordions, alerts, form feedback, and small interface changes.',
         ],
       },
       {
-        title: 'Benefits of Using CSS Transitions',
-        bullets: [
-          'Improved aesthetics: A button that subtly changes color on hover provides instant feedback and enhances design.',
-          'Enhanced user experience: A navigation menu that slides into view feels more intuitive than an abrupt appearance.',
-          'Improved perceived performance: Smooth fade-ins and fade-outs for loading indicators can make interactions feel faster.',
-        ],
-      },
-      {
-        title: 'Understanding CSS Transitions',
+        title: 'What Makes a Transition Happen',
         body: [
-          'Transitions rely on several properties that define what changes, how long the change takes, how it moves, and when it begins.',
+          'A transition needs a starting value, a changed value, and a transition rule that tells the browser how to animate between them.',
         ],
         bullets: [
-          'transition-property: Specifies the CSS property to transition.',
-          'transition-duration: Sets how long the transition takes.',
-          'transition-timing-function: Defines the speed curve of the transition, such as ease-in-out.',
-          'transition-delay: Adds a delay before the transition begins.',
+          'The element starts with one CSS value, such as `opacity: 0`.',
+          'The value changes because of `:hover`, `:focus-visible`, `.is-open`, `.is-visible`, or another state.',
+          'The property can be transitioned.',
+          '`transition` defines the property, duration, timing function, and optional delay.',
         ],
       },
       {
-        title: 'Creating Transitions',
+        title: 'The Transition Properties',
         body: [
-          'The transition shorthand is the most common way to define a transition.',
+          'Transitions rely on four main properties. You can write them separately or combine them with the `transition` shorthand.',
         ],
-        code: `.transition-example {
-  transition: opacity 2s ease-in-out;
+        table: {
+          headers: ['Property', 'Controls', 'Example'],
+          rows: [
+            ['`transition-property`', 'What changes', '`opacity`'],
+            ['`transition-duration`', 'How long the change takes', '`200ms`'],
+            ['`transition-timing-function`', 'How the speed changes during the transition', '`ease-out`'],
+            ['`transition-delay`', 'How long to wait before starting', '`100ms`'],
+          ],
+        },
+      },
+      {
+        title: 'Transition Shorthand',
+        body: [
+          'The shorthand pattern is `transition: property duration timing-function delay`. The delay is optional.',
+          'List the specific properties you want to animate. Avoid `transition: all` because it can animate unexpected properties and make debugging harder.',
+        ],
+        code: `.button {
+  transition: background-color 180ms ease, transform 180ms ease;
 }`,
       },
       {
         title: 'Individual Properties',
         body: [
-          'You can also write each transition property separately when you want the pieces to be more explicit.',
-        ],
-        code: `.transition-example {
-  transition-property: opacity;
-  transition-duration: 2s;
-  transition-timing-function: ease-in-out;
-}`,
-      },
-      {
-        title: 'Fading In and Out an Element',
-        body: [
-          'Opacity transitions are useful for showing and hiding interface elements without an abrupt visual jump.',
+          'Writing each transition property separately can be helpful when you are learning or when the timing needs to be very explicit.',
         ],
         code: `.fade {
-  opacity: 0;
-  transition: opacity 200ms ease;
-}
-
-.fade.is-visible {
-  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }`,
       },
       {
-        title: 'Hover Effects',
+        title: 'Good Properties to Transition',
         body: [
-          'Hover transitions can make links, buttons, and cards feel responsive. Keep them quick and focused.',
+          'Some properties are smoother and safer to transition than others. As a general rule, prefer properties that do not force the browser to recalculate layout.',
+        ],
+        table: {
+          headers: ['Property Type', 'Examples', 'Guidance'],
+          rows: [
+            ['Best for motion', '`opacity`, `transform`', 'Usually smooth and efficient.'],
+            ['Usually okay', '`background-color`, `color`, `border-color`, `box-shadow`', 'Good for visual feedback, but keep effects subtle.'],
+            ['Avoid for movement', '`width`, `height`, `top`, `left`, `margin`, `padding`', 'Can trigger layout changes and feel less smooth.'],
+            ['Cannot transition directly', '`display`', 'Use `opacity`, `visibility`, `transform`, or another pattern instead.'],
+          ],
+        },
+      },
+      {
+        title: 'State Changes That Trigger Transitions',
+        table: {
+          headers: ['Trigger', 'Use For', 'Example'],
+          rows: [
+            ['`:hover`', 'Pointer hover feedback', 'Button lift or card highlight'],
+            ['`:focus-visible`', 'Keyboard focus feedback', 'Accessible focus ring'],
+            ['Class changes', 'Reusable component states', '`.is-open`, `.is-visible`, `.is-active`'],
+            ['Form states', 'Validation feedback', '`.has-error`'],
+            ['JavaScript class toggle', 'Interactive UI', 'Menu open and close'],
+          ],
+        },
+      },
+      {
+        title: 'Button Hover Transition',
+        body: [
+          'Hover transitions should be quick and focused. The goal is feedback, not a big animation moment.',
         ],
         code: `.button {
   background-color: #2f9e44;
@@ -4493,9 +4514,42 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: 'Menu Animations',
+        title: 'Focus-visible Transition',
         body: [
-          'Menus can use transform and opacity to slide or fade into view while avoiding expensive layout changes.',
+          '`focus-visible` helps keyboard users see where they are on the page. Do not remove focus styles without replacing them with a clear custom style.',
+        ],
+        code: `.button {
+  outline: 2px solid transparent;
+  outline-offset: 0.25rem;
+  transition: outline-color 160ms ease, box-shadow 160ms ease;
+}
+
+.button:focus-visible {
+  outline-color: currentColor;
+  box-shadow: 0 0 0 0.25rem rgb(47 158 68 / 25%);
+}`,
+      },
+      {
+        title: 'Fade In and Out',
+        body: [
+          '`opacity` transitions are useful for showing and hiding interface elements without an abrupt visual jump.',
+          'Remember that an element with `opacity: 0` can still take up space and may still be interactive unless you manage visibility or pointer events.',
+        ],
+        code: `.message {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+}
+
+.message.is-visible {
+  opacity: 1;
+  visibility: visible;
+}`,
+      },
+      {
+        title: 'Menu Open and Close',
+        body: [
+          'Menus often combine `opacity` and `transform` so the menu can fade and slide without animating layout properties.',
         ],
         code: `.menu {
   opacity: 0;
@@ -4511,7 +4565,8 @@ buttons.forEach((button) => {
       {
         title: 'Accordion Effects',
         body: [
-          'Accordions are common UI patterns for revealing content. Transitions can help the change feel connected to the user action.',
+          '`height: auto` does not transition cleanly because the browser cannot animate to an unknown automatic value.',
+          'One workaround is transitioning `grid-template-rows` between `0fr` and `1fr` while the inner content has `overflow: hidden`.',
         ],
         code: `.accordion-panel {
   display: grid;
@@ -4528,82 +4583,82 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: 'Advanced Techniques',
-        body: [
-          'Transitions can be applied to multiple properties, used with JavaScript, or managed using transition groups in frameworks.',
-        ],
-        code: `.element {
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-}
-
-.element:hover {
-  transform: scale(1.2);
-  background-color: #f0f0f0;
-}`,
-      },
-      {
         title: 'Transitions with JavaScript',
         body: [
-          'JavaScript can change classes or inline styles that trigger CSS transitions. In most projects, toggling a class is easier to maintain than writing many inline styles.',
+          'JavaScript can trigger CSS transitions by adding or removing classes. This keeps the animation details in CSS and the interaction logic in JavaScript.',
         ],
-        code: `const element = document.getElementById('myElement');
+        code: `<button class="menu-toggle">Menu</button>
+<nav class="menu">...</nav>
 
-element.addEventListener('click', () => {
-  element.style.transform = 'scale(1.2)';
-  element.style.transition = 'transform 0.2s ease-in-out';
-});
+const button = document.querySelector('.menu-toggle');
+const menu = document.querySelector('.menu');
 
-element.addEventListener('mouseout', () => {
-  element.style.transform = 'scale(1)';
+button.addEventListener('click', () => {
+  menu.classList.toggle('is-open');
 });`,
+      },
+      {
+        title: 'Timing Functions',
+        body: [
+          '`transition-timing-function` controls the feel of the transition. Start with built-in values before reaching for custom curves.',
+        ],
+        table: {
+          headers: ['Timing Function', 'Feel', 'Common Use'],
+          rows: [
+            ['`linear`', 'Same speed the whole time', 'Progress indicators or mechanical motion'],
+            ['`ease`', 'Natural default curve', 'General UI feedback'],
+            ['`ease-in`', 'Starts slow, ends fast', 'Elements leaving the screen'],
+            ['`ease-out`', 'Starts fast, ends slow', 'Elements entering or settling'],
+            ['`cubic-bezier()`', 'Custom curve', 'Advanced custom motion'],
+          ],
+        },
+      },
+      {
+        title: 'Custom Timing Functions',
+        body: [
+          '`cubic-bezier()` gives you custom control over the speed curve, but it can be hard to read at first. Use it only when a built-in timing function does not feel right.',
+        ],
+        code: `.card {
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}`,
       },
       {
         title: 'Accessibility and Performance',
         body: [
-          'Use @media (prefers-reduced-motion: reduce) to respect user motion preferences.',
-          'Limit transition use for performance, favoring properties like opacity and transform.',
+          'Respect user motion preferences with `@media (prefers-reduced-motion: reduce)`. This is especially important for movement, scaling, sliding, and zooming effects.',
+          'Transitions should support the interface. If a transition makes the interface feel slower or harder to use, shorten it or remove it.',
         ],
         code: `@media (prefers-reduced-motion: reduce) {
-  .element {
+  .button,
+  .menu,
+  .accordion-panel {
     transition: none;
   }
 }`,
       },
       {
-        title: 'Custom Timing Functions',
-        body: [
-          'Custom timing functions using cubic-bezier() provide control over transition speed curves.',
-          'Use online tools to create and visualize Bezier curves.',
-        ],
-        code: `.hover-element {
-  transition: background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.element {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}`,
-      },
-      {
-        title: 'CSS Transition Libraries',
-        bullets: [
-          'Hover.css: Pre-built hover effects using transitions.',
-          'Animate.css: A wide range of animation classes, many of which include transitions.',
-          'Animista: Visual tool for generating custom CSS animations and transitions.',
-        ],
-      },
-      {
-        title: 'Conclusion',
-        body: [
-          'CSS transitions offer a powerful tool for enhancing user experience.',
-          'By understanding their mechanics and thoughtfully applying them, you can craft responsive and engaging interfaces that delight users without sacrificing performance or accessibility.',
-        ],
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Using `transition: all`', 'Unexpected properties may animate', 'List the properties you actually want to transition.'],
+            ['Trying to transition `display`', '`display` switches on or off instantly', 'Use `opacity`, `visibility`, `transform`, or a layout-specific pattern.'],
+            ['Using very long durations', 'The interface can feel slow', 'Keep most UI transitions between `150ms` and `300ms`.'],
+            ['Animating layout properties', 'Can cause jank or layout recalculation', 'Prefer `transform` and `opacity` for movement.'],
+            ['Only designing hover states', 'Keyboard and touch users may miss feedback', 'Include `:focus-visible` and class-based states.'],
+            ['Skipping reduced motion', 'Some users are sensitive to motion', 'Add a `prefers-reduced-motion` fallback.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Create a button hover state using color and transform transitions.',
-      'Build a menu or accordion that opens with a transition.',
-      'Add a prefers-reduced-motion fallback.',
-      'Try one custom cubic-bezier timing function and explain how it changes the feel of the interaction.',
+      'Create a button hover transition using `background-color` and `transform`.',
+      'Add a clear `:focus-visible` transition for keyboard users.',
+      'Build a menu that opens and closes by toggling an `.is-open` class.',
+      'Create a fade in/out pattern with `.is-visible`.',
+      'Add a `prefers-reduced-motion` fallback.',
+      'Compare `linear`, `ease`, and `ease-out` on the same transition.',
+      'Refactor one `transition: all` example into a specific property list.',
     ],
     resources: ['MDN CSS Transitions Web Docs', 'W3Schools CSS transitions'],
   },
@@ -4613,71 +4668,60 @@ element.addEventListener('mouseout', () => {
     title: 'CSS Animation',
     eyebrow: 'Motion',
     summary:
-      'Use keyframes and animation properties to create smooth visual effects without JavaScript.',
+      'Use `@keyframes` and animation properties to create named motion sequences, loading states, and purposeful visual feedback.',
     goals: [
-      'Identify the key properties that control CSS animations',
-      'Create animations with @keyframes',
-      'Apply animations to elements and trigger them through interaction',
+      'Explain when to use `animation` instead of `transition`',
+      'Create animations with `@keyframes`, `from`, `to`, and percentage steps',
+      'Control animation timing, repetition, direction, fill behavior, pause state, and reduced-motion fallbacks',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          'CSS animations offer a powerful way to bring your web pages to life by adding dynamic and engaging effects.',
-          'By gradually changing the CSS properties of elements over time, you can create visually appealing and interactive experiences.',
-          'This guide explores the fundamentals of CSS animations, providing essential knowledge and tools to enhance your web projects.',
+          'CSS animations run named `@keyframes` over time. A keyframe animation can have multiple steps, repeat, pause, reverse, and run without waiting for a hover or class change.',
+          'Use animations for loaders, progress indicators, attention cues, entrance effects, and motion sequences that need more than a simple state change.',
         ],
       },
       {
-        title: 'Key Components of Animations',
-        bullets: [
-          'Animation name: Unique identifier for the animation.',
-          'Animation duration: Total time the animation takes to complete.',
-          'Animation timing function: Defines the speed curve, such as linear or ease-in-out.',
-          'Animation delay: Wait time before the animation starts.',
-          'Animation iteration count: Number of times the animation repeats.',
-          'Animation direction: Direction of animation play, such as normal, reverse, or alternate.',
-          'Animation fill mode: Styles applied before and after the animation.',
-        ],
-      },
-      {
-        title: 'Creating Animations with @keyframes',
+        title: 'Transition vs Animation',
         body: [
-          'The @keyframes rule defines the animation sequence. Set the percentage marks and apply style changes for each keyframe.',
+          'A `transition` animates a change between two CSS states. An `animation` runs a named `@keyframes` sequence.',
         ],
-        code: `@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}`,
+        table: {
+          headers: ['Need', 'Use', 'Why'],
+          rows: [
+            ['Button changes on hover', '`transition`', 'The element moves between two states.'],
+            ['Spinner loops forever while loading', '`animation`', 'The motion repeats without a state change.'],
+            ['Progress bar fills once', '`animation`', 'The sequence has a clear start and end.'],
+            ['Card lifts when hovered', '`transition`', 'The hover state controls the change.'],
+            ['Attention pulse runs three times', '`animation`', 'The motion needs timing and repetition control.'],
+          ],
+        },
       },
       {
-        title: 'Applying Animations to Elements',
+        title: 'Animation Properties',
         body: [
-          'Use the animation shorthand or its individual properties to attach animations to HTML elements.',
+          'Animations have several properties that control what runs, how long it runs, how it moves, and what happens before and after it runs.',
         ],
-        code: `.animated-element {
-  animation: fadeIn 2s ease-in-out infinite;
-}`,
+        table: {
+          headers: ['Property', 'Controls', 'Example'],
+          rows: [
+            ['`animation-name`', 'Which `@keyframes` sequence runs', '`fadeIn`'],
+            ['`animation-duration`', 'How long one cycle takes', '`600ms`'],
+            ['`animation-timing-function`', 'How speed changes during the cycle', '`ease-out`'],
+            ['`animation-delay`', 'How long to wait before starting', '`200ms`'],
+            ['`animation-iteration-count`', 'How many times it runs', '`1`, `3`, `infinite`'],
+            ['`animation-direction`', 'Whether cycles run forward, reverse, or alternate', '`alternate`'],
+            ['`animation-fill-mode`', 'Whether styles apply before or after the animation', '`both`'],
+            ['`animation-play-state`', 'Whether the animation is running or paused', '`paused`'],
+          ],
+        },
       },
       {
-        title: 'Interactive Examples',
-        bullets: [
-          'Fading element',
-          'Bouncing ball',
-          'Bouncing text with rotation',
-          'Progress bar',
-          'Loading spinner',
-        ],
-      },
-      {
-        title: 'Fading Element',
+        title: 'Creating Animations with Keyframes',
         body: [
-          'Use Case: Reveal hidden content or subtle transitions.',
+          'The `@keyframes` rule defines the animation sequence. Use `from` and `to` for simple start/end animations, or percentages for multi-step animations.',
+          '`from` is the same as `0%`. `to` is the same as `100%`.',
         ],
         code: `@keyframes fadeIn {
   from {
@@ -4686,67 +4730,128 @@ element.addEventListener('mouseout', () => {
 
   to {
     opacity: 1;
+  }
+}`,
+      },
+      {
+        title: 'Applying an Animation',
+        body: [
+          'Use the `animation` shorthand to attach a keyframe sequence to an element.',
+          'A common shorthand pattern is `animation: name duration timing-function delay iteration-count direction fill-mode`.',
+        ],
+        code: `.fade-in {
+  animation: fadeIn 600ms ease-out both;
+}`,
+      },
+      {
+        title: 'Individual Animation Properties',
+        body: [
+          'Writing the properties separately can make an animation easier to read while you are learning.',
+        ],
+        code: `.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 600ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}`,
+      },
+      {
+        title: 'Animation Fill Mode',
+        body: [
+          '`animation-fill-mode` controls whether the animated styles apply before the animation starts, after it ends, both, or neither.',
+          '`both` is useful for entrance animations because the element can begin in the first keyframe state and stay in the final keyframe state.',
+        ],
+        table: {
+          headers: ['Value', 'Meaning'],
+          rows: [
+            ['`none`', 'The animation styles do not apply before or after the animation.'],
+            ['`forwards`', 'The element keeps the final keyframe styles after the animation ends.'],
+            ['`backwards`', 'The element uses the first keyframe styles during the delay.'],
+            ['`both`', 'Combines `forwards` and `backwards`.'],
+          ],
+        },
+      },
+      {
+        title: 'Repeating Animations',
+        body: [
+          '`animation-iteration-count` controls how many times an animation runs. Use `infinite` only when repeated motion has a clear purpose, such as a loading spinner.',
+        ],
+        code: `.spinner {
+  animation: spin 800ms linear infinite;
+}`,
+      },
+      {
+        title: 'Pausing Animations',
+        body: [
+          '`animation-play-state` can pause and resume an animation. This is useful for interactive demos, media-like controls, or pausing decorative motion on hover.',
+        ],
+        code: `.marquee {
+  animation: slide 12s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}`,
+      },
+      {
+        title: 'Good Properties to Animate',
+        body: [
+          'Like transitions, animations are usually smoother when they use properties that do not force layout recalculation.',
+        ],
+        table: {
+          headers: ['Property Type', 'Examples', 'Guidance'],
+          rows: [
+            ['Best', '`opacity`, `transform`', 'Use these for most movement and fading.'],
+            ['Use carefully', '`box-shadow`, `filter`', 'Can be useful, but may be heavier on large elements.'],
+            ['Avoid for motion', '`width`, `height`, `top`, `left`, `margin`', 'These can trigger layout recalculation and feel less smooth.'],
+          ],
+        },
+      },
+      {
+        title: 'Example: One-time Fade In',
+        body: [
+          'A fade-in animation is useful when content enters the page or appears after loading.',
+        ],
+        code: `@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .fade-in {
-  animation: fadeIn 600ms ease both;
+  animation: fadeIn 600ms ease-out both;
 }`,
       },
       {
-        title: 'Bouncing Ball',
+        title: 'Example: Pulse Attention Cue',
         body: [
-          'Use Case: Simulate physical motion or draw attention.',
+          'A pulse can draw attention, but it should stop after a few cycles unless it communicates an ongoing status.',
         ],
-        code: `@keyframes bounce {
+        code: `@keyframes pulse {
   0%, 100% {
-    transform: translateY(0);
+    transform: scale(1);
   }
 
   50% {
-    transform: translateY(-40px);
+    transform: scale(1.06);
   }
 }
 
-.ball {
-  animation: bounce 700ms ease-in-out infinite;
+.notice {
+  animation: pulse 700ms ease-in-out 3;
 }`,
       },
       {
-        title: 'Bouncing Text with Rotation',
-        code: `@keyframes bounceRotate {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-1rem) rotate(8deg);
-  }
-}
-
-.animated-text {
-  animation: bounceRotate 900ms ease-in-out infinite;
-}`,
-      },
-      {
-        title: 'Progress Bar',
-        code: `@keyframes progress {
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: scaleX(1);
-  }
-}
-
-.progress-bar {
-  transform-origin: left;
-  animation: progress 2s ease forwards;
-}`,
-      },
-      {
-        title: 'Loading Spinner',
+        title: 'Example: Loading Spinner',
+        body: [
+          'A spinner is one of the clearest uses for an infinite animation because it communicates ongoing loading.',
+        ],
         code: `@keyframes spin {
   to {
     transform: rotate(360deg);
@@ -4763,51 +4868,54 @@ element.addEventListener('mouseout', () => {
 }`,
       },
       {
-        title: 'Advanced Techniques',
+        title: 'Example: Progress Bar',
         body: [
-          'CSS animations can be combined with transforms, 3D space, and JavaScript to create more interactive designs.',
+          'A progress bar can animate with `transform: scaleX()` from left to right. This avoids animating `width`.',
         ],
-      },
-      {
-        title: '3D Transformations and Animations',
-        body: [
-          'By combining 3D transforms with animations, you can create immersive and visually striking effects.',
-        ],
-      },
-      {
-        title: 'Example: 3D Card Flip',
-        body: [
-          'This setup enables a smooth card flipping effect when hovered, simulating a 3D transformation using perspective and preserve-3d.',
-        ],
-        code: `.card-scene {
-  perspective: 800px;
+        code: `@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
 }
 
-.card {
-  transform-style: preserve-3d;
-  transition: transform 400ms ease;
-}
-
-.card:hover {
-  transform: rotateY(180deg);
-}
-
-.card-face {
-  backface-visibility: hidden;
+.progress-bar {
+  transform-origin: left;
+  animation: progress 2s ease forwards;
 }`,
       },
       {
-        title: 'Keyframe Animations with JavaScript',
+        title: 'Example: Skeleton Shimmer',
         body: [
-          'JavaScript can be used to dynamically control CSS animations, allowing for more interactive designs.',
+          'A skeleton shimmer can suggest loading content, but avoid making it too bright, fast, or distracting.',
         ],
+        code: `@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton::after {
+  animation: shimmer 1.2s linear infinite;
+}`,
       },
       {
-        title: 'Example: Dynamically Triggering Animations',
+        title: 'Triggering Animations with JavaScript',
         body: [
-          'This method allows for animations that are triggered by user interactions, adding an extra layer of interactivity to your site.',
+          'JavaScript can trigger CSS animations by adding or removing a class. This keeps the animation definition in CSS and the interaction logic in JavaScript.',
         ],
-        code: `const button = document.querySelector('.animation-button');
+        code: `.animated-box.is-animating {
+  animation: pulse 700ms ease-in-out;
+}
+
+const button = document.querySelector('.animation-button');
 const box = document.querySelector('.animated-box');
 
 button.addEventListener('click', () => {
@@ -4819,18 +4927,46 @@ button.addEventListener('click', () => {
 });`,
       },
       {
-        title: 'Conclusion',
-        body: [
-          'CSS animations allow developers to create smooth, interactive visual effects without using JavaScript.',
-          'Mastering animations opens up a wide range of creative possibilities in user interface design.',
+        title: 'Accessibility and Motion Safety',
+        bullets: [
+          'Avoid constant motion near long reading content.',
+          'Do not make important information depend only on animation.',
+          'Avoid flashing, flickering, or rapid high-contrast changes.',
+          'Use `prefers-reduced-motion` to reduce or remove non-essential animations.',
+          'Make infinite animations purposeful, such as showing loading or ongoing activity.',
         ],
+        code: `@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .notice,
+  .spinner,
+  .skeleton::after {
+    animation: none;
+  }
+}`,
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Forgetting matching `@keyframes`', 'The animation name has nothing to run', 'Make sure `animation-name` matches the `@keyframes` name.'],
+            ['Using `infinite` for decorative motion', 'Constant motion can distract or bother users', 'Limit cycles or stop the animation when it has done its job.'],
+            ['Animating layout properties', 'Can cause jank and layout recalculation', 'Prefer `transform` and `opacity`.'],
+            ['Forgetting `animation-fill-mode`', 'The element may snap back after the animation', 'Use `forwards` or `both` when the final state should remain.'],
+            ['Creating motion with no purpose', 'Animation can make the interface feel noisy', 'Use motion to give feedback, show status, or guide attention.'],
+            ['Skipping reduced motion', 'Some users are sensitive to motion', 'Add a `prefers-reduced-motion` fallback.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Build one fading animation with @keyframes.',
-      'Create one looping animation such as a spinner or bouncing object.',
-      'Trigger an animation with a class change.',
-      'Explain what user feedback the animation provides.',
+      'Build a one-time fade-in animation with `@keyframes`.',
+      'Create a looping spinner with `animation-iteration-count: infinite`.',
+      'Build a progress bar using `transform: scaleX()` instead of `width`.',
+      'Pause an animation with `animation-play-state`.',
+      'Trigger an animation by toggling an `.is-animating` class.',
+      'Add a `prefers-reduced-motion` fallback.',
+      'Explain when you would use `animation` instead of `transition`.',
     ],
   },
   {

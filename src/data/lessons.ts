@@ -5686,67 +5686,155 @@ if (reduceMotion) {
     title: 'Site Navigation',
     eyebrow: 'Navigation',
     summary:
-      'Design clear, consistent, accessible navigation systems that help users move through a website with confidence.',
+      'Design clear, consistent, accessible navigation systems that help users understand where they are and where they can go next.',
     goals: [
-      'Explain the principles of effective website navigation',
-      'Identify common navigation patterns',
-      'Build semantic navigation markup with responsive and accessible behavior',
+      'Plan navigation around user goals, page priority, and site structure',
+      'Build semantic navigation with `nav`, links, skip links, breadcrumbs, and current-page states',
+      'Create responsive navigation behavior with accessible buttons, focus styles, and keyboard testing',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          "Site navigation is the backbone of your website. It guides users through your content, ensuring they can easily find what they're looking for.",
-          'A well-designed navigation system enhances user experience, improves SEO, and increases user engagement.',
+          'Navigation helps users understand where they are, where they can go, and how to complete tasks. Good navigation makes a site feel predictable instead of confusing.',
+          'Start with clear links and semantic HTML. Add CSS for layout and states. Use JavaScript only when the navigation needs interaction, such as opening a mobile menu.',
         ],
       },
       {
-        title: 'Key Principles of Effective Navigation',
+        title: 'What Good Navigation Answers',
         bullets: [
-          'Simplicity: Keep your navigation simple and easy to understand.',
-          'Clarity: Use clear and concise language for menu items.',
-          'Consistency: Maintain a consistent navigation structure throughout your website.',
-          'Accessibility: Ensure your navigation is accessible to users with disabilities.',
-          'Responsiveness: Design your navigation to adapt to different screen sizes.',
+          'Where am I?',
+          'What can I do here?',
+          'Where can I go next?',
+          'How do I get back to a broader section or the homepage?',
         ],
       },
       {
-        title: 'Common Navigation Patterns',
-        bullets: [
-          'Horizontal Navigation: A bar at the top of the page, common in desktop layouts.',
-          'Vertical Navigation: A side menu, often used for mobile or detailed dashboards.',
-          'Mega Menu: An expandable menu with categories and subcategories.',
-          'Hamburger Menu: A mobile-friendly menu accessible via an icon.',
-        ],
-      },
-      {
-        title: 'Building a Navigation Structure',
+        title: 'Navigation Planning',
         body: [
-          'Identify your core pages and organize them hierarchically.',
-          'Consider user needs and create intuitive pathways through your content.',
+          'Before building a menu, decide which links matter most. Not every page belongs in the main navigation.',
         ],
+        table: {
+          headers: ['User Goal', 'Needed Link', 'Priority', 'Best Location'],
+          rows: [
+            ['Understand the site', '`Home` or brand link', 'High', 'Main navigation'],
+            ['Browse work or products', '`Work`, `Shop`, or `Projects`', 'High', 'Main navigation'],
+            ['Learn about the person or organization', '`About`', 'Medium', 'Main or footer navigation'],
+            ['Get help or contact someone', '`Contact` or `Support`', 'High', 'Main, utility, or footer navigation'],
+            ['Find policies or social links', '`Privacy`, `Terms`, social links', 'Low', 'Footer navigation'],
+            ['Move within a long section', 'Section links or table of contents', 'Contextual', 'Local navigation'],
+          ],
+        },
       },
       {
-        title: 'HTML Structure for Navigation',
-        code: `<nav aria-label="Main menu">
+        title: 'Navigation Types',
+        table: {
+          headers: ['Type', 'Use For', 'Example'],
+          rows: [
+            ['Main navigation', 'Primary site sections', '`Home`, `Work`, `About`, `Contact`'],
+            ['Footer navigation', 'Secondary links and repeated important links', '`Privacy`, `Resources`, `Social`'],
+            ['Utility navigation', 'Account, search, language, or support links', '`Log in`, `Search`, `Help`'],
+            ['Breadcrumb navigation', 'Showing location in a hierarchy', '`Home / Lessons / Site Navigation`'],
+            ['Local navigation', 'Moving within a section or page', 'Lesson table of contents'],
+            ['Pagination', 'Moving through ordered sets', '`Previous`, `Next`, page numbers'],
+            ['Skip link', 'Letting keyboard users bypass repeated navigation', '`Skip to main content`'],
+          ],
+        },
+      },
+      {
+        title: 'Semantic Main Navigation',
+        body: [
+          'Use `nav` for navigation regions, `ul` and `li` for lists of links, and `a` for destinations. Add `aria-label` when the page has more than one navigation region.',
+        ],
+        code: `<nav class="site-nav" aria-label="Main navigation">
   <ul>
     <li><a href="/">Home</a></li>
-    <li><a href="/about">About Us</a></li>
-    <li>
-      <a href="/products">Products</a>
-      <ul>
-        <li><a href="/products/category1">Category 1</a></li>
-        <li><a href="/products/category2">Category 2</a></li>
-      </ul>
-    </li>
-    <li><a href="/contact">Contact</a></li>
+    <li><a href="/work/" aria-current="page">Work</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
   </ul>
 </nav>`,
       },
       {
-        title: 'CSS Styling',
+        title: 'Current Page State',
         body: [
-          'Use CSS to enhance visibility, indicate active states, and support responsive layouts with media queries.',
+          '`aria-current="page"` tells assistive technology which navigation link represents the current page. It can also be used as a styling hook.',
+        ],
+        code: `.site-nav a[aria-current="page"] {
+  font-weight: 700;
+  text-decoration-thickness: 0.18em;
+}`,
+      },
+      {
+        title: 'Link Labels',
+        bullets: [
+          'Use labels that match the destination.',
+          'Keep main navigation labels short.',
+          'Avoid vague labels such as `Click here` or `Learn more` in navigation.',
+          'Do not overload the main navigation with every page on the site.',
+          'Use footer, utility, and contextual navigation for lower-priority links.',
+        ],
+      },
+      {
+        title: 'Skip Links',
+        body: [
+          'A skip link lets keyboard users jump past repeated navigation and go straight to the main content.',
+        ],
+        code: `<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<main id="main-content">
+  <h1>Site Navigation</h1>
+</main>`,
+      },
+      {
+        title: 'Skip Link CSS',
+        code: `.skip-link {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  transform: translateY(-150%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}`,
+      },
+      {
+        title: 'Breadcrumb Navigation',
+        body: [
+          'Breadcrumbs help users understand where the current page lives in the site hierarchy. They are especially useful on larger sites with nested sections.',
+        ],
+        code: `<nav aria-label="Breadcrumb">
+  <ol class="breadcrumbs">
+    <li><a href="/">Home</a></li>
+    <li><a href="/lessons/">Lessons</a></li>
+    <li aria-current="page">Site Navigation</li>
+  </ol>
+</nav>`,
+      },
+      {
+        title: 'Responsive Navigation Markup',
+        body: [
+          'A responsive menu toggle should be a real `button`, not a link or a clickable `div`. Use `aria-expanded` and `aria-controls` to connect the button to the menu it controls.',
+        ],
+        code: `<button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">
+  Menu
+</button>
+
+<nav id="main-nav" class="site-nav" aria-label="Main navigation">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/work/">Work</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/contact/">Contact</a></li>
+  </ul>
+</nav>`,
+      },
+      {
+        title: 'Responsive Navigation CSS',
+        body: [
+          'The closed menu can be hidden by default on small screens, then revealed when JavaScript adds an open class.',
         ],
         code: `.site-nav ul {
   display: flex;
@@ -5756,59 +5844,70 @@ if (reduceMotion) {
   padding: 0;
 }
 
-.site-nav a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+.nav-toggle {
+  display: none;
 }
 
-.site-nav a[aria-current="page"] {
-  font-weight: 700;
+@media (max-width: 48rem) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .site-nav:not(.is-open) {
+    display: none;
+  }
+
+  .site-nav ul {
+    flex-direction: column;
+  }
 }`,
       },
       {
-        title: 'JavaScript for Advanced Interactions',
-        bullets: [
-          'Accordion Menus',
-          'Sticky Navigation',
-          'Dropdown Menus',
-        ],
-      },
-      {
-        title: 'Creating a Responsive Navigation Bar',
+        title: 'Responsive Navigation JavaScript',
         body: [
-          'A responsive navigation bar should work with semantic HTML first, CSS layout second, and JavaScript enhancement only when needed.',
+          'JavaScript is needed only for the interactive toggle. The links themselves should remain normal links.',
         ],
-        code: `<button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">
-  Menu
-</button>
+        code: `const toggleButton = document.querySelector('.nav-toggle');
+const nav = document.querySelector('#main-nav');
 
-<nav id="main-nav" class="site-nav" aria-label="Main menu">
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/work">Work</a></li>
-    <li><a href="/contact">Contact</a></li>
-  </ul>
-</nav>`,
+toggleButton.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('is-open');
+  toggleButton.setAttribute('aria-expanded', String(isOpen));
+});`,
       },
       {
-        title: 'Additional Tips',
-        bullets: [
-          'Use clear labels.',
-          'Prioritize important links.',
-          'Include a search bar for large sites.',
-          'Test across devices.',
-          'Ensure accessibility.',
-        ],
-      },
-      {
-        title: 'Advanced Techniques',
+        title: 'Focus Styles',
         body: [
-          'Advanced navigation patterns can improve movement through larger sites, but they should be used carefully and tested with real users.',
+          'Visible focus styles help keyboard users see which link or button is active. Do not remove outlines without replacing them with a clear focus style.',
         ],
+        code: `.site-nav a:focus-visible,
+.nav-toggle:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 0.25rem;
+}`,
+      },
+      {
+        title: 'Sticky Navigation',
+        body: [
+          'Use `position: sticky` when the navigation should stay near the top after the user scrolls to it. It is usually easier to manage than `position: fixed` because it remains in normal flow until it sticks.',
+        ],
+        code: `.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+html {
+  scroll-padding-top: 5rem;
+}`,
+        note:
+          '`scroll-padding-top` helps anchor links avoid being hidden behind a sticky header.',
       },
       {
         title: 'Smooth Scrolling',
+        body: [
+          'Smooth scrolling can help same-page navigation feel connected, but it should respect reduced-motion preferences.',
+        ],
         code: `html {
   scroll-behavior: smooth;
 }
@@ -5820,50 +5919,49 @@ if (reduceMotion) {
 }`,
       },
       {
-        title: 'Sticky Navigation',
-        code: `nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 999;
-}`,
-      },
-      {
-        title: 'Off-Canvas Navigation',
-        code: `const toggleButton = document.querySelector('.nav-toggle');
-const navbarMenu = document.querySelector('.site-nav');
-
-toggleButton.addEventListener('click', () => {
-  const isOpen = navbarMenu.classList.toggle('active');
-  toggleButton.setAttribute('aria-expanded', String(isOpen));
-});`,
-      },
-      {
-        title: 'Mega Menu',
-        body: [
-          'Mega menus can help organize large sets of links into categories and subcategories.',
-          'They work best when labels are clear and the menu remains keyboard accessible.',
+        title: 'Dropdown and Mega Menu Accessibility',
+        bullets: [
+          'Do not rely only on hover. Menus must work with keyboard and touch input.',
+          'Use visible `:focus-visible` styles for links and buttons.',
+          'Keep labels clear and predictable.',
+          'Test with `Tab`, `Shift + Tab`, `Enter`, `Space`, and `Escape` if the menu can close.',
+          'Mega menus are best for large sites with clear categories, not small sites with only a few links.',
         ],
       },
       {
-        title: 'Accessibility in Navigation',
-        body: [
-          'Ensure keyboard navigation, use helpful ARIA attributes, and test tab flow to enhance usability for all users.',
+        title: 'Keyboard Testing Checklist',
+        bullets: [
+          'Can you reach every navigation link with `Tab`?',
+          'Can you see where focus is at all times?',
+          'Can you open and close the responsive menu with the keyboard?',
+          'Does `aria-expanded` update when the menu opens and closes?',
+          'Does the current page link use `aria-current="page"`?',
+          'Does the skip link appear when focused?',
         ],
-        code: `<nav aria-label="Main menu">
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/about">About</a></li>
-  </ul>
-</nav>`,
-        note:
-          'The nav element already has navigation semantics. Use aria-label when the page has more than one navigation region, such as main navigation and footer navigation.',
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Too many top-level links', 'The main navigation becomes hard to scan', 'Prioritize primary user goals and move secondary links elsewhere.'],
+            ['Vague labels', 'Users cannot predict where links go', 'Use clear destination-based labels.'],
+            ['Navigation only works on hover', 'Keyboard and touch users may be blocked', 'Support click, keyboard, and touch behavior.'],
+            ['No focus styles', 'Keyboard users lose track of location', 'Add strong `:focus-visible` styles.'],
+            ['Missing current page indicator', 'Users may not know where they are', 'Use `aria-current="page"` and a visible active style.'],
+            ['Fixed header covers content', 'Headings and anchor targets can be hidden', 'Use `position: sticky` when possible and add `scroll-padding-top`.'],
+            ['Menu toggle is not a `button`', 'Interaction semantics are wrong', 'Use a real `button` with `aria-expanded` and `aria-controls`.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Create a semantic nav with at least four links.',
-      'Add an active state for the current page.',
-      'Build a responsive menu toggle with aria-expanded.',
+      'Write a navigation plan for a small sitemap with main, footer, and utility links.',
+      'Build a semantic `nav` with at least four links.',
+      'Add `aria-current="page"` to the current page link.',
+      'Add a skip link that appears on focus.',
+      'Build a responsive menu toggle with `aria-expanded` and `aria-controls`.',
+      'Add clear `:focus-visible` styles.',
       'Test the navigation with only the keyboard.',
     ],
   },

@@ -4975,158 +4975,191 @@ button.addEventListener('click', () => {
     title: 'GSAP Web Animation',
     eyebrow: 'GSAP',
     summary:
-      'Use GSAP for performant tweens, timelines, easing, plugins, and more sophisticated web animation.',
+      'Use GSAP for controlled JavaScript animation, sequenced timelines, staggered motion, and complex interaction patterns.',
     goals: [
-      'Explain why GSAP is useful for complex web animation',
-      'Create tweens and sequence them with timelines',
-      'Use easing, callbacks, repeat, yoyo, and staggered animations',
-      'Optimize animations with transform-based movement',
+      'Explain when GSAP is a better fit than CSS transitions or CSS animations',
+      'Create tweens with `gsap.to()`, `gsap.from()`, and `gsap.fromTo()`',
+      'Sequence animations with `gsap.timeline()` and stagger groups of elements',
+      'Use GSAP with performance, accessibility, and reduced motion in mind',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          "As UX developers, we know that animation isn't just about flashy effects. It's about bringing our websites to life, creating engaging user experiences, and adding that extra touch of polish that captivates our audience.",
-          'When it comes to web animation, GSAP is a powerful tool of choice.',
-          'Think of GSAP as your animation playground, a place where you can unleash your creativity and bring complex animation ideas to reality.',
-          'With its intuitive syntax, powerful features, and strong performance, GSAP helps create smooth, sophisticated, and performant animations.',
+          'GSAP is a JavaScript animation library for controlling motion with code. It is useful when CSS transitions or CSS keyframes are not enough for the interaction you want to build.',
+          'Use GSAP when you need precise timing, sequences, staggered groups, scroll-based motion, or animations that respond to user interaction.',
         ],
       },
       {
-        title: 'Why GSAP Rocks',
-        bullets: [
-          'Unmatched Performance: GSAP is known for smooth and fluid animations, even on complex projects.',
-          'Cross-Browser Compatibility: GSAP works across major browsers, reducing browser inconsistency headaches.',
-          "Intuitive Syntax: GSAP's syntax is clean, concise, and easy to learn.",
-          'Powerful Features: GSAP offers timelines, easing functions, plugins, and more.',
-          'Active Community: GSAP has a supportive community with resources, tutorials, and inspiration.',
+        title: 'When to Use GSAP',
+        body: [
+          'Choose the simplest tool that handles the job. CSS is still the right choice for many small interactions. GSAP becomes helpful when the timing or interaction gets more complex.',
         ],
+        table: {
+          headers: ['Need', 'Use', 'Why'],
+          rows: [
+            ['Simple hover or focus change', 'CSS `transition`', 'The element moves between two states.'],
+            ['Simple repeating loader', 'CSS `animation`', 'A named `@keyframes` loop is enough.'],
+            ['Animate one element with JavaScript control', 'GSAP tween', '`gsap.to()` can control timing, values, easing, and callbacks.'],
+            ['Sequence several steps', 'GSAP timeline', '`gsap.timeline()` avoids manually managing delays.'],
+            ['Animate a group one after another', 'GSAP stagger', '`stagger` creates a clean sequence across many elements.'],
+            ['Scroll-based animation', 'GSAP `ScrollTrigger`', 'Scroll progress and animation timing need tighter control.'],
+          ],
+        },
       },
       {
         title: 'Getting Started with GSAP',
         body: [
-          'Include GSAP in your project by downloading it from the GSAP website or using a CDN.',
-          'Use CSS selectors to target the elements you want to animate.',
-          'Create a tween. A tween is the core animation unit in GSAP. It defines the properties you want to animate and the duration of the animation.',
+          'You can load GSAP from a CDN for small demos. In larger projects, you may install it through your package manager.',
+          'A tween is one animation instruction. It needs a target, properties to animate, and timing options such as `duration` and `ease`.',
         ],
         code: `<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 
-<div class="my-element">Animate me</div>
+<div class="box">Animate me</div>
 
 <script>
-  gsap.to('.my-element', {
-    duration: 1,
+  gsap.to('.box', {
     x: 100,
     rotation: 360,
+    duration: 1,
   });
 </script>`,
         note:
-          'This animates the element with the class "my-element" to move 100 pixels to the right and rotate 360 degrees over 1 second.',
+          'GSAP `x` and `y` use transforms. They are usually better for motion than animating layout properties such as `left` or `top`.',
       },
       {
-        title: 'Core concepts',
-        bullets: [
-          'Tweens: The basic animation unit in GSAP.',
-          'Timelines: A powerful tool for sequencing and controlling multiple tweens.',
-          'Easing Functions: Control the speed and acceleration of animations.',
-          "Plugins: Extend GSAP's functionality with features like scroll triggering and morphing.",
-        ],
+        title: 'Tween Basics',
+        table: {
+          headers: ['Piece', 'Meaning', 'Example'],
+          rows: [
+            ['Target', 'The element or elements to animate', "'.card'"],
+            ['Properties', 'The values that change', '`x`, `opacity`, `scale`'],
+            ['Duration', 'How long the tween takes', '`duration: 0.6`'],
+            ['Ease', 'How the motion speeds up or slows down', "`ease: 'power2.out'`"],
+            ['Delay', 'How long to wait before starting', '`delay: 0.2`'],
+            ['Callback', 'A function that runs during the tween lifecycle', '`onComplete`'],
+          ],
+        },
       },
       {
-        title: 'Timelines: Orchestrating Animations',
+        title: 'Common GSAP Properties',
+        table: {
+          headers: ['Property', 'Use For'],
+          rows: [
+            ['`x` and `y`', 'Move an element with transforms.'],
+            ['`rotation`', 'Rotate an element.'],
+            ['`scale`', 'Resize an element visually.'],
+            ['`opacity`', 'Fade an element in or out.'],
+            ['`duration`', 'Set how long the tween takes.'],
+            ['`ease`', 'Control the feel of the motion.'],
+            ['`delay`', 'Wait before starting.'],
+            ['`stagger`', 'Offset the start time across multiple elements.'],
+          ],
+        },
+      },
+      {
+        title: '`gsap.to()`',
         body: [
-          'Timelines allow you to sequence and control multiple tweens, creating complex animation sequences.',
+          '`gsap.to()` animates from the element\'s current state to the values you provide.',
+        ],
+        code: `gsap.to('.box', {
+  x: 120,
+  opacity: 0.5,
+  duration: 0.6,
+  ease: 'power2.out',
+});`,
+      },
+      {
+        title: '`gsap.from()`',
+        body: [
+          '`gsap.from()` starts at the values you provide and animates to the element\'s current CSS state. This is useful for entrance animations.',
+        ],
+        code: `gsap.from('.card', {
+  y: 30,
+  opacity: 0,
+  duration: 0.6,
+  ease: 'power2.out',
+});`,
+      },
+      {
+        title: '`gsap.fromTo()`',
+        body: [
+          '`gsap.fromTo()` lets you define both the starting values and ending values. Use it when you need complete control over both states.',
+        ],
+        code: `gsap.fromTo(
+  '.button',
+  { scale: 0.8, opacity: 0 },
+  { scale: 1, opacity: 1, duration: 0.4 }
+);`,
+      },
+      {
+        title: 'Timelines',
+        body: [
+          '`gsap.timeline()` lets you sequence multiple tweens without calculating all the delays by hand.',
+          'Each tween is added to the timeline. By default, the next tween starts after the previous tween ends.',
         ],
         code: `const timeline = gsap.timeline();
 
 timeline
-  .to('.box', { duration: 0.5, x: 100 })
-  .to('.box', { duration: 0.5, rotation: 180 })
-  .to('.box', { duration: 0.5, scale: 1.2 });`,
+  .to('.box', { x: 100, duration: 0.5 })
+  .to('.box', { rotation: 180, duration: 0.5 })
+  .to('.box', { scale: 1.2, duration: 0.5 });`,
       },
       {
-        title: 'Easing Functions: Adding Personality',
+        title: 'Timeline Position Controls',
         body: [
-          'Easing functions control the speed and acceleration of animations, adding personality and realism.',
-          'Use the GSAP Ease Visualizer for precise ease functions.',
+          'Timeline position values control when a tween starts. This is one of the biggest reasons to use GSAP for sequenced motion.',
         ],
-        code: `gsap.to('.my-element', {
-  duration: 1,
-  x: 100,
-  ease: 'elastic.out(1, 0.3)',
-});`,
-      },
-      {
-        title: "Plugins: Expanding GSAP's Capabilities",
-        bullets: [
-          'ScrollTrigger: Animate elements based on scroll position.',
-          'MorphSVG: Morph SVG shapes into other shapes.',
-          'SplitText: Break text into individual div elements.',
-          'DrawSVG: Reveal SVG strokes progressively.',
-          'Visit the GSAP Plugins Page for more.',
-        ],
-      },
-      {
-        title: 'Real-World Examples',
-        bullets: [
-          'Interactive Hero Sections',
-          'Smooth Page Transitions',
-          'Interactive Data Visualizations',
-          'Micro-Interactions',
-        ],
-      },
-      {
-        title: 'Code Challenge',
-        body: [
-          'Create a simple animation that moves an element across the screen, changes its color, and rotates it using GSAP.',
-          'Use a timeline and different easing functions.',
-        ],
-      },
-      {
-        title: 'Advanced Tweening',
-        body: [
-          "Sometimes, you want an animation to start from a state that's different from the element's current state. That's where gsap.from() and gsap.fromTo() come in.",
-        ],
-      },
-      {
-        title: 'From Tweens',
-        bullets: [
-          'gsap.from(): Animates an element from a specified state to its current state.',
-          'gsap.fromTo(): Animates an element from one specified state to another specified state.',
-        ],
-        code: `gsap.from('.card', {
-  duration: 0.6,
-  opacity: 0,
-  y: 30,
-});
+        table: {
+          headers: ['Position', 'Meaning'],
+          rows: [
+            ['No position value', 'Start after the previous tween ends.'],
+            ["`'<'`", 'Start at the same time as the previous tween.'],
+            ["`'-=0.2'`", 'Start `0.2` seconds before the previous tween ends.'],
+            ["`'+=0.2'`", 'Start `0.2` seconds after the previous tween ends.'],
+          ],
+        },
+        code: `const timeline = gsap.timeline();
 
-gsap.fromTo(
-  '.button',
-  { scale: 0.8, opacity: 0 },
-  { duration: 0.4, scale: 1, opacity: 1 }
-);`,
+timeline
+  .to('.card', { y: -12, duration: 0.3 })
+  .to('.card', { opacity: 1, duration: 0.3 }, '<')
+  .to('.badge', { scale: 1, duration: 0.2 }, '-=0.1');`,
       },
       {
         title: 'Staggered Tweens',
         body: [
-          'Staggered tweens allow you to animate multiple elements with a delay between each animation, creating visually appealing sequenced effects.',
+          '`stagger` animates a group of elements with a delay between each element. This is great for card grids, navigation items, galleries, and lists.',
         ],
-        code: `gsap.to('.gallery-item', {
-  duration: 0.4,
-  opacity: 1,
-  y: 0,
-  stagger: 0.1,
+        code: `gsap.from('.gallery-card', {
+  y: 24,
+  opacity: 0,
+  duration: 0.45,
+  ease: 'power2.out',
+  stagger: 0.08,
 });`,
       },
       {
-        title: 'Callback Tweens',
+        title: 'Easing',
         body: [
-          'Callbacks allow you to trigger functions at different stages of an animation, such as when it starts, updates, or completes.',
+          '`ease` changes the feel of the motion. Start with common values such as `power2.out`, `power2.inOut`, or `sine.inOut` before using more dramatic easing.',
         ],
-        code: `gsap.to('.notification', {
-  duration: 0.3,
+        code: `gsap.to('.panel', {
   y: 0,
   opacity: 1,
+  duration: 0.5,
+  ease: 'power2.out',
+});`,
+      },
+      {
+        title: 'Callbacks',
+        body: [
+          'Callbacks run functions at different points in a tween. Use them when animation needs to coordinate with interface state.',
+        ],
+        code: `gsap.to('.notification', {
+  y: 0,
+  opacity: 1,
+  duration: 0.3,
   onStart: () => console.log('Animation started'),
   onComplete: () => console.log('Animation complete'),
 });`,
@@ -5134,75 +5167,90 @@ gsap.fromTo(
       {
         title: 'Repeat and Yoyo',
         body: [
-          'The repeat and yoyo properties allow you to create looping and back-and-forth animations.',
-        ],
-        bullets: [
-          'repeat: Specifies the number of times the animation should repeat.',
-          'yoyo: Makes the animation play in reverse on alternate repeats.',
+          '`repeat` controls how many times a tween repeats. `yoyo` makes alternate repeats play backward.',
+          'Use infinite motion carefully. Repeated motion should have a clear purpose and should respect reduced-motion preferences.',
         ],
         code: `gsap.to('.pulse', {
+  scale: 1.12,
   duration: 0.8,
-  scale: 1.15,
-  repeat: -1,
+  repeat: 3,
   yoyo: true,
   ease: 'sine.inOut',
 });`,
       },
       {
-        title: 'Overwrite Manager',
+        title: 'Reduced Motion with GSAP',
         body: [
-          "The overwrite manager handles conflicting tweens, ensuring that only the most recent tween affects an element's properties.",
+          'Check `prefers-reduced-motion` before running non-essential animation. You can skip the animation, shorten it, or set final states immediately.',
+        ],
+        code: `const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (reduceMotion) {
+  gsap.set('.card', { opacity: 1, y: 0 });
+} else {
+  gsap.from('.card', {
+    opacity: 0,
+    y: 24,
+    duration: 0.5,
+    stagger: 0.08,
+  });
+}`,
+      },
+      {
+        title: 'Plugins',
+        body: [
+          'GSAP plugins extend what GSAP can do. Use plugins when the core tween and timeline tools are not enough.',
+        ],
+        table: {
+          headers: ['Plugin', 'Use For'],
+          rows: [
+            ['`ScrollTrigger`', 'Starting or controlling animation based on scroll position.'],
+            ['`MorphSVG`', 'Morphing SVG shapes.'],
+            ['`SplitText`', 'Animating words, lines, or characters.'],
+            ['`DrawSVG`', 'Revealing SVG strokes progressively.'],
+          ],
+        },
+      },
+      {
+        title: 'Advanced Performance Notes',
+        body: [
+          'For most beginner work, animate `x`, `y`, `scale`, `rotation`, and `opacity`. These map well to transform and opacity-based motion.',
+          'Tools like `overwrite`, `force3D`, and CSS `will-change` can help in specific cases, but they should not be the first thing you reach for.',
+        ],
+        bullets: [
+          '`overwrite: auto` can help when multiple tweens compete for the same properties.',
+          '`force3D: true` can encourage GPU rendering, but overusing it can hurt performance.',
+          '`will-change` can prepare the browser for animation, but leaving it everywhere can waste memory.',
         ],
         code: `gsap.to('.box', {
-  duration: 1,
   x: 200,
+  duration: 1,
   overwrite: 'auto',
 });`,
       },
       {
-        title: 'Performance Optimization',
-        body: [
-          'When animating elements, prioritize using transform properties such as translateX, translateY, scale, and rotate over top, left, bottom, and right.',
-          'Transform properties are handled more efficiently by browsers and often result in smoother animations.',
-          'Animating top, left, and similar layout properties can trigger layout recalculations, which can be expensive and lead to janky animations.',
-        ],
-        code: `// Good: using transform
-gsap.to('.element', { duration: 1, x: 100 });
-
-// Avoid: animating layout position
-gsap.to('.element', { duration: 1, left: 100 });`,
-      },
-      {
-        title: 'Force3D: Encouraging GPU Rendering',
-        body: [
-          'In some cases, the browser may not automatically use hardware acceleration for transform properties. You can encourage GPU rendering by setting force3D: true in your tween.',
-        ],
-        code: `gsap.to('.element', {
-  duration: 1,
-  x: 100,
-  force3D: true,
-});`,
-        note:
-          'Use force3D sparingly. It can sometimes have the opposite effect and hurt performance.',
-      },
-      {
-        title: 'Will-Change: Informing the Browser of Upcoming Changes',
-        body: [
-          "The will-change CSS property informs the browser that an element's properties are about to change.",
-          'This allows the browser to optimize the element for animation, improving performance.',
-        ],
-        code: `.element {
-  will-change: transform;
-}`,
-        note:
-          'Use will-change carefully. It can consume memory and degrade performance if overused. Remove will-change after the animation is complete.',
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Using GSAP when CSS is enough', 'Adds complexity for a simple state change', 'Use CSS transitions or animations for simple effects.'],
+            ['Animating `left` or `top`', 'Can trigger layout recalculation', 'Use GSAP `x` and `y` instead.'],
+            ['Running code before elements exist', 'GSAP cannot find the target', 'Run scripts after the DOM is ready or place scripts after the HTML.'],
+            ['Forgetting reduced motion', 'Some users are sensitive to motion', 'Check `prefers-reduced-motion` and simplify or skip animation.'],
+            ['Overusing infinite motion', 'Constant motion can distract users', 'Use `repeat` purposefully and avoid unnecessary loops.'],
+            ['Not cleaning up complex animations', 'Repeated setup can cause bugs in larger apps', 'Kill scroll triggers or repeated timelines when components are removed.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Move an element across the screen with GSAP.',
-      'Change its color and rotate it during the same sequence.',
-      'Use a timeline with at least three tweens.',
-      'Try different easing functions and explain the difference.',
+      'Create one `gsap.to()` tween that moves an element with `x` or `y`.',
+      'Create one `gsap.from()` entrance animation using `opacity` and `y`.',
+      'Build a three-step `gsap.timeline()` sequence.',
+      'Stagger a group of cards or list items.',
+      'Add `repeat` and `yoyo` to one purposeful effect.',
+      'Add a `prefers-reduced-motion` check that skips or simplifies motion.',
+      'Explain why GSAP was a better choice than CSS for one example.',
     ],
     resources: ['GSAP CDN', 'GSAP Ease Visualizer', 'GSAP Plugins Page'],
   },

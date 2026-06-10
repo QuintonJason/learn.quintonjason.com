@@ -9,6 +9,11 @@ export type LessonSection = {
     alt: string;
     caption?: string;
   };
+  images?: Array<{
+    src: string;
+    alt: string;
+    caption?: string;
+  }>;
   resources?: Array<string | { label: string; href: string }>;
 };
 
@@ -78,6 +83,12 @@ export const lessons: Lesson[] = [
           'Go to the [starter-site-22 repository](https://github.com/LSUWebDesign/starter-site-22).',
           'Click the "Code" button, then "Download ZIP." Extract the ZIP file and remember its location.',
         ],
+        image: {
+          src: '/images/lessons/developer-environment-setup/repo.jpg',
+          alt: 'GitHub repository page for starter-site-22 with the Code button open and Download ZIP highlighted.',
+          caption:
+            'Use the Code menu on the starter repository to download the ZIP file for the class starter site.',
+        },
       },
       {
         title: '6. Prepare Your Project Directory',
@@ -94,12 +105,32 @@ export const lessons: Lesson[] = [
           'Name your site using dashes instead of spaces, such as my-website.',
           'Click "Create Repository."',
         ],
+        images: [
+          {
+            src: '/images/lessons/developer-environment-setup/fileNewRepo.jpg',
+            alt: 'GitHub Desktop File menu with New Repository highlighted.',
+            caption:
+              'Start a new local repository from File -> New Repository in GitHub Desktop.',
+          },
+          {
+            src: '/images/lessons/developer-environment-setup/newrepo.jpg',
+            alt: 'GitHub Desktop Create a New Repository dialog with my-website entered as the repository name.',
+            caption:
+              'Use a simple dashed name, choose the local path carefully, and create the repository.',
+          },
+        ],
       },
       {
         title: '8. Publish Your Repository',
         body: [
           'Click "Publish Repository" to make it accessible on GitHub online.',
         ],
+        image: {
+          src: '/images/lessons/developer-environment-setup/ghdpublish.jpg',
+          alt: 'GitHub Desktop showing the Publish repository button in the toolbar and panel.',
+          caption:
+            'Publishing sends the local repository to GitHub so it can be shared and later deployed with GitHub Pages.',
+        },
       },
       {
         title: '9. Understanding the GitHub Desktop Interface',
@@ -107,6 +138,26 @@ export const lessons: Lesson[] = [
           'Open in Visual Studio Code: opens the project in [VS Code](https://code.visualstudio.com/download).',
           'Show in Finder: opens the local folder.',
           'View on GitHub: opens the GitHub page in the browser.',
+        ],
+        images: [
+          {
+            src: '/images/lessons/developer-environment-setup/ghdesktop.jpg',
+            alt: 'GitHub Desktop interface with labels for the code editor, project folder, GitHub page, commit summary, and commit button.',
+            caption:
+              'GitHub Desktop connects your editor, project folder, GitHub page, and commit workflow in one interface.',
+          },
+          {
+            src: '/images/lessons/developer-environment-setup/findfinder.jpg',
+            alt: 'GitHub Desktop empty changes screen with the Show in Finder button highlighted.',
+            caption:
+              'The Show in Finder button is a fast way to locate the exact project folder on your computer.',
+          },
+          {
+            src: '/images/lessons/developer-environment-setup/showinfinder.jpg',
+            alt: 'GitHub Desktop Repository menu with Show in Finder highlighted.',
+            caption:
+              'You can also use Repository -> Show in Finder from the menu bar.',
+          },
         ],
       },
       {
@@ -131,6 +182,12 @@ export const lessons: Lesson[] = [
           'Under Build and Deployment, set the Branch dropdown to main.',
           'Click "Save."',
         ],
+        image: {
+          src: '/images/lessons/developer-environment-setup/ghsettings.jpg',
+          alt: 'GitHub repository settings page showing the Pages section and branch dropdown set to main.',
+          caption:
+            'In GitHub repository settings, open Pages and choose the main branch as the publishing source.',
+        },
       },
       {
         title: '13. Launch Your Website',
@@ -140,6 +197,12 @@ export const lessons: Lesson[] = [
           'Click "Visit Site" to see your published work.',
           'Congratulations. You now have a fully functioning developer setup and a live website hosted with GitHub Pages.',
         ],
+        image: {
+          src: '/images/lessons/developer-environment-setup/ghpages.jpg',
+          alt: 'GitHub Pages settings showing a live published site URL and a Visit site button.',
+          caption:
+            'After GitHub Pages finishes deploying, the published site URL appears in the Pages settings.',
+        },
       },
     ],
     practice: [

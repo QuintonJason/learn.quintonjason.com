@@ -19,6 +19,7 @@ import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
 import TransformLab from '../../components/TransformLab.astro';
 import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes, isInteractiveLesson } from '../../data/lessonMeta';
+import type { LessonSection } from '../../data/lessons';
 import { lessons } from '../../data/lessons';
 import { projects } from '../../data/projects';
 
@@ -57,6 +58,10 @@ const renderInlineLinks = (value: string) =>
 
     return `<a href="${href}"${target}>${label}</a>`;
   });
+const getSectionImages = (section: LessonSection) => [
+  ...(section.image ? [section.image] : []),
+  ...(section.images ?? []),
+];
 const pageSections = [
   { href: '#learning-goals', label: 'Learning Goals' },
   ...(hasInteractiveDemo ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
@@ -276,14 +281,12 @@ const pageSections = [
                   </ul>
                 )}
                 {section.note && <p set:html={renderInlineLinks(section.note)} />}
-                {
-                  section.image && (
-                    <figure class="lesson-figure">
-                      <img src={section.image.src} alt={section.image.alt} loading="lazy" />
-                      {section.image.caption && <figcaption>{section.image.caption}</figcaption>}
-                    </figure>
-                  )
-                }
+                {getSectionImages(section).map((image) => (
+                  <figure class="lesson-figure">
+                    <img src={image.src} alt={image.alt} loading="lazy" />
+                    {image.caption && <figcaption>{image.caption}</figcaption>}
+                  </figure>
+                ))}
                 {section.code && (
                   <pre><code>{section.code}</code></pre>
                 )}

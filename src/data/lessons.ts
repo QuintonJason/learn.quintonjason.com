@@ -5507,133 +5507,177 @@ if (reduceMotion) {
     title: 'Page Types and Templates',
     eyebrow: 'Structure',
     summary:
-      'Understand common page types and how templates create consistent, efficient web experiences.',
+      'Plan common page types, reusable templates, and content hierarchy so websites feel consistent and purposeful.',
     goals: [
-      'Identify common page types and user journeys',
-      'Use templates for consistency and efficiency',
-      'Decide when a page should use a template and when it needs a custom layout',
+      'Identify common page types and the user goals they support',
+      'Explain the difference between a `page type`, `template`, and `layout`',
+      'Group a sitemap into reusable templates and decide when a custom layout is needed',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          'In our quest to craft intuitive and engaging web experiences, understanding page types and how to leverage templates is crucial.',
-          'Think of it as having a well-organized toolkit. Knowing which tool to use for which job makes the entire process smoother and more effective.',
-          'This chapter explores common page types, their purposes, and how templates help create consistent and efficient web designs.',
+          'Page types are reusable patterns for common user goals. A `home page`, `listing page`, `detail page`, `article page`, and `contact page` each have a different job.',
+          'Templates help repeated pages stay consistent. Instead of designing every page from scratch, you define a structure that can be reused for similar content.',
         ],
       },
       {
-        title: "Why Page Types Matter: A User's Journey",
+        title: 'Page Type vs Template vs Layout',
         body: [
-          'Imagine navigating a website where every page felt completely different, with navigation in different places, unpredictable layouts, and inconsistent information presentation.',
-          'It would be disorienting and frustrating. Page types provide predictable structure and functionality to help users.',
+          'These terms are related, but they do not mean the same thing. Knowing the difference helps you plan a site before writing code or designing screens.',
+        ],
+        table: {
+          headers: ['Term', 'Meaning', 'Example'],
+          rows: [
+            ['`Page type`', 'The purpose of the page', '`listing page`, `detail page`, `article page`'],
+            ['`Template`', 'A reusable structure for one page type', 'One product detail template used by many products'],
+            ['`Layout`', 'The visual arrangement of content', 'Two-column layout, grid layout, full-width hero layout'],
+          ],
+        },
+      },
+      {
+        title: 'Why Page Types Matter',
+        body: [
+          'Page types make websites easier to understand. When similar pages behave consistently, users can focus on their task instead of relearning the interface.',
         ],
         bullets: [
-          'Navigate Efficiently: Quickly find elements like navigation menus, search bars, and footers.',
-          'Understand Functionality: Recognize how different pages behave, such as product pages versus article pages.',
-          'Complete Tasks Easily: Consistent layouts support user goals like making purchases or finding information.',
+          'Navigation feels predictable across the site.',
+          'Users can recognize what kind of page they are on.',
+          'Teams can design and build faster with reusable structures.',
+          'Content stays easier to maintain as the site grows.',
         ],
       },
       {
-        title: 'Common Page Types: Your Web Design Toolkit',
-        body: [
-          'Common page types give designers and developers reusable structures for recurring user needs.',
-        ],
+        title: 'Common Page Types',
+        table: {
+          headers: ['Page Type', 'Purpose', 'User Goal', 'Common Sections'],
+          rows: [
+            ['`Home page`', 'Introduce the site and route users onward', 'Understand what the site offers', 'Hero, key links, featured content, calls to action'],
+            ['`Landing page`', 'Support one campaign or offer', 'Decide whether to act', 'Value proposition, proof, benefits, CTA, FAQ'],
+            ['`Listing page`', 'Show many related items', 'Browse, compare, filter, or search', 'Title, filters, sort, item cards, pagination'],
+            ['`Detail page`', 'Explain one item in depth', 'Evaluate one product, project, article, or service', 'Media, description, specs, CTA, related items'],
+            ['`Article page`', 'Present long-form content', 'Read and understand a topic', 'Title, byline, body, media, related articles'],
+            ['`Portfolio project page`', 'Show process and outcomes', 'Evaluate the work and decision-making', 'Problem, role, process, visuals, result'],
+            ['`Contact page`', 'Help users reach out', 'Find contact options or submit a message', 'Form, email, location, expectations'],
+            ['`Search results page`', 'Show results for a query', 'Find the best matching content', 'Search field, filters, results, empty state'],
+            ['`Dashboard or account page`', 'Support repeat tasks and status checking', 'Manage information or complete tasks', 'Summary, navigation, data, actions'],
+            ['`Error or empty state page`', 'Recover from a dead end', 'Understand what happened and where to go next', 'Message, helpful link, search, CTA'],
+          ],
+        },
       },
       {
-        title: '1. Home Page',
+        title: 'Template Anatomy',
         body: [
-          'Purpose: Introduces your brand, highlights key content, guides navigation, and establishes visual identity.',
-          'UX Focus: Value proposition, compelling visuals, intuitive navigation, and strong calls to action.',
-        ],
-      },
-      {
-        title: '2. Item Listing Page',
-        body: [
-          'Purpose: Displays lists or grids of products, articles, or search results.',
-          'UX Focus: Filtering and sorting options, item summaries, thumbnails, pagination, or infinite scrolling.',
-        ],
-      },
-      {
-        title: '3. Item Details Page',
-        body: [
-          'Purpose: Provides detailed information about a specific item.',
-          'UX Focus: Organized information, high-resolution media, clear calls to action, and related content.',
-        ],
-      },
-      {
-        title: '4. About Page',
-        body: [
-          "Purpose: Shares your brand or individual's story.",
-          'UX Focus: Engaging narrative, visuals, contact information, and credibility elements.',
-        ],
-      },
-      {
-        title: '5. Contact Page',
-        body: [
-          'Purpose: Offers contact methods and location details.',
-          'UX Focus: Concise information, user-friendly form, maps, and response expectations.',
-        ],
-      },
-      {
-        title: '6. Form Page',
-        body: [
-          'Purpose: Guides users through data submission processes such as sign-up or checkout.',
-          'UX Focus: Clear labels, intuitive fields, error handling, step indicators, and trust signals.',
-        ],
-      },
-      {
-        title: '7. Search Results Page',
-        body: [
-          'Purpose: Displays results based on user queries.',
-          'UX Focus: Relevant results, filters, sorting, and term highlighting.',
-        ],
-      },
-      {
-        title: 'The Template Power: Efficiency and Consistency',
-        body: [
-          'Templates are reusable layouts for specific page types.',
-          "Think of a book. You don't design every page from scratch. You use chapter and index templates. Web design follows the same principle.",
+          'Most templates combine shared site structure with page-specific content areas. The exact pieces change by page type, but the planning questions stay similar.',
         ],
         bullets: [
-          'Consistency: Unified look and feel reinforcing branding and usability.',
-          'Efficiency: Quicker development and easier updates site-wide.',
-          'Scalability: Easily add new pages using existing design structures.',
+          'Shared header and `navigation`.',
+          'Clear page title or primary heading.',
+          'Primary content area that supports the main user goal.',
+          'Supporting content such as related links, metadata, filters, or summaries.',
+          'Primary call to action when the page needs one.',
+          'Shared footer and secondary navigation.',
         ],
       },
       {
-        title: 'Example: The Product Page Template',
-        body: [
-          'A template for an e-commerce product page might include a consistent set of content areas.',
-        ],
-        bullets: [
-          'Product Name',
-          'Images',
-          'Description',
-          'Price',
-          'Add to Cart Button',
-          'Related Products',
-          'Customer Reviews',
-        ],
-        note:
-          'This ensures a consistent, user-friendly experience across all product pages.',
+        title: 'Template Examples',
+        table: {
+          headers: ['Template', 'Core Pieces'],
+          rows: [
+            ['Article template', 'Title, author/date, hero image, article body, related articles'],
+            ['Product detail template', 'Product name, image gallery, price, description, specs, reviews, add-to-cart CTA'],
+            ['Listing template', 'Page title, filters, sort controls, item cards, pagination or load more'],
+            ['Portfolio project template', 'Project title, overview, role, process, visuals, outcomes, next project'],
+          ],
+        },
       },
       {
-        title: 'Customization: When to Break the Mold',
+        title: 'Content Hierarchy',
         body: [
-          'Templates are essential, but some pages may require custom layouts.',
-          'Balance consistency with flexibility. Templates form a strong foundation, and thoughtful customization enhances user experience when needed.',
+          'Before designing a template, decide what the page needs to communicate first. Hierarchy is the order of importance on the page.',
         ],
         bullets: [
-          'Landing Pages: Designed uniquely for campaigns with specific calls to action.',
-          'Visual About Pages: May use storytelling and imagery over text.',
+          'What must the user understand first?',
+          'What is the main action or next step?',
+          'What information supports the primary task?',
+          'What can move lower on the page?',
+          'What should stay consistent across this template type?',
         ],
+      },
+      {
+        title: 'When to Use a Template',
+        table: {
+          headers: ['Situation', 'Why a Template Helps'],
+          rows: [
+            ['Many pages share the same content type', 'The structure can repeat without redesigning each page.'],
+            ['Pages support the same user goal', 'Users benefit from predictable patterns.'],
+            ['A site needs many similar pages', 'Templates save build time and maintenance effort.'],
+            ['Content will be updated often', 'A reusable structure makes updates safer and faster.'],
+          ],
+        },
+      },
+      {
+        title: 'When to Customize',
+        body: [
+          'Templates should create consistency, not trap every page into the same shape. Some pages need custom sections or a custom layout because their goal is different.',
+        ],
+        bullets: [
+          '`Landing pages` for campaigns or launches may need a unique flow.',
+          'A major portfolio case study may need richer storytelling than a standard detail page.',
+          'A one-off event page may need schedule, speakers, registration, and venue information.',
+          'A homepage often combines multiple patterns because it routes users to many areas.',
+          'Custom pages should still keep shared accessibility, header, footer, and navigation patterns.',
+        ],
+      },
+      {
+        title: 'Template Inventory Activity',
+        body: [
+          'A template inventory helps you turn a sitemap into a build plan. List every page, then group pages that can share a template.',
+        ],
+        table: {
+          headers: ['Sitemap Item', 'Page Type', 'Template Group'],
+          rows: [
+            ['`/work/`', '`listing page`', 'Project listing template'],
+            ['`/work/weather-app/`', '`detail page`', 'Project detail template'],
+            ['`/blog/`', '`listing page`', 'Article listing template'],
+            ['`/blog/css-layout/`', '`article page`', 'Article detail template'],
+            ['`/contact/`', '`contact page`', 'Custom contact template'],
+          ],
+        },
+      },
+      {
+        title: 'Planning Checklist',
+        bullets: [
+          'Write the primary user goal for the page type.',
+          'List the content sections the page needs.',
+          'Decide which sections repeat across similar pages.',
+          'Choose the primary call to action or next step.',
+          'Sketch the mobile layout before the desktop layout.',
+          'Check that page titles, navigation, and footer patterns stay consistent.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Making every page custom', 'The site becomes inconsistent and harder to maintain', 'Group similar pages into templates.'],
+            ['Using one template for different goals', 'The page may not support the user task', 'Create different templates for different page types.'],
+            ['Inconsistent navigation', 'Users lose confidence moving through the site', 'Keep shared navigation patterns stable.'],
+            ['Unclear page title', 'Users may not know where they are', 'Use a clear `h1` that matches the page purpose.'],
+            ['Burying the primary action', 'Users may miss the next step', 'Place the main CTA where it supports the user goal.'],
+            ['Designing desktop only', 'The template may fail on small screens', 'Plan mobile structure and content priority early.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Identify the page type for three pages on a website you use often.',
-      'Sketch a product or article page template.',
-      'Choose one page that should follow a template and one that may need a custom layout.',
+      'Identify the page type for five pages on a website you use often.',
+      'Group a small sitemap into reusable template groups.',
+      'Sketch a `listing page` template and a `detail page` template.',
+      'Choose one page that deserves a custom layout and explain why.',
+      'Write the primary user goal for each template you sketch.',
+      'Create a content checklist for one article, product, or portfolio project template.',
     ],
   },
   {

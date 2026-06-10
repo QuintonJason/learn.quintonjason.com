@@ -14,6 +14,10 @@ export type LessonSection = {
     alt: string;
     caption?: string;
   }>;
+  table?: {
+    headers: string[];
+    rows: string[][];
+  };
   resources?: Array<string | { label: string; href: string }>;
 };
 
@@ -431,8 +435,10 @@ export const lessons: Lesson[] = [
         title: 'Core Concept: Paths Tell the Browser Where to Look',
         body: [
           "To access a file within the website's folder, you need to specify its path.",
-          'A path tells the browser the location of the file relative to the current file.',
+          'A path tells the browser the location of the file relative to the current file. Always start from the HTML file that contains the path, then trace your way to the target file.',
         ],
+        note:
+          'The most important question is: where is the resource from the perspective of the file asking for it?',
       },
       {
         title: 'Example Site Folder',
@@ -451,27 +457,57 @@ export const lessons: Lesson[] = [
 |   |-- logo.png`,
       },
       {
+        title: 'Path Diagram: Start From the Current File',
+        body: [
+          'When you write a path, pretend you are standing inside the current HTML file. From there, move through the folders until you reach the file you need.',
+        ],
+        code: `my-website/
+|-- index.html               current file
+|-- images/
+|   |-- logo.png             target file
+
+Path from index.html to logo.png:
+images/logo.png`,
+        note:
+          'Do not start from the whole computer. Start from the file that contains the `href` or `src` attribute.',
+      },
+      {
         title: 'What Each File Does',
         bullets: [
-          'index.html: This is the main page of your website. Your home page.',
-          'about.html: This is another page on your website.',
-          'styles.css: This file contains the CSS styles for your website.',
-          'script.js: This file contains JavaScript code for your website.',
-          'img/gizmo.jpg: This is an image file located within the img subfolder.',
-          'images/logo.png: This is an image file located within the images subfolder.',
-          'icon.png: This is an image file that will serve as our favicon, located within the root directory.',
+          '`index.html`: This is the main page of your website. Your home page.',
+          '`about.html`: This is another page on your website.',
+          '`styles.css`: This file contains the CSS styles for your website.',
+          '`script.js`: This file contains JavaScript code for your website.',
+          '`img/gizmo.jpg`: This is an image file located within the `img` subfolder.',
+          '`images/logo.png`: This is an image file located within the `images` subfolder.',
+          '`icon.png`: This is an image file that will serve as our favicon, located within the root directory.',
         ],
       },
       {
         title: 'Code Example: Link a CSS File',
         body: [
-          'If styles.css sits next to index.html, the path is just the file name.',
+          'If `styles.css` sits next to `index.html`, the path is just the file name.',
         ],
         code: `<link rel="stylesheet" href="styles.css">`,
         bullets: [
-          'rel="stylesheet": Tells the browser this file is a stylesheet.',
-          'href="styles.css": Tells the browser where the CSS file is located.',
+          '`rel="stylesheet"`: Tells the browser this file is a stylesheet.',
+          '`href="styles.css"`: Tells the browser where the CSS file is located.',
         ],
+      },
+      {
+        title: 'Current Folder and Parent Folder Paths',
+        body: [
+          'Sometimes you will see paths that start with `./` or `../`. These are relative path shortcuts.',
+        ],
+        bullets: [
+          '`./` means the current folder.',
+          '`../` means go up one folder.',
+          '`../../` means go up two folders.',
+          'Use these only when they make the path clearer. For simple files beside each other, the file name alone is usually enough.',
+        ],
+        code: `./styles.css
+../images/logo.png
+../../index.html`,
       },
       {
         title: 'Code Example: Link an Image',
@@ -480,16 +516,40 @@ export const lessons: Lesson[] = [
         ],
         code: `<img src="images/logo.png" alt="My Website Logo">`,
         bullets: [
-          'src="images/logo.png": Tells the browser to look inside the images folder for logo.png.',
-          'alt="My Website Logo": Describes the image for screen readers and browsers that cannot display it.',
+          '`src="images/logo.png"`: Tells the browser to look inside the `images` folder for `logo.png`.',
+          '`alt="My Website Logo"`: Describes the image for screen readers and browsers that cannot display it.',
         ],
       },
       {
         title: 'Code Example: Link to Another Page',
         body: [
-          'If about.html sits next to index.html, link to it by file name.',
+          'If `about.html` sits next to `index.html`, link to it by file name.',
         ],
         code: `<a href="about.html">Link to About page</a>`,
+      },
+      {
+        title: 'Code Example: Link From a Nested Page',
+        body: [
+          'Paths change when the current HTML file is inside a folder. In this example, `about.html` lives inside the `pages` folder.',
+        ],
+        code: `my-website/
+|-- index.html
+|-- images/
+|   |-- logo.png
+|-- pages/
+|   |-- about.html`,
+        bullets: [
+          'From `pages/about.html` to `images/logo.png`, go up one folder, then into `images`.',
+          'From `pages/about.html` back to `index.html`, go up one folder, then choose `index.html`.',
+        ],
+      },
+      {
+        title: 'Nested Page HTML Example',
+        body: [
+          'Inside `pages/about.html`, the paths would look like this:',
+        ],
+        code: `<img src="../images/logo.png" alt="My Website Logo">
+<a href="../index.html">Home</a>`,
       },
       {
         title: 'Relative vs. Absolute Paths',
@@ -498,12 +558,24 @@ export const lessons: Lesson[] = [
           'An absolute path uses the complete URL to a file or page.',
         ],
         bullets: [
-          'Relative path: images/logo.png',
-          'Relative path: about.html',
-          'Absolute path: https://www.example.com/images/logo.png',
+          'Relative path: `images/logo.png`',
+          'Relative path: `about.html`',
+          'Absolute path: `https://www.example.com/images/logo.png`',
         ],
         note:
           'Use relative paths for files inside your own project. Use absolute URLs when linking to outside websites or hosted resources.',
+      },
+      {
+        title: 'Root-Relative Paths',
+        body: [
+          'A root-relative path starts with a slash, such as `/images/logo.png`. This tells the browser to start from the root of the current website.',
+          'Root-relative paths can be useful, but they can also surprise you on GitHub Pages project sites because the project may be published inside a repository path.',
+        ],
+        bullets: [
+          'Root-relative path: `/images/logo.png`',
+          'Course recommendation: use relative paths like `images/logo.png` or `../images/logo.png` for project files.',
+          'Use root-relative paths only when you understand where the site root will be after publishing.',
+        ],
       },
       {
         title: 'Code Example: Link JavaScript',
@@ -516,13 +588,13 @@ export const lessons: Lesson[] = [
   <script src="script.js"></script>
 </body>`,
         bullets: [
-          'src="script.js": Tells the browser where the JavaScript file is located.',
+          '`src="script.js"`: Tells the browser where the JavaScript file is located.',
         ],
       },
       {
         title: 'Complete HTML Example',
         body: [
-          'Here is how index.html might connect a stylesheet, image, internal page, and JavaScript file.',
+          'Here is how `index.html` might connect a stylesheet, image, internal page, and JavaScript file.',
         ],
         code: `<!DOCTYPE html>
 <html>
@@ -543,10 +615,30 @@ export const lessons: Lesson[] = [
         bullets: [
           'The file name in HTML does not exactly match the real file name.',
           'The file is in a folder, but the folder name is missing from the path.',
-          'The path uses the wrong folder name, such as image instead of images.',
-          'The file extension is missing or incorrect, such as logo.jpg when the real file is logo.png.',
+          'The path uses the wrong folder name, such as `image` instead of `images`.',
+          'The file extension is missing or incorrect, such as `logo.jpg` when the real file is `logo.png`.',
           'The project works locally but breaks online because file names use inconsistent capitalization.',
+          'The file name uses spaces or special characters that make paths harder to write and debug.',
         ],
+        note:
+          'GitHub Pages is case-sensitive. A path to `Logo.png` will not find a file named `logo.png`. Use lowercase file names with dashes, such as `about-page.html`.',
+      },
+      {
+        title: 'Broken Path Examples',
+        body: [
+          'Use this table when something does not load. Most path bugs are spelling, folder, extension, or location problems.',
+        ],
+        table: {
+          headers: ['Broken path', 'Why it breaks', 'Possible fix'],
+          rows: [
+            ['`image/logo.png`', 'The folder is named `images`, not `image`.', '`images/logo.png`'],
+            ['`images/Logo.png`', 'The real file is lowercase: `logo.png`.', '`images/logo.png`'],
+            ['`images/logo`', 'The file extension is missing.', '`images/logo.png`'],
+            ['`logo.png`', 'The image is inside the `images` folder.', '`images/logo.png`'],
+            ['`images/my logo.png`', 'Spaces make paths awkward and easy to mistype.', '`images/my-logo.png`'],
+            ['`/images/logo.png`', 'Root-relative paths may point to the wrong place on GitHub Pages project sites.', '`images/logo.png`'],
+          ],
+        },
       },
       {
         title: 'Debugging Checklist',
@@ -573,9 +665,13 @@ export const lessons: Lesson[] = [
       },
     ],
     practice: [
-      'Create index.html, styles.css, script.js, and an images folder.',
-      'Draw your project folder structure.',
-      'Link one CSS file, one JavaScript file, one image, and one internal page from index.html.',
+      'Create `index.html` and `about.html`.',
+      'Create folders named `css`, `js`, and `images`.',
+      'Create `css/styles.css` and link it from `index.html`.',
+      'Create `js/script.js` and link it from `index.html`.',
+      'Add one image to the `images` folder and display it from `index.html`.',
+      'Move `about.html` into a `pages` folder and link from `pages/about.html` back to `index.html`.',
+      'Draw your project folder structure and label the current file and target file for each path.',
     ],
   },
   {
@@ -594,23 +690,51 @@ export const lessons: Lesson[] = [
       {
         title: 'Introduction',
         body: [
-          "In the previous lesson, we learned how to link external resources like CSS and JavaScript to our HTML pages. Now, let's delve into the fundamental building blocks of an HTML document itself.",
+          'This lesson teaches the required structure of every HTML page and the common elements used inside the visible page content.',
+          'By the end, you should be able to create a complete HTML document with a clear `head`, a visible `body`, readable content, links, images, and lists.',
+        ],
+      },
+      {
+        title: 'Full HTML Page Anatomy',
+        body: [
+          'A complete HTML page has a document type, one root `html` element, a `head` for page information, and a `body` for visible content.',
+        ],
+        code: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <h1>Welcome to My Website</h1>
+    <p>This is the visible page content.</p>
+    <script src="script.js"></script>
+  </body>
+</html>`,
+        bullets: [
+          '`<!DOCTYPE html>` tells the browser to use modern HTML.',
+          '`<html lang="en">` wraps the entire page and identifies the page language.',
+          '`<head>` contains information about the page, including metadata, title, and CSS links.',
+          '`<body>` contains the content people see and interact with.',
         ],
       },
       {
         title: 'The DOCTYPE Declaration',
         body: [
-          "Every HTML document should begin with a DOCTYPE declaration. This declaration specifies the document type and helps browsers correctly render the content. Here's the basic syntax:",
+          'Every HTML document should begin with a `DOCTYPE` declaration. This tells the browser to render the page using modern HTML rules.',
         ],
         code: `<!DOCTYPE html>`,
       },
       {
         title: 'The html Element',
         body: [
-          'Every HTML document starts with the html element, which acts as the root container for all other elements on the page. It has two main sections: head and body.',
+          'Every HTML document has one `html` element. It acts as the root container for everything else on the page.',
+          'The `lang` attribute tells browsers, search engines, and assistive technologies what language the page uses.',
         ],
         code: `<!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
   </head>
   <body>
@@ -620,47 +744,58 @@ export const lessons: Lesson[] = [
       {
         title: 'The head Element',
         body: [
-          'The head element contains meta-information about the HTML document, which is not displayed directly on the page.',
+          'The `head` element contains information about the HTML document. This information is not displayed directly as page content.',
         ],
         bullets: [
-          'title: Sets the title that appears in the browser tab.',
-          'meta: Provides metadata about the page, such as character set and description.',
-          'link: Links to external stylesheets.',
-          'script: Links to external scripts.',
+          '`title`: Sets the title that appears in the browser tab.',
+          '`meta`: Provides metadata about the page, such as character set, viewport, and description.',
+          '`link`: Links to external files, most often stylesheets.',
+          '`script`: Links to JavaScript files when needed.',
         ],
         code: `<head>
-  <title>My Website</title>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A brief description of my website.">
+  <title>My Website</title>
   <link rel="stylesheet" href="styles.css">
 </head>`,
         note:
-          "While it's best to put stylesheet links in the head, script links should usually live at the bottom of the body.",
+          "Stylesheet links usually belong in the `head`. JavaScript links usually live near the bottom of the `body` so the HTML can load before the script runs.",
       },
       {
         title: 'Script Links at the Bottom of the Body',
+        body: [
+          'A common beginner-friendly pattern is to place the `script` element right before the closing `</body>` tag.',
+        ],
         code: `<body>
-  ...
+  <h1>Welcome</h1>
   <script src="script.js"></script>
 </body>`,
       },
       {
         title: 'The body Element',
         body: [
-          'The body contains the visible content of the page, what users will see when they open the document. This includes elements like headings, paragraphs, images, lists, and links.',
+          'The `body` contains the visible content of the page. This includes elements like headings, paragraphs, images, lists, links, navigation, and page sections.',
         ],
       },
       {
-        title: 'HTML Syntax: The Building Blocks',
+        title: 'HTML Syntax: Elements and Attributes',
         body: [
-          'HTML is built from tags, content, elements, attributes, nesting, and void elements.',
+          'HTML is built from elements. Most elements have an opening tag, content, and a closing tag.',
+        ],
+        code: `<p class="intro">This is a paragraph.</p>`,
+        bullets: [
+          '`<p>` is the opening tag.',
+          '`class="intro"` is an attribute.',
+          '`This is a paragraph.` is the content.',
+          '`</p>` is the closing tag.',
         ],
       },
       {
         title: 'Tags',
         body: [
-          'HTML elements are defined by opening and closing tags. Opening tags typically start with < and end with >, while closing tags start with </ and end with >.',
-          'For example, <h1> is an opening tag for a heading element, and </h1> is its closing tag.',
+          'HTML elements are defined by opening and closing tags. Opening tags start with `<` and end with `>`. Closing tags start with `</` and end with `>`.',
+          'For example, `<h1>` is an opening tag for a heading element, and `</h1>` is its closing tag.',
         ],
       },
       {
@@ -673,15 +808,16 @@ export const lessons: Lesson[] = [
         title: 'Elements',
         body: [
           'Elements are the building blocks of HTML documents. They represent content or functionality and can be nested within other elements to create complex structures.',
-          'For example, the h1 element would be <h1>Page Title</h1>.',
+          'For example, the `h1` element would be `<h1>Page Title</h1>`.',
         ],
       },
       {
         title: 'Attributes',
         body: [
           "Attributes provide additional information about an element. They're specified within the opening tag and consist of a name-value pair separated by an equal sign.",
-          'For example, the img element has a src attribute that specifies the image source.',
+          'For example, the `img` element has a `src` attribute that specifies the image source.',
         ],
+        code: `<img src="images/logo.png" alt="My Website Logo">`,
       },
       {
         title: 'Nesting',
@@ -691,26 +827,69 @@ export const lessons: Lesson[] = [
         ],
       },
       {
+        title: 'Good vs. Broken Nesting',
+        body: [
+          'When one element is inside another element, close the inner element before closing the outer element.',
+        ],
+        table: {
+          headers: ['Pattern', 'Example', 'Why'],
+          rows: [
+            ['Correct', '`<p><strong>Important text</strong></p>`', 'The `strong` element opens and closes inside the `p` element.'],
+            ['Broken', '`<p><strong>Important text</p></strong>`', 'The `p` element closes before its child element closes.'],
+          ],
+        },
+      },
+      {
         title: 'Void Elements',
         body: [
-          "Some HTML elements, like img and br, don't require a closing tag. They represent standalone content and are often referred to as void elements.",
+          "Some HTML elements, like `img` and `br`, don't have a separate closing tag. They represent standalone content and are often referred to as void elements.",
         ],
-        code: `<img src="image.png" alt="" />
-<br />`,
+        code: `<img src="image.png" alt="">
+<br>`,
+      },
+      {
+        title: 'Common Page Structure Elements',
+        body: [
+          'Semantic HTML elements describe the role of different parts of a page. They make pages easier to read, style, navigate, and maintain.',
+        ],
+        code: `<header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+<main>
+  <section>
+    <h1>Page Title</h1>
+    <p>Main page content goes here.</p>
+  </section>
+</main>
+<footer>
+  <p>&copy; 2026 My Website</p>
+</footer>`,
+        bullets: [
+          '`header` usually contains introductory content or site navigation.',
+          '`nav` contains important navigation links.',
+          '`main` contains the primary content of the page.',
+          '`section` groups related content.',
+          '`footer` usually contains closing information, credits, or secondary links.',
+        ],
       },
       {
         title: 'Headings',
         body: [
-          "Headings, from h1 to h6, structure your content and define its importance. They're not just for displaying large text; they indicate hierarchy, like a book's title, chapters, and subheadings.",
+          "Headings, from `h1` to `h6`, structure your content and define its importance. They're not just for displaying large text; they indicate hierarchy, like a book's title, chapters, and subheadings.",
         ],
         code: `<h1>Welcome to My Website</h1>
 <h2>About Us</h2>
 <h3>Our Mission</h3>`,
+        note:
+          'Most beginner pages should start with one clear `h1`, then use `h2` and `h3` for subsections.',
       },
       {
         title: 'Paragraphs',
         body: [
-          'The p element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines or first-line indentation.',
+          'The `p` element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines or first-line indentation.',
           'HTML paragraphs can be any structural grouping of related content, such as images or form fields.',
         ],
         code: `<p>This is a paragraph of text.</p>`,
@@ -718,20 +897,30 @@ export const lessons: Lesson[] = [
       {
         title: 'Images',
         body: [
-          'The img element is used to embed images in your HTML document.',
+          'The `img` element is used to embed images in your HTML document.',
         ],
         bullets: [
-          'src: Specifies the URL or path to the image file.',
-          'alt: Provides alternative text for the image. This text is displayed if the image cannot be loaded and is crucial for accessibility.',
+          '`src`: Specifies the URL or path to the image file.',
+          '`alt`: Provides alternative text for the image. This text is displayed if the image cannot be loaded and is crucial for accessibility.',
         ],
         code: `<img src="images/logo.png" alt="My Website Logo">`,
         note:
-          'Use descriptive alt text. For decorative images, use an empty alt attribute, such as alt="".',
+          'Use descriptive `alt` text for meaningful images. For decorative images, use an empty `alt` attribute, such as `alt=""`.',
+      },
+      {
+        title: 'Meaningful vs. Decorative Image Alt Text',
+        table: {
+          headers: ['Image type', 'Example', 'Why'],
+          rows: [
+            ['Meaningful image', '`alt="Quinton Jason speaking at a design event"`', 'The image communicates information, so the `alt` text should describe it.'],
+            ['Decorative image', '`alt=""`', 'The image is only visual decoration, so screen readers can skip it.'],
+          ],
+        },
       },
       {
         title: 'Lists',
         body: [
-          "Unordered lists are used for items that don't have a specific order. Each item is wrapped in an li element.",
+          "Unordered lists are used for items that don't have a specific order. Each item is wrapped in an `li` element.",
         ],
         code: `<ul>
   <li>Item 1</li>
@@ -742,7 +931,7 @@ export const lessons: Lesson[] = [
       {
         title: 'Ordered Lists',
         body: [
-          'Ordered lists are used for items with a specific order. Each item is wrapped in an li element. Browsers typically render ordered lists with numbering.',
+          'Ordered lists are used for items with a specific order. Each item is wrapped in an `li` element. Browsers typically render ordered lists with numbering.',
         ],
         code: `<ol>
   <li>Item 1</li>
@@ -753,23 +942,23 @@ export const lessons: Lesson[] = [
       {
         title: 'Links',
         body: [
-          'The a element creates hyperlinks that allow users to navigate to other web pages or sections within the same page.',
+          'The `a` element creates hyperlinks that allow users to navigate to other web pages or sections within the same page.',
         ],
         bullets: [
-          'href: Specifies the URL of the linked resource.',
-          'text: The visible text displayed for the link.',
+          '`href`: Specifies the URL or path of the linked resource.',
+          'Link text: The visible text displayed for the link.',
         ],
         code: `<a href="https://www.example.com">Visit Example Website</a>`,
       },
       {
         title: 'Types of Links',
         bullets: [
-          'Internal Links: Point to another page within the same website.',
-          'External Links: Point to a webpage on a different website.',
-          'Relative Links: Use a path relative to the current page location.',
-          'Anchor Links: Create links to specific sections within the same webpage.',
-          'Telephone Links: Initiate a phone call when clicked.',
-          'Email Links: Create a clickable email address.',
+          'Internal links point to another page within the same website.',
+          'External links point to a webpage on a different website.',
+          'Relative links use a path relative to the current page location.',
+          'Anchor links use an `id` to jump to a specific section within the same webpage.',
+          'Telephone links use `tel:` to start a phone call on supported devices.',
+          'Email links use `mailto:` to create a clickable email address.',
         ],
       },
       {
@@ -782,26 +971,54 @@ export const lessons: Lesson[] = [
 <a href="tel:+15551234567">Call Us</a>
 <a href="mailto:contact@example.com">Contact Us</a>`,
         note:
-          'External links can use target="_blank". When you do that, include rel="noopener noreferrer".',
+          'External links can use `target="_blank"`. When you do that, include `rel="noopener noreferrer"`.',
       },
       {
-        title: 'Other Elements',
-        code: `<table><tr><td>Cell</td></tr></table>
-<form><input type="text"></form>`,
+        title: 'Elements Covered Later',
+        body: [
+          'Some HTML elements need more time because they have their own structure and accessibility patterns. We will cover these in later lessons.',
+        ],
+        bullets: [
+          '`table` is used for tabular data.',
+          '`form` is used to collect user input.',
+          '`input`, `label`, `textarea`, and `button` are common form elements.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        body: [
+          'When an HTML page looks strange, check the document structure first. Most beginner bugs are small syntax or organization issues.',
+        ],
+        table: {
+          headers: ['Mistake', 'Why it matters', 'Fix'],
+          rows: [
+            ['Missing closing tag', 'The browser may guess where the element should end.', 'Close non-void elements, such as `</p>` and `</li>`.'],
+            ['Visible content inside `head`', 'Content in the `head` will not behave like normal page content.', 'Put visible content inside the `body`.'],
+            ['Image missing `alt`', 'The image may not be understandable to screen reader users.', 'Add meaningful `alt` text or use `alt=""` for decorative images.'],
+            ['Link missing `href`', 'The link cannot go anywhere.', 'Add an `href` with the target page, URL, or section id.'],
+            ['Broken nesting', 'The page structure can become unpredictable.', 'Close child elements before parent elements.'],
+            ['Heading levels skipped for appearance', 'The page outline becomes harder to understand.', 'Choose headings by structure first, then style them with CSS.'],
+          ],
+        },
       },
       {
         title: 'Key Points',
         body: [
-          'The html, head, and body elements form the basic structure of every HTML document.',
-          'The head element contains meta-information about the page. The body element contains the visible content that users will see.',
-          'By combining these elements, you can start creating simple web pages with text, images, and links.',
+          'The `html`, `head`, and `body` elements form the basic structure of every HTML document.',
+          'The `head` element contains information about the page. The `body` element contains the visible content that users will see.',
+          'By combining semantic structure and common content elements, you can start creating simple web pages with text, images, lists, and links.',
         ],
       },
       {
         title: 'Exercise: Simple Page',
+        body: [
+          'Create a starter page that has a title, one main heading, and one paragraph.',
+        ],
         code: `<!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Page</title>
   </head>
   <body>
@@ -812,13 +1029,18 @@ export const lessons: Lesson[] = [
       },
       {
         title: 'Exercise: About Me Page',
+        body: [
+          'Create an About Me page with a clear heading, a short paragraph, and an unordered list.',
+        ],
         code: `<!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me</title>
   </head>
   <body>
-    <h2>John Doe</h2>
+    <h1>John Doe</h1>
     <p>I enjoy coding, reading, and playing guitar.</p>
     <ul>
       <li>Coding</li>
@@ -830,26 +1052,34 @@ export const lessons: Lesson[] = [
       },
       {
         title: 'Exercise: Contact Page',
+        body: [
+          'Create a contact page with email and telephone links. Put each link in its own paragraph or list item so the links have clear spacing.',
+        ],
         code: `<!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
   </head>
   <body>
     <h1>Contact Information</h1>
-    <p>
-      <a href="mailto:john.doe@example.com">Email: john.doe@example.com</a>
-      <a href="tel:555-123-4567">555-123-4567</a>
-    </p>
+    <ul>
+      <li><a href="mailto:john.doe@example.com">john.doe@example.com</a></li>
+      <li><a href="tel:+15551234567">555-123-4567</a></li>
+    </ul>
   </body>
 </html>`,
       },
       {
-        title: 'Next Steps',
+        title: 'Check Your Page',
         bullets: [
-          "Use your browser's Developer Tools, also called Inspect.",
+          'Make sure the page has one `DOCTYPE`, one `html` element, one `head`, and one `body`.',
+          'Make sure visible content is inside the `body`.',
+          'Check that images include useful `alt` text.',
+          'Click every link to make sure each `href` works.',
+          "Use your browser's Developer Tools, also called Inspect, to look for errors.",
           'Run your code through an accessibility checker like WAVE.',
-          'Check for color contrast using a contrast checker. Use 4.5:1 minimum for normal text.',
         ],
       },
       {
@@ -860,9 +1090,11 @@ export const lessons: Lesson[] = [
       },
     ],
     practice: [
-      'Build a simple page with headings, paragraphs, images, lists, and links.',
-      'Build an About Me page.',
-      'Build a Contact page with email and telephone links.',
+      'Build a complete `index.html` page with `DOCTYPE`, `html`, `head`, and `body`.',
+      'Add one `header`, one `main`, and one `footer`.',
+      'Add headings, paragraphs, one image, one unordered list, and one ordered list.',
+      'Add one internal link, one external link, one email link, and one telephone link.',
+      'Check the page for missing closing tags, broken nesting, missing `alt` text, and links without `href`.',
     ],
   },
   {

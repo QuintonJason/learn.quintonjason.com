@@ -51,8 +51,10 @@ const escapeHtml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-const renderInlineLinks = (value: string) =>
-  escapeHtml(value).replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, (_match, label, href) => {
+const renderInlineText = (value: string) =>
+  escapeHtml(value)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, (_match, label, href) => {
     const isExternal = href.startsWith('http://') || href.startsWith('https://');
     const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
 
@@ -274,19 +276,39 @@ const pageSections = [
             lesson.sections.map((section) => (
               <section>
                 <h2>{section.title}</h2>
-                {section.body?.map((paragraph) => <p set:html={renderInlineLinks(paragraph)} />)}
+                {section.body?.map((paragraph) => <p set:html={renderInlineText(paragraph)} />)}
                 {section.bullets && (
                   <ul>
-                    {section.bullets.map((bullet) => <li set:html={renderInlineLinks(bullet)} />)}
+                    {section.bullets.map((bullet) => <li set:html={renderInlineText(bullet)} />)}
                   </ul>
                 )}
-                {section.note && <p set:html={renderInlineLinks(section.note)} />}
+                {section.note && <p set:html={renderInlineText(section.note)} />}
                 {getSectionImages(section).map((image) => (
                   <figure class="lesson-figure">
                     <img src={image.src} alt={image.alt} loading="lazy" />
                     {image.caption && <figcaption>{image.caption}</figcaption>}
                   </figure>
                 ))}
+                {
+                  section.table && (
+                    <div class="lesson-table-wrapper">
+                      <table class="lesson-table">
+                        <thead>
+                          <tr>
+                            {section.table.headers.map((header) => <th scope="col">{header}</th>)}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {section.table.rows.map((row) => (
+                            <tr>
+                            {row.map((cell) => <td set:html={renderInlineText(cell)} />)}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )
+                }
                 {section.code && (
                   <pre><code>{section.code}</code></pre>
                 )}
@@ -350,7 +372,7 @@ const pageSections = [
             <section id="practice">
               <h2>Practice</h2>
               <ul>
-                {lesson.practice.map((item) => <li>{item}</li>)}
+                {lesson.practice.map((item) => <li set:html={renderInlineText(item)} />)}
               </ul>
             </section>
           )

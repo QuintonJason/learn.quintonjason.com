@@ -65,6 +65,52 @@
   line-height: 1.5;
 }
 
+.lesson-table-wrapper {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.lesson-table {
+  border-collapse: collapse;
+  min-width: 42rem;
+  width: 100%;
+}
+
+.lesson-table th,
+.lesson-table td {
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.8rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.lesson-table th {
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lesson-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.lesson-content-sections p code,
+.lesson-content-sections li code,
+.lesson-table code,
+#practice li code {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-ink);
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.88em;
+  padding: 0.1rem 0.25rem;
+}
+
 .code-copy pre {
   padding-top: 3.25rem;
 }

@@ -33,8 +33,8 @@ export const courseModules: CourseModule[] = [
     ],
     lessons: [
       { title: 'Developer Environment Setup', href: '/lessons/developer-environment-setup/' },
-      { title: 'File Paths and Site Structure', href: '/lessons/file-paths-and-site-structure/' },
-      { title: 'Basic HTML Structure and Elements', href: '/lessons/basic-html-structure-and-elements/' },
+      { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
+      { title: 'HTML Structure and Elements', href: '/lessons/basic-html-structure-and-elements/' },
     ],
     projectCheckpoint: {
       title: 'Project 1: Basic Webpage',
@@ -72,9 +72,9 @@ export const courseModules: CourseModule[] = [
       'Content, padding, border, margin, and box sizing',
     ],
     lessons: [
-      { title: 'Intro to CSS', href: '/lessons/intro-to-css/' },
-      { title: 'Styling Text with CSS', href: '/lessons/styling-text-with-css/' },
-      { title: 'CSS - Working with Fonts', href: '/lessons/css-working-with-fonts/' },
+      { title: 'CSS Basics', href: '/lessons/intro-to-css/' },
+      { title: 'CSS Text Styling', href: '/lessons/styling-text-with-css/' },
+      { title: 'CSS Fonts', href: '/lessons/css-working-with-fonts/' },
       { title: 'Box Model and Layout', href: '/lessons/box-model-and-layout/' },
     ],
     projectCheckpoint: {
@@ -152,7 +152,7 @@ export const courseModules: CourseModule[] = [
     ],
     lessons: [
       { title: 'HTML Forms', href: '/lessons/html-forms-building-interactive-user-interfaces/' },
-      { title: 'Building Effective Site Navigation', href: '/lessons/building-effective-site-navigation/' },
+      { title: 'Site Navigation', href: '/lessons/building-effective-site-navigation/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],
     projectCheckpoint: {
@@ -191,7 +191,7 @@ export const courseModules: CourseModule[] = [
     ],
     lessons: [
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
-      { title: 'Page Types, Templates, and Navigation', href: '/lessons/page-types-templates-and-navigation/' },
+      { title: 'Page Types and Templates', href: '/lessons/page-types-templates-and-navigation/' },
     ],
     projectCheckpoint: {
       title: 'Project 3: Interactive Web Experience',
@@ -268,9 +268,9 @@ export const courseModules: CourseModule[] = [
       'Carousel behavior, controls, status, and accessibility',
     ],
     lessons: [
-      { title: 'Page Types, Templates, and Navigation', href: '/lessons/page-types-templates-and-navigation/' },
+      { title: 'Page Types and Templates', href: '/lessons/page-types-templates-and-navigation/' },
       { title: 'Item Listing and Details', href: '/lessons/item-listing-and-details/' },
-      { title: 'Mastering Carousels', href: '/lessons/mastering-carousels/' },
+      { title: 'Carousels', href: '/lessons/mastering-carousels/' },
     ],
     projectCheckpoint: {
       title: 'Project 4: Interactive Portfolio',

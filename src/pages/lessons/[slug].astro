@@ -5,15 +5,20 @@ import AnimationKeyframeLab from '../../components/AnimationKeyframeLab.astro';
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
 import CarouselAccessibilityLab from '../../components/CarouselAccessibilityLab.astro';
 import DomInteractionLab from '../../components/DomInteractionLab.astro';
+import FilePathLab from '../../components/FilePathLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
+import FontPairingLab from '../../components/FontPairingLab.astro';
 import FormAccessibilityLab from '../../components/FormAccessibilityLab.astro';
 import GsapTimelineLab from '../../components/GsapTimelineLab.astro';
 import ImageOptimizationLab from '../../components/ImageOptimizationLab.astro';
 import NavigationPatternLab from '../../components/NavigationPatternLab.astro';
+import PageTemplateLab from '../../components/PageTemplateLab.astro';
+import PositioningLab from '../../components/PositioningLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
-import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes } from '../../data/lessonMeta';
+import TransformLab from '../../components/TransformLab.astro';
+import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes, isInteractiveLesson } from '../../data/lessonMeta';
 import { lessons } from '../../data/lessons';
 import { projects } from '../../data/projects';
 
@@ -28,6 +33,7 @@ const { lesson } = Astro.props;
 const currentIndex = lessons.findIndex((item) => item.slug === lesson.slug);
 const previousLesson = lessons[currentIndex - 1];
 const nextLesson = lessons[currentIndex + 1];
+const hasInteractiveDemo = isInteractiveLesson(lesson);
 const demoSourceUrl = getDemoSourceUrl(lesson);
 const demoGuidance = getDemoGuidance(lesson);
 const lessonMeta = getLessonMeta(lesson, currentIndex);
@@ -39,7 +45,7 @@ const supportingProjects = projects.filter((project) =>
 const isExternalHref = (href: string) => href.startsWith('http://') || href.startsWith('https://');
 const pageSections = [
   { href: '#learning-goals', label: 'Learning Goals' },
-  ...(demoSourceUrl ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
+  ...(hasInteractiveDemo ? [{ href: '#interactive-demo', label: 'Interactive Demo' }] : []),
   { href: '#lesson-content', label: 'Lesson Content' },
   { href: '#checkpoint', label: 'Checkpoint' },
   ...(supportingProjects.length ? [{ href: '#supports-projects', label: 'Supports Projects' }] : []),
@@ -156,7 +162,7 @@ const pageSections = [
         </section>
 
         {
-          demoSourceUrl && (
+          hasInteractiveDemo && (
             <div id="interactive-demo" class="lesson-anchor-block">
               <section class="demo-guide" aria-labelledby="demo-guide-title">
                 <div class="demo-guide__heading">
@@ -197,7 +203,11 @@ const pageSections = [
 
               {lesson.slug === 'box-model-and-layout' && <BoxModelVisualizer />}
 
+              {lesson.slug === 'file-paths-and-site-structure' && <FilePathLab />}
+
               {lesson.slug === 'intro-to-css' && <SelectorPlayground />}
+
+              {lesson.slug === 'css-working-with-fonts' && <FontPairingLab />}
 
               {lesson.slug === 'flexbox' && <FlexboxPlayground />}
 
@@ -209,6 +219,10 @@ const pageSections = [
 
               {lesson.slug === 'web-accessibility' && <AccessibilityCheckLab />}
 
+              {lesson.slug === 'css-positioning' && <PositioningLab />}
+
+              {lesson.slug === 'transforms-filters-and-transitions' && <TransformLab />}
+
               {lesson.slug === 'css-transitions' && <TransitionPlayground />}
 
               {lesson.slug === 'css-animation' && <AnimationKeyframeLab />}
@@ -217,15 +231,21 @@ const pageSections = [
 
               {lesson.slug === 'image-optimization' && <ImageOptimizationLab />}
 
+              {lesson.slug === 'page-types-templates-and-navigation' && <PageTemplateLab />}
+
               {lesson.slug === 'building-effective-site-navigation' && <NavigationPatternLab />}
 
               {lesson.slug === 'mastering-carousels' && <CarouselAccessibilityLab />}
 
-              <p class="demo-source">
-                This demo uses extra JavaScript for teaching. The code sample shows the pattern to practice.
-                {' '}
-                <a href={demoSourceUrl} target="_blank" rel="noopener noreferrer">View full demo source (opens in a new tab)</a>.
-              </p>
+              {
+                demoSourceUrl && (
+                  <p class="demo-source">
+                    This demo uses extra JavaScript for teaching. The code sample shows the pattern to practice.
+                    {' '}
+                    <a href={demoSourceUrl} target="_blank" rel="noopener noreferrer">View full demo source</a>.
+                  </p>
+                )
+              }
             </div>
           )
         }
@@ -260,7 +280,6 @@ const pageSections = [
                               rel={isExternalHref(resource.href) ? 'noopener noreferrer' : undefined}
                             >
                               {resource.label}
-                              {isExternalHref(resource.href) && <span class="visually-hidden"> opens in a new tab</span>}
                             </a>
                           )}
                         </>
@@ -325,7 +344,6 @@ const pageSections = [
                           ? (
                             <a href={resource} target="_blank" rel="noopener noreferrer">
                               {resource}
-                              <span class="visually-hidden"> opens in a new tab</span>
                             </a>
                           )
                           : resource
@@ -336,7 +354,6 @@ const pageSections = [
                             rel={isExternalHref(resource.href) ? 'noopener noreferrer' : undefined}
                           >
                             {resource.label}
-                            {isExternalHref(resource.href) && <span class="visually-hidden"> opens in a new tab</span>}
                           </a>
                         )
                     }
@@ -356,7 +373,7 @@ const pageSections = [
   </article>
 </BaseLayout>
 
-<script>
+<script type="module" is:inline data-astro-rerun>
   // @ts-nocheck
   const lessonNav = document.querySelector('[data-lesson-nav]');
   const lessonNavMedia = window.matchMedia('(max-width: 820px)');

@@ -1,0 +1,114 @@
+<section class="template-lab" aria-labelledby="template-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="template-lab-title">Page Type Mapper</h2>
+    <p>Pick a page type and see which sections usually matter most.</p>
+  </div>
+
+  <label class="template-lab__picker">
+    Page type
+    <select data-template-type>
+      <option value="landing">Landing page</option>
+      <option value="listing">Listing page</option>
+      <option value="detail">Detail page</option>
+      <option value="about">About page</option>
+    </select>
+  </label>
+
+  <div class="template-lab__preview" data-template-preview></div>
+  <pre><code data-template-code></code></pre>
+</section>
+
+<style>
+  .template-lab {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .template-lab__picker {
+    display: grid;
+    max-width: 280px;
+    gap: var(--space-1);
+    font-weight: 700;
+  }
+
+  .template-lab__preview {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+  }
+
+  .template-lab__section {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+
+  .template-lab__section strong {
+    font-size: var(--step-0);
+  }
+
+  .template-lab__section span {
+    color: var(--color-muted);
+    font-size: var(--step--1);
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const templateLab = document.querySelector('.template-lab');
+
+  if (templateLab) {
+    const type = templateLab.querySelector('[data-template-type]');
+    const preview = templateLab.querySelector('[data-template-preview]');
+    const code = templateLab.querySelector('[data-template-code]');
+    const templates = {
+      landing: [
+        ['Hero', 'Promise and primary action'],
+        ['Benefits', 'Why this matters'],
+        ['Proof', 'Examples or testimonials'],
+        ['CTA', 'Next step'],
+      ],
+      listing: [
+        ['Intro', 'What collection this is'],
+        ['Filters', 'Ways to narrow choices'],
+        ['Cards', 'Repeated items'],
+        ['Pagination', 'More results'],
+      ],
+      detail: [
+        ['Title', 'Specific item name'],
+        ['Media', 'Image or preview'],
+        ['Details', 'Important facts'],
+        ['Related items', 'Where to go next'],
+      ],
+      about: [
+        ['Intro', 'Who this is about'],
+        ['Story', 'Context and values'],
+        ['Credentials', 'Trust signals'],
+        ['Contact', 'How to connect'],
+      ],
+    };
+
+    function updateTemplateLab() {
+      const sections = templates[type.value];
+      preview.innerHTML = sections.map(([name, purpose]) => `<div class="template-lab__section"><strong>${name}</strong><span>${purpose}</span></div>`).join('');
+      code.textContent = sections.map(([name]) => `<section aria-labelledby="${name.toLowerCase().replaceAll(' ', '-')}-title">...</section>`).join('\n');
+    }
+
+    type.addEventListener('change', updateTemplateLab);
+    updateTemplateLab();
+  }
+</script>

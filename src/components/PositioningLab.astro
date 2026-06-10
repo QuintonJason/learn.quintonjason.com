@@ -1,0 +1,122 @@
+<section class="position-lab" aria-labelledby="position-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="position-lab-title">CSS Positioning Playground</h2>
+    <p>Change the positioning mode and offsets to see how an element leaves, keeps, or responds to normal flow.</p>
+  </div>
+
+  <div class="position-lab__controls">
+    <label>Position
+      <select data-position-control="position">
+        <option>static</option>
+        <option>relative</option>
+        <option>absolute</option>
+        <option>sticky</option>
+      </select>
+    </label>
+    <label>Top <input data-position-control="top" type="range" min="0" max="120" value="24" /></label>
+    <label>Left <input data-position-control="left" type="range" min="0" max="220" value="32" /></label>
+    <label>Z-index <input data-position-control="z" type="range" min="0" max="5" value="2" /></label>
+  </div>
+
+  <div class="position-lab__stage">
+    <div class="position-lab__block">Normal block</div>
+    <div class="position-lab__target" data-position-target>Target</div>
+    <div class="position-lab__block position-lab__block--overlap">Later block</div>
+  </div>
+
+  <pre><code data-position-code></code></pre>
+</section>
+
+<style>
+  .position-lab {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .position-lab__controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .position-lab__controls label {
+    display: grid;
+    gap: var(--space-1);
+    font-weight: 700;
+  }
+
+  .position-lab__stage {
+    position: relative;
+    min-height: 320px;
+    padding: var(--space-4);
+    overflow: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px), var(--color-surface-raised);
+    background-size: 32px 32px;
+  }
+
+  .position-lab__block,
+  .position-lab__target {
+    width: 190px;
+    min-height: 72px;
+    display: grid;
+    place-items: center;
+    margin-block-end: var(--space-3);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+  }
+
+  .position-lab__block {
+    background: var(--color-muted);
+  }
+
+  .position-lab__block--overlap {
+    margin-top: -24px;
+  }
+
+  .position-lab__target {
+    background: var(--color-accent);
+    color: var(--color-inverse-text);
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const positionLab = document.querySelector('.position-lab');
+
+  if (positionLab) {
+    const target = positionLab.querySelector('[data-position-target]');
+    const code = positionLab.querySelector('[data-position-code]');
+    const controls = {
+      position: positionLab.querySelector('[data-position-control="position"]'),
+      top: positionLab.querySelector('[data-position-control="top"]'),
+      left: positionLab.querySelector('[data-position-control="left"]'),
+      z: positionLab.querySelector('[data-position-control="z"]'),
+    };
+
+    function updatePositionLab() {
+      const position = controls.position.value;
+      const top = `${controls.top.value}px`;
+      const left = `${controls.left.value}px`;
+      const z = controls.z.value;
+      target.style.position = position;
+      target.style.top = position === 'static' ? 'auto' : top;
+      target.style.left = position === 'static' ? 'auto' : left;
+      target.style.zIndex = z;
+      code.textContent = `.target {
+  position: ${position};
+  ${position === 'static' ? '/* top and left do not apply to static elements */' : `top: ${top};\n  left: ${left};`}
+  z-index: ${z};
+}`;
+    }
+
+    Object.values(controls).forEach((control) => control.addEventListener('input', updatePositionLab));
+    updatePositionLab();
+  }
+</script>

@@ -79,7 +79,7 @@ const resourceGroups: ResourceGroup[] = [
         name: 'Common Fixes',
         href: '/debugging/',
         use: 'Debug missing CSS, broken images, GitHub Pages updates, mobile overflow, JavaScript, forms, carousels, and keyboard issues.',
-        lesson: 'File Paths and Site Structure',
+        lesson: 'File Paths',
         lessonHref: '/lessons/file-paths-and-site-structure/',
         internal: true,
       },
@@ -120,14 +120,14 @@ const resourceGroups: ResourceGroup[] = [
         name: 'MDN HTML',
         href: 'https://developer.mozilla.org/en-US/docs/Web/HTML',
         use: 'Look up elements, attributes, forms, links, images, and semantic HTML.',
-        lesson: 'Basic HTML Structure and Elements',
+        lesson: 'HTML Structure and Elements',
         lessonHref: '/lessons/basic-html-structure-and-elements/',
       },
       {
         name: 'MDN CSS',
         href: 'https://developer.mozilla.org/en-US/docs/Web/CSS',
         use: 'Look up CSS properties, selectors, layout systems, and browser support.',
-        lesson: 'Intro to CSS',
+        lesson: 'CSS Basics',
         lessonHref: '/lessons/intro-to-css/',
       },
       {
@@ -188,7 +188,7 @@ const resourceGroups: ResourceGroup[] = [
         name: 'WebAIM Contrast Checker',
         href: 'https://webaim.org/resources/contrastchecker/',
         use: 'Check whether foreground and background colors meet contrast guidance.',
-        lesson: 'Styling Text with CSS',
+        lesson: 'CSS Text Styling',
         lessonHref: '/lessons/styling-text-with-css/',
       },
       {
@@ -235,7 +235,7 @@ const resourceGroups: ResourceGroup[] = [
         name: 'Slick Carousel',
         href: 'https://kenwheeler.github.io/slick/',
         use: 'Build carousel behavior with a plugin when a project calls for rotating content.',
-        lesson: 'Mastering Carousels',
+        lesson: 'Carousels',
         lessonHref: '/lessons/mastering-carousels/',
       },
       {
@@ -249,7 +249,7 @@ const resourceGroups: ResourceGroup[] = [
         name: 'jQuery',
         href: 'https://jquery.com/',
         use: 'Understand legacy plugin setup, including tools like Slick that depend on it.',
-        lesson: 'Mastering Carousels',
+        lesson: 'Carousels',
         lessonHref: '/lessons/mastering-carousels/',
       },
     ],
@@ -290,7 +290,6 @@ const resourceGroups: ResourceGroup[] = [
                           rel={resource.internal ? undefined : 'noopener noreferrer'}
                         >
                           {resource.name}
-                          {!resource.internal && <span class="visually-hidden"> opens in a new tab</span>}
                         </a>
                       </h3>
                       <p>{resource.use}</p>

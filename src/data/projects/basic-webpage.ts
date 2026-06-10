@@ -53,7 +53,7 @@ export const basicWebpage: Project = {
         title: 'Links',
         items: [
           'Include a link to an external website or another page in your own site.',
-          'External links should open in a new tab or window.',
+          'External links that use target="_blank" should include rel="noopener noreferrer".',
         ],
       },
       {
@@ -200,9 +200,9 @@ export const basicWebpage: Project = {
     },
     supportingLessons: [
       { title: 'Developer Environment Setup', href: '/lessons/developer-environment-setup/' },
-      { title: 'File Paths and Site Structure', href: '/lessons/file-paths-and-site-structure/' },
-      { title: 'Basic HTML Structure and Elements', href: '/lessons/basic-html-structure-and-elements/' },
-      { title: 'Intro to CSS', href: '/lessons/intro-to-css/' },
-      { title: 'Styling Text with CSS', href: '/lessons/styling-text-with-css/' },
+      { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
+      { title: 'HTML Structure and Elements', href: '/lessons/basic-html-structure-and-elements/' },
+      { title: 'CSS Basics', href: '/lessons/intro-to-css/' },
+      { title: 'CSS Text Styling', href: '/lessons/styling-text-with-css/' },
     ],
   };

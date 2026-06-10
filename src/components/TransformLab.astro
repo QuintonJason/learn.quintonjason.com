@@ -1,0 +1,115 @@
+<section class="transform-lab" aria-labelledby="transform-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="transform-lab-title">CSS Transform Studio</h2>
+    <p>Adjust transform functions and origin without changing normal document flow.</p>
+  </div>
+
+  <div class="transform-lab__controls">
+    <label>Translate X <input data-transform-control="x" type="range" min="-90" max="90" value="20" /></label>
+    <label>Translate Y <input data-transform-control="y" type="range" min="-70" max="70" value="0" /></label>
+    <label>Rotate <input data-transform-control="rotate" type="range" min="-45" max="45" value="12" /></label>
+    <label>Scale <input data-transform-control="scale" type="range" min="50" max="150" value="100" /></label>
+    <label>Origin
+      <select data-transform-control="origin">
+        <option>center</option>
+        <option>top left</option>
+        <option>top right</option>
+        <option>bottom left</option>
+        <option>bottom right</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="transform-lab__stage">
+    <div class="transform-lab__ghost">Normal position</div>
+    <div class="transform-lab__target" data-transform-target>Transformed</div>
+  </div>
+
+  <pre><code data-transform-code></code></pre>
+</section>
+
+<style>
+  .transform-lab {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .transform-lab__controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .transform-lab__controls label {
+    display: grid;
+    gap: var(--space-1);
+    font-weight: 700;
+  }
+
+  .transform-lab__stage {
+    position: relative;
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+  }
+
+  .transform-lab__ghost,
+  .transform-lab__target {
+    width: 180px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+  }
+
+  .transform-lab__ghost {
+    position: absolute;
+    border: 2px dashed var(--color-border);
+    color: var(--color-muted);
+  }
+
+  .transform-lab__target {
+    position: relative;
+    background: var(--color-accent);
+    color: var(--color-inverse-text);
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const transformLab = document.querySelector('.transform-lab');
+
+  if (transformLab) {
+    const target = transformLab.querySelector('[data-transform-target]');
+    const code = transformLab.querySelector('[data-transform-code]');
+    const controls = {
+      x: transformLab.querySelector('[data-transform-control="x"]'),
+      y: transformLab.querySelector('[data-transform-control="y"]'),
+      rotate: transformLab.querySelector('[data-transform-control="rotate"]'),
+      scale: transformLab.querySelector('[data-transform-control="scale"]'),
+      origin: transformLab.querySelector('[data-transform-control="origin"]'),
+    };
+
+    function updateTransformLab() {
+      const transform = `translate(${controls.x.value}px, ${controls.y.value}px) rotate(${controls.rotate.value}deg) scale(${Number(controls.scale.value) / 100})`;
+      target.style.transform = transform;
+      target.style.transformOrigin = controls.origin.value;
+      code.textContent = `.card {
+  transform: ${transform};
+  transform-origin: ${controls.origin.value};
+}`;
+    }
+
+    Object.values(controls).forEach((control) => control.addEventListener('input', updateTransformLab));
+    updateTransformLab();
+  }
+</script>

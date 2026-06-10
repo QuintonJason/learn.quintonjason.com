@@ -199,10 +199,10 @@ export const interactivePortfolio: Project = {
       ],
     },
     supportingLessons: [
-      { title: 'Page Types, Templates, and Navigation', href: '/lessons/page-types-templates-and-navigation/' },
-      { title: 'Building Effective Site Navigation', href: '/lessons/building-effective-site-navigation/' },
+      { title: 'Page Types and Templates', href: '/lessons/page-types-templates-and-navigation/' },
+      { title: 'Site Navigation', href: '/lessons/building-effective-site-navigation/' },
       { title: 'Item Listing and Details', href: '/lessons/item-listing-and-details/' },
-      { title: 'Mastering Carousels', href: '/lessons/mastering-carousels/' },
+      { title: 'Carousels', href: '/lessons/mastering-carousels/' },
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],

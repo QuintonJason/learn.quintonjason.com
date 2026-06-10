@@ -99,7 +99,7 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
   </section>
 </BaseLayout>
 
-<script>
+<script type="module" is:inline data-astro-rerun>
   // @ts-nocheck
   const lessonFilters = Array.from(document.querySelectorAll('[data-lesson-filter]'));
   const lessonCards = Array.from(document.querySelectorAll('[data-lesson-card]'));

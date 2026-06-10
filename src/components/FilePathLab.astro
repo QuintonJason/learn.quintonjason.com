@@ -1,0 +1,165 @@
+<section class="path-lab" aria-labelledby="path-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="path-lab-title">File Path Lab</h2>
+    <p>Choose the correct relative path from the current HTML file to the target asset.</p>
+  </div>
+
+  <div class="path-lab__grid">
+    <div class="path-lab__tree" aria-label="Project folder tree">
+      <strong>portfolio-site</strong>
+      <ul>
+        <li>index.html</li>
+        <li>about.html</li>
+        <li>css
+          <ul><li>styles.css</li></ul>
+        </li>
+        <li>images
+          <ul><li>portrait.jpg</li><li>hero.jpg</li></ul>
+        </li>
+        <li>pages
+          <ul><li>gallery.html</li></ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="path-lab__controls">
+      <label>
+        Current file
+        <select data-path-current>
+          <option value="index">index.html</option>
+          <option value="about">about.html</option>
+          <option value="gallery">pages/gallery.html</option>
+        </select>
+      </label>
+      <label>
+        Target
+        <select data-path-target>
+          <option value="css">css/styles.css</option>
+          <option value="portrait">images/portrait.jpg</option>
+          <option value="home">index.html</option>
+        </select>
+      </label>
+      <label>
+        Your path
+        <select data-path-answer></select>
+      </label>
+      <p class="path-lab__result" data-path-result aria-live="polite"></p>
+    </div>
+  </div>
+
+  <pre><code data-path-code>&lt;link rel="stylesheet" href="css/styles.css"&gt;</code></pre>
+</section>
+
+<style>
+  .path-lab {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .path-lab__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+    gap: var(--space-4);
+  }
+
+  .path-lab__tree,
+  .path-lab__controls {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+  }
+
+  .path-lab__tree ul {
+    margin-block: var(--space-2) 0;
+  }
+
+  .path-lab__controls {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .path-lab__controls label {
+    display: grid;
+    gap: var(--space-1);
+    font-weight: 700;
+  }
+
+  .path-lab__result {
+    min-height: 2rem;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .path-lab__result[data-state="correct"] {
+    color: var(--color-brand-strong);
+  }
+
+  .path-lab__result[data-state="incorrect"] {
+    color: var(--color-danger);
+  }
+
+  @media (max-width: 760px) {
+    .path-lab__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const pathLab = document.querySelector('.path-lab');
+
+  if (pathLab) {
+    const current = pathLab.querySelector('[data-path-current]');
+    const target = pathLab.querySelector('[data-path-target]');
+    const answer = pathLab.querySelector('[data-path-answer]');
+    const result = pathLab.querySelector('[data-path-result]');
+    const code = pathLab.querySelector('[data-path-code]');
+    const answers = {
+      index: {
+        css: ['css/styles.css', './css/styles.css', '/css/styles.css', '../css/styles.css'],
+        portrait: ['images/portrait.jpg', './images/portrait.jpg', '../images/portrait.jpg', '/images/portrait.jpg'],
+        home: ['index.html', './index.html', '../index.html', '/index.html'],
+      },
+      about: {
+        css: ['css/styles.css', './css/styles.css', '../css/styles.css', '/css/styles.css'],
+        portrait: ['images/portrait.jpg', './images/portrait.jpg', '../images/portrait.jpg', '/images/portrait.jpg'],
+        home: ['index.html', './index.html', '../index.html', '/index.html'],
+      },
+      gallery: {
+        css: ['../css/styles.css', 'css/styles.css', './css/styles.css', '/css/styles.css'],
+        portrait: ['../images/portrait.jpg', 'images/portrait.jpg', './images/portrait.jpg', '/images/portrait.jpg'],
+        home: ['../index.html', 'index.html', './index.html', '/index.html'],
+      },
+    };
+
+    function updatePathLab() {
+      const options = answers[current.value][target.value];
+      answer.innerHTML = options.map((item) => `<option value="${item}">${item}</option>`).join('');
+      checkAnswer();
+    }
+
+    function checkAnswer() {
+      const correct = answers[current.value][target.value][0];
+      const isCorrect = answer.value === correct;
+      result.textContent = isCorrect ? 'Correct path.' : `Not quite. Start from ${current.selectedOptions[0].text}.`;
+      result.dataset.state = isCorrect ? 'correct' : 'incorrect';
+
+      const tag = target.value === 'css' ? 'link rel="stylesheet"' : 'img src';
+      code.textContent = target.value === 'css'
+        ? `<link rel="stylesheet" href="${answer.value}">`
+        : `<img src="${answer.value}" alt="">`;
+    }
+
+    current.addEventListener('change', updatePathLab);
+    target.addEventListener('change', updatePathLab);
+    answer.addEventListener('change', checkAnswer);
+    updatePathLab();
+  }
+</script>

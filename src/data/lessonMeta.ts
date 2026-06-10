@@ -85,6 +85,24 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
       'I can fix a broken asset by reading the folder structure.',
       'I can confirm the paths work after publishing.',
     ],
+    demoSourceFile: 'FilePathLab.astro',
+    demoGuidance: {
+      try: [
+        'Change the current file and target file, then choose the path the browser should use.',
+        'Compare root-level files with files inside the pages folder.',
+      ],
+      changes: [
+        'The answer choices and code sample update from the point of view of the current HTML file.',
+        'Correct paths change when the current file moves into a subfolder.',
+      ],
+      notice: [
+        'Relative paths start from the file that contains the link.',
+        'Forward slashes, spelling, and capitalization all matter after publishing.',
+      ],
+      apply: [
+        'Fix one image or stylesheet path in your project by drawing the folder tree first.',
+      ],
+    },
     tags: ['html'],
     teacherNotes: {
       demo: [
@@ -156,6 +174,24 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['css'],
   },
   'css-working-with-fonts': {
+    demoSourceFile: 'FontPairingLab.astro',
+    demoGuidance: {
+      try: [
+        'Change font family, size, line height, weight, and measure one at a time.',
+        'Make the text intentionally hard to read, then tune it back.',
+      ],
+      changes: [
+        'The preview text responds immediately to each typography setting.',
+        'The generated CSS shows the exact properties controlling readability.',
+      ],
+      notice: [
+        'Line height and max-width often affect readability as much as the font family.',
+        'Body text needs different typography decisions than display headings.',
+      ],
+      apply: [
+        'Set a readable body text size, line height, and max-width in your project stylesheet.',
+      ],
+    },
     tags: ['css'],
   },
   'html-forms-building-interactive-user-interfaces': {
@@ -336,9 +372,45 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['ux-process', 'css'],
   },
   'css-positioning': {
+    demoSourceFile: 'PositioningLab.astro',
+    demoGuidance: {
+      try: [
+        'Switch between static, relative, absolute, and sticky positioning.',
+        'Adjust top, left, and z-index to see which properties affect the target.',
+      ],
+      changes: [
+        'The target element moves differently depending on the positioning mode.',
+        'The code sample updates with the active position and offset values.',
+      ],
+      notice: [
+        'Static elements ignore top and left.',
+        'Absolute positioning is measured from the nearest positioned ancestor.',
+      ],
+      apply: [
+        'Use positioning for one layered or anchored UI element, then verify nearby content still behaves.',
+      ],
+    },
     tags: ['css'],
   },
   'transforms-filters-and-transitions': {
+    demoSourceFile: 'TransformLab.astro',
+    demoGuidance: {
+      try: [
+        'Adjust translate, rotate, scale, and transform-origin.',
+        'Compare the transformed element with its original layout position.',
+      ],
+      changes: [
+        'The visual position changes without changing the element position in normal flow.',
+        'The generated CSS combines multiple transform functions in one property.',
+      ],
+      notice: [
+        'Transforms are visual changes, not layout recalculations.',
+        'Transform origin changes the pivot point for rotation and scaling.',
+      ],
+      apply: [
+        'Add a small transform to one hover or focus state in your project.',
+      ],
+    },
     tags: ['css'],
   },
   'css-transitions': {
@@ -426,6 +498,24 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['ux-process', 'accessibility'],
   },
   'page-types-templates-and-navigation': {
+    demoSourceFile: 'PageTemplateLab.astro',
+    demoGuidance: {
+      try: [
+        'Switch between landing, listing, detail, and about page types.',
+        'Compare which sections repeat and which change based on user intent.',
+      ],
+      changes: [
+        'The preview reorganizes around the selected page type.',
+        'The code sample shows repeated section structure that could become a template.',
+      ],
+      notice: [
+        'Templates are reusable structure, not identical content.',
+        'Page type decisions should follow what users are trying to do.',
+      ],
+      apply: [
+        'Name the page types in your project before designing each layout.',
+      ],
+    },
     tags: ['ux-process'],
   },
   'building-effective-site-navigation': {

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 const {
   title = 'Learn Web Design With Quinton Jason',
@@ -41,13 +42,20 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
     <meta name="twitter:image:alt" content="Learn Web Design With Quinton Jason" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ClientRouter />
     <script is:inline>
       (() => {
         const storageKey = 'qj-learn-theme';
-        const root = document.documentElement;
-        const themeColor = document.querySelector('[data-theme-color]');
         const darkThemeColor = '#08140d';
         const lightThemeColor = '#41b649';
+
+        const setTheme = (theme, targetDocument = document) => {
+          targetDocument.documentElement.dataset.theme = theme;
+          targetDocument.querySelector('[data-theme-color]')?.setAttribute(
+            'content',
+            theme === 'dark' ? darkThemeColor : lightThemeColor
+          );
+        };
 
         const getPreferredTheme = () => {
           let storedTheme;
@@ -59,12 +67,21 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
           }
 
           if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+          if (document.documentElement.dataset.theme === 'light' || document.documentElement.dataset.theme === 'dark') {
+            return document.documentElement.dataset.theme;
+          }
           return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         };
 
-        const theme = getPreferredTheme();
-        root.dataset.theme = theme;
-        themeColor?.setAttribute('content', theme === 'dark' ? darkThemeColor : lightThemeColor);
+        setTheme(getPreferredTheme());
+
+        document.addEventListener('astro:before-swap', (event) => {
+          setTheme(getPreferredTheme(), event.newDocument);
+        });
+
+        document.addEventListener('astro:after-swap', () => {
+          setTheme(getPreferredTheme());
+        });
       })();
     </script>
   </head>
@@ -102,7 +119,7 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
             <a href="/projects/">Projects</a>
             <a href="/debugging/">Fixes</a>
             <a href="/resources/">Resources</a>
-            <a href="https://quintonjason.com/" target="_blank" rel="noopener noreferrer" aria-label="Portfolio, opens in a new tab">Portfolio</a>
+            <a href="https://quintonjason.com/" target="_blank" rel="noopener noreferrer">Portfolio</a>
           </nav>
           <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">
             <span class="theme-toggle__icon theme-toggle__sun" aria-hidden="true">&#9728;</span>
@@ -121,158 +138,182 @@ const imageUrl = new URL(image, Astro.site ?? Astro.url).toString();
         <p>HTML, CSS, accessibility, responsive design, UX, and systems thinking.</p>
       </div>
     </footer>
-    <script>
+    <script type="module" is:inline data-astro-rerun>
       // @ts-nocheck
-      const themeToggle = document.querySelector('[data-theme-toggle]');
-      const themeToggleLabel = document.querySelector('[data-theme-toggle-label]');
-      const siteNavToggle = document.querySelector('[data-site-nav-toggle]');
-      const siteNav = document.querySelector('[data-site-nav]');
-      const siteNavMedia = window.matchMedia('(max-width: 560px)');
-      const themeStorageKey = 'qj-learn-theme';
-      const themeColor = document.querySelector('[data-theme-color]');
-      const darkThemeColor = '#08140d';
-      const lightThemeColor = '#41b649';
+      (() => {
+        const themeToggle = document.querySelector('[data-theme-toggle]');
+        const themeToggleLabel = document.querySelector('[data-theme-toggle-label]');
+        const siteNavToggle = document.querySelector('[data-site-nav-toggle]');
+        const siteNav = document.querySelector('[data-site-nav]');
+        const siteNavMedia = window.matchMedia('(max-width: 560px)');
+        const themeStorageKey = 'qj-learn-theme';
+        const themeColor = document.querySelector('[data-theme-color]');
+        const darkThemeColor = '#08140d';
+        const lightThemeColor = '#41b649';
 
-      function setTheme(theme) {
-        const isDark = theme === 'dark';
-
-        document.documentElement.dataset.theme = theme;
-        themeToggle?.setAttribute('aria-pressed', String(isDark));
-        themeToggle?.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
-        themeToggleLabel?.replaceChildren(isDark ? 'Dark' : 'Light');
-        themeColor?.setAttribute('content', isDark ? darkThemeColor : lightThemeColor);
-      }
-
-      if (themeToggle) {
-        setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
-
-        themeToggle.addEventListener('click', () => {
-          const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        function getPreferredTheme() {
+          let storedTheme;
 
           try {
-            window.localStorage.setItem(themeStorageKey, nextTheme);
+            storedTheme = window.localStorage.getItem(themeStorageKey);
           } catch {
-            // The visible theme can still change even when storage is unavailable.
+            storedTheme = null;
           }
 
-          setTheme(nextTheme);
-        });
-      }
-
-      function setSiteNavState(isOpen) {
-        if (!(siteNav instanceof HTMLElement) || !(siteNavToggle instanceof HTMLButtonElement)) return;
-        siteNav.dataset.mobileNav = isOpen ? 'open' : 'closed';
-        siteNavToggle.setAttribute('aria-expanded', String(isOpen));
-      }
-
-      function syncSiteNav(event) {
-        if (!(siteNav instanceof HTMLElement) || !(siteNavToggle instanceof HTMLButtonElement)) return;
-
-        if (event.matches) {
-          setSiteNavState(false);
-        } else {
-          siteNav.removeAttribute('data-mobile-nav');
-          siteNavToggle.setAttribute('aria-expanded', 'false');
+          if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme;
+          if (document.documentElement.dataset.theme === 'light' || document.documentElement.dataset.theme === 'dark') {
+            return document.documentElement.dataset.theme;
+          }
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
-      }
 
-      if (siteNav instanceof HTMLElement && siteNavToggle instanceof HTMLButtonElement) {
-        syncSiteNav(siteNavMedia);
-        siteNavMedia.addEventListener('change', syncSiteNav);
+        function setTheme(theme) {
+          const isDark = theme === 'dark';
 
-        siteNavToggle.addEventListener('click', () => {
-          const isOpen = siteNav.dataset.mobileNav === 'open';
-          setSiteNavState(!isOpen);
-        });
-      }
+          document.documentElement.dataset.theme = theme;
+          themeToggle?.setAttribute('aria-pressed', String(isDark));
+          themeToggle?.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+          themeToggleLabel?.replaceChildren(isDark ? 'Dark' : 'Light');
+          themeColor?.setAttribute('content', theme === 'dark' ? darkThemeColor : lightThemeColor);
+        }
 
-      const codeBlocks = Array.from(document.querySelectorAll('pre'));
+        if (themeToggle) {
+          setTheme(getPreferredTheme());
 
-      codeBlocks.forEach((block, index) => {
-        if (block.closest('.code-copy')) return;
+          themeToggle.addEventListener('click', () => {
+            const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
 
-        const code = block.querySelector('code');
-        if (!code) return;
+            try {
+              window.localStorage.setItem(themeStorageKey, nextTheme);
+            } catch {
+              // The visible theme can still change even when storage is unavailable.
+            }
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'code-copy';
-        wrapper.dataset.copyIndex = String(index);
+            setTheme(nextTheme);
+          });
+        }
 
-        const button = document.createElement('button');
-        button.className = 'code-copy__button';
-        button.type = 'button';
-        button.textContent = 'Copy';
-        button.setAttribute('aria-label', 'Copy code example');
+        function setSiteNavState(isOpen) {
+          if (!(siteNav instanceof HTMLElement) || !(siteNavToggle instanceof HTMLButtonElement)) return;
+          siteNav.dataset.mobileNav = isOpen ? 'open' : 'closed';
+          siteNavToggle.setAttribute('aria-expanded', String(isOpen));
+        }
 
-        const status = document.createElement('span');
-        status.className = 'visually-hidden';
-        status.setAttribute('aria-live', 'polite');
+        function syncSiteNav(event) {
+          if (!(siteNav instanceof HTMLElement) || !(siteNavToggle instanceof HTMLButtonElement)) return;
 
-        block.parentNode?.insertBefore(wrapper, block);
-        wrapper.append(button, block, status);
-
-        button.addEventListener('click', async () => {
-          const text = code.textContent ?? '';
-
-          try {
-            await navigator.clipboard.writeText(text);
-            button.textContent = 'Copied';
-            status.textContent = 'Code copied to clipboard.';
-          } catch {
-            button.textContent = 'Copy failed';
-            status.textContent = 'Code could not be copied.';
+          if (event.matches) {
+            setSiteNavState(false);
+          } else {
+            siteNav.removeAttribute('data-mobile-nav');
+            siteNavToggle.setAttribute('aria-expanded', 'false');
           }
+        }
 
-          window.setTimeout(() => {
-            button.textContent = 'Copy';
-          }, 1800);
+        if (siteNav instanceof HTMLElement && siteNavToggle instanceof HTMLButtonElement) {
+          syncSiteNav(siteNavMedia);
+          siteNavMedia.addEventListener('change', syncSiteNav);
+
+          siteNavToggle.addEventListener('click', () => {
+            const isOpen = siteNav.dataset.mobileNav === 'open';
+            setSiteNavState(!isOpen);
+          });
+        }
+
+        const codeBlocks = Array.from(document.querySelectorAll('pre'));
+
+        codeBlocks.forEach((block, index) => {
+          if (block.closest('.code-copy')) return;
+
+          const code = block.querySelector('code');
+          if (!code) return;
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'code-copy';
+          wrapper.dataset.copyIndex = String(index);
+
+          const button = document.createElement('button');
+          button.className = 'code-copy__button';
+          button.type = 'button';
+          button.textContent = 'Copy';
+          button.setAttribute('aria-label', 'Copy code example');
+
+          const status = document.createElement('span');
+          status.className = 'visually-hidden';
+          status.setAttribute('aria-live', 'polite');
+
+          block.parentNode?.insertBefore(wrapper, block);
+          wrapper.append(button, block, status);
+
+          button.addEventListener('click', async () => {
+            const text = code.textContent ?? '';
+
+            try {
+              await navigator.clipboard.writeText(text);
+              button.textContent = 'Copied';
+              status.textContent = 'Code copied to clipboard.';
+            } catch {
+              button.textContent = 'Copy failed';
+              status.textContent = 'Code could not be copied.';
+            }
+
+            window.setTimeout(() => {
+              button.textContent = 'Copy';
+            }, 1800);
+          });
         });
-      });
 
-      const dynamicCodeBlocks = Array.from(
-        document.querySelectorAll(
-          [
-            '[data-a11y-code]',
-            '[data-animation-code]',
-            '[data-box-code]',
-            '[data-carousel-code]',
-            '[data-dom-code]',
-            '[data-flex-code]',
-            '[data-form-code]',
-            '[data-gsap-code]',
-            '[data-image-code]',
-            '[data-nav-code]',
-            '[data-responsive-code]',
-            '[data-selector-code]',
-            '[data-transition-code]',
-          ].join(',')
-        )
-      );
+        const dynamicCodeBlocks = Array.from(
+          document.querySelectorAll(
+            [
+              '[data-a11y-code]',
+              '[data-animation-code]',
+              '[data-box-code]',
+              '[data-carousel-code]',
+              '[data-dom-code]',
+              '[data-flex-code]',
+              '[data-form-code]',
+              '[data-font-code]',
+              '[data-gsap-code]',
+              '[data-image-code]',
+              '[data-nav-code]',
+              '[data-path-code]',
+              '[data-position-code]',
+              '[data-responsive-code]',
+              '[data-selector-code]',
+              '[data-template-code]',
+              '[data-transform-code]',
+              '[data-transition-code]',
+            ].join(',')
+          )
+        );
 
-      dynamicCodeBlocks.forEach((code) => {
-        const wrapper = code.closest('.code-copy') ?? code.parentElement;
-        if (!wrapper) return;
+        dynamicCodeBlocks.forEach((code) => {
+          const wrapper = code.closest('.code-copy') ?? code.parentElement;
+          if (!wrapper || wrapper.querySelector('[data-code-live-status]')) return;
 
-        const status = document.createElement('span');
-        status.className = 'visually-hidden';
-        status.setAttribute('aria-live', 'polite');
-        wrapper.append(status);
+          const status = document.createElement('span');
+          status.className = 'visually-hidden';
+          status.dataset.codeLiveStatus = '';
+          status.setAttribute('aria-live', 'polite');
+          wrapper.append(status);
 
-        let statusTimer;
+          let statusTimer;
 
-        const observer = new MutationObserver(() => {
-          window.clearTimeout(statusTimer);
-          statusTimer = window.setTimeout(() => {
-            status.textContent = 'Code example updated.';
-          }, 120);
+          const observer = new MutationObserver(() => {
+            window.clearTimeout(statusTimer);
+            statusTimer = window.setTimeout(() => {
+              status.textContent = 'Code example updated.';
+            }, 120);
+          });
+
+          observer.observe(code, {
+            characterData: true,
+            childList: true,
+            subtree: true,
+          });
         });
-
-        observer.observe(code, {
-          characterData: true,
-          childList: true,
-          subtree: true,
-        });
-      });
+      })();
     </script>
   </body>
 </html>

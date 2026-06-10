@@ -286,7 +286,7 @@ export const lessons: Lesson[] = [
   {
     slug: 'file-paths-and-site-structure',
     number: '03',
-    title: 'Understanding File Paths',
+    title: 'File Paths',
     eyebrow: 'Folders',
     summary:
       'Understand how files are organized on a computer and how browsers find the resources a webpage needs.',
@@ -478,7 +478,7 @@ export const lessons: Lesson[] = [
   {
     slug: 'basic-html-structure-and-elements',
     number: '04',
-    title: 'Basic HTML Structure and Elements',
+    title: 'HTML Structure and Elements',
     eyebrow: 'HTML',
     summary:
       'Learn the fundamental building blocks of an HTML document and the elements used to create simple web pages.',
@@ -679,7 +679,7 @@ export const lessons: Lesson[] = [
 <a href="tel:+15551234567">Call Us</a>
 <a href="mailto:contact@example.com">Contact Us</a>`,
         note:
-          'External links can use target="_blank" to open in a new tab. When you do that, include rel="noopener noreferrer" and tell users when a link opens a new tab.',
+          'External links can use target="_blank". When you do that, include rel="noopener noreferrer".',
       },
       {
         title: 'Other Elements',
@@ -765,7 +765,7 @@ export const lessons: Lesson[] = [
   {
     slug: 'intro-to-css',
     number: '05',
-    title: 'Intro to CSS',
+    title: 'CSS Basics',
     eyebrow: 'CSS',
     summary:
       'Learn how CSS works with HTML and JavaScript, where styles can live, and how selectors, declarations, the cascade, and inheritance shape a site.',
@@ -1073,7 +1073,7 @@ p {
   {
     slug: 'styling-text-with-css',
     number: '06',
-    title: 'Styling Text With CSS',
+    title: 'CSS Text Styling',
     eyebrow: 'Typography',
     summary:
       'Use CSS font and text layout properties to control the appearance, spacing, and alignment of text.',
@@ -1257,7 +1257,7 @@ p {
   {
     slug: 'css-working-with-fonts',
     number: '07',
-    title: 'CSS - Working with Fonts',
+    title: 'CSS Fonts',
     eyebrow: 'Typography',
     summary:
       'Use fonts effectively in CSS, understand their design and performance impact, and apply best practices for selection and implementation.',
@@ -1411,7 +1411,7 @@ p {
   {
     slug: 'html-forms-building-interactive-user-interfaces',
     number: '08',
-    title: 'HTML Forms: Building Interactive User Interfaces',
+    title: 'HTML Forms',
     eyebrow: 'Forms',
     summary:
       'Use HTML form elements, input types, attributes, and accessibility practices to create user-friendly interactive interfaces.',
@@ -1516,7 +1516,7 @@ p {
   {
     slug: 'box-model-and-layout',
     number: '09',
-    title: 'CSS Box Model and Layout Techniques',
+    title: 'Box Model and Layout',
     eyebrow: 'Layout',
     summary:
       'Understand how elements are visually rendered, how their dimensions are calculated, and how display, float, flexbox, and grid affect layout.',
@@ -1725,7 +1725,7 @@ p {
   {
     slug: 'flexbox',
     number: '10',
-    title: 'Flexbox: Mastering One-Dimensional Layouts',
+    title: 'Flexbox',
     eyebrow: 'Layout',
     summary:
       'Use CSS Flexbox to arrange items flexibly within a container for responsive, one-dimensional layouts.',
@@ -2355,7 +2355,7 @@ link.addEventListener('click', (event) => {
   {
     slug: 'crafting-captivating-hero-sections',
     number: '13',
-    title: 'Crafting Captivating Hero Sections',
+    title: 'Hero Sections',
     eyebrow: 'Design',
     summary:
       'Design responsive hero sections that make a strong first impression, communicate a clear message, and guide users toward action.',
@@ -3302,7 +3302,7 @@ button.addEventListener('click', () => {
   {
     slug: 'gsap-web-animation',
     number: '18',
-    title: 'GSAP: Web Animation',
+    title: 'GSAP Web Animation',
     eyebrow: 'GSAP',
     summary:
       'Use GSAP for performant tweens, timelines, easing, plugins, and more sophisticated web animation.',
@@ -3780,7 +3780,7 @@ images.forEach((img) => observer.observe(img));`,
   {
     slug: 'page-types-templates-and-navigation',
     number: '20',
-    title: 'Page Types and Template',
+    title: 'Page Types and Templates',
     eyebrow: 'Structure',
     summary:
       'Understand common page types and how templates create consistent, efficient web experiences.',
@@ -3915,7 +3915,7 @@ images.forEach((img) => observer.observe(img));`,
   {
     slug: 'building-effective-site-navigation',
     number: '21',
-    title: 'Building Effective Site Navigation',
+    title: 'Site Navigation',
     eyebrow: 'Navigation',
     summary:
       'Design clear, consistent, accessible navigation systems that help users move through a website with confidence.',
@@ -4227,7 +4227,7 @@ toggleButton.addEventListener('click', () => {
   {
     slug: 'mastering-carousels',
     number: '23',
-    title: 'Mastering Carousels',
+    title: 'Carousels',
     eyebrow: 'Components',
     summary:
       'Understand carousel structure, Slick setup, fading transitions, and a simple vanilla JavaScript carousel.',

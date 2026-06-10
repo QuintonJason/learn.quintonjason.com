@@ -1,0 +1,95 @@
+<section class="font-lab" aria-labelledby="font-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="font-lab-title">CSS Font Tester</h2>
+    <p>Adjust typography settings and compare readability in a realistic text block.</p>
+  </div>
+
+  <div class="font-lab__controls" role="group" aria-label="Font controls">
+    <label>Family
+      <select data-font-control="family">
+        <option value="Georgia, serif">Georgia</option>
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+        <option value="'Courier New', monospace">Courier New</option>
+      </select>
+    </label>
+    <label>Size <input data-font-control="size" type="range" min="14" max="28" value="18" /></label>
+    <label>Line height <input data-font-control="line" type="range" min="110" max="190" value="150" /></label>
+    <label>Weight <input data-font-control="weight" type="range" min="300" max="800" step="100" value="400" /></label>
+    <label>Max width <input data-font-control="width" type="range" min="36" max="78" value="62" /></label>
+  </div>
+
+  <article class="font-lab__preview" data-font-preview>
+    <h3>Designing for Readability</h3>
+    <p>Good typography helps readers move through content without fighting the page. Size, line height, weight, and measure all work together.</p>
+  </article>
+
+  <pre><code data-font-code></code></pre>
+</section>
+
+<style>
+  .font-lab {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .font-lab__controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .font-lab__controls label {
+    display: grid;
+    gap: var(--space-1);
+    font-weight: 700;
+  }
+
+  .font-lab__preview {
+    max-width: 62ch;
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-raised);
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const fontLab = document.querySelector('.font-lab');
+
+  if (fontLab) {
+    const preview = fontLab.querySelector('[data-font-preview]');
+    const code = fontLab.querySelector('[data-font-code]');
+    const controls = {
+      family: fontLab.querySelector('[data-font-control="family"]'),
+      size: fontLab.querySelector('[data-font-control="size"]'),
+      line: fontLab.querySelector('[data-font-control="line"]'),
+      weight: fontLab.querySelector('[data-font-control="weight"]'),
+      width: fontLab.querySelector('[data-font-control="width"]'),
+    };
+
+    function updateFontLab() {
+      preview.style.fontFamily = controls.family.value;
+      preview.style.fontSize = `${controls.size.value}px`;
+      preview.style.lineHeight = `${Number(controls.line.value) / 100}`;
+      preview.style.fontWeight = controls.weight.value;
+      preview.style.maxWidth = `${controls.width.value}ch`;
+      code.textContent = `.text-block {
+  font-family: ${controls.family.value};
+  font-size: ${controls.size.value}px;
+  line-height: ${Number(controls.line.value) / 100};
+  font-weight: ${controls.weight.value};
+  max-width: ${controls.width.value}ch;
+}`;
+    }
+
+    Object.values(controls).forEach((control) => control.addEventListener('input', updateFontLab));
+    updateFontLab();
+  }
+</script>

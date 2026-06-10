@@ -38,8 +38,8 @@ export const debuggingFixes: DebugFix[] = [
       'Save, refresh, commit, push, and check the live URL after GitHub Pages updates.',
     ],
     relatedLessons: [
-      { title: 'File Paths and Site Structure', href: '/lessons/file-paths-and-site-structure/' },
-      { title: 'Intro to CSS', href: '/lessons/intro-to-css/' },
+      { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
+      { title: 'CSS Basics', href: '/lessons/intro-to-css/' },
     ],
     relatedProjects: [
       { title: 'Project 1: Basic Webpage', href: '/projects/basic-webpage/' },
@@ -69,7 +69,7 @@ export const debuggingFixes: DebugFix[] = [
       'Optimize large images before final submission.',
     ],
     relatedLessons: [
-      { title: 'File Paths and Site Structure', href: '/lessons/file-paths-and-site-structure/' },
+      { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
       { title: 'Image Optimization', href: '/lessons/image-optimization/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],
@@ -98,7 +98,7 @@ export const debuggingFixes: DebugFix[] = [
     ],
     relatedLessons: [
       { title: 'Developer Environment Setup', href: '/lessons/developer-environment-setup/' },
-      { title: 'File Paths and Site Structure', href: '/lessons/file-paths-and-site-structure/' },
+      { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
     ],
   },
   {
@@ -157,7 +157,7 @@ export const debuggingFixes: DebugFix[] = [
     ],
     relatedLessons: [
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
-      { title: 'File Paths and Site Structure', href: '/lessons/file-paths-and-site-structure/' },
+      { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
     ],
     relatedProjects: [
       { title: 'Project 3: Interactive Web Experience', href: '/projects/interactive-web-experience/' },
@@ -187,7 +187,7 @@ export const debuggingFixes: DebugFix[] = [
       'Add visible controls, status, keyboard support, and pause behavior when needed.',
     ],
     relatedLessons: [
-      { title: 'Mastering Carousels', href: '/lessons/mastering-carousels/' },
+      { title: 'Carousels', href: '/lessons/mastering-carousels/' },
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],
@@ -246,7 +246,7 @@ export const debuggingFixes: DebugFix[] = [
       'Add keyboard handling for menus, modals, and custom interactions.',
     ],
     relatedLessons: [
-      { title: 'Building Effective Site Navigation', href: '/lessons/building-effective-site-navigation/' },
+      { title: 'Site Navigation', href: '/lessons/building-effective-site-navigation/' },
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],

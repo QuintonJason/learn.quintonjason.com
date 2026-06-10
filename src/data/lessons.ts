@@ -1131,9 +1131,9 @@ images/logo.png`,
           'CSS works with HTML and JavaScript to build web pages. Each layer has a different job.',
         ],
         bullets: [
-          'HTML: Defines the content and structure of the page. This includes elements such as headings, paragraphs, images, lists, and forms.',
-          'CSS: Controls the presentation and appearance of the HTML content. This includes colors, fonts, layout, spacing, and visual effects.',
-          'JavaScript: Adds behavior to the page, making it interactive. This includes animations, dynamic content updates, and user input handling.',
+          '`HTML`: Defines the content and structure of the page. This includes elements such as headings, paragraphs, images, lists, and forms.',
+          '`CSS`: Controls the presentation and appearance of the HTML content. This includes colors, fonts, layout, spacing, and visual effects.',
+          '`JavaScript`: Adds behavior to the page, making it interactive. This includes animations, dynamic content updates, and user input handling.',
         ],
       },
       {
@@ -1146,7 +1146,7 @@ images/logo.png`,
       {
         title: 'Inline Styles',
         body: [
-          'Styles are applied directly to an HTML element using the style attribute within the opening tag.',
+          'Styles are applied directly to an HTML element using the `style` attribute within the opening tag.',
         ],
         code: `<h1 style="color: blue; font-size: 2em;">Welcome!</h1>`,
         note:
@@ -1155,7 +1155,7 @@ images/logo.png`,
       {
         title: 'Internal Stylesheets',
         body: [
-          'Styles are defined within the head section using the style tag.',
+          'Styles are defined within the `head` section using the `style` tag.',
         ],
         code: `<head>
   <style>
@@ -1172,13 +1172,30 @@ images/logo.png`,
       {
         title: 'External Stylesheets',
         body: [
-          'Styles are placed in a separate file, such as styles.css, and linked using the link tag.',
+          'Styles are placed in a separate file, such as `styles.css`, and linked using the `link` tag.',
         ],
         code: `<head>
   <link rel="stylesheet" href="styles.css">
 </head>`,
         note:
           'Recommended: External stylesheets improve code organization and reuse.',
+      },
+      {
+        title: 'Full HTML and CSS Connection',
+        body: [
+          'Most class projects should use an `index.html` file for structure and a `styles.css` file for presentation.',
+          'The HTML file connects to the CSS file with a `link` element in the `head`.',
+        ],
+        code: `<!-- index.html -->
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<!-- styles.css -->
+body {
+  font-family: Arial, sans-serif;
+  color: #222;
+}`,
       },
       {
         title: 'Code Example: External Stylesheet Rule',
@@ -1193,19 +1210,36 @@ images/logo.png`,
           'CSS syntax uses selectors and declarations. The selector chooses what to style. The declarations say how it should look.',
         ],
         bullets: [
-          'Selector: Defines the elements to be styled.',
-          'Declaration: A set of property-value pairs inside curly braces.',
-          'Property: The style to be applied, such as color.',
-          'Value: The setting for the property, such as red.',
+          '`Selector`: Defines the elements to be styled.',
+          '`Declaration block`: The curly braces that contain one or more declarations.',
+          '`Declaration`: A property and value pair, such as `color: blue;`.',
+          '`Property`: The style to be applied, such as `color`.',
+          '`Value`: The setting for the property, such as `blue`.',
         ],
         code: `selector {
   property: value;
 }`,
       },
       {
+        title: 'CSS Rule Anatomy',
+        body: [
+          'A CSS rule starts with a selector, then uses declarations to change the selected elements.',
+        ],
+        code: `p {
+  color: blue;
+}`,
+        bullets: [
+          '`p` is the selector.',
+          '`color: blue;` is the declaration.',
+          '`color` is the property.',
+          '`blue` is the value.',
+        ],
+      },
+      {
         title: 'Code Example: Type Selector',
         body: [
-          'Targets all elements of a given type. For example, targeting all h1 tags.',
+          'Targets all elements of a given type. For example, targeting all `h1` tags.',
+          'Use type selectors for broad defaults, such as styling all paragraphs or all headings.',
         ],
         code: `h1 {
   color: blue;
@@ -1214,7 +1248,8 @@ images/logo.png`,
       {
         title: 'Code Example: ID Selector',
         body: [
-          'Targets a single element with a specific ID, defined using the # symbol.',
+          'Targets a single element with a specific ID, defined using the `#` symbol.',
+          'ID selectors are very specific. For styling, classes are usually easier to reuse and maintain.',
         ],
         code: `#myDiv {
   background-color: lightgray;
@@ -1223,7 +1258,8 @@ images/logo.png`,
       {
         title: 'Code Example: Class Selector',
         body: [
-          'Targets any elements that use a given class, defined using the . symbol.',
+          'Targets any elements that use a given class, defined using the `.` symbol.',
+          'Use class selectors for reusable styling patterns.',
         ],
         code: `.container {
   padding: 20px;
@@ -1233,7 +1269,8 @@ images/logo.png`,
       {
         title: 'Code Example: Descendant Selector',
         body: [
-          'Targets elements that are nested within another element. This example targets only paragraphs inside div elements.',
+          'Targets elements that are nested within another element. This example targets only paragraphs inside `div` elements.',
+          'Use descendant selectors when location in the HTML structure matters.',
         ],
         code: `div p {
   color: green;
@@ -1243,6 +1280,7 @@ images/logo.png`,
         title: 'Code Example: Pseudo-Class',
         body: [
           'Targets elements in a particular state, like when a user hovers over a link.',
+          'Use pseudo-classes for interaction states such as `:hover`, `:focus`, and `:visited`.',
         ],
         code: `a {
   color: green;
@@ -1264,70 +1302,48 @@ a:hover {
   background-color: #efefef; */
 }`,
         note:
-          'CSS uses /* */ for comments. The // single-line comment style is common in some languages, but it is not valid standard CSS.',
+          'CSS uses `/* */` for comments. The `//` single-line comment style is common in some languages, but it is not valid standard CSS.',
       },
       {
         title: 'Core Concept: Common CSS Properties',
         body: [
           'These are frequently used CSS properties to control layout, text, and element appearance.',
         ],
-        code: `p {
-  color: blue;
-}
-
-body {
-  background-color: lightgray;
-}
-
-h1 {
-  font-size: 2em;
-}
-
-p {
-  font-family: Arial, sans-serif;
-}
-
-div {
-  width: 500px;
-}
-
-img {
-  height: 200px;
-}
-
-p {
-  margin: 20px;
-  padding: 10px;
-}
-
-div {
-  border: 1px solid black;
-}`,
+        table: {
+          headers: ['Group', 'Properties', 'What they control'],
+          rows: [
+            ['Text', '`color`, `font-size`, `font-family`', 'Text color, size, and typeface.'],
+            ['Page surface', '`background-color`', 'The background color behind an element.'],
+            ['Size', '`width`, `height`, `max-width`', 'How wide or tall an element can be.'],
+            ['Box spacing', '`margin`, `padding`', 'Space outside and inside an element.'],
+            ['Borders', '`border`, `border-radius`', 'Edges and corner shape.'],
+          ],
+        },
       },
       {
         title: 'Code Example: Container / Wrapper',
         body: [
           'Used to center content and limit maximum width for layout consistency.',
+          'A reusable class is better than styling every `div` the same way.',
         ],
-        code: `div {
+        code: `.container {
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
+  padding-inline: 20px;
 }`,
       },
       {
         title: 'Code Example: Centering in CSS',
         body: [
-          'Text can be centered with text-align. Block elements can be centered using auto margins.',
+          'Text can be centered with `text-align`. Block elements can be centered using auto margins.',
         ],
         code: `p {
   text-align: center;
 }
 
-div {
+.container {
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
 }`,
       },
       {
@@ -1337,40 +1353,76 @@ div {
           'When CSS feels confusing, the issue is often order, specificity, or inheritance.',
         ],
         bullets: [
-          'Last Rule: Later rules override earlier ones if selectors match.',
-          'Specificity: More specific selectors take precedence.',
-          '!important: Overrides all other rules but should be used sparingly.',
+          '`Last rule`: Later rules override earlier ones if selectors match and have the same specificity.',
+          '`Specificity`: More specific selectors take precedence.',
+          '`!important`: Overrides normal cascade rules but should be used sparingly.',
         ],
       },
       {
-        title: 'Core Concept: Inheritance',
+        title: 'Cascade Example: Later Rule Wins',
         body: [
-          'Some properties, like color and font-family, are inherited by child elements.',
-          'Inheritance lets you set broad defaults on the body, then override them when needed.',
+          'When two matching selectors have the same specificity, the later rule wins.',
         ],
-        code: `body {
-  color: red;
+        code: `p {
+  color: green;
 }
 
 p {
   color: blue;
 }`,
+        note:
+          'The paragraph text will be blue because the second `p` rule comes later.',
+      },
+      {
+        title: 'Specificity Example: Class Beats Type',
+        body: [
+          'A class selector is more specific than a type selector. If the HTML paragraph has `class="intro"`, the class rule wins.',
+        ],
+        code: `p {
+  color: green;
+}
+
+.intro {
+  color: blue;
+}`,
+      },
+      {
+        title: 'Core Concept: Inheritance',
+        body: [
+          'Some properties, like `color` and `font-family`, are inherited by child elements.',
+          'Inheritance lets you set broad defaults on the `body`, then override them when needed.',
+        ],
+        code: `body {
+  font-family: Arial, sans-serif;
+  color: #222;
+}
+
+a {
+  color: green;
+}`,
+        note:
+          'Most text will inherit the `body` font and color. Links use the `a` rule because it overrides the inherited color.',
       },
       {
         title: 'Common Mistakes',
-        bullets: [
-          'Forgetting to link the CSS file in the HTML.',
-          'Writing a selector that does not match the HTML.',
-          'Using an ID selector when a reusable class would be better.',
-          'Forgetting a semicolon between declarations.',
-          'Expecting an earlier rule to win when a later rule overrides it.',
-          'Using !important instead of understanding the cascade.',
-        ],
+        table: {
+          headers: ['Mistake', 'Why it breaks', 'Fix'],
+          rows: [
+            ['CSS file not linked', 'The browser never loads `styles.css`.', 'Add `<link rel="stylesheet" href="styles.css">` inside the `head`.'],
+            ['Selector does not match HTML', 'The rule exists, but no element is selected.', 'Compare the selector with the actual element, class, or ID in the HTML.'],
+            ['Missing semicolon', 'The next declaration may not be read correctly.', 'End declarations with a semicolon, such as `color: blue;`.'],
+            ['Missing closing brace', 'The browser may treat later rules as part of the same rule.', 'Close every rule with `}`.'],
+            ['Class selector missing `.`', '`container` selects an element named container, not `class="container"`.', 'Use `.container` for classes.'],
+            ['ID selector missing `#`', '`hero` selects an element named hero, not `id="hero"`.', 'Use `#hero` for IDs.'],
+            ['Earlier rule expected to win', 'Later rules can override earlier rules.', 'Check rule order and specificity in developer tools.'],
+            ['Using `!important` too quickly', 'It makes future overrides harder.', 'Inspect the cascade and adjust selector or rule order first.'],
+          ],
+        },
       },
       {
         title: 'Debugging Checklist',
         bullets: [
-          'Confirm the CSS file path is correct in the link tag.',
+          'Confirm the CSS file path is correct in the `link` tag.',
           'Open browser developer tools and inspect the element.',
           'Check whether the selector matches the element you are trying to style.',
           'Look for crossed-out styles in developer tools to see which rules are being overridden.',
@@ -1401,8 +1453,15 @@ p {
       },
     ],
     practice: [
-      'Move styles out of HTML and into an external stylesheet.',
-      'Create type, class, and pseudo-class selectors.',
+      'Create a `styles.css` file.',
+      'Link `styles.css` from `index.html` using a `link` element in the `head`.',
+      'Style the `body` with a font family, text color, background color, and margin.',
+      'Create a reusable `.container` class with `max-width`, `margin-inline: auto`, and padding.',
+      'Style headings and paragraphs with type selectors.',
+      'Create at least one reusable class selector.',
+      'Add a hover state with a pseudo-class, such as `a:hover`.',
+      'Inspect one styled element in developer tools and find where the winning rule comes from.',
+      'Intentionally break one selector, then fix it after checking the page in the browser.',
     ],
   },
   {

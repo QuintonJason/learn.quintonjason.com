@@ -2323,15 +2323,15 @@ p {
         title: 'What This Teaches',
         body: [
           'This lesson teaches how every visible element on a webpage is drawn as a box.',
-          'You will learn how content, padding, border, margin, and box-sizing affect the space an element takes up.',
-          'You will also learn how basic layout techniques like display, float, flexbox, and grid change how elements arrange themselves.',
+          'You will learn how `content`, `padding`, `border`, `margin`, and `box-sizing` affect the space an element takes up.',
+          'You will also learn how basic layout techniques like `display`, `float`, `flexbox`, and `grid` change how elements arrange themselves.',
         ],
       },
       {
         title: 'Why It Matters',
         body: [
           'Most layout problems are box model problems first.',
-          'When spacing looks strange, elements overflow, columns do not line up, or a card is wider than expected, the answer is often padding, margin, border, or box-sizing.',
+          'When spacing looks strange, elements overflow, columns do not line up, or a card is wider than expected, the answer is often `padding`, `margin`, `border`, or `box-sizing`.',
           'Understanding the box model gives you a reliable way to debug layout instead of guessing at random CSS properties.',
         ],
       },
@@ -2346,9 +2346,9 @@ p {
         bullets: [
           'Occupy the full width available to them by default.',
           'Create line breaks before and after the element, stacking vertically.',
-          'Respect width and height properties.',
-          'Padding, margins, and borders apply and affect the layout of surrounding elements.',
-          'Examples: h1, p, div, ul, form, table',
+          'Respect `width` and `height` properties.',
+          '`padding`, `margin`, and `border` apply and affect the layout of surrounding elements.',
+          'Examples: `h1`, `p`, `div`, `ul`, `form`, `table`.',
         ],
       },
       {
@@ -2356,17 +2356,52 @@ p {
         bullets: [
           'Only occupy the space needed for their content.',
           'Flow within a line of text, not creating line breaks.',
-          'Ignore width and height properties.',
-          "Vertical padding, margins, and borders apply but don't affect the positioning of other inline elements.",
-          'Horizontal padding, margins, and borders apply and affect the positioning of other inline elements.',
-          'Examples: span, a, img, strong, em',
+          'Ignore `width` and `height` properties.',
+          "Vertical `padding`, `margin`, and `border` apply but don't affect the positioning of other inline elements.",
+          'Horizontal `padding`, `margin`, and `border` apply and affect the positioning of other inline elements.',
+          'Examples: `span`, `a`, `img`, `strong`, `em`.',
         ],
+      },
+      {
+        title: 'Block, Inline, and Inline-block Example',
+        body: [
+          '`inline-block` is useful for links that should look like buttons because the element still flows inline but accepts padding, width, and height.',
+        ],
+        code: `<div>Block element</div>
+<p>Another block element</p>
+<span>Inline element</span>
+<a href="#">Inline link</a>`,
       },
       {
         title: 'Core Concept: The CSS Box Model',
         body: [
           'Every element on a web page is treated as a rectangular box, composed of content, padding, border, and margin.',
         ],
+      },
+      {
+        title: 'Box Model Anatomy',
+        body: [
+          'The box model has layers. Start from the content and move outward.',
+        ],
+        image: {
+          src: '/images/lessons/box-model-and-layout/box-model-diagram.jpg',
+          alt: 'Diagram of the CSS box model with margin surrounding border, padding, and content.',
+          caption: 'The CSS box model layers move outward from content to padding, border, and margin.',
+        },
+      },
+      {
+        title: 'Complete Card Example',
+        body: [
+          'This example combines the main box model properties in one reusable card.',
+        ],
+        code: `.card {
+  box-sizing: border-box;
+  width: 320px;
+  padding: 1rem;
+  border: 2px solid #1f2937;
+  margin: 1rem;
+  background-color: #f4faf5;
+}`,
       },
       {
         title: 'Box Layer: Content',
@@ -2377,7 +2412,7 @@ p {
       {
         title: 'Box Layer: Padding',
         body: [
-          'The space between the content and the border. Padding is transparent and expands the background color of the element.',
+          'The space between the `content` and the `border`. Padding is transparent and expands the background color of the element.',
         ],
         code: `p {
   background-color: lightblue;
@@ -2387,7 +2422,7 @@ p {
       {
         title: 'Box Layer: Border',
         body: [
-          'A visual boundary surrounding the padding and content. Borders can have different styles, colors, and thicknesses.',
+          'A visual boundary surrounding the `padding` and `content`. Borders can have different styles, colors, and thicknesses.',
         ],
         code: `div {
   border: 2px solid black;
@@ -2396,7 +2431,7 @@ p {
       {
         title: 'Box Layer: Margin',
         body: [
-          'The space outside the border, creating separation between elements. Margins are transparent and collapse with adjacent margins.',
+          'The space outside the `border`, creating separation between elements. Margins are transparent and can collapse with adjacent vertical margins.',
         ],
         code: `h1 {
   margin-bottom: 1em;
@@ -2405,12 +2440,12 @@ p {
       {
         title: 'Core Concept: box-sizing',
         body: [
-          'The box-sizing property determines how the width and height of an element are calculated.',
-          'Many developers prefer border-box because it makes element sizing easier to predict.',
+          'The `box-sizing` property determines how the `width` and `height` of an element are calculated.',
+          'Many developers prefer `border-box` because it makes element sizing easier to predict.',
         ],
         bullets: [
-          'content-box: The default. Width and height include only the content area.',
-          'border-box: Width and height include content, padding, and border, but not margin.',
+          '`content-box`: The default. `width` and `height` include only the content area.',
+          '`border-box`: `width` and `height` include content, padding, and border, but not margin.',
         ],
         code: `div {
   width: 200px;
@@ -2418,6 +2453,55 @@ p {
   border: 5px solid black;
   box-sizing: border-box; /* Total width will still be 200px */
 }`,
+      },
+      {
+        title: 'content-box vs. border-box',
+        table: {
+          headers: ['Value', 'How size is calculated', 'What to expect'],
+          rows: [
+            ['`content-box`', '`width` includes only the content area.', 'The final rendered size grows when `padding` or `border` is added.'],
+            ['`border-box`', '`width` includes content, `padding`, and `border`.', 'The final rendered size is easier to predict.'],
+          ],
+        },
+      },
+      {
+        title: 'Global box-sizing Reset',
+        body: [
+          'Many projects set every element to `border-box` so sizing is more predictable across the site.',
+        ],
+        code: `*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}`,
+      },
+      {
+        title: 'Margin Collapse',
+        body: [
+          'Vertical margins between block elements can collapse. That means two vertical margins may combine instead of adding together.',
+          'If spacing feels smaller than expected, inspect the element and check whether vertical margins are collapsing.',
+        ],
+        code: `h1 {
+  margin-bottom: 2rem;
+}
+
+p {
+  margin-top: 1rem;
+}`,
+        note:
+          'The space between the `h1` and `p` may be `2rem`, not `3rem`, because the vertical margins can collapse.',
+      },
+      {
+        title: 'Which Spacing Should I Use?',
+        table: {
+          headers: ['Need', 'Use'],
+          rows: [
+            ['Space inside a box', '`padding`'],
+            ['Space between separate boxes', '`margin`'],
+            ['Space between flex or grid children', '`gap`'],
+            ['Space between text lines', '`line-height`'],
+          ],
+        },
       },
       {
         title: 'Core Concept: Layout Techniques',
@@ -2429,10 +2513,10 @@ p {
       {
         title: 'Code Example: display Property',
         bullets: [
-          'display: none; hides the element completely.',
-          'display: block; makes the element a block-level element.',
-          'display: inline; makes the element inline.',
-          'display: inline-block; combines block and inline behaviors.',
+          '`display: none;` hides the element completely.',
+          '`display: block;` makes the element a block-level element.',
+          '`display: inline;` makes the element inline.',
+          '`display: inline-block;` combines block and inline behaviors.',
         ],
         code: `.hidden {
   display: none;
@@ -2446,13 +2530,15 @@ p {
       {
         title: 'Float',
         body: [
-          'float: left; or float: right; allows content to wrap around the floated element. Use sparingly due to complexity.',
+          '`float: left;` or `float: right;` allows content to wrap around the floated element.',
+          'Today, `float` is mostly useful for wrapping text around images. Avoid using it for modern page layout when `flexbox` or `grid` would be simpler.',
         ],
       },
       {
         title: 'Flexbox',
         body: [
-          'display: flex; enables the Flexbox layout model for one-dimensional layouts.',
+          '`display: flex;` enables the Flexbox layout model for one-dimensional layouts.',
+          'Use `gap` to create spacing between flex children instead of adding margins to every child.',
         ],
         code: `.card-row {
   display: flex;
@@ -2462,7 +2548,8 @@ p {
       {
         title: 'Grid',
         body: [
-          'display: grid; allows for two-dimensional layouts with rows and columns.',
+          '`display: grid;` allows for two-dimensional layouts with rows and columns.',
+          'Use `gap` to create consistent spacing between grid rows and columns.',
         ],
         code: `.card-grid {
   display: grid;
@@ -2472,23 +2559,29 @@ p {
       },
       {
         title: 'Common Mistakes',
-        bullets: [
-          'Forgetting that padding and border can increase the final size of an element when using content-box.',
-          'Using margin when padding would better create internal space.',
-          'Using padding when margin would better separate two elements.',
-          'Trying to set width or height on inline elements and expecting it to work like a block.',
-          'Using float for modern page layout when flexbox or grid would be simpler.',
-          'Not accounting for margin collapse between vertical block elements.',
-        ],
+        table: {
+          headers: ['Mistake', 'Why it happens', 'Fix'],
+          rows: [
+            ['Card is wider than expected', '`content-box` adds `padding` and `border` outside the declared width.', 'Use `box-sizing: border-box`.'],
+            ['Using `margin` for internal space', '`margin` creates space outside the element.', 'Use `padding` for space inside the box.'],
+            ['Using `padding` between separate boxes', '`padding` increases internal space instead of separating siblings.', 'Use `margin` or `gap`.'],
+            ['Inline element ignores `width` or `height`', 'Inline elements do not respect width and height like blocks.', 'Use `display: inline-block` or `display: block`.'],
+            ['Using `float` for modern layout', '`float` was not designed for page layout systems.', 'Use `flexbox` or `grid` for layout.'],
+            ['Vertical spacing is smaller than expected', 'Adjacent vertical margins may collapse.', 'Inspect margins or use `padding`/`gap` where appropriate.'],
+          ],
+        },
       },
       {
         title: 'Debugging Checklist',
         bullets: [
           'Inspect the element in browser developer tools and look at the box model diagram.',
-          'Check whether the element is block, inline, inline-block, flex, or grid.',
+          'Hover the DevTools box model diagram to see `margin`, `border`, `padding`, and `content` on the page.',
+          'Check whether the element is `block`, `inline`, `inline-block`, `flex`, or `grid`.',
+          'Check the computed `box-sizing` value.',
+          'Toggle `padding`, `margin`, and `border` rules on and off.',
           'Temporarily add a border or background color to see the real size of the element.',
-          'Check whether spacing is coming from padding, margin, gap, or line-height.',
-          'Set box-sizing: border-box when sizing feels unpredictable.',
+          'Check whether spacing is coming from `padding`, `margin`, `gap`, or `line-height`.',
+          'Set `box-sizing: border-box` when sizing feels unpredictable.',
           'Remove layout rules one at a time to find which property is creating the issue.',
         ],
       },
@@ -2511,8 +2604,13 @@ p {
       },
     ],
     practice: [
-      'Build a content card using padding, border, margin, and box-sizing.',
-      'Create a simple two-column layout.',
+      'Build a content card using `padding`, `border`, `margin`, and `box-sizing`.',
+      'Apply a global `border-box` reset.',
+      'Create internal card spacing with `padding`.',
+      'Create separation between cards with `margin` or `gap`.',
+      'Create a row of cards with `display: flex` and `gap`.',
+      'Inspect the card in DevTools and identify `content`, `padding`, `border`, and `margin`.',
+      'Intentionally switch the card to `content-box` and observe how the final size changes.',
     ],
   },
   {
@@ -2532,46 +2630,63 @@ p {
         title: 'What This Teaches',
         body: [
           'This lesson teaches how to use CSS Flexbox to arrange items inside a container.',
-          'You will learn how flex containers, flex items, axes, wrapping, spacing, alignment, and ordering work together.',
+          'You will learn how `display: flex`, flex containers, flex items, axes, wrapping, spacing, alignment, and ordering work together.',
         ],
       },
       {
         title: 'Why It Matters',
         body: [
-          'Flexbox is one of the most useful layout tools for everyday interface work.',
+          'Flexbox is one of the most useful CSS layout tools for everyday interface work.',
           'It is especially good for navigation bars, button rows, card layouts, media objects, and centering content.',
-          'Unlike CSS Grid, Flexbox is primarily used for one-dimensional layouts, meaning a row or a column.',
+          'Unlike CSS Grid, Flexbox is primarily used for one-dimensional layouts, meaning one row or one column at a time.',
         ],
       },
       {
         title: 'Core Concept: Flexbox Vocabulary',
         bullets: [
-          'Flex Container: The parent element that contains flex items.',
-          'Flex Item: The child elements within the flex container.',
-          'Flex Direction: Determines the main axis of the container, row or column.',
-          'Flex Wrap: Controls whether items wrap to the next line.',
-          'Justify Content: Aligns items along the main axis.',
-          'Align Items: Aligns items along the cross axis.',
-          'Align Content: Aligns multiple lines of items within the container.',
-          'Flex Grow: Defines how much a flex item should grow relative to other items.',
-          'Flex Shrink: Defines how much a flex item should shrink relative to other items.',
-          'Flex Basis: Sets the initial size of a flex item.',
-          'Order: Controls the order of flex items.',
+          '`Flex container`: The parent element with `display: flex`.',
+          '`Flex item`: A direct child of the flex container.',
+          '`flex-direction`: Sets the main axis, such as `row` or `column`.',
+          '`flex-wrap`: Controls whether items stay on one line or wrap onto multiple lines.',
+          '`justify-content`: Aligns or distributes items along the main axis.',
+          '`align-items`: Aligns items along the cross axis.',
+          '`align-content`: Distributes multiple wrapped lines within the container.',
+          '`flex-grow`: Defines how much a flex item can grow relative to other items.',
+          '`flex-shrink`: Defines how much a flex item can shrink relative to other items.',
+          '`flex-basis`: Sets the starting size of a flex item.',
+          '`order`: Changes the visual order of flex items.',
         ],
       },
       {
         title: 'Core Concept: Container and Items',
         body: [
-          'To begin using Flexbox, set the display property of a container to flex. All direct child elements will become flex items.',
+          'To begin using Flexbox, set the parent element to `display: flex`. All direct child elements become flex items.',
+          'Flex properties like `justify-content`, `align-items`, `flex-wrap`, and `gap` usually belong on the container. Properties like `flex`, `flex-grow`, and `order` belong on individual items.',
         ],
         code: `.flex-container {
   display: flex;
 }`,
       },
       {
+        title: 'Main Axis and Cross Axis',
+        body: [
+          'Flexbox is controlled by two axes. The main axis is the direction items flow. The cross axis runs perpendicular to it.',
+          'When `flex-direction` changes, the meaning of `justify-content` and `align-items` changes too.',
+        ],
+        table: {
+          headers: ['Direction', 'Main Axis', 'Cross Axis'],
+          rows: [
+            ['`row`', 'Left to right in normal writing modes', 'Top to bottom'],
+            ['`row-reverse`', 'Right to left in normal writing modes', 'Top to bottom'],
+            ['`column`', 'Top to bottom', 'Left to right'],
+            ['`column-reverse`', 'Bottom to top', 'Left to right'],
+          ],
+        },
+      },
+      {
         title: 'Code Example: Flex Direction',
         body: [
-          'The flex-direction property sets the direction of the main axis, defining how flex items are placed in the flex container.',
+          '`flex-direction` sets the direction of the main axis, defining how flex items are placed in the flex container.',
         ],
         code: `.flex-container {
   display: flex;
@@ -2582,7 +2697,8 @@ p {
       {
         title: 'Code Example: Flex Wrap',
         body: [
-          'Use flex-wrap to specify whether the flex items should wrap onto multiple lines or stay on a single line.',
+          'Use `flex-wrap` to decide whether flex items should stay on one line or wrap onto multiple lines.',
+          '`flex-wrap: wrap` is useful for responsive card rows, tag lists, galleries, and navigation that needs to survive smaller screens.',
         ],
         code: `.flex-container {
   display: flex;
@@ -2590,9 +2706,34 @@ p {
 }`,
       },
       {
+        title: 'Code Example: Gap',
+        body: [
+          '`gap` creates consistent spacing between flex items without adding margins to each child.',
+          'Use `gap` for space inside a flex row or column. Use `margin` when an element needs space outside the whole group.',
+        ],
+        code: `.flex-container {
+  display: flex;
+  gap: 1rem;
+}`,
+      },
+      {
+        title: 'Alignment Properties',
+        body: [
+          'The alignment properties are easier to remember when you connect each one to an axis.',
+        ],
+        table: {
+          headers: ['Property', 'Axis', 'Use For'],
+          rows: [
+            ['`justify-content`', 'Main axis', 'Moving or distributing items across the direction they flow.'],
+            ['`align-items`', 'Cross axis', 'Aligning items perpendicular to the direction they flow.'],
+            ['`align-content`', 'Cross axis, multiple lines only', 'Spacing wrapped rows or columns inside the container.'],
+          ],
+        },
+      },
+      {
         title: 'Code Example: Justify Content',
         body: [
-          'justify-content aligns flex items along the main axis. It controls the alignment and spacing between items.',
+          '`justify-content` aligns flex items along the main axis. It controls how free space is distributed in the direction items flow.',
         ],
         code: `.flex-container {
   display: flex;
@@ -2602,7 +2743,7 @@ p {
       {
         title: 'Code Example: Align Items',
         body: [
-          'The align-items property aligns items along the cross axis, perpendicular to the main axis.',
+          '`align-items` aligns items along the cross axis, perpendicular to the main axis.',
         ],
         code: `.flex-container {
   display: flex;
@@ -2610,7 +2751,31 @@ p {
 }`,
       },
       {
+        title: 'Interactive Practice: Flexbox Playground',
+        body: [
+          'Use the Flexbox Playground above to test `flex-direction`, `flex-wrap`, `justify-content`, `align-items`, and `gap`.',
+          'Before changing a control, predict whether the items will move on the main axis or the cross axis. Then compare your prediction to the result.',
+        ],
+      },
+      {
+        title: 'Common Flex Patterns',
+        table: {
+          headers: ['Pattern', 'Useful CSS'],
+          rows: [
+            ['Center one item both ways', '`display: flex; justify-content: center; align-items: center;`'],
+            ['Horizontal button row', '`display: flex; gap: 0.75rem; align-items: center;`'],
+            ['Responsive navigation', '`display: flex; flex-wrap: wrap; gap: 1rem; justify-content: flex-end;`'],
+            ['Wrapping card row', '`display: flex; flex-wrap: wrap; gap: 1.5rem;`'],
+            ['Equal-width flexible cards', '`flex: 1 1 16rem;` on each card'],
+            ['Image and text media object', '`display: flex; gap: 1rem; align-items: flex-start;`'],
+          ],
+        },
+      },
+      {
         title: 'Practical Example: Responsive Navigation Bar',
+        body: [
+          'This pattern keeps navigation items in a row when space allows, then wraps them instead of forcing overflow.',
+        ],
         code: `.site-nav ul {
   display: flex;
   flex-wrap: wrap;
@@ -2623,6 +2788,9 @@ p {
       },
       {
         title: 'Practical Example: Flexible Card Layout',
+        body: [
+          'This pattern lets cards share a row, wrap when they run out of space, and start from a readable minimum size.',
+        ],
         code: `.card-list {
   display: flex;
   flex-wrap: wrap;
@@ -2636,64 +2804,95 @@ p {
       {
         title: 'Core Concept: Advanced Item Control',
         body: [
-          'Flexbox also includes properties for controlling how individual items grow, shrink, and appear within a container.',
+          'Flexbox also includes properties for controlling how individual flex items grow, shrink, and appear within a container.',
         ],
       },
       {
         title: 'Flex Grow, Shrink, and Basis',
+        body: [
+          'The `flex` shorthand combines `flex-grow`, `flex-shrink`, and `flex-basis` in that order.',
+        ],
         bullets: [
-          'Flex Grow: Controls how much a flex item should grow relative to other items.',
-          'Flex Shrink: Controls how much a flex item should shrink relative to other items.',
-          'Flex Basis: Sets the initial size of a flex item.',
+          'First value: `flex-grow`. `1` means the item is allowed to grow.',
+          'Second value: `flex-shrink`. `1` means the item is allowed to shrink.',
+          'Third value: `flex-basis`. `12rem` means the item starts at about `12rem` before space is distributed.',
         ],
         code: `.item {
   flex: 1 1 12rem;
 }`,
       },
       {
+        title: 'Flex Shorthand Examples',
+        table: {
+          headers: ['Value', 'Meaning'],
+          rows: [
+            ['`flex: 0 0 auto;`', 'Do not grow, do not shrink, use natural size.'],
+            ['`flex: 1 1 auto;`', 'Grow and shrink from the natural size.'],
+            ['`flex: 1 1 16rem;`', 'Grow and shrink from a starting size of `16rem`. Useful for cards.'],
+            ['`flex: 1;`', 'A common shortcut for flexible equal-width items, but less explicit for beginners.'],
+          ],
+        },
+      },
+      {
         title: 'Core Concept: Align Content',
         body: [
-          'align-content controls the spacing between multiple flex lines.',
+          '`align-content` controls the spacing between multiple flex lines.',
           'It only has a visible effect when flex items wrap onto more than one line.',
         ],
         bullets: [
-          'flex-start',
-          'flex-end',
-          'center',
-          'space-between',
-          'space-around',
-          'stretch',
+          '`flex-start`',
+          '`flex-end`',
+          '`center`',
+          '`space-between`',
+          '`space-around`',
+          '`stretch`',
         ],
       },
       {
         title: 'Core Concept: Order Property',
         body: [
-          'The order property controls the order in which flex items appear within the container, regardless of their source order.',
-          'Use this carefully. Visual order and source order can become different, which can confuse keyboard and screen reader users.',
+          'The `order` property controls the visual order in which flex items appear within the container.',
+          'Use `order` carefully. It changes visual order, but it does not change the HTML source order, keyboard order, or screen reader reading order.',
+          'Use `order` for small visual adjustments, not for rewriting the actual reading order of important page content.',
         ],
         code: `.featured-item {
   order: -1;
 }`,
       },
       {
+        title: 'When Not to Use Flexbox',
+        table: {
+          headers: ['Layout Need', 'Better Choice'],
+          rows: [
+            ['Simple stacked content', 'Normal block flow is often enough.'],
+            ['Rows and columns controlled together', 'Use CSS Grid.'],
+            ['Page-level two-dimensional layout', 'Use CSS Grid, then Flexbox inside smaller pieces.'],
+            ['Changing source order for meaning', 'Change the HTML structure instead of relying on `order`.'],
+          ],
+        },
+      },
+      {
         title: 'Common Mistakes',
         bullets: [
-          'Putting display: flex on the wrong element.',
+          'Putting `display: flex` on the wrong element.',
           'Forgetting that only direct children become flex items.',
-          'Using justify-content when the issue is actually cross-axis alignment.',
-          'Using align-items when there are multiple wrapped lines and align-content is needed.',
-          'Expecting gap to work on older browser versions without checking support.',
-          'Using order to fix visual layout while creating confusing keyboard or reading order.',
+          'Using `justify-content` when the issue is actually cross-axis alignment.',
+          'Using `align-items` when there are multiple wrapped lines and `align-content` is needed.',
+          'Using margin hacks when `gap` would be cleaner.',
+          'Using `order` to fix visual layout while creating confusing keyboard or reading order.',
+          'Reaching for Flexbox when CSS Grid would handle rows and columns more clearly.',
         ],
       },
       {
         title: 'Debugging Checklist',
         bullets: [
-          'Inspect the parent and confirm it has display: flex.',
+          'Inspect the parent and confirm it has `display: flex`.',
           'Check which elements are direct children of the flex container.',
-          'Identify the main axis from flex-direction.',
-          'Use justify-content for the main axis and align-items for the cross axis.',
-          'Check whether items are wrapping before using align-content.',
+          'Identify the main axis from `flex-direction`.',
+          'Use `justify-content` for the main axis and `align-items` for the cross axis.',
+          'Check whether items are wrapping before using `align-content`.',
+          'Use `gap` before adding margins to every child.',
+          'Check whether an item has a `flex` shorthand, `flex-grow`, `flex-shrink`, or `flex-basis` rule.',
           'Temporarily add outlines or background colors to see each flex item.',
         ],
       },
@@ -2707,8 +2906,15 @@ p {
       },
     ],
     practice: [
-      'Build a responsive navigation bar using flexbox.',
+      'Use the Flexbox Playground to test every `flex-direction` value.',
+      'Center one item horizontally and vertically with `justify-content` and `align-items`.',
+      'Build a responsive navigation bar using `display: flex`, `flex-wrap`, and `gap`.',
+      'Create a row of cards with `flex-wrap: wrap` and `flex: 1 1 16rem`.',
       'Create a row of cards with aligned buttons.',
+      'Build a media object with an image on one side and text on the other.',
+      'Change a layout from `row` to `column` and explain which axis changed.',
+      'Use DevTools to confirm which element is the flex container and which elements are flex items.',
+      'Avoid `order` for meaningful content. Reorder the HTML instead when reading order matters.',
     ],
   },
   {

@@ -4139,125 +4139,179 @@ buttons.forEach((button) => {
   {
     slug: 'transforms-filters-and-transitions',
     number: '15',
-    title: 'CSS Transforms',
+    title: 'CSS Transforms and Filters',
     eyebrow: 'Motion',
     summary:
-      'Use CSS transforms and filters to create dynamic visual effects without disrupting page layout.',
+      'Use CSS transforms and filters to move, rotate, scale, tilt, and visually adjust elements without disrupting page layout.',
     goals: [
-      'Explain how transforms change the visual rendering of an element',
-      'Use translate, rotate, scale, skew, matrix, and 3D transforms',
-      'Apply filters with accessibility and performance in mind',
+      'Explain how `transform` changes visual rendering without moving surrounding layout',
+      'Use `translate`, `rotate`, `scale`, `skew`, `transform-origin`, and 3D transforms intentionally',
+      'Apply `filter` effects with readability, accessibility, and performance in mind',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          'CSS Transforms offer a powerful way to manipulate the appearance and positioning of elements on a web page without affecting their layout.',
-          'By applying transformations, you can create dynamic and engaging effects that enhance the user experience.',
+          '`transform` changes how an element is visually rendered. It can move, rotate, scale, or tilt an element without changing the space that element occupies in the normal page layout.',
+          '`filter` changes how an element looks, such as making an image blurry, grayscale, brighter, darker, or higher contrast.',
         ],
+        note:
+          'Lesson 16 focuses on `transition`. This lesson focuses on what transforms and filters do.',
+      },
+      {
+        title: 'Transform vs Position',
+        body: [
+          '`position` changes how an element is placed in relation to the document, a parent, or the viewport.',
+          '`transform` changes the visual rendering of an element after layout has already happened. Other elements still behave as if the transformed element is in its original spot.',
+        ],
+        table: {
+          headers: ['Need', 'Better Tool', 'Why'],
+          rows: [
+            ['Place a badge in a card corner', '`position`', 'The badge needs to attach to a parent.'],
+            ['Move a button up slightly on hover', '`transform`', 'The motion is visual and should not push other elements.'],
+            ['Build the main page structure', 'Normal flow, Flexbox, or Grid', 'Transforms should not be used for page layout.'],
+            ['Zoom an image on hover', '`transform`', 'The image can visually grow without recalculating layout.'],
+          ],
+        },
       },
       {
         title: 'Understanding CSS Transforms',
         body: [
-          'The transform property is used to apply transformations to elements.',
-          'Transform functions manipulate how an element is rendered visually.',
+          'The `transform` property accepts one or more transform functions. Each function changes the element visually in a specific way.',
         ],
-        bullets: [
-          'translate: Moves an element to a new position relative to its current location.',
-          'rotate: Rotates an element around a specified point.',
-          'scale: Resizes an element to a new width and height.',
-          'skew: Skews an element along the X or Y axis.',
-          'matrix: Applies a 2D transformation matrix to an element.',
-        ],
+        table: {
+          headers: ['Function', 'Use For', 'Example'],
+          rows: [
+            ['`translate()`', 'Move an element visually', '`translateY(-0.25rem)`'],
+            ['`rotate()`', 'Turn an element', '`rotate(6deg)`'],
+            ['`scale()`', 'Resize an element visually', '`scale(1.05)`'],
+            ['`skew()`', 'Slant an element', '`skewX(-8deg)`'],
+            ['`transform-origin`', 'Change the pivot point', '`transform-origin: left center`'],
+            ['`perspective`', 'Create 3D depth', '`perspective: 800px`'],
+          ],
+        },
       },
       {
-        title: 'Applying Transforms to Elements',
+        title: 'Applying Transforms',
         body: [
-          'To apply a transform to an element, use the transform property and specify the desired transform function and its parameters.',
+          'You can combine multiple transform functions in one `transform` declaration.',
+          'The browser applies transform functions in order, so changing the order can change the final result.',
         ],
         code: `.element {
-  transform: translate(50px, 100px) rotate(45deg) scale(2);
+  transform: translateX(2rem) rotate(6deg) scale(1.05);
 }`,
       },
       {
-        title: 'Hardware Acceleration',
+        title: 'Transform Order Matters',
         body: [
-          'Using translate3d(x, y, 0) can trigger GPU compositing in many browsers, which may improve performance for animations and transitions.',
-          'Use this carefully. Hardware acceleration is useful, but it is not a magic fix for every animation problem.',
+          '`transform: translateX(4rem) rotate(15deg)` does not behave the same as `transform: rotate(15deg) translateX(4rem)`.',
+          'When a transform looks strange, check the order of the functions before changing the values.',
         ],
-        code: `.element {
-  transform: translate3d(50px, 100px, 0);
-}`,
-      },
-      {
-        title: 'Moving Elements',
-        body: [
-          'You can use translate to move elements in pixels or percentages relative to their current position.',
-          'The first value moves the element on the X axis. The second value moves it on the Y axis.',
-        ],
-        code: `.element {
-  transform: translate(50px, 100px);
+        code: `.first {
+  transform: translateX(4rem) rotate(15deg);
 }
 
-.element-percent {
-  transform: translate(50%, 20%);
+.second {
+  transform: rotate(15deg) translateX(4rem);
+}`,
+      },
+      {
+        title: 'Moving Elements with Translate',
+        body: [
+          '`translate` moves an element visually on the X axis, Y axis, or both. It is great for small interface movement because it does not push nearby content around.',
+        ],
+        code: `.button:hover {
+  transform: translateY(-0.25rem);
+}
+
+.card-label {
+  transform: translate(1rem, -0.5rem);
 }`,
       },
       {
         title: 'Rotating Elements',
         body: [
-          'Use rotate to rotate an element clockwise or counterclockwise. This is especially useful for creating interactive effects or rotating icons.',
-          'The transform-origin property changes the point an element rotates around.',
+          '`rotate` turns an element clockwise or counterclockwise. It is useful for arrows, icons, labels, stickers, and playful interface details.',
         ],
-        code: `.element {
-  transform: rotate(45deg);
+        code: `.arrow-icon {
+  transform: rotate(90deg);
 }
 
-.corner-rotate {
-  transform-origin: top left;
-  transform: rotate(45deg) translate(20px, 20px);
+.tilted-label {
+  transform: rotate(-4deg);
 }`,
       },
       {
         title: 'Scaling Elements',
         body: [
-          'Scaling allows you to resize elements proportionally or along specific axes. This is useful for responsive design and hover effects.',
+          '`scale` visually resizes an element. Values above `1` make it larger, and values below `1` make it smaller.',
+          'Large scale values can cause overflow, so test the surrounding layout when an element grows.',
         ],
-        code: `.element {
-  transform: scale(1.2);
+        code: `.image-card:hover img {
+  transform: scale(1.06);
 }
 
-.wide-short {
-  transform: scale(1.5, 0.8);
+.small-badge {
+  transform: scale(0.9);
 }`,
       },
       {
         title: 'Skewing Elements',
         body: [
-          'Skew transformations tilt elements along the X or Y axis, adding a dynamic visual twist.',
+          '`skew` slants an element on the X axis, Y axis, or both. Use it sparingly because it can make text harder to read.',
         ],
-        code: `.element {
-  transform: skew(15deg, 5deg);
+        code: `.accent-panel {
+  transform: skewX(-8deg);
 }`,
+      },
+      {
+        title: 'Transform Origin',
+        body: [
+          '`transform-origin` changes the point an element transforms around. The default is the center of the element.',
+          'This is useful when an arrow should rotate from its center, a door should swing from one edge, or a menu should grow from the top.',
+        ],
+        code: `.door {
+  transform-origin: left center;
+  transform: rotateY(-20deg);
+}
+
+.dropdown-panel {
+  transform-origin: top center;
+  transform: scaleY(0.95);
+}`,
+      },
+      {
+        title: 'Practical Transform Patterns',
+        table: {
+          headers: ['Pattern', 'Useful CSS'],
+          rows: [
+            ['Button lift', '`transform: translateY(-0.25rem);`'],
+            ['Image zoom', '`transform: scale(1.06);`'],
+            ['Rotated arrow', '`transform: rotate(90deg);`'],
+            ['Card tilt', '`transform: rotate(1deg) translateY(-0.25rem);`'],
+            ['Reveal panel start position', '`transform: translateY(-0.5rem);`'],
+          ],
+        },
       },
       {
         title: '3D Transforms',
         body: [
-          '3D transforms let you manipulate elements in three-dimensional space. Combine perspective, rotation, and positioning to create immersive interfaces.',
+          '3D transforms add depth. Use `perspective` on the parent and 3D transform functions, such as `rotateY`, on the child.',
+          'Start simple. 3D effects can become confusing quickly because you are working with depth as well as horizontal and vertical movement.',
         ],
         code: `.scene {
-  perspective: 500px;
+  perspective: 800px;
 }
 
-.element {
+.card {
   transform-style: preserve-3d;
-  transform: rotateY(30deg);
+  transform: rotateY(12deg);
 }`,
       },
       {
         title: 'Demo: Card Flip',
         body: [
-          'A card flip uses perspective on the parent, transform-style on the inner card, and rotateY to reveal the back side.',
+          'A card flip uses `perspective` on the parent, `transform-style` on the inner card, and `rotateY` to reveal the back side.',
         ],
         code: `.card-scene {
   perspective: 800px;
@@ -4265,10 +4319,6 @@ buttons.forEach((button) => {
 
 .card {
   transform-style: preserve-3d;
-  transition: transform 400ms ease;
-}
-
-.card:hover {
   transform: rotateY(180deg);
 }
 
@@ -4281,67 +4331,74 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: '3D Cube',
-        body: [
-          'A 3D cube is built by positioning six faces in 3D space and rotating the parent container.',
-        ],
-        code: `.cube {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  transform-style: preserve-3d;
-  transform: rotateX(-20deg) rotateY(35deg);
-}
-
-.cube-face {
-  position: absolute;
-  inset: 0;
-}
-
-.cube-front {
-  transform: translateZ(75px);
-}
-
-.cube-back {
-  transform: rotateY(180deg) translateZ(75px);
-}`,
-      },
-      {
         title: 'CSS Filters',
         body: [
-          'CSS filters apply visual effects to elements. These can include blur, grayscale, contrast adjustments, and more.',
-          'Filters can enhance visual design and interaction, but they should not make content harder to read.',
+          '`filter` applies visual effects to an element. Filters are especially common on images and decorative media.',
+          'Filters can improve mood and hierarchy, but they should not make content harder to read.',
         ],
         code: `.image {
-  filter: blur(5px) grayscale(50%);
+  filter: grayscale(50%) contrast(110%);
 }`,
       },
       {
-        title: 'Accessibility and Performance',
-        bullets: [
-          'Ensure color contrast is maintained when applying filters.',
-          'Allow users to disable motion-heavy effects when needed.',
-          'Use translate3d carefully for better performance.',
-          'Avoid animating layout-affecting properties such as width, height, top, left, and margin.',
-          'Prefer transform and opacity for smoother interface motion.',
+        title: 'Common Filter Functions',
+        table: {
+          headers: ['Filter', 'Use For', 'Caution'],
+          rows: [
+            ['`blur()`', 'Background depth or soft focus', 'Large blurs can be expensive and can reduce clarity.'],
+            ['`grayscale()`', 'Muted or inactive imagery', 'Do not rely on grayscale alone to show state.'],
+            ['`brightness()`', 'Lightening or darkening media', 'Check text contrast if text sits on top.'],
+            ['`contrast()`', 'Making imagery punchier', 'Too much contrast can look harsh.'],
+            ['`drop-shadow()`', 'Shadow around transparent shapes', 'Use `box-shadow` for normal rectangular boxes.'],
+          ],
+        },
+      },
+      {
+        title: 'Readable Image Treatment',
+        body: [
+          'A darkened image can make light text easier to read, but the final contrast still needs to be checked.',
         ],
-        code: `.transition-example {
-  transition: transform 200ms ease, opacity 200ms ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .transition-example {
-    transition: none;
+        code: `.hero-image {
+  filter: brightness(65%) contrast(105%);
+}`,
+      },
+      {
+        title: 'Performance and Motion Notes',
+        bullets: [
+          'Prefer `transform` and `opacity` for visual movement because they usually avoid layout recalculation.',
+          'Avoid using transforms to fake an entire page layout. Use layout tools for layout.',
+          'Avoid heavy `blur()` on large areas unless the effect is really needed.',
+          'Keep motion subtle. Large movement and dramatic scaling can distract users.',
+          'Respect `prefers-reduced-motion` when transforms are used for animated effects.',
+        ],
+        code: `@media (prefers-reduced-motion: reduce) {
+  .motion-effect {
+    transform: none;
   }
 }`,
       },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Happens', 'Fix'],
+          rows: [
+            ['Expecting transforms to move nearby layout', '`transform` changes visual rendering, not document flow', 'Use margin, padding, Flexbox, Grid, or positioning when layout should change.'],
+            ['Using huge `scale()` values', 'The element can overflow its container', 'Use smaller scale values and test at mobile sizes.'],
+            ['Forgetting transform order matters', 'Functions are applied in sequence', 'Reorder transform functions and compare the result.'],
+            ['Making hover effects too dramatic', 'Large movement can feel jumpy', 'Keep transforms subtle and purposeful.'],
+            ['Filtering text heavily', 'Effects like `blur()` or low `contrast()` hurt readability', 'Filter images and decorative media more often than body text.'],
+          ],
+        },
+      },
     ],
     practice: [
-      'Move an element with translate.',
-      'Rotate an icon or small graphic.',
-      'Create a hover state that uses scale and transition.',
-      'Build a simple card flip.',
-      'Add a reduced-motion fallback for animated transform effects.',
+      'Move a button visually with `translateY` and compare it to `position: relative`.',
+      'Rotate an arrow icon with `rotate`.',
+      'Zoom an image with `scale` while keeping the card size stable.',
+      'Change `transform-origin` and observe how the same rotation behaves differently.',
+      'Create a simple 3D card tilt with `perspective` and `rotateY`.',
+      'Apply a readable image treatment with `brightness` or `contrast` and check text contrast.',
+      'Find one transform order example where changing the order changes the result.',
     ],
   },
   {

@@ -1780,8 +1780,22 @@ p {
       {
         title: 'Introduction',
         body: [
-          "Fonts play a central role in web design. They influence how a website looks and feels, and affect how easily users can read your content.",
-          "In this lesson, you'll explore how to use fonts effectively in CSS, understand their impact on design and performance, and learn best practices for font selection and implementation.",
+          "Fonts play a central role in web design. They influence how a website looks and feels, and they affect how easily users can read your content.",
+          'The previous lesson focused on styling text. This lesson focuses on choosing fonts, building font stacks, loading custom fonts, checking licenses, and managing performance.',
+        ],
+      },
+      {
+        title: 'Font Decision Checklist',
+        body: [
+          'Before importing a font, decide whether it helps the project enough to justify the extra file request.',
+        ],
+        bullets: [
+          'Is the font readable at small and large sizes?',
+          'Does the font match the tone of the site?',
+          'Do you need multiple weights, or would one or two be enough?',
+          'Is the font licensed for your project?',
+          'Will the font slow down the page?',
+          'Does the page still work if the custom font fails to load?',
         ],
       },
       {
@@ -1795,40 +1809,85 @@ p {
         ],
       },
       {
+        title: 'Modern System Font Stack',
+        body: [
+          "A system font stack uses fonts that already exist on the user's device. This is fast, readable, and often a strong default.",
+        ],
+        code: `body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}`,
+      },
+      {
         title: 'Using Font Stacks',
         code: `body {
   font-family: "Helvetica Neue", Arial, sans-serif;
 }`,
         body: [
-          'The browser will try each font in order. If one is unavailable, it moves to the next. The generic family ensures a fallback display.',
+          'The browser will try each font in order. If one is unavailable, it moves to the next. The generic family, such as `sans-serif`, ensures a fallback display.',
         ],
       },
       {
         title: 'Generic Families',
         bullets: [
-          'serif: with decorative strokes',
-          'sans-serif: without strokes, often cleaner',
-          'monospace: all characters take up the same space',
-          'cursive: handwriting-style',
-          'fantasy: decorative or stylized',
+          '`serif`: with decorative strokes',
+          '`sans-serif`: without strokes, often cleaner',
+          '`monospace`: all characters take up the same space',
+          '`cursive`: handwriting-style',
+          '`fantasy`: decorative or stylized',
         ],
+        note:
+          'In most class projects, `serif`, `sans-serif`, and `monospace` are the most practical generic families.',
       },
       {
         title: 'Importing Custom Fonts with @font-face',
+        body: [
+          'Use `@font-face` when you are self-hosting a font file in your project.',
+          'A beginner-friendly modern setup can start with `woff2`, which is the recommended format for current browsers.',
+        ],
         code: `@font-face {
-  font-family: 'MyFont';
-  src: url('myfont.woff2') format('woff2'),
-       url('myfont.woff') format('woff'),
-       url('myfont.ttf') format('truetype');
+  font-family: "MyFont";
+  src: url("fonts/myfont.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }`,
         note:
-          'font-display: swap helps pages load faster by showing fallback fonts until the custom font is ready.',
+          '`font-display: swap` helps pages load faster by showing fallback fonts until the custom font is ready.',
+      },
+      {
+        title: 'How @font-face Works',
+        table: {
+          headers: ['Part', 'Purpose', 'Example'],
+          rows: [
+            ['`font-family`', 'Names the custom font so you can use it later in CSS.', '`font-family: "MyFont";`'],
+            ['`src`', 'Points to the font file.', '`src: url("fonts/myfont.woff2") format("woff2");`'],
+            ['`font-weight`', 'Defines which weight this font file represents.', '`font-weight: 400;`'],
+            ['`font-style`', 'Defines whether the file is normal, italic, or another style.', '`font-style: normal;`'],
+            ['`font-display`', 'Controls what happens while the font is loading.', '`font-display: swap;`'],
+          ],
+        },
+      },
+      {
+        title: 'Older Font Formats',
+        body: [
+          'Most modern projects should prefer `woff2`. Older formats are useful to recognize, but you usually do not need all of them for class projects.',
+        ],
+        table: {
+          headers: ['Format', 'Use'],
+          rows: [
+            ['`.woff2`', 'Best compression and most recommended.'],
+            ['`.woff`', 'Older fallback format.'],
+            ['`.ttf`', 'Older format that may appear in font downloads.'],
+            ['`.eot`', 'Legacy Internet Explorer format. Usually obsolete.'],
+          ],
+        },
       },
       {
         title: 'Google Fonts Integration',
+        body: [
+          'Google Fonts gives you the HTML `link` elements and the CSS `font-family` value to use.',
+          'Only select the weights and styles you actually need. Loading every weight makes the page heavier.',
+        ],
         code: `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">`,
@@ -1836,26 +1895,35 @@ p {
       {
         title: 'Using the Google Font in CSS',
         code: `body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }`,
-        note: 'Always include a fallback font.',
+        note: 'Always include a fallback font, such as `sans-serif`, `serif`, or `monospace`.',
       },
       {
-        title: 'Font File Formats',
+        title: 'Hosted vs. Self-Hosted Fonts',
+        body: [
+          'Hosted font services like Google Fonts are convenient because they provide the files and embed code.',
+          'Self-hosted fonts give you more control over files, privacy, caching, and performance, but they require more setup.',
+        ],
+      },
+      {
+        title: 'Font Pairing',
+        body: [
+          'A font pairing is the combination of fonts used across a site. Keep pairings simple while you are learning.',
+        ],
         bullets: [
-          '.woff2: Best compression, most recommended',
-          '.woff: For older browsers',
-          '.ttf: Used on older Android devices',
-          '.eot: Obsolete, used for legacy Internet Explorer',
+          'One font for everything is often enough.',
+          'One heading font plus one body font can create contrast without getting messy.',
+          'Avoid using three or more fonts early. It usually makes the design harder to control.',
         ],
       },
       {
         title: 'Finding Fonts',
         bullets: [
-          'Google Fonts: free and popular',
-          'Adobe Fonts: subscription-based',
-          'Font Squirrel: curated, often commercially licensed',
-          'DaFont: check usage rights carefully',
+          '[Google Fonts](https://fonts.google.com/): free and popular',
+          '[Adobe Fonts](https://fonts.adobe.com/): subscription-based',
+          '[Font Squirrel](https://www.fontsquirrel.com/): curated, often commercially licensed',
+          '[DaFont](https://www.dafont.com/): check usage rights carefully',
         ],
         note:
           "Always check the license terms before using a font, even if it's free.",
@@ -1863,32 +1931,39 @@ p {
       {
         title: 'Styling with Fonts',
         code: `h1 {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 700;
   font-size: 2em;
 }
 
 p {
-  font-family: 'Lora', serif;
+  font-family: "Lora", serif;
   font-style: italic;
   line-height: 1.5;
 }`,
       },
       {
         title: 'Performance Tips',
-        bullets: [
-          'Use .woff2 when possible.',
-          'Only include needed font weights and styles.',
-          'Subset fonts to reduce file size.',
-          'Use font-display: swap to improve perceived load speed.',
-        ],
+        table: {
+          headers: ['Action', 'Why it helps'],
+          rows: [
+            ['Prefer `.woff2`', 'It usually gives the best compression.'],
+            ['Load only needed weights and styles', 'Every extra weight can add another file request.'],
+            ['Avoid unused fonts', 'Do not load fonts that never get applied in CSS.'],
+            ['Use `font-display: swap`', 'Fallback text appears while the custom font loads.'],
+            ['Test fallback fonts', 'The layout should still work if the custom font fails.'],
+          ],
+        },
       },
       {
         title: 'Accessibility Considerations',
         bullets: [
-          'Choose legible fonts with strong contrast.',
-          'Use relative units like em or rem.',
-          'Use tools to check contrast ratios to ensure readability for all users.',
+          'Avoid overly decorative fonts for body text.',
+          'Check readability at small sizes.',
+          'Use relative units like `em` or `rem`.',
+          'Avoid relying only on font weight or style to communicate meaning.',
+          'Make sure fallback fonts still keep the page readable.',
+          'Use tools to check contrast ratios when choosing text and background colors.',
         ],
         code: `body {
   font-size: 1rem;
@@ -1899,23 +1974,44 @@ p {
 }`,
       },
       {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why it matters', 'Fix'],
+          rows: [
+            ['Missing fallback font', 'The browser may choose an unpredictable fallback.', 'End the stack with a generic family like `sans-serif`.'],
+            ['Importing too many weights', 'The page becomes heavier than necessary.', 'Load only the weights you actually use.'],
+            ['Decorative font for paragraphs', 'Long text becomes harder to read.', 'Save decorative fonts for short display text.'],
+            ['License not checked', 'The font may not be allowed for your use.', 'Read the license before publishing.'],
+            ['`@font-face` name mismatch', 'The custom font loads but is never applied.', 'Match the `font-family` name exactly.'],
+            ['Loaded but unused font', 'The site pays a performance cost for no visual benefit.', 'Remove unused font imports or apply the font intentionally.'],
+            ['No `font-display` setting', 'Users may see invisible text while the font loads.', 'Use `font-display: swap`.'],
+          ],
+        },
+      },
+      {
         title: 'Activity: Try It Yourself',
         body: [
-          'Add the following to a practice HTML file:',
+          'Use this activity to test font loading, fallback behavior, and font choice.',
         ],
         bullets: [
+          'Create a system font stack.',
           'Import a Google Font of your choice.',
-          'Create a font stack using that font and at least two fallbacks.',
-          'Style headings and paragraphs using different weights and styles.',
-          'Test how your page looks in different browsers or operating systems.',
+          'Apply the imported font to headings or body text.',
+          'Limit the import to two weights or fewer.',
+          'Open developer tools and inspect the font network requests.',
+          'Temporarily remove the import and check whether the fallback still looks acceptable.',
+          'Document the font source and license.',
         ],
       },
     ],
     practice: [
-      'Import a Google Font of your choice.',
-      'Create a font stack with at least two fallbacks.',
-      'Style headings and paragraphs with different weights and styles.',
-      'Test the page in different browsers or operating systems.',
+      'Create a system font stack for `body`.',
+      'Import one Google Font and apply it to headings or body text.',
+      'Limit the imported font to two weights or fewer.',
+      'Create a font stack with at least one named font and one generic fallback.',
+      'Inspect the font request in developer tools.',
+      'Temporarily remove the font import and test the fallback.',
+      'Document the font source and license in a project note or comment.',
     ],
   },
   {
@@ -1935,30 +2031,71 @@ p {
         title: 'Introduction',
         body: [
           'Forms are essential for creating interactive web experiences, allowing users to input data, submit information, and engage with your website.',
-          'This lesson delves into HTML form elements, exploring their various types, attributes, and best practices for creating user-friendly and accessible forms.',
+          'This lesson introduces the HTML elements, attributes, labels, validation patterns, and accessibility practices that make forms usable.',
         ],
+      },
+      {
+        title: 'Form Anatomy',
+        body: [
+          'A form needs a `form` element, labeled fields, useful `name` values, and a submit button.',
+          'For class projects without a backend, point the `action` to a confirmation page such as `thank-you.html`.',
+        ],
+        code: `<form action="thank-you.html" method="get">
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required>
+
+  <button type="submit">Submit</button>
+</form>`,
       },
       {
         title: 'The form Element: The Container',
         body: [
-          'The form element acts as a container for all form elements. It defines how the data entered by the user will be submitted to a server for processing.',
+          'The `form` element acts as a container for form controls. It defines where the data goes and how it is sent.',
         ],
-        code: `<form action="/submit_form" method="post">
+        code: `<form action="thank-you.html" method="get">
 </form>`,
       },
       {
         title: 'Form Attributes',
         bullets: [
-          'action: Specifies the URL where the form data will be sent.',
-          'method: Defines the HTTP method used to send the data, such as get or post.',
-          'enctype: Specifies how the form data should be encoded when submitted.',
-          'target: Specifies where to display the response after form submission.',
+          '`action`: Specifies the URL or page where the form data will be sent.',
+          '`method`: Defines how the data is sent, usually `get` or `post`.',
+          '`enctype`: Specifies how form data should be encoded when submitted.',
+          '`target`: Specifies where to display the response after submission.',
         ],
+        note:
+          'For static class projects, use `action="thank-you.html"` so the form leads to a confirmation page.',
+      },
+      {
+        title: 'Labels, for, and id',
+        body: [
+          'Every form control should have a visible `label`.',
+          'The label connects to the input when the label `for` value matches the input `id` value.',
+        ],
+        code: `<label for="firstName">First Name</label>
+<input type="text" id="firstName" name="firstName">`,
+        bullets: [
+          '`for="firstName"` points to the field with `id="firstName"`.',
+          'Connected labels help screen reader users and make the label clickable.',
+        ],
+      },
+      {
+        title: 'id vs. name',
+        body: [
+          '`id` and `name` do different jobs. Students often mix them up, so check both.',
+        ],
+        table: {
+          headers: ['Attribute', 'What it does', 'Example'],
+          rows: [
+            ['`id`', 'Connects the control to a label and can be used by CSS or JavaScript.', '`id="email"`'],
+            ['`name`', 'Becomes the key sent with the form data when the form submits.', '`name="email"`'],
+          ],
+        },
       },
       {
         title: 'Input Elements: Gathering User Data',
         body: [
-          'The input element is the most versatile form element, used for various types of user input.',
+          'The `input` element is the most versatile form element. Its behavior changes based on the `type` attribute.',
         ],
       },
       {
@@ -1982,45 +2119,191 @@ p {
 <label for="terms">I agree to the terms and conditions.</label>`,
       },
       {
-        title: 'Other Form Elements',
-        code: `<label for="comments">Comments:</label><br>
-<textarea id="comments" name="comments" rows="5" cols="40" placeholder="Enter your comments here"></textarea>
+        title: 'Radio Buttons',
+        body: [
+          'Radio buttons let users choose one option from a group. Inputs in the same radio group share the same `name`.',
+        ],
+        code: `<fieldset>
+  <legend>Preferred contact method</legend>
 
-<label for="country">Country:</label>
+  <input type="radio" id="contactEmail" name="contactMethod" value="email">
+  <label for="contactEmail">Email</label>
+
+  <input type="radio" id="contactPhone" name="contactMethod" value="phone">
+  <label for="contactPhone">Phone</label>
+</fieldset>`,
+      },
+      {
+        title: 'Grouped Controls with fieldset and legend',
+        body: [
+          'Use `fieldset` and `legend` to group related controls, especially checkbox and radio groups.',
+        ],
+        code: `<fieldset>
+  <legend>Interests</legend>
+
+  <input type="checkbox" id="design" name="interests" value="design">
+  <label for="design">Design</label>
+
+  <input type="checkbox" id="code" name="interests" value="code">
+  <label for="code">Code</label>
+</fieldset>`,
+      },
+      {
+        title: 'textarea',
+        body: [
+          'Use `textarea` when the user needs to enter multiple lines of text.',
+        ],
+        code: `<label for="comments">Comments</label>
+<textarea id="comments" name="comments" rows="5" placeholder="Enter your comments here"></textarea>`,
+        note:
+          'Avoid using `<br>` to space form fields. Use CSS for spacing instead.',
+      },
+      {
+        title: 'select and option',
+        body: [
+          'Use `select` and `option` when the user should choose from a defined list.',
+        ],
+        code: `<label for="country">Country</label>
 <select id="country" name="country">
+  <option value="">Choose a country</option>
   <option value="us">United States</option>
   <option value="ca">Canada</option>
   <option value="uk">United Kingdom</option>
 </select>`,
       },
       {
+        title: 'Other Input Types',
+        body: [
+          'HTML includes input types that give browsers more information about the expected data.',
+        ],
+        table: {
+          headers: ['Type', 'Use'],
+          rows: [
+            ['`tel`', 'Telephone numbers.'],
+            ['`url`', 'Website URLs.'],
+            ['`number`', 'Numeric values.'],
+            ['`date`', 'Date picking.'],
+            ['`file`', 'File uploads.'],
+            ['`search`', 'Search fields.'],
+          ],
+        },
+      },
+      {
+        title: 'Submit Buttons',
+        body: [
+          'A form needs a way to submit. Use a `button` with `type="submit"` for normal form submission.',
+        ],
+        code: `<button type="submit">Send</button>
+<button type="button">Open menu</button>`,
+        bullets: [
+          '`type="submit"` submits the form.',
+          '`type="button"` creates a button that does not submit unless JavaScript gives it behavior.',
+        ],
+      },
+      {
+        title: 'Placeholders Are Not Labels',
+        body: [
+          '`placeholder` text can give an example, but it should not replace a visible `label`.',
+          'Placeholder text disappears when users type and can be harder to read.',
+        ],
+        code: `<label for="email">Email</label>
+<input type="email" id="email" name="email" placeholder="name@example.com">`,
+      },
+      {
+        title: 'Autocomplete',
+        body: [
+          '`autocomplete` helps browsers fill common information faster and more accurately.',
+        ],
+        code: `<label for="email">Email</label>
+<input type="email" id="email" name="email" autocomplete="email">
+
+<label for="firstName">First Name</label>
+<input type="text" id="firstName" name="firstName" autocomplete="given-name">`,
+      },
+      {
+        title: 'HTML Validation',
+        body: [
+          'HTML can provide basic validation before a form submits.',
+        ],
+        table: {
+          headers: ['Attribute', 'Use'],
+          rows: [
+            ['`required`', 'Requires a value before submission.'],
+            ['`type="email"`', 'Checks for an email-like format.'],
+            ['`minlength` and `maxlength`', 'Sets text length limits.'],
+            ['`min` and `max`', 'Sets number or date limits.'],
+            ['`pattern`', 'Matches a custom pattern. Use carefully because it can be hard to write and explain.'],
+          ],
+        },
+      },
+      {
+        title: 'Helper Text with aria-describedby',
+        body: [
+          'Use helper text when a field needs instructions. Connect the helper text to the field with `aria-describedby`.',
+        ],
+        code: `<label for="email">Email</label>
+<p id="email-help">Use your school email address.</p>
+<input id="email" name="email" type="email" aria-describedby="email-help">`,
+      },
+      {
         title: 'Accessibility Considerations',
         bullets: [
-          'Use label elements for every form field.',
+          'Use `label` elements for every form field.',
           'Provide clear instructions and error messages.',
-          'Use ARIA attributes to enhance accessibility.',
+          'Use native HTML first. Add ARIA only when it provides information HTML does not.',
           'Ensure keyboard navigation and focus management.',
+          'Make sure focus states are visible.',
         ],
       },
       {
         title: 'Form Submission',
         body: [
-          "When a form is submitted, data is sent to the server. Since this class doesn't cover server-side languages, forms should point to a confirmation page like thank-you.html.",
+          "When a form is submitted, data is sent to the location in the `action` attribute. Since this class doesn't cover server-side languages, forms should point to a confirmation page like `thank-you.html`.",
+          'If you use `method="get"`, you can inspect the submitted values in the URL query string after submission.',
         ],
       },
       {
-        title: 'Demos',
-        bullets: [
-          'Demo 1: User Registration Form',
-          'Demo 2: Product Feedback Form',
-        ],
+        title: 'Example: Contact Form',
+        code: `<form action="thank-you.html" method="get">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" autocomplete="name" required>
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" autocomplete="email" required>
+
+  <label for="message">Message</label>
+  <textarea id="message" name="message" rows="5" required></textarea>
+
+  <button type="submit">Send message</button>
+</form>`,
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why it matters', 'Fix'],
+          rows: [
+            ['Input missing `label`', 'The field may be unclear, especially for assistive technology users.', 'Add a visible `label`.'],
+            ['`for` does not match `id`', 'The label is not connected to the input.', 'Make the values match exactly.'],
+            ['Missing `name`', 'The value may not be included when the form submits.', 'Add a useful `name` to every submitted control.'],
+            ['Placeholder used as the only label', 'The instruction disappears when typing begins.', 'Use a visible `label`; keep placeholder text optional.'],
+            ['Checkbox or radio group missing `fieldset`', 'The group question may be unclear.', 'Wrap related options in `fieldset` with a `legend`.'],
+            ['Submit button missing', 'Users may not know how to send the form.', 'Add `<button type="submit">Submit</button>`.'],
+            ['Form `action` points nowhere', 'Submitting creates a confusing result.', 'Use `action="thank-you.html"` for class projects.'],
+            ['Using `autofocus` too casually', 'Focus may jump unexpectedly when the page loads.', 'Use `autofocus` only when it truly improves the experience.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Build a user registration form with text, password, email, and checkbox inputs.',
-      'Build a product feedback form with a textarea and select menu.',
-      'Point your form action to a thank-you.html confirmation page.',
-      'Check that every form field has a label.',
+      'Build a contact form with `text`, `email`, `textarea`, and `select` controls.',
+      'Add one checkbox or radio group using `fieldset` and `legend`.',
+      'Add a submit button with `type="submit"`.',
+      'Set `action="thank-you.html"` and use `method="get"`.',
+      'Check that every form control has a visible `label`.',
+      'Check that every label `for` value matches an input `id`.',
+      'Check that every submitted control has a `name`.',
+      'Test the form with keyboard only.',
+      'Submit the form and inspect the query string in the browser URL.',
     ],
   },
   {

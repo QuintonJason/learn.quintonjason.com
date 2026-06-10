@@ -3881,33 +3881,51 @@ buttons.forEach((button) => {
     summary:
       'Use CSS positioning to precisely control element placement, stacking, sticky headers, and layered components.',
     goals: [
-      'Understand static, relative, absolute, and fixed positioning',
-      'Use top, right, bottom, left, and positioned ancestors correctly',
-      'Use z-index and positioning to control layer order and avoid common layout issues',
+      'Understand `static`, `relative`, `absolute`, `fixed`, and `sticky` positioning',
+      'Use `top`, `right`, `bottom`, `left`, `inset`, and positioned ancestors correctly',
+      'Use `z-index` and positioning to control layer order without breaking layout or accessibility',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          'CSS Positioning allows you to precisely control the placement of elements on a web page.',
-          'By understanding the different positioning techniques, you can create complex layouts and dynamic effects.',
+          'CSS positioning gives you precise control over where an element appears on the page.',
+          'Use positioning for layers, badges, overlays, sticky headers, tooltips, and small visual adjustments. For the main structure of a page, use normal flow, Flexbox, or Grid first.',
         ],
+        note:
+          'Positioning is powerful, but it is usually not the first tool for full page layout.',
       },
       {
-        title: 'Understanding the Basics: Static Positioning',
+        title: 'How to Choose a Positioning Method',
         body: [
-          'Imagine your website as a bustling city. Each element, like a building or a tree, has its own designated spot.',
-          'By default, elements are placed in this natural order, one after the other. This is known as static positioning.',
+          'Start by asking what the element needs to do. Most elements should stay in normal document flow. Reach for `position` when something needs to be nudged, layered, attached to a parent, or attached to the viewport.',
+        ],
+        table: {
+          headers: ['Need', 'Use', 'Common Example'],
+          rows: [
+            ['Normal page layout', 'No special positioning', 'Text, sections, cards, and page structure'],
+            ['Nudge an element visually', '`position: relative`', 'Move an icon or label slightly'],
+            ['Place something inside a parent', 'Parent `relative`, child `absolute`', 'Badge in the corner of a card'],
+            ['Keep something in the viewport', '`position: fixed`', 'Cookie banner or floating button'],
+            ['Stick while scrolling', '`position: sticky`', 'Header or sidebar that sticks at the top'],
+          ],
+        },
+      },
+      {
+        title: 'Normal Flow and Static Positioning',
+        body: [
+          'Normal flow is the browser\'s default layout behavior. Block elements stack vertically, inline content flows with text, and each element takes up space in the document.',
+          '`position: static` is the default value. Static elements ignore `top`, `right`, `bottom`, `left`, and `z-index`.',
         ],
         code: `.element {
   position: static;
 }`,
       },
       {
-        title: 'Beyond the Ordinary: Relative Positioning',
+        title: 'Relative Positioning',
         body: [
-          'With relative positioning, you can nudge elements around from their original positions using top, right, bottom, and left.',
-          'This technique keeps the element in the document flow while adjusting its visual position.',
+          '`position: relative` keeps an element in normal flow, then lets you visually move it from its original spot.',
+          'The original space is still reserved, so nearby elements behave as if the element never moved.',
         ],
         code: `.element {
   position: relative;
@@ -3916,9 +3934,10 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: 'Absolute Positioning: Taking Control',
+        title: 'Absolute Positioning and Containing Blocks',
         body: [
-          'Absolute positioning removes an element from the document flow and places it exactly where specified, relative to its closest positioned ancestor.',
+          '`position: absolute` removes an element from normal flow and places it relative to its nearest positioned ancestor.',
+          'A positioned ancestor is a parent or ancestor with `position` set to anything other than `static`. If no positioned ancestor exists, the element can position itself relative to the page instead, which is a common source of bugs.',
         ],
         code: `.card {
   position: relative;
@@ -3931,9 +3950,10 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: 'Fixed Positioning: Locking Elements in Place',
+        title: 'Fixed Positioning',
         body: [
-          'Fixed positioning locks an element in place relative to the browser window. It does not move when the user scrolls.',
+          '`position: fixed` locks an element to the browser viewport. It stays in the same place even when the page scrolls.',
+          'Use fixed positioning carefully. Fixed elements can cover content, especially on small screens.',
         ],
         code: `.site-alert {
   position: fixed;
@@ -3943,42 +3963,10 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: 'Advanced Techniques',
+        title: 'Sticky Positioning',
         body: [
-          'Once you understand positioning basics, you can control layers, fixed UI, sticky headers, and overlapping visual components.',
-        ],
-      },
-      {
-        title: 'Z-index: Controlling the Layer Order',
-        body: [
-          'The z-index property determines the stacking order of elements. Elements with higher z-index values appear on top of those with lower values.',
-          'In this example, .element-2 appears above .element-1, and .element-3 is beneath both.',
-        ],
-        code: `.element-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.element-2 {
-  position: relative;
-  z-index: 2;
-}
-
-.element-3 {
-  position: relative;
-  z-index: 0;
-}`,
-      },
-      {
-        title: 'Practical Examples',
-        body: [
-          'Positioning is useful for navigation, layered cards, badges, overlays, alerts, and scroll-based interface patterns.',
-        ],
-      },
-      {
-        title: 'Example: The Sticky Header',
-        body: [
-          'A sticky header stays fixed at the top of the viewport as you scroll.',
+          '`position: sticky` starts in normal flow, then sticks when it reaches a scroll offset such as `top: 0`.',
+          'Sticky elements need room to scroll. They can also stop working when a parent has certain `overflow` values, such as `overflow: hidden`.',
         ],
         code: `.site-header {
   position: sticky;
@@ -3987,43 +3975,165 @@ buttons.forEach((button) => {
 }`,
       },
       {
-        title: 'Example: Card Component',
+        title: 'Offset Properties',
         body: [
-          'A card component can use layered content and a background image.',
+          '`top`, `right`, `bottom`, and `left` control where positioned elements move or attach.',
+          '`inset` is shorthand for setting all four sides at once. It is especially useful for overlays that need to fill a parent.',
+        ],
+        code: `.image-overlay {
+  position: absolute;
+  inset: 0;
+}`,
+      },
+      {
+        title: 'Position Types Compared',
+        table: {
+          headers: ['Value', 'In Normal Flow?', 'Positioned Relative To', 'Use For'],
+          rows: [
+            ['`static`', 'Yes', 'Normal document flow', 'Default layout'],
+            ['`relative`', 'Yes', 'Its original position', 'Small visual adjustments or creating an anchor for children'],
+            ['`absolute`', 'No', 'Nearest positioned ancestor', 'Badges, close buttons, overlays, and layered card pieces'],
+            ['`fixed`', 'No', 'Viewport', 'Floating buttons, alerts, and persistent UI'],
+            ['`sticky`', 'Yes until it sticks', 'Nearest scrolling area', 'Sticky headers, labels, and sidebars'],
+          ],
+        },
+      },
+      {
+        title: 'Z-index and Layer Order',
+        body: [
+          '`z-index` controls which positioned elements appear in front of other elements.',
+          'Use small, intentional values instead of huge numbers. A simple scale is easier to maintain than random values like `999999`.',
         ],
         code: `.card {
+  position: relative;
+  z-index: 0;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 10;
+}
+
+.modal {
+  position: fixed;
+  z-index: 100;
+}`,
+      },
+      {
+        title: 'Stacking Contexts',
+        body: [
+          'Sometimes `z-index` appears not to work because the element is inside a stacking context. A stacking context is a layer group. Children cannot always escape the layer order of their parent.',
+          'Positioned elements with `z-index`, transformed elements, elements with certain opacity values, and several other CSS properties can create stacking contexts.',
+        ],
+        note:
+          'When `z-index` is confusing, inspect the parent elements too. The problem is often higher in the HTML tree.',
+      },
+      {
+        title: 'Example: Card Badge',
+        body: [
+          'This pattern places a badge in the corner of a card. The card becomes the positioning anchor, and the badge is placed inside that anchor.',
+        ],
+        code: `<article class="card">
+  <span class="badge">New</span>
+  <h2>CSS Positioning</h2>
+  <p>Build layered interface pieces.</p>
+</article>
+
+.card {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}`,
+      },
+      {
+        title: 'Example: Notification Dot',
+        body: [
+          'A notification dot uses the same parent-child pattern. The button is the anchor, and the dot is positioned inside it.',
+        ],
+        code: `.icon-button {
+  position: relative;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}`,
+      },
+      {
+        title: 'Example: Image Overlay',
+        body: [
+          'For overlay text on an image, the image can fill the card with `position: absolute` and `inset: 0`. The text stays above it with `position: relative` and `z-index`.',
+        ],
+        code: `.hero-card {
   position: relative;
   overflow: hidden;
 }
 
-.card-content {
-  position: relative;
-  z-index: 1;
-}
-
-.card img {
+.hero-card img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.hero-card-content {
+  position: relative;
+  z-index: 1;
+}`,
+      },
+      {
+        title: 'Accessibility and Usability Notes',
+        bullets: [
+          'Do not use positioning to visually reorder meaningful content. Keep the HTML reading order logical.',
+          'Make sure fixed and sticky elements do not cover headings, links, form fields, or important content.',
+          'Use `scroll-padding-top` when a sticky header covers anchor links.',
+          'Modal overlays need keyboard focus management and a clear way to close.',
+          'Check positioned UI on small screens. A layout that works on desktop can cover content on mobile.',
+        ],
+        code: `html {
+  scroll-padding-top: 5rem;
 }`,
       },
       {
         title: 'Common Pitfalls and Troubleshooting',
+        table: {
+          headers: ['Problem', 'Why It Happens', 'Fix'],
+          rows: [
+            ['Absolute child appears in the wrong place', 'No positioned parent exists', 'Add `position: relative` to the intended parent'],
+            ['`z-index` does nothing', 'The element is not participating in a stack as expected', 'Add positioning when appropriate and inspect parent stacking contexts'],
+            ['Sticky element does not stick', 'There is not enough scroll room or a parent has restrictive `overflow`', 'Check parent containers and remove unnecessary `overflow: hidden`'],
+            ['Fixed header covers content', 'The header is removed from normal flow', 'Add spacing, use `scroll-padding-top`, and test anchor links'],
+            ['Whole page is built with positioning', 'Positioning is being used instead of layout tools', 'Use normal flow, Flexbox, or Grid for structure'],
+          ],
+        },
+      },
+      {
+        title: 'Debugging Checklist',
         bullets: [
-          'Overlapping Elements: Use proper z-index and positioning to manage layers.',
-          "Relative Positioning Confusion: Remember it's relative to the element's original position.",
-          'Cross-Browser Differences: Always test your layout on different browsers.',
-          'Complex Layouts: Combine positioning with CSS Grid or Flexbox when needed.',
+          'Inspect the element and identify its nearest positioned ancestor.',
+          'Temporarily add `outline` or background colors to parent and child elements.',
+          'Toggle `position` values in DevTools to see which rule changes the behavior.',
+          'Check whether a parent has `overflow: hidden`, `transform`, `opacity`, or a `z-index` that creates a stacking context.',
+          'Confirm whether the element should stay in normal flow or be removed from it.',
         ],
       },
     ],
     practice: [
-      'Create one relatively positioned element.',
-      'Add an absolutely positioned badge inside a card.',
-      'Build a sticky header.',
-      'Use z-index to control overlapping layers.',
+      'Create one `relative` element and move it with `top` and `left`.',
+      'Add an `absolute` badge inside a card by making the card `position: relative`.',
+      'Create a notification dot inside an icon button.',
+      'Build a sticky header and add `scroll-padding-top` so anchor links are not covered.',
+      'Layer text over an image with `position: absolute`, `inset: 0`, and `z-index`.',
+      'Debug a broken badge that is positioning itself relative to the wrong parent.',
     ],
   },
   {

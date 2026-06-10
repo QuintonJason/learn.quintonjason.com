@@ -3626,144 +3626,251 @@ buttons.forEach((button) => {
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'What This Teaches',
         body: [
-          "The hero section of a website is like the opening scene of a movie. It's your chance to make a powerful first impression and draw users into your narrative.",
-          'A well-designed hero section can be the key to capturing attention, communicating your message, and driving user engagement.',
-          'Like a movie that must look good on both a phone and a theater screen, your hero section needs to be responsive and visually strong on any device.',
-          'In this chapter, we explore the art of crafting captivating hero sections that grab attention and adapt seamlessly to different screens.',
+          'A hero section is the first major section of a page. It should quickly communicate what the page is about, why it matters, and what the visitor can do next.',
+          'This lesson teaches how to plan and build a responsive hero section with clear content, a meaningful visual, and a strong call to action.',
+          'You will focus on structure, hierarchy, responsive layout, accessibility, and performance.',
         ],
       },
       {
-        title: 'Above the Fold: Making a Strong First Impression',
+        title: 'Above the Fold, Without Cramming',
         body: [
-          'Before we dive into the specific elements of a hero section, let us talk about a crucial concept in web design: the fold.',
-          'The fold refers to the portion of a web page that is visible to users without scrolling. It is the first thing they see when they land on your site, and it plays a critical role in capturing their attention and encouraging them to explore further.',
-          "In the early days of the web, the fold was considered a rigid and limited space because screen resolutions were much smaller. With today's diverse range of devices and screen sizes, the concept of the fold has become more fluid and nuanced.",
+          'The fold is the part of a page visible before scrolling. It matters because it shapes the first impression, but it is not a fixed pixel line.',
+          'The first viewport should establish purpose and direction. It is okay if the next section is partially visible, and it is usually better than cramming everything into one screen.',
+          'Mobile screens, browser chrome, zoom settings, and device sizes all change where the fold appears.',
         ],
       },
       {
-        title: 'Why the Fold Still Matters',
+        title: 'Hero Section Anatomy',
+        table: {
+          headers: ['Part', 'Purpose'],
+          rows: [
+            ['Headline', 'Names the offer, project, product, place, or main idea clearly.'],
+            ['Supporting copy', 'Adds context without repeating the headline.'],
+            ['Primary `CTA`', 'Gives the visitor one obvious next action.'],
+            ['Visual media', 'Shows the product, project, mood, or subject when it helps understanding.'],
+            ['Secondary `CTA`', 'Offers a lower-priority alternative, such as learning more.'],
+            ['Trust cue or context', 'Adds useful evidence, metadata, category, or audience context.'],
+          ],
+        },
+      },
+      {
+        title: 'Designing the First Viewport',
         bullets: [
-          'First Impressions: The content above the fold is the first thing users see, so it needs to make a strong and positive impression.',
-          "Attention Span: Users often have short attention spans, and if they don't see something engaging above the fold, they might quickly leave your site.",
-          'Setting Expectations: The content above the fold sets the tone and expectations for the rest of the website.',
+          'Make the headline specific. Avoid vague lines like "Welcome to my website."',
+          'Keep supporting copy short enough to scan.',
+          'Make the primary `CTA` visually obvious.',
+          'Leave enough space around text so the hero does not feel cramped.',
+          'Let the next section peek into view when possible so the page invites scrolling.',
         ],
       },
       {
-        title: 'Designing for the Fold',
-        bullets: [
-          'Prioritize key content like headlines and CTAs.',
-          'Optimize layout for different devices and screen sizes.',
-          "Keep it clean. Don't overload this space.",
-        ],
-      },
-      {
-        title: "The Hero's Journey: Elements of a Captivating Hero Section",
+        title: 'CTA Guidance',
         body: [
-          'A hero section is typically the first thing users see when they land on your website. It is a prime piece of digital real estate, and it needs to work hard to achieve its goals.',
+          'A `CTA`, or call to action, should say what happens next. For navigation actions, use an `a` element instead of a `button`.',
         ],
-        bullets: [
-          'Hero Image or Video: A visually striking image or video that captures the essence of your brand or message.',
-          'Accessibility: Always provide appropriate alt text for hero images. For videos, consider captions or transcripts.',
-          'Performance: Optimize large images or videos with lazy loading, compression, and modern formats like WebP.',
-          'Headline: A concise and impactful headline that clearly communicates your value proposition or main purpose.',
-          'Supporting Text: A brief paragraph or bullet points that elaborate on your headline.',
-          'Call to Action: A clear and compelling action that encourages users to take the next step.',
-        ],
-        note:
-          'Use action-oriented CTA language like "Get Started," "Shop Now," or "Sign Up Free," and make your CTA visually prominent using color, size, contrast, and whitespace.',
+        table: {
+          headers: ['Weak CTA', 'Stronger CTA'],
+          rows: [
+            ['Click here', 'View Projects'],
+            ['Learn more', 'Explore the Case Study'],
+            ['Submit', 'Request a Quote'],
+            ['Go', 'Start Planning'],
+          ],
+        },
       },
       {
-        title: 'Responsive Design for Hero Sections',
+        title: 'Mobile-First Hero HTML',
         body: [
-          'Now, let us look at how to make a hero section responsive and ensure it looks strong on any device.',
+          'Start with semantic HTML. Keep important text as real text, not baked into an image.',
         ],
-      },
-      {
-        title: 'Fluid Grids',
-        body: [
-          'This example demonstrates a basic fluid grid setup for a hero section. The hero container takes up the full width of its parent but has a maximum width to keep it from getting too wide on large screens. The content is centered and adjusts based on screen size.',
-        ],
-        code: `<div class="hero">
-  <div class="hero-content">
-    <h1>Welcome to Our Website</h1>
-    <p>Discover amazing things and explore our services.</p>
-    <button>Learn More</button>
+        code: `<section class="hero">
+  <div class="hero__content">
+    <p class="hero__eyebrow">Portfolio</p>
+    <h1>Designing useful websites for local creative businesses</h1>
+    <p>
+      I build responsive sites that pair clear content with thoughtful visual design.
+    </p>
+    <a class="button" href="#projects">View Projects</a>
   </div>
-</div>`,
+
+  <img
+    class="hero__image"
+    src="studio-work.jpg"
+    alt="Laptop showing a portfolio website layout on a desk"
+  >
+</section>`,
       },
       {
-        title: 'Fluid Grid CSS',
+        title: 'Mobile-First Hero CSS',
+        body: [
+          'The base styles work for small screens first. The larger-screen media query adds the two-column layout.',
+        ],
         code: `.hero {
+  display: grid;
+  gap: 2rem;
+  padding-block: 4rem;
+  padding-inline: 1rem;
+}
+
+.hero__content {
+  max-width: 42rem;
+}
+
+.hero__image {
+  border-radius: 8px;
+  height: auto;
   width: 100%;
-  max-width: 1200px;
-  margin-inline: auto;
-  padding: 20px;
 }
 
-.hero-content {
-  width: 90%;
-  margin-inline: auto;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .hero-content {
-    width: 100%;
+@media (min-width: 768px) {
+  .hero {
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    padding-block: 6rem;
   }
 }`,
+      },
+      {
+        title: 'Hero Layout Patterns',
+        table: {
+          headers: ['Pattern', 'Use When'],
+          rows: [
+            ['Stacked hero', 'The page needs a simple headline, copy, CTA, and visual that stack naturally on mobile.'],
+            ['Two-column hero', 'The visual and copy are equally important on wider screens.'],
+            ['Image-background hero', 'The image is decorative and text contrast can stay readable.'],
+            ['Editorial hero', 'The page needs a strong headline and supporting metadata more than a product-style CTA.'],
+            ['Product hero', 'The page needs to show the product clearly in the first viewport.'],
+          ],
+        },
       },
       {
         title: 'Responsive Typography',
         body: [
-          'This example shows how to scale font size for headings in the hero section, ensuring readability on all screen sizes.',
+          'Hero headlines can be larger than body text, but they still need controlled line length and readable wrapping.',
         ],
         code: `.hero h1 {
   font-size: 2.5rem;
   line-height: 1.2;
+  max-width: 12ch;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .hero h1 {
-    font-size: 2rem;
+    font-size: 4rem;
   }
 }`,
       },
       {
-        title: 'Real-World Examples: Hero Sections that Shine',
+        title: 'Hero Images and Backgrounds',
         body: [
-          'Studying well-executed examples can inspire your own designs. These sites showcase engaging, responsive hero sections with compelling visuals and CTAs.',
+          'Choose media based on meaning. If the image communicates important content, use an `img` element with useful `alt` text.',
+          'If the image is purely decorative, a CSS `background-image` can be appropriate.',
         ],
         bullets: [
-          'Stripe',
-          'Samsung',
-          'Apple',
-          'Nike',
-          'Nickelodeon',
-          'Tekken 8',
+          'Do not put important words inside an image.',
+          'Do not rely on a background image if the user needs to understand the image content.',
+          'Check text contrast when text sits over an image.',
+          'Avoid distorted images by using `width: 100%`, `height: auto`, or `object-fit: cover` when cropping is intentional.',
         ],
+      },
+      {
+        title: 'Accessibility Checklist',
+        bullets: [
+          'Use one clear `h1` for the page topic.',
+          'Use descriptive CTA text, not "Click here."',
+          'Use a real link for navigation CTAs and a real `button` for actions that happen on the page.',
+          'Write meaningful `alt` text for meaningful images.',
+          'Keep text contrast readable over images and color backgrounds.',
+          'Do not rely only on motion, video, or color to communicate meaning.',
+          'Provide captions or transcripts when video content is meaningful.',
+        ],
+      },
+      {
+        title: 'Performance Checklist',
+        bullets: [
+          'Compress hero images before adding them to the site.',
+          'Use image dimensions close to the size needed in the layout.',
+          'Consider modern formats like `WebP`.',
+          'Avoid enormous images that slow down the first page load.',
+          'Do not lazy-load the primary above-the-fold hero image if it is important to the first render.',
+          'Avoid autoplaying heavy video unless it is essential and optimized.',
+        ],
+      },
+      {
+        title: 'Study Real Hero Sections',
+        body: [
+          'When studying real examples, do not just copy the look. Ask what the hero is doing.',
+        ],
+        images: [
+          {
+            src: '/images/lessons/hero-sections/stripe-hero.jpg',
+            alt: 'Stripe hero section with a large headline, colorful background, payment form, and dashboard interface.',
+            caption: 'Stripe pairs a specific headline with product-interface visuals that show what the service does.',
+          },
+          {
+            src: '/images/lessons/hero-sections/samsung-hero.jpg',
+            alt: 'Samsung hero section with large sale alert copy, a CTA, and promotional product imagery.',
+            caption: 'Samsung uses a simple split layout: clear offer on one side, product and sale context on the other.',
+          },
+          {
+            src: '/images/lessons/hero-sections/apple-hero.jpg',
+            alt: 'Apple iPhone hero section with product closeup, compact headline, and two calls to action.',
+            caption: 'Apple makes the product the visual signal and keeps the copy short, centered, and action-oriented.',
+          },
+          {
+            src: '/images/lessons/hero-sections/nickelodeon-hero.jpg',
+            alt: 'Nickelodeon games hero section with character artwork, playful typography, and a play now call to action.',
+            caption: 'Nickelodeon leans into mood and audience: playful visuals, high energy, and a direct action.',
+          },
+          {
+            src: '/images/lessons/hero-sections/tekken-hero.jpg',
+            alt: 'Tekken 8 hero section with dramatic game art, review scores, and a buy now call to action.',
+            caption: 'Tekken uses cinematic art, social proof, and a high-contrast CTA to create urgency.',
+          },
+        ],
+        bullets: [
+          'What is the page about?',
+          'What is the main visual signal?',
+          'What is the primary CTA?',
+          'What changes between mobile and desktop?',
+          'Is the text readable over the image or background?',
+          'Does the first viewport invite scrolling?',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why it hurts', 'Fix'],
+          rows: [
+            ['Vague headline', 'Visitors do not know what the page offers.', 'Name the product, project, service, or topic clearly.'],
+            ['CTA looks like normal text', 'The next action is easy to miss.', 'Style the primary CTA as a clear link/button.'],
+            ['Low contrast over image', 'Text becomes hard to read.', 'Add a stronger overlay, move the text, or choose a calmer image.'],
+            ['Image distorts on mobile', 'The page feels unpolished.', 'Use flexible image sizing and intentional cropping.'],
+            ['Hero is too tall', 'Users cannot see what comes next.', 'Reduce padding or let the next section peek into view.'],
+            ['Important content hidden on mobile', 'Small-screen users miss key information.', 'Prioritize and simplify instead of removing meaning.'],
+          ],
+        },
       },
       {
         title: 'Code Challenge: Build Your Own Responsive Hero Section',
         body: [
-          'Create a hero section for a fictional website or a website of your choice. Include a hero image, headline, supporting text, and a call to action.',
-          "Use the principles and code examples we've discussed to ensure your hero section is visually appealing, informative, and adapts seamlessly to different screen sizes.",
-        ],
-        bullets: [
-          'Use a fluid grid to structure the layout.',
-          'Make sure the hero image is flexible and scales properly.',
-          'Adjust typography for different screen sizes.',
-          'Prioritize content and hide less important elements on smaller screens.',
-          'Use a mobile-first navigation pattern if needed.',
+          'Create a hero section for a fictional website or your own portfolio. Include a headline, supporting text, a primary CTA, and a meaningful visual.',
+          'Build mobile-first, then add a larger-screen layout with `@media (min-width: ...)`.',
         ],
       },
     ],
     practice: [
       'Build a responsive hero section with a hero image, headline, supporting text, and CTA.',
-      'Use a fluid layout with a max-width.',
-      'Adjust typography for smaller screens.',
-      'Test the hero on mobile and desktop widths.',
+      'Write three specific hero headline options before choosing one.',
+      'Use an `a` element for a navigation CTA such as `View Projects`.',
+      'Build the hero mobile-first, then add a two-column layout at a wider screen size.',
+      'Add a responsive image with meaningful `alt` text.',
+      'Check the hero at `320px`, tablet width, and desktop width.',
+      'Check text contrast over any image or colored background.',
+      'Make sure the hero does not hide all following content on mobile.',
+      'Compress the hero image and confirm it is not oversized for the layout.',
     ],
   },
   {

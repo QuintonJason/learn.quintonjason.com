@@ -2931,23 +2931,23 @@ p {
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'What This Teaches',
         body: [
-          'Responsive web design is the practice of building websites that adapt gracefully to different screen sizes and devices.',
-          'This ensures a consistent and optimal user experience across desktops, laptops, tablets, and smartphones.',
-          'This lesson explores the core concepts of responsive design and demonstrates techniques for creating flexible and adaptable layouts.',
+          'Responsive web design is the practice of building websites that adapt gracefully to different screen sizes, input types, and viewing contexts.',
+          'This lesson focuses on a mobile-first workflow: start with the smallest layout, then add complexity when the content has enough room.',
+          'You will use flexible containers, fluid images, media queries, responsive typography, and testing habits that catch layout problems early.',
         ],
       },
       {
-        title: 'The Importance of Responsive Design',
+        title: 'Why It Matters',
         body: [
-          "In today's multi-device world, users access websites from a variety of screens. Responsive design is crucial for the following reasons:",
+          "Users do not experience a website on one perfect screen. They resize windows, zoom text, rotate phones, use touch, use keyboards, and browse on devices you cannot predict.",
         ],
         bullets: [
-          'Improved User Experience: Provides a consistent and usable experience across all devices.',
-          'Increased Reach: Reaches a wider audience by accommodating different devices.',
-          'SEO Benefits: Google favors mobile-friendly websites in search rankings.',
-          'Easier Maintenance: Manages a single website instead of separate versions for different devices.',
+          'Better user experience: Content stays readable, reachable, and usable across screen sizes.',
+          'Better maintainability: One flexible website is easier to manage than separate mobile and desktop versions.',
+          'Better accessibility: Responsive layouts support zoom, larger text, touch targets, and different input methods.',
+          'Better performance: Mobile-first CSS encourages simpler default layouts before adding heavier desktop enhancements.',
         ],
       },
       {
@@ -2956,15 +2956,41 @@ p {
           'Responsive design relies on a few foundational techniques that work together to make layouts flexible and adaptable.',
         ],
         bullets: [
-          'Fluid Grids: Use relative units like percentages for widths instead of fixed units like pixels. This allows elements to scale proportionally to the screen size.',
-          'Flexible Images: Prevent images from overflowing their containers by setting max-width: 100%; and height: auto;.',
-          'Media Queries: Apply different CSS styles based on device characteristics like screen size, orientation, and resolution.',
+          'Fluid containers: Use flexible widths, `max-width`, and modern functions like `min()` instead of fixed page widths.',
+          'Flexible media: Prevent images and videos from overflowing with `max-width: 100%` and `height: auto`.',
+          'Responsive layout systems: Use `grid`, `flexbox`, `gap`, and wrapping patterns that adapt to available space.',
+          'Media queries: Add CSS when conditions like `min-width`, `orientation`, or `hover` are true.',
+          'Responsive typography: Use `rem`, `line-height`, readable line lengths, and controlled scaling with `clamp()`.',
         ],
+      },
+      {
+        title: 'Mobile-First Workflow',
+        body: [
+          'A mobile-first workflow starts with the simplest layout as the default. Those base styles apply everywhere.',
+          'Then use `@media (min-width: ...)` to enhance the layout when more space is available.',
+        ],
+        code: `.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}`,
       },
       {
         title: 'Media Queries: The Foundation of Responsive Design',
         body: [
-          'Media queries allow you to define CSS rules that only apply when certain conditions are met, such as screen width or orientation.',
+          'Media queries allow you to define CSS rules that only apply when certain conditions are met, such as screen width, orientation, input type, or display capability.',
         ],
         code: `@media (condition) {
   /* CSS rules to apply when the condition is true */
@@ -2973,81 +2999,121 @@ p {
       {
         title: 'Common Conditions',
         bullets: [
-          'min-width: Applies styles when the screen width is at least the specified value.',
-          'max-width: Applies styles when the screen width is at most the specified value.',
-          'orientation: Applies styles based on screen orientation, portrait or landscape.',
+          '`min-width`: Applies styles when the viewport is at least the specified width. Common in mobile-first CSS.',
+          '`max-width`: Applies styles when the viewport is at most the specified width. Common in desktop-first CSS.',
+          '`orientation`: Applies styles based on `portrait` or `landscape` orientation.',
+          '`hover`: Detects whether the primary input can hover, useful for avoiding hover-only interactions on touch screens.',
+          '`prefers-reduced-motion`: Responds to a user motion preference.',
         ],
       },
       {
-        title: 'Breakpoints',
+        title: 'Choosing Breakpoints',
         body: [
-          'Breakpoints are specific screen widths that define the points at which your layout or content should change.',
+          'Breakpoints are specific viewport widths where your layout changes. Choose them based on content, not device names.',
+          'Resize the page slowly. When something becomes cramped, too wide, too hard to read, or awkwardly spaced, that is a good breakpoint candidate.',
         ],
-        bullets: [
-          'Mobile: Around 320px - 480px',
-          'Tablet: Around 768px - 1024px',
-          'Desktop: Around 1280px and above',
-        ],
+        table: {
+          headers: ['When this happens', 'Responsive response'],
+          rows: [
+            ['Line length gets too wide', 'Constrain the content with `max-width`.'],
+            ['Cards feel cramped', 'Change the number of columns or let cards wrap.'],
+            ['Navigation no longer fits', 'Switch to a stacked or collapsible pattern.'],
+            ['Images crop awkwardly', 'Adjust the image ratio, crop, or art direction.'],
+            ['Buttons become hard to tap', 'Increase spacing and target size.'],
+          ],
+        },
       },
       {
-        title: 'Media Query Example',
-        code: `/* Default styles for larger screens */
+        title: 'Responsive Container Example',
+        body: [
+          'Avoid starting with a fixed desktop width. A flexible container can fill small screens while staying readable on large screens.',
+        ],
+        code: `.container {
+  width: 90%;
+  max-width: 960px;
+  margin-inline: auto;
+}`,
+      },
+      {
+        title: 'Avoid This Fixed Container Pattern',
+        body: [
+          'A fixed width can create horizontal scrolling on small screens. Use flexible widths unless the fixed size is truly required.',
+        ],
+        code: `/* Avoid this as a default page container */
 .container {
   width: 960px;
-  margin: 0 auto;
-}
-
-/* Styles for smaller screens */
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
-  }
+  margin-inline: auto;
 }`,
       },
       {
         title: 'Combining Conditions',
         body: [
-          'You can combine multiple conditions using logical operators like and, or, and not.',
+          'You can combine conditions with `and`. For beginner-friendly broad support, use a comma when either condition should match.',
         ],
         code: `@media (min-width: 768px) and (orientation: landscape) {
   /* Styles for landscape tablets */
 }
 
-@media (max-width: 768px) or (orientation: portrait) {
+@media (max-width: 768px), (orientation: portrait) {
   /* Styles for smaller screens or portrait orientation */
 }`,
       },
       {
         title: 'Other Media Features',
         bullets: [
-          'aspect-ratio: Target devices with specific aspect ratios.',
-          'resolution: Apply styles for high-DPI screens.',
-          'color: Target devices with different color capabilities.',
-          'hover: Distinguish between touch and mouse interactions.',
+          '`aspect-ratio`: Target viewports with specific width-to-height relationships.',
+          '`resolution`: Apply styles for high-DPI screens.',
+          '`color`: Target devices with different color capabilities.',
+          '`hover`: Distinguish between touch and mouse interactions.',
+          '`prefers-color-scheme`: Respond to light or dark mode preference.',
         ],
       },
       {
         title: 'Mobile-First vs. Desktop-First',
-        bullets: [
-          'Mobile-First: Start with styles for the smallest screen and progressively add styles for larger screens using min-width media queries. This approach is generally favored for performance and maintainability.',
-          'Desktop-First: Start with styles for the largest screen and progressively add styles for smaller screens using max-width media queries.',
-        ],
+        table: {
+          headers: ['Approach', 'How it works', 'Best for'],
+          rows: [
+            ['Mobile-first', 'Start with small-screen defaults, then add layout complexity with `min-width`.', 'Most student projects and modern responsive builds.'],
+            ['Desktop-first', 'Start with large-screen layout, then override down with `max-width`.', 'Existing desktop-heavy sites that are being retrofitted.'],
+          ],
+        },
       },
       {
         title: 'Viewport Meta Tag',
         body: [
-          'The viewport meta tag is essential for controlling how a web page is scaled and displayed on mobile devices.',
+          'The viewport meta tag is essential for controlling how a web page is scaled on mobile devices.',
         ],
         code: `<meta name="viewport" content="width=device-width, initial-scale=1.0">`,
         bullets: [
-          "width=device-width: Sets the viewport width to the device's screen width.",
-          'initial-scale=1.0: Sets the initial zoom level to 1.0, no zoom.',
+          '`width=device-width`: Sets the viewport width to the device screen width.',
+          '`initial-scale=1.0`: Sets the initial zoom level to `1.0`.',
+        ],
+      },
+      {
+        title: 'Responsive Layout Patterns',
+        table: {
+          headers: ['Pattern', 'Useful CSS'],
+          rows: [
+            ['Centered page container', '`width: 90%; max-width: 960px; margin-inline: auto;`'],
+            ['Wrapping flex row', '`display: flex; flex-wrap: wrap; gap: 1rem;`'],
+            ['Responsive card grid', '`grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));`'],
+            ['Single column to multi-column', 'Base: `1fr`; larger screen: `repeat(2, 1fr)` or `repeat(3, 1fr)`.'],
+            ['Flexible media', '`max-width: 100%; height: auto;`'],
+          ],
+        },
+      },
+      {
+        title: 'Interactive Practice: Responsive Layout Visualizer',
+        body: [
+          'Use the Responsive Layout Visualizer above to resize a layout from `320px` to `1200px`.',
+          'Watch when the card layout changes from one column to two columns to three columns. The HTML stays the same; the CSS changes the presentation.',
         ],
       },
       {
         title: 'Responsive Images',
         body: [
-          'Responsive images ensure that images display properly and efficiently on different screen sizes and resolutions.',
+          'Responsive images should fit their containers, load efficiently, and preserve meaning.',
+          '`max-width: 100%` prevents overflow. `height: auto` preserves the image proportions.',
         ],
         code: `img {
   max-width: 100%;
@@ -3056,35 +3122,45 @@ p {
       },
       {
         title: 'Using srcset and sizes',
+        body: [
+          'Use `srcset` and `sizes` when the browser should choose the best image file for the available layout size and device resolution.',
+        ],
         code: `<img src="image.jpg"
      srcset="image-small.jpg 300w, image-medium.jpg 600w, image-large.jpg 1200w"
-     sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw">`,
+     sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw"
+     alt="Description">`,
         note:
-          'This setup lets the browser choose the best image source based on the screen size and resolution.',
+          '`srcset` lists the available image files. `sizes` tells the browser how much layout space the image will occupy.',
       },
       {
         title: 'Using the picture Element',
+        body: [
+          'Use the `picture` element for art direction or format switching, such as serving a different crop on small screens.',
+        ],
         code: `<picture>
   <source media="(max-width: 600px)" srcset="image-small.jpg">
   <source media="(max-width: 1000px)" srcset="image-medium.jpg">
   <img src="image-large.jpg" alt="Description">
 </picture>`,
         note:
-          'This allows different image sources to be served based on screen size, optimizing quality and performance.',
+          'Keep the `alt` text on the fallback `img`. The meaning belongs to the image, not the individual sources.',
       },
       {
         title: 'Modern Image Formats',
         body: [
-          'Consider using formats like WebP for better compression and quality. The picture element can help serve WebP to browsers that support it.',
+          'Consider formats like `WebP` and `AVIF` for better compression and quality.',
+          'Use `picture` when you need to provide multiple formats with a fallback.',
         ],
       },
       {
         title: 'Responsive Typography',
         body: [
-          'Ensure that text remains readable and attractive on all screen sizes.',
+          'Responsive typography should stay readable at small sizes and avoid becoming oversized on wide screens.',
+          'Use `rem` for stable type scale decisions, readable `line-height`, and `max-width` to control line length.',
         ],
         code: `body {
-  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 h1 {
@@ -3096,14 +3172,18 @@ p {
 }`,
       },
       {
-        title: 'Viewport Units',
+        title: 'Controlled Fluid Type with clamp',
+        body: [
+          'Avoid using `vw` by itself for important text. It can become too tiny on small screens or too huge on wide screens.',
+          '`clamp()` gives a minimum, preferred fluid value, and maximum.',
+        ],
         code: `h1 {
-  font-size: 4vw;
+  font-size: clamp(2rem, 6vw, 4.5rem);
 }`,
       },
       {
         title: 'Using Media Queries for Typography',
-        code: `@media (max-width: 768px) {
+        code: `@media (min-width: 768px) {
   h1 {
     font-size: 3rem;
   }
@@ -3115,18 +3195,23 @@ p {
       {
         title: 'Other Tips',
         bullets: [
-          'Use heavier font weights for small screens.',
-          'Adjust line length with max-width.',
+          'Use `max-width` to prevent long lines of text.',
+          'Keep comfortable `line-height`, especially for paragraphs.',
+          'Test text zoom. The layout should still work when text is larger.',
+          'Avoid viewport-only type like `font-size: 4vw` for body text.',
         ],
       },
       {
         title: 'Responsive Navigation Examples',
         body: [
-          'Navigation often needs special attention to ensure usability on smaller screens. Below are two popular mobile navigation patterns.',
+          'Navigation often needs special attention because links can run out of space quickly.',
+          'Start with usable HTML, then choose a responsive pattern based on the amount of navigation.',
         ],
         bullets: [
-          'Hamburger Menu: A collapsible menu that reveals items when the button is clicked. Useful for conserving space.',
-          'Off-Canvas Menu: A side-sliding menu that appears from the edge of the screen. Good for more complex navigations.',
+          'Wrapping links: Useful for short nav lists that can wrap onto another line.',
+          'Stacked navigation: Useful when a vertical menu is acceptable on small screens.',
+          'Hamburger menu: A collapsible menu revealed by a real `button`. Useful for conserving space.',
+          'Off-canvas menu: A side-sliding menu. Useful for more complex navigation, but it needs careful focus and keyboard handling.',
         ],
       },
       {
@@ -3135,15 +3220,51 @@ p {
           'Make sure navigation menus and other components are usable by everyone.',
         ],
         bullets: [
-          'Use ARIA attributes like aria-expanded and aria-controls.',
-          'Ensure keyboard operability.',
+          'Use a real `button` for menu toggles.',
+          'Update `aria-expanded` when a collapsible menu opens or closes.',
+          'Use `aria-controls` when a button controls a specific menu region.',
+          'Keep keyboard focus visible.',
+          'Do not hide interactive content from keyboard users.',
+          'Make tap targets large enough to activate comfortably.',
+          'Respect `prefers-reduced-motion` for large movement or animation.',
         ],
       },
       {
         title: 'Testing and Debugging',
         bullets: [
-          'Browser DevTools: Use to simulate screen sizes and debug styles.',
-          'Real Devices: Always verify on physical devices when possible.',
+          'Test narrow widths such as `320px` and `360px`.',
+          'Use browser DevTools responsive mode to resize slowly.',
+          'Check for horizontal scrolling.',
+          'Check that images and videos do not overflow.',
+          'Test text zoom and browser zoom.',
+          'Check touch targets and spacing on small screens.',
+          'Test keyboard navigation after nav changes.',
+          'Test on a real phone when possible.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why it hurts', 'Fix'],
+          rows: [
+            ['Starting with a fixed desktop width', 'Small screens can overflow horizontally.', 'Use flexible containers and mobile-first CSS.'],
+            ['Choosing breakpoints only from device names', 'The layout may break between those sizes.', 'Choose breakpoints when the content needs them.'],
+            ['Using `vw` alone for type', 'Text can become unreadable.', 'Use `clamp()` with minimum and maximum sizes.'],
+            ['Forgetting the viewport meta tag', 'Mobile browsers may render the page as a scaled desktop layout.', 'Add the viewport meta tag in the document `head`.'],
+            ['Hiding nav visually but not accessibly', 'Keyboard and screen reader users may encounter broken menus.', 'Use proper button state, focus behavior, and hidden states.'],
+          ],
+        },
+      },
+      {
+        title: 'Responsive Debugging Checklist',
+        bullets: [
+          'Open DevTools and drag from narrow to wide slowly.',
+          'Find the first width where the layout feels cramped or broken.',
+          'Check whether `width`, `min-width`, fixed positioning, or large images are causing overflow.',
+          'Add a breakpoint only when the content needs a different layout.',
+          'Prefer `min-width` media queries for mobile-first CSS.',
+          'Use `grid`, `flexbox`, `gap`, and flexible units before hard-coding widths.',
+          'Retest after each breakpoint instead of waiting until the end.',
         ],
       },
       {
@@ -3156,10 +3277,16 @@ p {
       },
     ],
     practice: [
-      'Create a responsive container using relative widths.',
-      'Add a media query that changes layout below 768px.',
-      'Make images flexible with max-width and height auto.',
-      'Test the page in browser DevTools and on a real device if possible.',
+      'Create a responsive container using `width: 90%`, `max-width`, and `margin-inline: auto`.',
+      'Convert a desktop layout into a mobile-first layout.',
+      'Add a `min-width` media query that changes a card layout from one column to two columns.',
+      'Create a responsive card grid with `repeat(auto-fit, minmax(16rem, 1fr))`.',
+      'Make images flexible with `max-width: 100%` and `height: auto`.',
+      'Use `clamp()` for a heading size.',
+      'Build a responsive navigation state with a real `button` and `aria-expanded`.',
+      'Find and fix an intentional horizontal overflow bug.',
+      'Test the page at `320px`, around your breakpoint, and at desktop width.',
+      'Document the width where each breakpoint becomes necessary.',
     ],
   },
   {
@@ -3176,32 +3303,49 @@ p {
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'What This Teaches',
         body: [
-          "As front-end developers, we're not just concerned with static web pages. We want to create interactive and dynamic experiences that respond to user actions and provide engaging feedback.",
-          "That's where JavaScript and the Document Object Model, or DOM, come in. Think of the DOM as a living, breathing representation of your HTML document.",
-          'JavaScript allows you to access and manipulate this DOM, changing the content, structure, and style of your web page in real time.',
-          "In this chapter, we'll learn how to select and manipulate DOM elements, respond to user events, and create dynamic effects that bring your web pages to life.",
+          'This lesson teaches how JavaScript interacts with the Document Object Model, or DOM.',
+          'The browser reads your HTML and creates the DOM: a structured representation of the page that JavaScript can read and update after the page loads.',
+          'You will learn a repeatable workflow: select an element, listen for an event, then change content, classes, attributes, or elements.',
         ],
+      },
+      {
+        title: 'Core Workflow: Select, Listen, Change',
+        body: [
+          'Most beginner DOM interactions follow the same pattern.',
+        ],
+        bullets: [
+          'Select an element with `document.querySelector()` or another selector method.',
+          'Listen for an event with `addEventListener()`.',
+          'Change something with `textContent`, `classList`, attributes, or new elements.',
+        ],
+        code: `const button = document.querySelector('.menu-button');
+
+button.addEventListener('click', () => {
+  document.body.classList.toggle('menu-open');
+});`,
       },
       {
         title: 'Adding JavaScript to Your Web Page',
         body: [
-          'You can include JavaScript in your HTML document in three ways.',
+          'You can include JavaScript in your HTML document in three common ways.',
+          'For class projects, an external file loaded with `defer` is the preferred approach.',
         ],
       },
       {
         title: 'Inline',
         body: [
-          'JavaScript code can be embedded directly in an HTML element using an event attribute like onclick, but this is mostly useful to recognize in older examples.',
-          'For class projects, prefer external JavaScript files and addEventListener so behavior stays separate from markup.',
+          'Inline JavaScript is written directly in an HTML attribute like `onclick`.',
+          'Recognize this pattern in older examples, but avoid it for class projects because it mixes behavior into markup.',
         ],
         code: `<button onclick="alert('Hello!')">Click me</button>`,
       },
       {
         title: 'Internal',
         body: [
-          'JavaScript can be written inside script tags in the HTML file itself.',
+          'Internal JavaScript is written inside `script` tags in the HTML file.',
+          'This is acceptable for quick demos, but it becomes hard to maintain as a project grows.',
         ],
         code: `<head>
   <script>
@@ -3212,143 +3356,260 @@ p {
       {
         title: 'External',
         body: [
-          'JavaScript can be placed in a separate file and linked with the src attribute.',
+          'External JavaScript is placed in a separate file and linked with the `src` attribute.',
+          'Use `defer` so the browser downloads the script while parsing the HTML, but runs it after the HTML is ready.',
         ],
-        code: `<body>
-  ...
-  <script src="script.js"></script>
-</body>`,
+        code: `<head>
+  <script src="script.js" defer></script>
+</head>`,
         note:
-          'This last approach is preferred for better organization and maintainability.',
+          '`defer` helps prevent the common error where JavaScript tries to select an element before that element exists in the DOM.',
       },
       {
-        title: "The DOM: Your Webpage's Blueprint",
+        title: 'Selecting Elements',
         body: [
-          'The DOM is a tree-like structure that represents all elements, attributes, and text in your HTML. Each element becomes a node, and JavaScript can interact with these nodes.',
+          'Before JavaScript can change something, it needs a reference to the element.',
+        ],
+        table: {
+          headers: ['Method', 'Use For'],
+          rows: [
+            ['`document.querySelector()`', 'Selects the first element that matches a CSS selector.'],
+            ['`document.querySelectorAll()`', 'Selects all matching elements as a list-like collection.'],
+            ['`document.getElementById()`', 'Selects one element by its `id`.'],
+          ],
+        },
+        code: `const button = document.querySelector('.menu-button');
+const cards = document.querySelectorAll('.card');
+const mainNav = document.getElementById('main-nav');`,
+      },
+      {
+        title: 'When a Selector Finds Nothing',
+        body: [
+          'If a selector does not match anything, `querySelector()` returns `null`.',
+          'Check that the element exists before calling methods like `addEventListener()`.',
+        ],
+        code: `const button = document.querySelector('.menu-button');
+
+if (button) {
+  button.addEventListener('click', () => {
+    document.body.classList.toggle('menu-open');
+  });
+}`,
+      },
+      {
+        title: 'Interactive Practice: DOM Interaction Lab',
+        body: [
+          'Use the DOM Interaction Lab above to change text, toggle a class, update an attribute, and add a list item.',
+          'Read the generated code after each action. Notice that every action starts by selecting an element before changing it.',
         ],
       },
       {
-        title: 'Modifying DOM Elements',
+        title: 'Modifying Content Safely',
         body: [
-          "Once you've selected an element, you can modify its content, attributes, or style using JavaScript.",
+          'Use `textContent` when inserting plain text. Use `innerHTML` only when the HTML is trusted and you understand the risk.',
         ],
-      },
-      {
-        title: 'Modifying Content',
-        code: `element.textContent = 'New content'; // Updates the text content
-element.innerHTML = '<p>New HTML content</p>'; // Updates the HTML content`,
-        note:
-          'Use textContent when inserting plain text. Use innerHTML carefully because inserting untrusted content can create security and accessibility problems.',
+        table: {
+          headers: ['Property or Method', 'Use For', 'Caution'],
+          rows: [
+            ['`textContent`', 'Changing plain text.', 'Best default for beginner projects.'],
+            ['`innerHTML`', 'Replacing HTML inside an element.', 'Do not use with user-provided content.'],
+            ['`createElement()`', 'Building structured content safely.', 'Takes more steps but gives more control.'],
+          ],
+        },
+        code: `const message = document.querySelector('.message');
+
+message.textContent = 'Saved successfully.';`,
       },
       {
         title: 'Modifying Attributes',
-        code: `element.setAttribute('class', 'newClass');
-element.href = 'https://www.example.com';`,
+        body: [
+          'Attributes store extra information on HTML elements. JavaScript can read and update them.',
+        ],
+        code: `const link = document.querySelector('.resource-link');
+
+link.href = 'https://developer.mozilla.org/';
+link.textContent = 'Read MDN';`,
       },
       {
-        title: 'Modifying Styles',
-        code: `element.style.color = 'red';
-element.style.display = 'none';`,
+        title: 'Changing Classes Instead of Inline Styles',
+        body: [
+          'For most interface changes, toggle a class instead of writing many inline styles with JavaScript.',
+          'This keeps styling in CSS and behavior in JavaScript.',
+        ],
+        code: `const card = document.querySelector('.card');
+
+card.classList.toggle('is-highlighted');`,
       },
       {
         title: 'Working with classList',
         body: [
-          "The classList API provides a more convenient way to work with an element's classes.",
+          'The `classList` API is the preferred way to work with an element\'s classes.',
         ],
         bullets: [
-          'add(className): Adds a class to the element.',
-          'remove(className): Removes a class from the element.',
-          'toggle(className): Toggles a class on or off.',
-          'contains(className): Checks if the element has a specific class.',
+          '`add(className)`: Adds a class to the element.',
+          '`remove(className)`: Removes a class from the element.',
+          '`toggle(className)`: Toggles a class on or off.',
+          '`contains(className)`: Checks whether the element has a specific class.',
         ],
-        code: `<div class="my-class">Element content</div>
+        code: `const menu = document.querySelector('.site-menu');
 
-const element = document.querySelector('.my-class');
-element.classList.add('active');
+menu.classList.toggle('is-open');
 
-if (element.classList.contains('active')) {
-  // Do something
+if (menu.classList.contains('is-open')) {
+  console.log('Menu is open');
 }`,
       },
       {
         title: 'Traversing the DOM',
         body: [
-          'Being able to traverse the DOM is useful when you need to move between related elements. You can navigate the DOM tree using these properties.',
+          'DOM traversal means moving between related elements after you have selected one element.',
+          'For beginners, element-based properties are usually easier than node-based properties because they skip whitespace text nodes.',
         ],
-        bullets: [
-          'parentNode: The parent of the element.',
-          "childNodes: A collection of the element's child nodes.",
-          "firstChild: The element's first child node.",
-          "lastChild: The element's last child node.",
-          'nextSibling: The next sibling of the element.',
-          'previousSibling: The previous sibling of the element.',
-        ],
-        code: `<div id="parent">
-  <div id="child">First child</div>
-  <div>Second child</div>
-</div>
-
-const child = document.getElementById('child');
-const parent = child.parentNode;
-const nextSibling = child.nextSibling;`,
+        table: {
+          headers: ['Property', 'Meaning'],
+          rows: [
+            ['`parentElement`', 'The parent element.'],
+            ['`children`', 'The child elements.'],
+            ['`firstElementChild`', 'The first child element.'],
+            ['`nextElementSibling`', 'The next sibling element.'],
+            ['`previousElementSibling`', 'The previous sibling element.'],
+          ],
+        },
+        code: `const item = document.querySelector('.faq-item');
+const parent = item.parentElement;
+const nextItem = item.nextElementSibling;`,
       },
       {
         title: 'Creating and Inserting Elements',
         body: [
           'JavaScript allows you to dynamically create new elements and insert them into the DOM.',
         ],
-        code: `const newParagraph = document.createElement('p');
-newParagraph.textContent = 'This is a new paragraph.';
+        code: `const item = document.createElement('li');
+item.textContent = 'New list item';
 
-const parent = document.getElementById('parent');
-parent.appendChild(newParagraph);`,
+const list = document.querySelector('.task-list');
+list.appendChild(item);`,
       },
       {
         title: 'Event Listeners: Responding to User Actions',
         body: [
-          'Event listeners allow you to execute JavaScript code when a specific event occurs on an element, such as a click, hover, or form submission.',
+          'Event listeners run JavaScript when something happens, such as a click, form submission, or text input.',
         ],
         code: `element.addEventListener('click', () => {
   // Code to execute when the element is clicked
 });`,
       },
       {
+        title: 'Common Event Types',
+        table: {
+          headers: ['Event', 'Use For'],
+          rows: [
+            ['`click`', 'Buttons, menu toggles, and simple interactions.'],
+            ['`input`', 'Reacting while a user types or changes a control.'],
+            ['`change`', 'Reacting after a form control value changes.'],
+            ['`submit`', 'Handling a form submission.'],
+            ['`keydown`', 'Responding to keyboard input.'],
+          ],
+        },
+      },
+      {
         title: 'Using the Event Object',
         body: [
-          'When an event occurs, an event object is passed to the event listener callback function. It contains information such as the event target, type, and methods like preventDefault().',
+          'When an event occurs, an event object is passed to the listener function.',
+          'The event object includes information like `event.target`, `event.type`, and methods like `preventDefault()`.',
         ],
-        code: `<a id="myLink" href="https://www.lsu.edu/">Link to LSU</a>
+        code: `const form = document.querySelector('.signup-form');
 
-const link = document.getElementById('myLink');
-
-link.addEventListener('click', (event) => {
+form.addEventListener('submit', (event) => {
   event.preventDefault();
-  // Custom code here
+  console.log('Handle the form with JavaScript');
 });`,
       },
       {
-        title: 'Creating a Navigation Menu Toggle (Revisited)',
+        title: 'Accessible Menu Toggle',
         body: [
-          'This example revisits the use of DOM manipulation to control visibility of a navigation menu using JavaScript, often used in mobile layouts.',
+          'A responsive menu toggle should use a real `button`, update `aria-expanded`, and show or hide the controlled menu.',
         ],
+        code: `<button class="menu-button" aria-expanded="false" aria-controls="site-menu">
+  Menu
+</button>
+
+<nav id="site-menu" hidden>
+  <a href="/">Home</a>
+  <a href="/projects/">Projects</a>
+</nav>`,
       },
       {
-        title: 'Off-Canvas Menu',
+        title: 'Accessible Menu Toggle JavaScript',
+        code: `const button = document.querySelector('.menu-button');
+const menu = document.querySelector('#site-menu');
+
+button.addEventListener('click', () => {
+  const isOpen = button.getAttribute('aria-expanded') === 'true';
+
+  button.setAttribute('aria-expanded', String(!isOpen));
+  menu.hidden = isOpen;
+});`,
+      },
+      {
+        title: 'Working with Multiple Elements',
         body: [
-          'This pattern shows a navigation menu that slides in from the side, typically used on mobile devices.',
+          'Use `querySelectorAll()` when the page has multiple matching elements. Then loop over the collection and attach behavior to each one.',
+        ],
+        code: `const buttons = document.querySelectorAll('.faq-button');
+
+buttons.forEach((button) => {
+  button.addEventListener('click', () => {
+    button.classList.toggle('is-open');
+  });
+});`,
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why it happens', 'Fix'],
+          rows: [
+            ['Script runs before HTML exists', 'JavaScript executes before the element is parsed.', 'Load external scripts with `defer`.'],
+            ['Selector returns `null`', 'The selector does not match the HTML.', 'Check spelling, class dots, ids, and timing.'],
+            ['Forgetting the dot in `.class`', '`querySelector()` uses CSS selector syntax.', 'Use `.menu-button` for classes and `#site-menu` for ids.'],
+            ['Using `innerHTML` for user input', 'Untrusted HTML can create security problems.', 'Use `textContent` or create elements manually.'],
+            ['Adding one listener to many elements incorrectly', '`querySelector()` only returns the first match.', 'Use `querySelectorAll()` and loop.'],
+            ['Changing many inline styles', 'CSS and JS become tangled.', 'Toggle classes and keep visual styling in CSS.'],
+          ],
+        },
+      },
+      {
+        title: 'Debugging Checklist',
+        bullets: [
+          'Open DevTools Console and read the exact error message.',
+          'Check whether the selected element is `null`.',
+          'Confirm the script is loaded with `defer` or placed after the HTML it uses.',
+          'Log selected elements with `console.log()` to verify selectors.',
+          'Confirm event names are lowercase, such as `click` and `submit`.',
+          'Check whether a class is being added in the Elements panel.',
+          'Prefer changing one thing at a time, then retest.',
         ],
       },
       {
         title: 'Additional Resources',
         resources: [
+          { label: 'MDN: Introduction to the DOM', href: 'https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction' },
+          { label: 'MDN: querySelector', href: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector' },
           { label: 'classList API - MDN', href: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/classList' },
           { label: 'Events Documentation - MDN', href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Events' },
         ],
       },
     ],
     practice: [
-      'Create a button that toggles a menu class.',
-      'Update text on the page after a click.',
+      'Load an external `script.js` file with `defer`.',
+      'Select one element with `document.querySelector()` and update its `textContent`.',
+      'Create a button that toggles a class with `classList.toggle()`.',
+      'Build a show/hide FAQ item with a real `button`.',
+      'Build a menu toggle that updates `aria-expanded`.',
+      'Handle a simple form `submit` event with `preventDefault()`.',
+      'Use `querySelectorAll()` to attach click behavior to multiple buttons.',
+      'Create a new list item with `createElement()` and add it with `appendChild()`.',
+      'Use DevTools Console to debug a selector that returns `null`.',
     ],
   },
   {
@@ -3437,13 +3698,13 @@ link.addEventListener('click', (event) => {
         code: `.hero {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin-inline: auto;
   padding: 20px;
 }
 
 .hero-content {
   width: 90%;
-  margin: 0 auto;
+  margin-inline: auto;
   text-align: center;
 }
 

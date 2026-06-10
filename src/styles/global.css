@@ -1858,7 +1858,8 @@
 .image-lab__figure {
   display: grid;
   gap: 0.75rem;
-  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: auto;
   padding: 1rem;
   transition: max-inline-size 180ms ease;
 }

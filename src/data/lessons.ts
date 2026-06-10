@@ -1478,95 +1478,170 @@ a {
     ],
     sections: [
       {
+        title: 'Why Text Styling Matters',
+        body: [
+          'Text styling affects how quickly people can read, scan, and understand a page.',
+          'Good typography creates hierarchy, supports the tone of the site, and keeps content accessible across screen sizes and devices.',
+        ],
+      },
+      {
+        title: 'Typography System Starter',
+        body: [
+          'A typography system gives your site consistent defaults for body text, headings, links, and small labels.',
+        ],
+        code: `body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+a {
+  color: #0b55b7;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}`,
+      },
+      {
+        title: 'Text Styling Property Groups',
+        body: [
+          'Text properties are easier to learn when you group them by purpose.',
+        ],
+        table: {
+          headers: ['Purpose', 'Properties', 'What to ask'],
+          rows: [
+            ['Color and contrast', '`color`', 'Is the text easy to read against the background?'],
+            ['Font choice', '`font-family`', 'Does the font match the tone and stay readable?'],
+            ['Size and scale', '`font-size`', 'Can people scan headings and read body text comfortably?'],
+            ['Weight and emphasis', '`font-weight`, `font-style`', 'What needs emphasis, and is it used consistently?'],
+            ['Links and decoration', '`text-decoration`, `text-underline-offset`', 'Can users tell what is clickable?'],
+            ['Spacing and rhythm', '`line-height`, `letter-spacing`, `word-spacing`', 'Does the text have enough breathing room?'],
+            ['Alignment', '`text-align`', 'Does the alignment support reading, especially for long text?'],
+          ],
+        },
+      },
+      {
         title: 'Font Styles',
         body: [
-          'Font styles affect the appearance of text within your HTML elements. Here are some key properties:',
+          'Font styles affect the appearance of text within your HTML elements. Start with readable defaults, then adjust headings, links, and special labels.',
         ],
       },
       {
         title: 'color',
         body: [
-          'Updates the foreground color of the text. It also affects the color of any associated underlines included with text-decoration.',
+          '`color` updates the foreground color of the text. It also affects the color of associated underlines included with `text-decoration`.',
+          'Choose colors with enough contrast against the background. Text color is not just decoration; it directly affects readability.',
         ],
         code: `p {
   color: #1f2937;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/color' },
-          'Demo',
         ],
       },
       {
         title: 'font-family',
         body: [
-          'Used to set a different font for your text. Use web-safe fonts to ensure consistent display across different devices and browsers.',
+          '`font-family` sets the font for your text. Use readable fonts and always end the font stack with a generic family.',
           'The font stack is a list of fonts, from left to right, that the browser will try to load.',
+          'Common generic families include `sans-serif`, `serif`, and `monospace`.',
         ],
         code: `body {
   font-family: Arial, Helvetica, sans-serif;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/font-family' },
-          'Demo',
         ],
       },
       {
         title: 'font-size',
         body: [
-          'Sets the size of the text. Common units include:',
+          '`font-size` sets the size of text. For most project typography, `rem` is a flexible default because it responds to the root text size.',
+          'Avoid setting body text too small. A common starting point is `1rem` for paragraphs.',
         ],
         bullets: [
-          'px: Fixed size',
-          'em: Relative to the parent',
-          'rem: Relative to the root',
+          '`px`: Fixed size. Useful for small details, but less flexible for type systems.',
+          '`em`: Relative to the parent element.',
+          '`rem`: Relative to the root element. Usually a good choice for font sizing.',
         ],
         code: `h1 {
   font-size: 2rem;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/font-size' },
-          'Demo',
         ],
       },
       {
         title: 'font-style',
-        body: ['Used to toggle italics.'],
+        body: ['`font-style` is often used to toggle italics for emphasis or citations.'],
         code: `em {
   font-style: italic;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/font-style' },
-          'Demo',
         ],
       },
       {
         title: 'font-weight',
         body: [
-          'Controls the boldness of text using keywords or numeric values from 100 to 900.',
+          '`font-weight` controls the boldness of text using keywords or numeric values from `100` to `900`.',
+          'Use a small set of weights consistently. Too many weights can make a page feel noisy.',
         ],
         code: `strong {
   font-weight: 700;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight' },
-          'Demo',
         ],
       },
       {
+        title: 'Heading Hierarchy Example',
+        body: [
+          'Use size, weight, and line height to make headings feel related but clearly ranked.',
+        ],
+        code: `h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+}`,
+      },
+      {
         title: 'text-transform',
-        body: ['Applies casing transformations to text.'],
+        body: [
+          '`text-transform` applies casing transformations to text.',
+          'It works well for short labels, eyebrows, or buttons. Avoid using all caps for long paragraphs because it becomes harder to read.',
+        ],
         code: `.eyebrow {
   text-transform: uppercase;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform' },
-          'Demo',
         ],
       },
       {
         title: 'text-decoration',
         body: [
-          'Used for underlines and other text lines. Often used to style or remove link underlines.',
+          '`text-decoration` controls underlines and other text lines. It is often used to style link underlines.',
+          'Links should remain visually identifiable. If you remove an underline, replace it with another strong cue such as color, weight, or a clear hover/focus style.',
         ],
         code: `a {
   text-decoration: underline;
@@ -1574,20 +1649,19 @@ a {
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration' },
-          'Demo',
         ],
       },
       {
         title: 'text-shadow',
         body: [
-          'Applies shadow to text with horizontal offset, vertical offset, blur, and color.',
+          '`text-shadow` applies shadow to text with horizontal offset, vertical offset, blur, and color.',
+          'Use text shadows sparingly. Heavy shadows can make text harder to read.',
         ],
         code: `h1 {
-  text-shadow: 1px 1px 2px rgb(0 0 0 / 0.25);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow' },
-          'Demo',
         ],
       },
       {
@@ -1598,54 +1672,96 @@ a {
       },
       {
         title: 'text-align',
-        body: ['Aligns text left, right, center, or justify.'],
+        body: [
+          '`text-align` aligns text left, right, center, or justify.',
+          'Centered text can work for short headings, but long centered paragraphs are harder to read.',
+        ],
         code: `p {
   text-align: center;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/text-align' },
-          'Demo',
         ],
       },
       {
         title: 'line-height',
         body: [
-          'Controls spacing between lines. Use unitless values like 1.5 for better scalability.',
+          '`line-height` controls spacing between lines. Use unitless values like `1.5` or `1.6` for better scalability.',
+          'Comfortable line height is one of the quickest ways to make paragraphs easier to read.',
         ],
         code: `p {
   line-height: 1.5;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/line-height' },
-          'Demo',
         ],
       },
       {
         title: 'letter-spacing',
-        body: ['Controls spacing between letters.'],
+        body: [
+          '`letter-spacing` controls spacing between letters.',
+          'It is useful for short uppercase labels, but too much spacing in paragraphs can harm readability.',
+        ],
         code: `.label {
   letter-spacing: 0.08em;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing' },
-          'Demo',
         ],
       },
       {
         title: 'word-spacing',
-        body: ['Controls spacing between words.'],
+        body: [
+          '`word-spacing` controls spacing between words.',
+          'It is rarely needed in everyday typography. Use it carefully and test readability.',
+        ],
         code: `p {
   word-spacing: 0.1em;
 }`,
         resources: [
           { label: 'MDN Link', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing' },
-          'Demo',
         ],
+      },
+      {
+        title: 'Good vs. Risky Text Styling',
+        table: {
+          headers: ['Pattern', 'Example', 'Why'],
+          rows: [
+            ['Good', '`line-height: 1.5;`', 'Unitless line height scales well and improves readability.'],
+            ['Risky', '`letter-spacing: 0.2em;` on paragraphs', 'Large letter spacing makes long text harder to read.'],
+            ['Good', 'Underlined links', 'Users can quickly identify clickable text.'],
+            ['Risky', '`text-decoration: none;` with no replacement cue', 'Links may look like normal text.'],
+            ['Good', '`font-size: 1rem;` for body text', 'Body text starts at a readable default size.'],
+            ['Risky', '`font-size: 12px;` for paragraphs', 'Small text can be hard to read, especially on mobile.'],
+            ['Good', 'One or two font weights', 'The page feels consistent and intentional.'],
+            ['Risky', 'Many unrelated weights and styles', 'The visual hierarchy becomes noisy.'],
+          ],
+        },
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why it matters', 'Better approach'],
+          rows: [
+            ['Body text is too small', 'Small text slows reading and can create accessibility problems.', 'Start body text around `1rem` and adjust carefully.'],
+            ['Low contrast text', 'People may struggle to read the content.', 'Choose colors with strong contrast against the background.'],
+            ['Too many font weights', 'The page can feel inconsistent.', 'Use a limited set, such as `400`, `700`, and maybe `800`.'],
+            ['Centered long paragraphs', 'The eye has to search for the start of each line.', 'Use left-aligned paragraphs for longer reading.'],
+            ['All caps paragraphs', 'Long uppercase text is harder to read.', 'Reserve `uppercase` for short labels.'],
+            ['Removed link underlines', 'Clickable text may become hard to identify.', 'Keep underlines or add another clear cue.'],
+            ['Heavy text shadow', 'Decorative effects can reduce readability.', 'Use subtle shadows only when they improve contrast or style.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Style headings, paragraphs, and links on an existing page.',
-      'Create a simple form and use CSS to improve readability and spacing.',
+      'Style `body`, `h1`, `h2`, `p`, `a`, and `.eyebrow` on an existing page.',
+      'Create a readable type scale using `rem` values.',
+      'Set comfortable paragraph `line-height`.',
+      'Style links with visible underline, hover, and focus states.',
+      'Use `text-transform` and `letter-spacing` on a short label only.',
+      'Compare one low-contrast text color with a more readable color.',
+      'Check that long paragraphs are left-aligned and easy to scan.',
     ],
   },
   {

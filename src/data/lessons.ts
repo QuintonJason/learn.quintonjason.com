@@ -5260,239 +5260,245 @@ if (reduceMotion) {
     title: 'Image Optimization',
     eyebrow: 'Performance',
     summary:
-      'Optimize image formats, sizes, compression, responsive delivery, and lazy loading for faster websites.',
+      'Optimize image formats, dimensions, compression, responsive delivery, accessibility, and loading behavior for faster websites.',
     goals: [
-      'Identify problematic images',
-      'Choose appropriate formats and compression',
-      'Resize images to match their display dimensions',
-      'Use responsive image techniques and lazy loading',
+      'Choose appropriate image formats such as `JPEG`, `PNG`, `SVG`, `WebP`, and `AVIF`',
+      'Resize and compress images so file size matches the design need',
+      'Write useful `alt` text and reserve image space with `width` and `height`',
+      'Use `srcset`, `sizes`, `picture`, and `loading="lazy"` appropriately',
     ],
     sections: [
       {
         title: 'Introduction',
         body: [
-          "Image optimization is a critical aspect of web performance.",
-          'By optimizing images, you can significantly reduce page load times, improve user experience, and support stronger search engine performance.',
+          'Images often make up a large part of a page\'s download size. Optimizing them can make a site feel faster, especially on mobile networks.',
+          'Good image optimization balances quality, file size, layout stability, accessibility, and responsive delivery.',
         ],
       },
       {
-        title: 'Key Concepts',
-        bullets: [
-          'Identifying Problematic Images',
-          'Image Format',
-          'Image Size',
-          'Image Compression',
-          'Image Optimization Tools',
-          'Responsive Images',
-          'Lazy Loading',
-        ],
-      },
-      {
-        title: 'Identifying Problematic Images',
+        title: 'Image Optimization Workflow',
         body: [
-          'Use browser developer tools and performance testing tools to find large and poorly optimized images.',
+          'A consistent workflow helps you avoid the most common image problems before they reach the browser.',
         ],
         bullets: [
-          'Browser Developer Tools: Network and Performance tabs can locate large files and load bottlenecks.',
-          'Website Speed Testing Tools: WebPageTest and Google PageSpeed Insights can reveal performance issues.',
-          'Lighthouse: Audits image size issues, missing alt text, and other performance concerns.',
+          'Choose the right format for the image content.',
+          'Crop and resize the image to the dimensions the design actually needs.',
+          'Compress the image to reduce file size.',
+          'Add meaningful `alt` text or empty `alt=""` for decorative images.',
+          'Add `width` and `height` to reserve space and reduce layout shift.',
+          'Use responsive images when the same image appears at different sizes.',
+          'Lazy-load below-the-fold images with `loading="lazy"`.',
+          'Test the result in `Lighthouse`, DevTools, or the Network panel.',
         ],
       },
       {
-        title: 'Common Issues',
-        bullets: [
-          'Large file sizes',
-          'Unoptimized formats',
-          'Lack of compression',
-          'Missing or incorrect alt text',
+        title: 'Dimensions vs File Size',
+        body: [
+          'Pixel dimensions describe how many pixels are in the source file, such as `2400 x 1600`.',
+          'Displayed size is how large the image appears in the layout, often controlled by CSS.',
+          'File size is how much data the browser downloads, such as `85 KB` or `2.4 MB`.',
         ],
+        note:
+          'Avoid uploading a huge source image and shrinking it with CSS. The browser still downloads the huge file.',
       },
       {
         title: 'Choosing the Right Image Format',
         body: [
-          'Each format serves specific needs. Choosing the right one helps balance quality, file size, transparency, and animation support.',
+          'Different formats are good at different jobs. The right choice depends on the image content, transparency needs, browser support, and quality expectations.',
         ],
+        table: {
+          headers: ['Image Type', 'Good Formats', 'Why'],
+          rows: [
+            ['Photos', '`JPEG`, `WebP`, `AVIF`', 'Good compression for complex photographic detail.'],
+            ['Transparent graphics', '`PNG`, `WebP`, `AVIF`', 'Supports transparency when needed.'],
+            ['Logos and icons', '`SVG`', 'Scales cleanly and usually stays small for simple vector art.'],
+            ['Screenshots or UI images', '`PNG`, `WebP`', 'Preserves sharp edges and interface detail.'],
+            ['Simple animation', 'Animated `WebP` or video before `GIF`', '`GIF` files are often large and limited in color.'],
+          ],
+        },
+      },
+      {
+        title: 'Format Notes',
         bullets: [
-          'JPEG: Great for photos. Uses lossy compression.',
-          'PNG: Ideal for images with sharp edges or transparency. Uses lossless compression.',
-          'GIF: Use for simple animations. Limited color palette.',
-          'WebP: Strong compression with transparency and animation support. Modern browser support required.',
+          '`JPEG` is useful for photos, but it does not support transparency.',
+          '`PNG` is useful for sharp edges and transparency, but large photos can become heavy.',
+          '`SVG` is best for simple logos, icons, and vector graphics.',
+          '`WebP` usually compresses better than `JPEG` or `PNG` and supports transparency.',
+          '`AVIF` can be even smaller than `WebP`, but always check visual quality and browser needs.',
         ],
       },
       {
         title: 'Resizing Images',
         body: [
-          'Resize images to match their display dimensions.',
-          'Avoid upscaling and use tools like Photoshop, GIMP, TinyPNG, or Squoosh.',
+          'Resize source images before adding them to a site. If a card image displays around `600px` wide, the source image probably does not need to be `3000px` wide.',
+          'Keep larger versions only when the design truly needs them, such as full-width hero images, high-density screens, or zoomable galleries.',
         ],
       },
       {
         title: 'Compressing Images',
         body: [
-          'Compression reduces image file size. The right compression method depends on the type of image and how much quality loss is acceptable.',
+          'Compression reduces file size. Lossy compression removes image data to make files smaller. Lossless compression keeps the original image data but may not shrink files as much.',
         ],
-      },
-      {
-        title: 'Lossy Compression',
-        body: [
-          'Find the balance between quality and file size. Use progressive JPEG when appropriate.',
-        ],
-        code: `// Photoshop: Save for Web, choose JPEG, adjust quality`,
-      },
-      {
-        title: 'Lossless Compression',
-        body: [
-          'Lossless compression is ideal for text, line art, and graphics with solid colors.',
-        ],
-        code: `// Photoshop: Save for Web, choose PNG, adjust compression`,
+        table: {
+          headers: ['Compression Type', 'Use For', 'Tradeoff'],
+          rows: [
+            ['Lossy', 'Photos and large hero images', 'Smaller files, possible quality loss.'],
+            ['Lossless', 'Logos, UI graphics, screenshots, and sharp edges', 'Better detail, larger files.'],
+          ],
+        },
       },
       {
         title: 'Image Optimization Tools',
         bullets: [
-          'Online: TinyPNG, Squoosh',
-          'Desktop: Photoshop, Photoshop Express',
-          'CLI: ImageMagick, OptiPNG',
+          '[Squoosh](https://squoosh.app/) for comparing formats, resizing, and compression settings.',
+          '[TinyPNG](https://tinypng.com/) for quick `PNG`, `JPEG`, and `WebP` compression.',
+          '[Adobe Photoshop](https://www.adobe.com/products/photoshop.html) or similar editors for cropping, resizing, and export settings.',
+          '[Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) and the [Chrome DevTools Network panel](https://developer.chrome.com/docs/devtools/network/) for checking page impact.',
         ],
       },
       {
-        title: 'Advanced Techniques',
+        title: 'Image Markup Basics',
         body: [
-          'Responsive images and lazy loading help deliver the right image at the right time.',
-        ],
-      },
-      {
-        title: 'Responsive Images: Adapting to Different Screens',
-        body: [
-          "Responsive images are a fundamental part of building performance-optimized, device-agnostic websites.",
-          "By tailoring image delivery based on the screen size and resolution of the user's device, you can ensure faster load times and improved visual quality without wasting bandwidth.",
-        ],
-      },
-      {
-        title: 'Key Techniques for Responsive Images',
-        bullets: [
-          'srcset Attribute',
-          'sizes Attribute',
-          'Picture Element',
-        ],
-      },
-      {
-        title: 'srcset Attribute',
-        body: [
-          "The srcset attribute allows developers to define multiple image sources for a single image element.",
-          "This enables the browser to choose the most appropriate image based on the device's screen width and resolution.",
+          'A solid `img` tag includes the image path, meaningful `alt` text, and dimensions that reserve layout space while the image loads.',
         ],
         code: `<img
-  src="image-small.jpg"
-  srcset="image-small.jpg 400w, image-medium.jpg 800w, image-large.jpg 1200w"
-  sizes="(max-width: 768px) 400px, (max-width: 1024px) 800px, 1200px"
-  alt="Image description"
+  src="team-photo.webp"
+  width="800"
+  height="533"
+  alt="Design team reviewing wireframes around a table"
+  decoding="async"
 >`,
       },
       {
-        title: 'sizes Attribute',
+        title: 'Writing Alt Text',
         body: [
-          'The sizes attribute complements srcset by describing the display width of the image in different layout scenarios.',
-          'This allows the browser to better anticipate which image to download.',
+          '`alt` text describes the purpose or content of an image for people who cannot see it. It also helps when images fail to load.',
         ],
+        table: {
+          headers: ['Image Type', 'Alt Approach', 'Example'],
+          rows: [
+            ['Meaningful image', 'Describe the useful content', '`alt="Student portfolio homepage with a large project grid"`'],
+            ['Decorative image', 'Use empty alt text', '`alt=""`'],
+            ['Image link or button', 'Describe the action or destination', '`alt="View project gallery"`'],
+            ['Image with text in it', 'Include the important text nearby or in `alt`', '`alt="Sale ends Friday"`'],
+          ],
+        },
+        note:
+          'Do not stuff keywords into `alt` text. Write for people first.',
       },
       {
-        title: 'Picture Element',
+        title: 'Responsive Images with Srcset and Sizes',
         body: [
-          'The picture element offers even more control, enabling developers to supply different image formats and resolutions based on media queries.',
-          'This is especially useful when combining modern formats like WebP with fallbacks.',
+          '`srcset` gives the browser multiple image file options. `sizes` tells the browser how wide the image will appear in the layout.',
+          '`sizes` describes the rendered display width, not the original image width.',
         ],
+        code: `<img
+  src="project-800.webp"
+  srcset="project-400.webp 400w, project-800.webp 800w, project-1200.webp 1200w"
+  sizes="(max-width: 700px) 100vw, 700px"
+  width="800"
+  height="533"
+  alt="Portfolio project displayed on a laptop"
+  loading="lazy"
+  decoding="async"
+>` ,
+      },
+      {
+        title: 'When to Use Picture',
+        body: [
+          'Use `picture` when the browser needs different image files for reasons beyond simple size selection.',
+        ],
+        table: {
+          headers: ['Need', 'Why `picture` Helps'],
+          rows: [
+            ['Art direction or crop changes', 'Serve a different crop for mobile and desktop.'],
+            ['Format fallback', 'Offer `AVIF` or `WebP` with a fallback image.'],
+            ['Different image ratios', 'Use a square image on small screens and a wide image on desktop.'],
+          ],
+        },
         code: `<picture>
-  <source media="(min-width: 768px)" srcset="image-large.jpg">
-  <source media="(min-width: 480px)" srcset="image-medium.jpg">
-  <img src="image-small.jpg" alt="Image description">
+  <source type="image/avif" srcset="hero.avif">
+  <source type="image/webp" srcset="hero.webp">
+  <img
+    src="hero.jpg"
+    width="1200"
+    height="675"
+    alt="Finished website shown on a desktop monitor"
+  >
 </picture>`,
       },
       {
-        title: 'Best Practices for Responsive Images',
-        bullets: [
-          'Optimize images for each screen size by resizing and compressing them appropriately.',
-          'Maintain a consistent naming scheme to keep your assets organized and manageable.',
-          'Regularly test responsive images on a range of devices to ensure visual quality and performance.',
-        ],
-      },
-      {
-        title: 'Lazy Loading Images: A Performance Boost',
+        title: 'Lazy Loading',
         body: [
-          'Lazy loading defers the loading of non-visible images until the user is likely to see them.',
-          'This conserves bandwidth, reduces initial page load time, and improves the overall experience, especially on long-scroll pages or mobile networks.',
+          'Use native lazy loading for images that appear below the first viewport. This lets the browser delay downloading images until they are likely to be needed.',
+          'For beginners, `loading="lazy"` is usually the right first choice. JavaScript lazy loading is only needed for more custom behavior.',
         ],
+        code: `<img
+  src="gallery-image.webp"
+  width="600"
+  height="400"
+  alt="Gallery wall with student web design mockups"
+  loading="lazy"
+  decoding="async"
+>`,
       },
       {
-        title: 'How Lazy Loading Works',
-        bullets: [
-          'A placeholder or empty space is initially shown in place of the full image.',
-          'As the user scrolls and the image nears the viewport, the actual image begins loading.',
-          'Once loaded, the placeholder is replaced, often using a fade-in or similar transition.',
-        ],
-      },
-      {
-        title: 'JavaScript-Based Lazy Loading',
+        title: 'Hero and LCP Images',
         body: [
-          'For greater customization or compatibility, JavaScript can be used to implement lazy loading.',
-          'This example uses the Intersection Observer API.',
+          'The main above-the-fold image often affects Largest Contentful Paint, or `LCP`. This is usually a hero image, feature image, or large first-screen visual.',
+          'Do not lazy-load the main hero image. The browser should discover and load it early.',
         ],
-        code: `const images = document.querySelectorAll('img[data-src]');
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const img = entry.target;
-      img.src = img.dataset.src;
-      observer.unobserve(img);
-    }
-  });
-});
-
-images.forEach((img) => observer.observe(img));`,
-      },
-      {
-        title: 'Browser-Native Lazy Loading',
-        body: [
-          'Modern browsers support native lazy loading with the loading="lazy" attribute on img tags.',
-        ],
-        code: `<img src="image.jpg" alt="Image description" loading="lazy">`,
-      },
-      {
-        title: 'Benefits of Lazy Loading',
-        bullets: [
-          'Faster initial page rendering and perceived performance.',
-          'Reduced bandwidth usage and server load.',
-          'Enhanced user experience on slow or mobile networks.',
-        ],
+        code: `<img
+  src="hero.webp"
+  width="1400"
+  height="800"
+  alt="Student portfolio homepage displayed on a laptop"
+  fetchpriority="high"
+  decoding="async"
+>`,
         note:
-          'To avoid layout shifts, use placeholder images or dimensions that match the aspect ratio of the final image. Test across devices and browsers to ensure consistency and performance.',
+          'Use `fetchpriority="high"` only for the most important above-the-fold image. Do not add it to every image.',
       },
       {
-        title: 'Conclusion',
-        body: [
-          "By following these image optimization techniques, you can significantly improve your website's performance and user experience.",
-        ],
+        title: 'Testing Image Performance',
         bullets: [
-          'Image Format: Choose the right format based on content and quality needs.',
-          'Image Size: Match display dimensions and avoid upscaling.',
-          'Compression: Use lossy or lossless techniques as appropriate.',
-          'Responsive Images: Adapt to different screen sizes and resolutions.',
-          'Lazy Loading: Improve load times by deferring off-screen images.',
-          'WebP: Leverage modern formats for optimal compression.',
+          'Use the [Chrome DevTools Network panel](https://developer.chrome.com/docs/devtools/network/) to sort images by file size.',
+          'Use [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) to check image sizing, modern formats, lazy loading, and layout shift warnings.',
+          'Test on mobile viewport sizes, not just desktop.',
+          'Compare visual quality after compression. Smaller is not better if the image looks broken.',
         ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Missing `alt` text', 'The image may be inaccessible', 'Write meaningful `alt` text or use `alt=""` for decorative images.'],
+            ['Missing `width` and `height`', 'The page may shift while images load', 'Add dimensions that match the image aspect ratio.'],
+            ['Lazy-loading the hero image', 'The most important image may load too late', 'Load the hero image normally and consider `fetchpriority="high"`.'],
+            ['Using `PNG` for large photos', 'File size can be much larger than needed', 'Use `JPEG`, `WebP`, or `AVIF` for photos.'],
+            ['Uploading huge source images', 'Users download unnecessary pixels', 'Resize images before publishing.'],
+            ['Using `srcset` without correct `sizes`', 'The browser may choose the wrong file', 'Make `sizes` match the rendered layout width.'],
+            ['Using `GIF` for large animations', 'Files can be very heavy', 'Use video or animated `WebP` when appropriate.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Optimize three images for the web.',
-      'Add responsive image attributes to one image.',
-      'Use loading="lazy" where appropriate.',
+      'Optimize one photo by resizing and compressing it.',
+      'Choose appropriate formats for a photo, logo, and screenshot.',
+      'Add `width`, `height`, and meaningful `alt` text to an image.',
+      'Create one `srcset` and `sizes` example for a responsive image.',
+      'Add `loading="lazy"` to below-the-fold images.',
+      'Identify one image that should not be lazy-loaded because it is above the fold.',
+      'Test image file sizes in [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) or the [Chrome DevTools Network panel](https://developer.chrome.com/docs/devtools/network/).',
     ],
     resources: [
-      'Adobe Photoshop optimizing images',
-      'Adobe Photoshop optimizing images for JPEG format',
-      'Adobe Photoshop optimizing images for PNG format',
-      'MDN - Responsive Images',
-      'MDN - Lazy Loading',
+      '[Squoosh image optimizer](https://squoosh.app/)',
+      '[TinyPNG image compression](https://tinypng.com/)',
+      '[MDN Responsive Images](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/HTML/Responsive_images)',
+      '[MDN Lazy Loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading)',
+      '[web.dev Optimize Images](https://web.dev/learn/images)',
     ],
   },
   {

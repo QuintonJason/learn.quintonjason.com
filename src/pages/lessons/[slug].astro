@@ -276,6 +276,14 @@ const pageSections = [
                   </ul>
                 )}
                 {section.note && <p set:html={renderInlineLinks(section.note)} />}
+                {
+                  section.image && (
+                    <figure class="lesson-figure">
+                      <img src={section.image.src} alt={section.image.alt} loading="lazy" />
+                      {section.image.caption && <figcaption>{section.image.caption}</figcaption>}
+                    </figure>
+                  )
+                }
                 {section.code && (
                   <pre><code>{section.code}</code></pre>
                 )}

@@ -44,6 +44,27 @@
   position: relative;
 }
 
+.lesson-figure {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.lesson-figure img {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.lesson-figure figcaption {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 .code-copy pre {
   padding-top: 3.25rem;
 }

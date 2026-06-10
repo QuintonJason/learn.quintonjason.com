@@ -4,6 +4,11 @@ export type LessonSection = {
   bullets?: string[];
   note?: string;
   code?: string;
+  image?: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
   resources?: Array<string | { label: string; href: string }>;
 };
 
@@ -158,7 +163,7 @@ export const lessons: Lesson[] = [
     title: 'Website Process',
     eyebrow: 'Planning',
     summary:
-      'A thoughtful and systematic approach that aligns user needs, business goals, and technical execution.',
+      'A practical planning process that helps you define the audience, goals, content, structure, and first build steps for a website.',
     goals: [
       'Understand the essential stages in the web design process',
       'Connect each step to building an effective, user-centered site',
@@ -168,119 +173,154 @@ export const lessons: Lesson[] = [
       {
         title: 'Introduction',
         body: [
-          "Creating a successful website doesn't happen by accident. It requires a thoughtful and systematic approach that ensures user needs, business goals, and technical execution all align.",
-          'This lesson explores the essential stages in the web design process, focusing on how each step contributes to building an effective, user-centered site.',
+          "A successful website starts before you write code. You need to know who the site is for, what those visitors need, what content belongs on the site, and how the pages should connect.",
+          'Use this process before starting a class project so your HTML, CSS, and design decisions support a clear purpose instead of becoming random decoration.',
         ],
       },
       {
         title: 'Understanding the Target Audience',
         body: [
-          'Every successful website starts with understanding its audience. Identifying who will visit your site helps shape the entire user experience.',
+          'Every website is for someone. Identifying who will visit the site helps you decide what content matters, what language to use, and what should be easy to find first.',
         ],
         bullets: [
-          'Think about whether your audience is individuals, professionals, companies, or a mix.',
-          'Use demographic research to define characteristics like age, interests, and tech savviness.',
-          'Create user personas to visualize different user types and guide design decisions.',
+          'Who is most likely to visit this site?',
+          'What are they trying to learn, compare, buy, book, view, or submit?',
+          'What questions will they have when they arrive?',
+          'What might frustrate or confuse them?',
         ],
         note:
-          'Knowing your audience influences the complexity of the site, the tone of the content, and the functionality offered.',
+          'Output: write 2-3 audience notes in plain language. Example: "Visitors to a coffee shop site need hours, location, menu options, and a way to decide whether to visit."',
       },
       {
         title: 'Defining Goals and Objectives',
         body: [
-          'With your audience in mind, determine what they want to accomplish. Why are they visiting your site?',
+          'With your audience in mind, define what the site needs to help them do. Goals keep the project focused when you start making design and content decisions.',
         ],
         bullets: [
-          'Start broadly, then narrow down to specific user tasks and objectives.',
-          'Create user scenarios to model how different users might interact with your site.',
+          'Choose 1-2 primary goals for the site.',
+          'Write goals as user actions, such as "find class work," "contact the artist," or "compare menu items."',
+          'Decide what action the visitor should take next on the homepage.',
         ],
         note:
-          'These goals inform your content and feature planning, ensuring your site is built with purpose.',
+          'Output: write two user goals and one site goal. A user goal might be "I need to see examples of this designer\'s work." A site goal might be "Encourage visitors to contact me."',
       },
       {
         title: 'Creating and Organizing Content',
         body: [
-          "Now it's time to generate the actual content that meets your audience's needs. Content should:",
+          'Content is the material the site is built from: text, images, links, captions, forms, downloads, videos, and project details. Before designing the page, list what content the site needs.',
         ],
         bullets: [
-          'Be concise and helpful without overwhelming users.',
-          'Support user goals with relevant information, tools, or services.',
-          'Be planned around site tasks and organized effectively into pages.',
+          'List the content needed to answer the audience\'s most important questions.',
+          'Group related content together before deciding what page it belongs on.',
+          'Remove content that does not support a user goal or project requirement.',
+          'Write short, useful labels for pages, buttons, links, and sections.',
         ],
+        note:
+          'Output: create a rough content inventory. For a portfolio, that might include a short bio, project images, project descriptions, contact information, and social links.',
       },
       {
         title: 'Designing a Site Map',
         body: [
-          "The site map acts as a blueprint, outlining the site's structure and content organization. It helps you:",
+          'A site map shows what pages exist and how they connect. It is about structure, not visual layout.',
         ],
         bullets: [
-          'Visualize all necessary pages and their relationships.',
-          'Organize navigation logically for usability.',
+          'List every page the site needs.',
+          'Group pages by importance and relationship.',
+          'Decide which pages belong in the main navigation.',
+          'Check whether users can reach important content in a predictable way.',
         ],
         note:
-          "Depending on the project's size, your site map can range from simple to highly detailed.",
+          'Output: draw or write a simple page list. Example: Home, About, Menu, Location, Contact. Site map = what pages exist and how they connect.',
+        image: {
+          src: '/images/lessons/website-process/sitemap.jpg',
+          alt: 'A sample site map showing a home page connected to main navigation groups and nested subpages.',
+          caption:
+            'A site map shows page relationships and navigation structure before you start designing individual page layouts.',
+        },
       },
       {
         title: 'Wireframing the Layout',
         body: [
-          'Wireframes help you plan page layouts without focusing on visual design. They allow you to:',
+          'A wireframe shows what goes on a page and where it sits. It is a low-detail layout plan, not a finished design.',
         ],
         bullets: [
-          'Prioritize key content and place it in optimal screen locations.',
-          'Focus on functionality, not appearance.',
+          'Place the most important content near the top.',
+          'Show major sections such as header, navigation, hero, content blocks, forms, and footer.',
+          'Focus on hierarchy, order, and user flow before choosing colors or fonts.',
+          'Sketch mobile and desktop differences when the layout needs to change.',
         ],
         note:
-          'Wireframes serve as a functional guide, helping you map out content structure and user interaction.',
+          'Output: sketch one homepage wireframe before writing code. Wireframe = what content appears on a page and where it sits.',
+        image: {
+          src: '/images/lessons/website-process/wireframes.jpg',
+          alt: 'Several grayscale website wireframes showing page layout blocks, image placeholders, navigation, content areas, and footer sections.',
+          caption:
+            'Wireframes help you plan layout, hierarchy, and content placement without getting distracted by final colors or imagery.',
+        },
       },
       {
-        title: 'Fleshing Out the Design',
+        title: 'Developing the Visual Design',
         body: [
-          'Once wireframes are approved, you can add visual design elements. This stage:',
+          'Once the structure is clear, visual design choices can support the site\'s purpose. Design should make the content easier to understand, not just make the page look busy.',
         ],
         bullets: [
-          'Defines color schemes, typography, imagery, and branding.',
-          'Brings the user experience to life visually while adhering to the wireframe structure.',
+          'Choose colors that fit the tone and maintain readable contrast.',
+          'Choose typography that supports hierarchy and readability.',
+          'Select imagery that helps users understand the subject.',
+          'Keep spacing, alignment, and repeated components consistent.',
         ],
         note:
-          'Be sure to stay grounded in usability as you develop the visual style.',
+          'Output: define a simple visual direction: colors, type choices, image style, and 2-3 interface patterns you will repeat.',
+        image: {
+          src: '/images/lessons/website-process/low-to-high.jpg',
+          alt: 'A progression from a hand-drawn wireframe to a digital wireframe to a finished high-fidelity website design.',
+          caption:
+            'A design can move from rough sketch, to structured wireframe, to high-fidelity visual direction as decisions become clearer.',
+        },
       },
       {
         title: 'Coding and Testing',
         body: [
-          'With the design finalized, the development phase begins. Tips for successful coding include:',
+          'After the plan is clear, begin building the site in code. Your file structure, HTML, CSS, and assets should reflect the pages and content you planned.',
         ],
         bullets: [
-          'Follow your site map to create structured, well-organized HTML files.',
-          'Use folders for assets (CSS, JS, images) and comments to clarify your code.',
-          'Test across multiple browsers to ensure consistency.',
+          'Create the HTML files from your site map.',
+          'Use folders for assets such as CSS, JavaScript, and images.',
+          'Build the page structure first, then layer in styling.',
+          'Test links, images, forms, responsive layout, keyboard access, and published paths.',
         ],
         note:
-          'Tools like browser testing services help identify compatibility issues early.',
+          'Output: a working local site that you can open in the browser, test, commit, push, and publish.',
       },
       {
         title: 'Launch and Iteration',
         body: [
-          "Launching your site isn't the end. Real users may expose issues that testing missed.",
+          "Launching your site is not the end of the process. Publishing helps you find issues that were not obvious in the editor or local browser.",
         ],
         bullets: [
-          'Monitor performance and usability after launch.',
-          'Collect feedback and be ready to make improvements in a second phase.',
+          'Open the published URL and test every main page.',
+          'Check that images, CSS, links, and navigation still work after publishing.',
+          'Ask someone else to use the site and note where they hesitate.',
+          'Make improvements in small, focused updates.',
         ],
         note:
-          'A successful site continues to evolve based on user behavior and feedback.',
+          'Output: a published site plus a short fix list for the next round of improvements.',
       },
       {
         title: 'Conclusion',
         body: [
-          "Designing a website is more than visual flair. It's a structured process that prioritizes users, content, and usability from the ground up.",
-          'By following these steps, you can ensure that your site is not only beautiful but also functional, accessible, and effective.',
+          'A website process helps you make better decisions before the page becomes complicated. Audience, goals, content, site maps, wireframes, visual design, code, and testing all support each other.',
+          'Before you start coding a class project, use this lesson to decide what pages you need, what content belongs on each page, and what users should be able to do.',
         ],
       },
     ],
     practice: [
-      'Define the audience for your class site.',
-      'Create a simple site map.',
-      'Sketch one wireframe before writing code.',
+      'Write 2-3 sentences describing the audience for your class site.',
+      'List three things that audience needs from the site.',
+      'Write two user goals and one site goal.',
+      'Create a simple site map with the pages your project needs.',
+      'List the content that belongs on the homepage.',
+      'Sketch one homepage wireframe before writing code.',
     ],
   },
   {

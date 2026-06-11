@@ -6554,113 +6554,246 @@ carousel.addEventListener('focusin', stopAutoplay);`,
     title: 'Web Accessibility',
     eyebrow: 'Accessibility',
     summary:
-      'Apply accessibility principles, semantic HTML, keyboard support, contrast, ARIA, and testing practices to build inclusive websites.',
+      'Run a practical final accessibility pass with semantic HTML, keyboard testing, contrast checks, form labels, useful alt text, and WCAG 2.2 AA guidance.',
     goals: [
-      'Explain why accessibility matters',
-      'Describe the POUR principles',
-      'Apply an accessibility checklist to student projects',
-      'Test a project with keyboard, contrast, and audit tools',
+      'Explain accessibility using the POUR principles',
+      'Use native HTML before reaching for ARIA',
+      'Audit a project for headings, landmarks, alt text, labels, contrast, focus, and keyboard access',
+      'Use automated tools as support, not as the whole accessibility process',
     ],
     sections: [
       {
-        title: 'Introduction',
+        title: 'Accessibility Is Part of Quality',
         body: [
-          'This section explores the essential principles and practices of making web content accessible to all users, including those with disabilities.',
-          "You'll learn why accessibility matters, how to apply the POUR principles, and how to test and refine your project for accessibility compliance.",
-          'It covers semantic HTML, keyboard navigation, form accessibility, color contrast, ARIA, and more, ensuring you can build inclusive, user-friendly websites.',
+          'Accessibility means more people can perceive, navigate, understand, and use your site. It helps people with disabilities, people using assistive technology, people on mobile devices, and anyone dealing with temporary limits like glare, injury, noise, or slow connections.',
+          'For your final project, treat accessibility as a quality check. A page is not finished until it works with a keyboard, has readable contrast, uses meaningful structure, and communicates clearly to assistive technology.',
         ],
       },
       {
-        title: 'The Why: The Core Principles of Accessibility',
+        title: 'The POUR Principles',
+        table: {
+          headers: ['Principle', 'Meaning', 'Student Project Check'],
+          rows: [
+            ['Perceivable', 'Users can get the information through sight, sound, or assistive technology.', 'Images have useful `alt` text, text has enough contrast, and videos have captions or transcripts.'],
+            ['Operable', 'Users can navigate and interact with the interface.', 'Links, buttons, forms, menus, and carousels work with the keyboard and show visible focus.'],
+            ['Understandable', 'The content and interface are clear and predictable.', 'Headings, labels, instructions, errors, and link text make sense.'],
+            ['Robust', 'The site works across browsers, devices, and assistive technologies.', 'HTML is valid, controls use native elements, and ARIA is used carefully.'],
+          ],
+        },
+      },
+      {
+        title: 'WCAG 2.2 AA',
         body: [
-          'At its core, web accessibility is guided by a few key principles.',
-          'These principles form the foundation of accessible design, encapsulated in the acronym POUR.',
+          '`WCAG` stands for Web Content Accessibility Guidelines. It is the shared standard used to evaluate web accessibility.',
+          'For student projects, use `WCAG 2.2 AA` as the practical target. Level `A` covers basic barriers, level `AA` is the common professional goal, and level `AAA` is stricter but not always realistic for every page.',
         ],
-        bullets: [
-          'Perceivable: Information and UI components must be presented in ways users can perceive, including text alternatives and adaptable content.',
-          'Operable: Navigation and interactions must be keyboard-accessible and user-friendly.',
-          'Understandable: Content and interface behavior should be easy to comprehend and predict.',
-          'Robust: Content should work reliably across various technologies, including assistive tools.',
-        ],
+        note:
+          'WCAG is not a replacement for empathy or testing. It gives you measurable checks, but you still need to use the page the way real users might use it.',
       },
       {
-        title: 'The How: Navigating the Accessibility Guidelines',
+        title: 'Native HTML First',
         body: [
-          'WCAG is the international standard for web accessibility.',
-          'For student projects, Level AA of WCAG 2.1 is the recommended goal.',
+          'Start with the HTML element that already has the meaning and behavior you need. A real `button` can receive focus, respond to keyboard input, and communicate its role automatically. A clickable `div` cannot do those things unless you rebuild them manually.',
+          'Use ARIA only when native HTML cannot express the meaning. ARIA can improve custom interfaces, but incorrect ARIA can make a page more confusing.',
         ],
-        bullets: [
-          'Guidelines: Broad principles for accessibility.',
-          'Success Criteria: Specific, testable requirements categorized into levels A, AA, and AAA.',
-        ],
+        table: {
+          headers: ['Need', 'Use This', 'Avoid This'],
+          rows: [
+            ['Page navigation', '`nav` with links', 'A plain `div` with unlabeled links'],
+            ['Clickable action', '`button type="button"`', '`div onclick="..."`'],
+            ['Form prompt', '`label for="email"` linked to `input id="email"`', 'Placeholder text as the only label'],
+            ['Main page content', '`main`', 'Multiple unlabeled content wrappers'],
+            ['Standalone article or card content', '`article` when the content can stand alone', 'Generic markup with no structure'],
+          ],
+        },
       },
       {
-        title: 'Key Areas of Focus: Your Accessibility Checklist',
-        bullets: [
-          'Semantic HTML: Use elements like nav, article, and correct heading hierarchy.',
-          'Alternative Text: Provide descriptive alt attributes for images.',
-          'Keyboard Navigation: Ensure all interactive elements can be accessed via keyboard with visible focus.',
-          'Form Accessibility: Use properly linked label elements, ARIA where needed, and clear instructions.',
-          'Color Contrast: Maintain at least 4.5:1 contrast ratio for normal text and avoid relying solely on color.',
-          "ARIA: Use ARIA roles and attributes only when native HTML isn't sufficient.",
-          'Language: Set the lang attribute correctly on the html tag and within content.',
-          'Time-Based Media: Include captions, transcripts, and controls for media.',
-          'Readability: Write clearly, use accessible fonts and spacing.',
+        title: 'Final Project Accessibility Pass',
+        body: [
+          'Use this order when reviewing a project. It moves from structure to interaction to automated checks, which helps you catch the problems students most often miss.',
         ],
+        table: {
+          headers: ['Step', 'What To Check', 'How To Test'],
+          rows: [
+            ['Structure', 'One `h1`, logical heading order, useful `title`, and landmark elements like `header`, `nav`, `main`, and `footer`.', 'Scan the HTML and use the browser accessibility tree or outline tools.'],
+            ['Content', 'Images, icons, link text, page language, captions, and readable copy.', 'Ask whether the page still makes sense without seeing the visual layout.'],
+            ['Keyboard', 'Every interactive element is reachable, usable, and has visible focus.', 'Use `Tab`, `Shift + Tab`, `Enter`, `Space`, and arrow keys where appropriate.'],
+            ['Forms', 'Each input has a label, instructions are clear, and errors explain how to fix the problem.', 'Click each `label`, submit invalid data, and check the error message.'],
+            ['Visual Design', 'Text contrast, button contrast, spacing, target size, and motion settings.', 'Use a contrast checker and test on small screens.'],
+            ['Automation', 'Run Lighthouse, axe, or another audit tool after manual testing.', 'Fix tool warnings, then retest manually.'],
+          ],
+        },
       },
       {
-        title: 'Semantic HTML Example',
+        title: 'Headings and Landmarks',
+        body: [
+          'Headings create the page outline. Landmarks help users jump to major regions of the page. Do not choose heading levels based only on font size; choose them based on structure.',
+        ],
         code: `<header>
-  <nav aria-label="Main menu">
+  <nav aria-label="Main navigation">
     <a href="/">Home</a>
-    <a href="/about">About</a>
+    <a href="/projects/">Projects</a>
   </nav>
 </header>
 
 <main>
-  <article>
-    <h1>Accessible Page Title</h1>
-    <p>Page content goes here.</p>
-  </article>
-</main>`,
+  <h1>Restaurant Guide</h1>
+
+  <section aria-labelledby="featured-heading">
+    <h2 id="featured-heading">Featured Restaurants</h2>
+    <article>
+      <h3>Coastal Kitchen</h3>
+      <p>Seafood restaurant with outdoor seating.</p>
+    </article>
+  </section>
+</main>`
       },
       {
-        title: 'Form Accessibility Example',
+        title: 'Alt Text',
+        body: [
+          '`alt` text should communicate the purpose of the image in context. A product photo, project screenshot, chart, or important illustration usually needs descriptive `alt` text.',
+          'Use empty `alt=""` only for decorative images that add no new information.',
+        ],
+        table: {
+          headers: ['Image Type', 'Better Alt Text', 'Reason'],
+          rows: [
+            ['Project screenshot', '`alt="Homepage mockup for a local restaurant website"`', 'Names what the image shows.'],
+            ['Product image', '`alt="Black cotton hoodie with white logo"`', 'Describes information a buyer may need.'],
+            ['Decorative divider', '`alt=""`', 'Prevents assistive technology from announcing visual decoration.'],
+            ['Chart or diagram', 'Short `alt` plus nearby explanation', 'Complex information needs more than one short sentence.'],
+          ],
+        },
+      },
+      {
+        title: 'Links and Buttons',
+        body: [
+          'Links move users to another place. Buttons perform an action on the current page. Do not use vague link text like "click here" when the link can describe its destination.',
+        ],
+        code: `<!-- Less helpful -->
+<a href="/projects/responsive-landing-page/">Click here</a>
+<div class="button">Open menu</div>
+
+<!-- Better -->
+<a href="/projects/responsive-landing-page/">View the responsive landing page project</a>
+<button type="button">Open menu</button>`
+      },
+      {
+        title: 'Forms and Errors',
+        body: [
+          'Every form control needs a programmatic label. Helpful instructions and error messages should be connected to the input with `aria-describedby` when they provide extra context.',
+        ],
         code: `<label for="email">Email address</label>
 <input
   id="email"
   name="email"
   type="email"
   autocomplete="email"
-  aria-describedby="email-help"
+  aria-describedby="email-help email-error"
+  aria-invalid="true"
 >
-<p id="email-help">Use the email address you check most often.</p>`,
+<p id="email-help">Use the email address you check most often.</p>
+<p id="email-error">Enter an email address that includes an @ symbol.</p>`
       },
       {
-        title: 'Testing Your Project for Accessibility',
-        bullets: [
-          'Test with only the keyboard.',
-          'Try using a screen reader.',
-          'Check color contrast with online tools.',
-          'Run browser accessibility audits, such as Lighthouse.',
-          'Use WCAG checklists for structured review.',
-        ],
-      },
-      {
-        title: 'The Final Push: Making Accessibility a Priority',
+        title: 'Focus Styles',
         body: [
-          'Accessibility should be baked into your process from the start.',
-          'Making it a habit demonstrates professionalism and care in your work, creating digital experiences that are truly inclusive.',
+          'Keyboard users need to see where focus is. Do not remove outlines unless you replace them with a visible focus style.',
         ],
+        code: `a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}`
+      },
+      {
+        title: 'Contrast and Color',
+        body: [
+          'For normal body text, aim for at least `4.5:1` contrast. Large text can pass at `3:1`, but body copy, navigation, buttons, and form text should be easy to read in real conditions.',
+          'Never rely on color alone to communicate meaning. Pair color with text, icons, labels, borders, or patterns.',
+        ],
+        table: {
+          headers: ['Problem', 'Why It Fails', 'Better Approach'],
+          rows: [
+            ['Red text alone means error', 'Color-blind users may miss the meaning.', 'Add text like "Error" and explain the fix.'],
+            ['Pale gray body copy', 'Low contrast makes reading harder.', 'Darken the text or lighten the background.'],
+            ['Hover-only navigation state', 'Touch and keyboard users may not see it.', 'Include `:focus-visible` and active states.'],
+          ],
+        },
+      },
+      {
+        title: 'Motion and Media',
+        body: [
+          'Animation, video, and autoplay can create barriers. Avoid flashing content, avoid surprise motion, and respect `prefers-reduced-motion` when using animation.',
+          'If a video includes speech or important sound, provide captions or a transcript. If a carousel or animation autoplays, give users a way to pause it.',
+        ],
+        code: `@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+  }
+}`
+      },
+      {
+        title: 'Automated Tools Are Support',
+        body: [
+          'Tools like Lighthouse and axe can catch missing labels, contrast issues, invalid ARIA, and other common problems. They cannot fully judge whether link text is meaningful, whether `alt` text is useful, or whether a keyboard workflow feels clear.',
+          'Run automated checks after a manual pass, then fix issues and test again. Passing an automated audit does not guarantee the page is accessible.',
+        ],
+      },
+      {
+        title: 'Use the Accessibility Check Lab',
+        body: [
+          'The interactive demo below models the same checks you should run on your project: text alternatives, contrast, visible focus, and semantic controls.',
+          'Toggle each issue, inspect the code, then find the matching pattern in your own project. The goal is to practice noticing problems before they ship.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Treating Lighthouse as the whole test', 'Automated tools miss context and real interaction problems.', 'Do keyboard and content checks first, then run tools.'],
+            ['Using `div` or `span` for controls', 'Users may not be able to focus or activate them.', 'Use real `button`, `a`, `input`, and `label` elements.'],
+            ['Skipping visible focus styles', 'Keyboard users lose their place.', 'Add strong `:focus-visible` styles.'],
+            ['Writing vague links', 'Users cannot predict where the link goes.', 'Use descriptive link text.'],
+            ['Using ARIA to patch bad HTML', 'Incorrect ARIA can create confusing output.', 'Fix the native HTML first.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Navigate your project using only the keyboard.',
-      'Check the contrast of your body text, links, and buttons.',
-      'Review every image for useful alt text.',
-      'Run Lighthouse and fix at least one accessibility issue.',
+      'Navigate your project using only `Tab`, `Shift + Tab`, `Enter`, and `Space`.',
+      'Check that your page has one `h1` and a logical heading order.',
+      'Review every image and decide whether it needs useful `alt` text or empty `alt=""`.',
+      'Check body text, links, buttons, and form controls with a contrast checker.',
+      'Confirm every form input has a visible `label` and helpful instructions or errors when needed.',
+      'Run Lighthouse or axe and fix at least one issue it reports.',
+      'Write down one accessibility improvement you made before submitting your project.',
     ],
     resources: [
+      {
+        label: 'W3C WCAG 2.2',
+        href: 'https://www.w3.org/TR/WCAG22/',
+      },
+      {
+        label: 'W3C WCAG Quick Reference',
+        href: 'https://www.w3.org/WAI/WCAG22/quickref/',
+      },
+      {
+        label: 'WebAIM Contrast Checker',
+        href: 'https://webaim.org/resources/contrastchecker/',
+      },
+      {
+        label: 'axe DevTools',
+        href: 'https://www.deque.com/axe/devtools/',
+      },
       {
         label: 'MDN ARIA Reference',
         href: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA',

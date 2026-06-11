@@ -6267,143 +6267,278 @@ html {
     title: 'Carousels',
     eyebrow: 'Components',
     summary:
-      'Understand carousel structure, Slick setup, fading transitions, and a simple vanilla JavaScript carousel.',
+      'Design carousels carefully, prioritize manual controls, and build accessible slide navigation when a carousel is truly useful.',
     goals: [
-      'Identify the key parts of a carousel',
-      'Set up a carousel with Slick',
-      'Explain how a basic carousel works with vanilla JavaScript',
-      'Consider responsive and accessible carousel behavior',
+      'Decide when a `carousel` is appropriate and when another pattern is better',
+      'Identify the parts of an accessible carousel, including slides, buttons, status text, and pagination',
+      'Build manual previous/next behavior before adding optional autoplay',
+      'Test carousel behavior with keyboard, reduced motion, screen reader expectations, and responsive layouts',
     ],
     sections: [
       {
-        title: 'What are Carousels?',
+        title: 'What Are Carousels?',
         body: [
-          'Carousels are dynamic elements that showcase multiple images or content items in a limited space.',
-          'They are commonly used on websites to feature product highlights, testimonials, or rotating content.',
+          'A `carousel` displays one item or group of items at a time from a larger set. Users move through the items with controls such as previous and next buttons, pagination dots, or sometimes autoplay.',
+          'Carousels can be useful, but they can also hide content, distract users, and create accessibility problems. Use one only when it helps the user browse a small set of related content.',
         ],
       },
       {
-        title: 'Key Components of a Carousel',
-        body: [
-          'Understanding these foundational elements will help you customize and implement carousels that are functional and user-friendly.',
-        ],
-        bullets: [
-          'Carousel Container: Holds all slides, typically with a fixed width and height.',
-          'Slides: Individual items displayed, which may contain images, text, or HTML elements.',
-          'Navigation Controls: Includes previous/next buttons and pagination dots for manual navigation.',
-          'Autoplay: Optional feature for automatic slide transitions with pause/play controls.',
-          'Responsive Design: Adapts layout to various screen sizes and devices.',
-          'Accessibility: Includes keyboard navigation and ARIA attributes for screen readers.',
-        ],
+        title: 'Should You Use a Carousel?',
+        table: {
+          headers: ['Situation', 'Recommendation', 'Why'],
+          rows: [
+            ['A small set of related images or testimonials', 'Maybe use a carousel', 'Users can browse a focused set manually.'],
+            ['Critical content users must see', 'Avoid a carousel', 'Hidden slides may never be seen.'],
+            ['Many cards or products', 'Use a grid or listing page', 'Browsing and comparison are easier when more items are visible.'],
+            ['Content users need to read carefully', 'Avoid autoplay', 'Changing slides can interrupt reading.'],
+            ['A homepage hero with one main message', 'Use a static hero', 'One strong message is clearer than rotating messages.'],
+          ],
+        },
       },
       {
-        title: 'Building a Carousel with Slick',
+        title: 'Better Alternatives',
         body: [
-          'This section demonstrates how to create a carousel using the Slick library, a popular jQuery plugin known for its ease of use and flexibility.',
-          'It is suitable for beginners who want a plug-and-play solution.',
-          'Visit the Slick documentation for full usage details.',
+          'Before choosing a carousel, consider whether a simpler pattern would serve users better.',
         ],
+        table: {
+          headers: ['Alternative', 'Use When'],
+          rows: [
+            ['Card grid', 'Users need to scan or compare several items.'],
+            ['Featured content section', 'One or two items deserve emphasis.'],
+            ['Tabs', 'A small set of related panels should be directly selectable.'],
+            ['Accordion', 'Content should expand and collapse in place.'],
+            ['Static hero with links', 'The first screen needs one clear message and next step.'],
+          ],
+        },
       },
       {
-        title: 'Basic HTML Structure',
+        title: 'Carousel Anatomy',
+        table: {
+          headers: ['Part', 'Purpose'],
+          rows: [
+            ['Region or container', 'Groups the carousel and gives it an accessible name.'],
+            ['Slides', 'Hold the image, text, or content item being shown.'],
+            ['Previous and next `button` controls', 'Let users move manually through slides.'],
+            ['Slide position text', 'Communicates status, such as `Slide 2 of 4`.'],
+            ['Pagination buttons', 'Let users jump to a specific slide.'],
+            ['Pause/play control', 'Required if autoplay is used.'],
+          ],
+        },
+      },
+      {
+        title: 'Accessible Carousel Markup',
         body: [
-          'The following HTML sets up a simple carousel container. You can replace the placeholder content with your actual items.',
+          'Start with semantic markup and manual controls. Use real `button` elements for actions. Hide inactive slides with `hidden` so their links and buttons are not tabbable.',
         ],
-        code: `<div class="your-class">
-  <div>your content</div>
-  <div>your content</div>
-  <div>your content</div>
+        code: `<section class="carousel" aria-label="Featured projects" aria-roledescription="carousel">
+  <p class="carousel-status" aria-live="polite">Slide 1 of 3</p>
+
+  <div class="carousel-slides">
+    <article class="slide" aria-label="Slide 1 of 3">
+      <img
+        src="project-dashboard.webp"
+        width="900"
+        height="600"
+        alt="Dashboard interface with charts and project cards"
+      >
+      <h2>Portfolio Dashboard</h2>
+      <p>A responsive dashboard for tracking project progress.</p>
+    </article>
+
+    <article class="slide" aria-label="Slide 2 of 3" hidden>
+      <h2>Course Landing Page</h2>
+      <p>A landing page with pricing, testimonials, and enrollment CTA.</p>
+    </article>
+
+    <article class="slide" aria-label="Slide 3 of 3" hidden>
+      <h2>Gallery Experience</h2>
+      <p>An image-heavy project page with optimized media.</p>
+    </article>
+  </div>
+
+  <button class="carousel-prev" type="button">Previous</button>
+  <button class="carousel-next" type="button">Next</button>
+</section>`,
+      },
+      {
+        title: 'Basic Carousel CSS',
+        body: [
+          'Keep dimensions stable so the page does not jump between slides. Make controls large enough for mouse, keyboard, and touch users.',
+        ],
+        code: `.carousel {
+  display: grid;
+  gap: 1rem;
+}
+
+.slide img {
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.carousel-prev,
+.carousel-next {
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+}
+
+.carousel button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 0.25rem;
+}`,
+      },
+      {
+        title: 'Manual JavaScript First',
+        body: [
+          'Build manual previous and next behavior before adding autoplay. Users should always be able to control the carousel themselves.',
+        ],
+        code: `const carousel = document.querySelector('.carousel');
+const slides = [...carousel.querySelectorAll('.slide')];
+const status = carousel.querySelector('.carousel-status');
+const previousButton = carousel.querySelector('.carousel-prev');
+const nextButton = carousel.querySelector('.carousel-next');
+let currentIndex = 0;
+
+function showSlide(index) {
+  currentIndex = (index + slides.length) % slides.length;
+
+  slides.forEach((slide, slideIndex) => {
+    slide.hidden = slideIndex !== currentIndex;
+  });
+
+  status.textContent = 'Slide ' + (currentIndex + 1) + ' of ' + slides.length;
+}
+
+previousButton.addEventListener('click', () => {
+  showSlide(currentIndex - 1);
+});
+
+nextButton.addEventListener('click', () => {
+  showSlide(currentIndex + 1);
+});`,
+      },
+      {
+        title: 'Pagination Buttons',
+        body: [
+          'Pagination buttons let users jump directly to a slide. Use `aria-current="true"` on the active pagination button.',
+        ],
+        code: `<div class="carousel-pagination" aria-label="Choose slide">
+  <button type="button" aria-current="true">1</button>
+  <button type="button">2</button>
+  <button type="button">3</button>
 </div>`,
       },
       {
-        title: 'Linking Slick and jQuery',
+        title: 'Optional Autoplay Rules',
         body: [
-          'Include the necessary CSS and JavaScript files to get Slick working properly.',
+          'Autoplay should be optional, easy to pause, and respectful of user motion preferences. Do not autoplay content users need to read carefully.',
         ],
-        code: `<link rel="stylesheet" type="text/css" href="slick.css">
-<link rel="stylesheet" type="text/css" href="slick-theme.css">
+        bullets: [
+          'Provide a pause/play `button` if slides advance automatically.',
+          'Pause autoplay when the carousel receives keyboard focus.',
+          'Pause autoplay on pointer hover.',
+          'Use `clearInterval` when pausing or destroying autoplay.',
+          'Do not autoplay when `prefers-reduced-motion` is set to `reduce`.',
+        ],
+      },
+      {
+        title: 'Autoplay with Guardrails',
+        code: `const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let autoplayId;
+
+function startAutoplay() {
+  if (reduceMotion || autoplayId) return;
+
+  autoplayId = setInterval(() => {
+    showSlide(currentIndex + 1);
+  }, 5000);
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayId);
+  autoplayId = undefined;
+}
+
+carousel.addEventListener('mouseenter', stopAutoplay);
+carousel.addEventListener('focusin', stopAutoplay);`,
+      },
+      {
+        title: 'Keyboard Behavior',
+        bullets: [
+          '`Tab` should reach the carousel controls and any interactive content in the visible slide.',
+          'Inactive slides should not contain tabbable links or buttons. Use `hidden` or manage focus carefully.',
+          'Arrow key shortcuts are optional. Do not require them for basic use.',
+          'Focus should not jump unexpectedly when the slide changes.',
+          'The carousel should remain understandable if JavaScript fails.',
+        ],
+      },
+      {
+        title: 'Responsive and Image Guidance',
+        bullets: [
+          'Use consistent image dimensions or aspect ratios to prevent layout shift.',
+          'Give informative images meaningful `alt` text and decorative images empty `alt=""`.',
+          'Keep controls reachable on touch screens.',
+          'Do not lock the carousel to a height that causes text overflow on small screens.',
+          'Do not lazy-load the first visible slide image if it is above the fold.',
+        ],
+      },
+      {
+        title: 'Library Note',
+        body: [
+          '`Slick` is an older jQuery carousel plugin. You may still see it in legacy projects, but it should not be the default choice for new work.',
+          'If you use a carousel library, choose one that is maintained, works without unnecessary dependencies, supports keyboard interaction, and documents accessibility behavior.',
+        ],
+        note:
+          'A library can save time, but it does not remove your responsibility to test keyboard, screen reader, motion, and responsive behavior.',
+      },
+      {
+        title: 'Legacy Slick Example',
+        body: [
+          'This is the kind of setup you may encounter in older codebases. Treat it as legacy/library awareness rather than the main recommended build path.',
+        ],
+        code: `<link rel="stylesheet" href="slick.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="slick.min.js"></script>`,
-      },
-      {
-        title: 'Implementing Slick with JavaScript',
-        body: [
-          'This script initializes the Slick carousel with basic configuration options like navigation dots and smooth transitions.',
-        ],
-        code: `$(document).ready(function() {
-  $('.your-class').slick({
+<script src="slick.min.js"></script>
+
+<script>
+  $('.carousel').slick({
     dots: true,
-    infinite: true,
-    speed: 500,
-    cssEase: 'linear',
+    arrows: true,
+    autoplay: false,
   });
-});`,
+</script>`,
       },
       {
-        title: 'Creating a Fading Carousel',
-        body: [
-          'You can enhance the carousel with a fade transition by adding one line of configuration.',
-        ],
-        code: `$(document).ready(function() {
-  $('.your-class').slick({
-    dots: true,
-    infinite: true,
-    speed: 500,
-    fade: true,
-    cssEase: 'linear',
-  });
-});`,
-      },
-      {
-        title: 'Building Your Own Carousel with Vanilla JavaScript',
-        body: [
-          'This section walks through building a custom carousel without relying on libraries.',
-          'It is ideal for learning the underlying mechanics and gaining full control over behavior and design.',
-        ],
-        code: `<div class="work-slideshow">
-  <div class="slide active">Slide 1</div>
-  <div class="slide">Slide 2</div>
-  <div class="slide">Slide 3</div>
-</div>`,
-      },
-      {
-        title: 'Vanilla JavaScript Carousel Logic',
-        code: `const carousel = document.querySelector('.work-slideshow');
-const slides = carousel.querySelectorAll('.slide');
-let currentSlide = 0;
-
-function nextSlide() {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add('active');
-}
-
-function autoplay() {
-  nextSlide();
-  setInterval(nextSlide, 3000);
-}
-
-autoplay();`,
-      },
-      {
-        title: 'Key Considerations',
-        body: [
-          'To ensure a polished user experience, be mindful of layout consistency, responsiveness, and accessibility.',
-        ],
-        bullets: [
-          'Use consistent image dimensions to prevent layout issues.',
-          'Apply media queries for responsive design.',
-          'Ensure accessibility with keyboard support and alt text for images.',
-        ],
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Why It Hurts', 'Fix'],
+          rows: [
+            ['Autoplay with no pause', 'Users lose control of moving content', 'Add pause/play and pause on focus or hover.'],
+            ['Using a carousel for important content', 'Hidden slides may never be seen', 'Put critical content directly on the page.'],
+            ['Tiny controls', 'Controls are hard to use on touch screens', 'Use large, visible `button` controls.'],
+            ['Controls only appear on hover', 'Keyboard and touch users may not find them', 'Keep controls visible or reveal them on focus too.'],
+            ['Hidden slides are still tabbable', 'Keyboard users can tab into invisible content', 'Use `hidden` or remove inactive content from the tab order.'],
+            ['Announcements are too aggressive', 'Screen reader users may be interrupted', 'Use `aria-live="polite"` carefully and avoid constant autoplay announcements.'],
+            ['Images have inconsistent sizes', 'The page jumps between slides', 'Use stable dimensions and aspect ratios.'],
+          ],
+        },
       },
     ],
     practice: [
-      'Create a basic carousel structure with three slides.',
-      'Initialize a carousel with Slick.',
-      'Build the vanilla JavaScript autoplay example.',
-      'Add alt text, keyboard support, or pause controls to improve accessibility.',
+      'Build static carousel markup with three slides.',
+      'Add previous and next `button` controls.',
+      'Hide inactive slides with `hidden`.',
+      'Add slide count text such as `Slide 1 of 3`.',
+      'Add optional pagination buttons with `aria-current="true"`.',
+      'Add pause/play only if you add autoplay.',
+      'Test the carousel with keyboard navigation and reduced motion settings.',
     ],
     resources: [
+      {
+        label: 'WAI carousel tutorial',
+        href: 'https://www.w3.org/WAI/tutorials/carousels/',
+      },
       {
         label: 'Slick documentation',
         href: 'https://kenwheeler.github.io/slick/',

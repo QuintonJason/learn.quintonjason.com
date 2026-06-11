@@ -4,7 +4,7 @@
     <h2 id="carousel-lab-title">Carousel Responsibility Lab</h2>
     <p>
       Carousels are more than moving slides. Toggle the expected controls and
-      watch the accessibility checklist and starter code change.
+      watch the accessibility checklist and Splide starter code change.
     </p>
   </div>
 
@@ -87,12 +87,11 @@
     <li data-carousel-result="motion">Motion: Pass</li>
   </ul>
 
-  <pre><code data-carousel-code>{`$('.work-slideshow').slick({
-  dots: true,
+  <pre><code data-carousel-code>{`new Splide('.work-slideshow', {
+  pagination: true,
   arrows: true,
-  autoplay: false,
-  accessibility: true
-});`}</code></pre>
+  autoplay: false
+}).mount();`}</code></pre>
 
   <div class="interactive-notes">
     <div>
@@ -122,6 +121,7 @@
     const slides = Array.from(carouselLab.querySelectorAll('[data-carousel-slide]'));
     const dots = Array.from(carouselLab.querySelectorAll('[data-carousel-dot]'));
     const viewport = carouselLab.querySelector('[data-carousel-viewport]');
+    const stage = carouselLab.querySelector('.carousel-lab__stage');
     const buttons = carouselLab.querySelector('[data-carousel-buttons]');
     const dotsWrapper = carouselLab.querySelector('[data-carousel-dots]');
     const status = carouselLab.querySelector('[data-carousel-status]');
@@ -157,6 +157,7 @@
       slides.forEach((slide, slideIndex) => {
         const isActive = slideIndex === currentSlide;
         slide.classList.toggle('is-active', isActive);
+        slide.classList.toggle('is-before', slideIndex < currentSlide);
         slide.setAttribute('aria-hidden', String(!isActive));
       });
 
@@ -191,19 +192,20 @@
       const hasButtons = toggles.buttons.checked;
       const hasDots = toggles.dots.checked;
       const hasStatus = toggles.status.checked;
+      const hasKeyboard = toggles.keyboard.checked;
       const hasAutoplay = toggles.autoplay.checked;
       const hasPause = toggles.pause.checked;
 
-      code.textContent = `$('.work-slideshow').slick({
-  dots: ${hasDots},
+      code.textContent = `new Splide('.work-slideshow', {
+  pagination: ${hasDots},
   arrows: ${hasButtons},
   autoplay: ${hasAutoplay},
-  accessibility: true,
+  keyboard: ${hasKeyboard ? "'focused'" : 'false'},
   ${hasAutoplay ? `pauseOnHover: ${hasPause},\n  pauseOnFocus: ${hasPause},` : '// Autoplay is off, so pause settings are not needed.'}
-});
+}).mount();
 
 ${hasStatus
-  ? '$(".carousel-status").text("Slide 1 of 3");'
+  ? '// Add visible status text such as "Slide 1 of 3" near the carousel.'
   : '// Add visible slide status for users who need orientation.'}`;
     }
 
@@ -270,19 +272,19 @@ ${hasStatus
       }
     });
 
-    carouselLab.addEventListener('pointerenter', () => {
+    stage.addEventListener('pointerenter', () => {
       if (toggles.pause.checked) isPaused = true;
     });
 
-    carouselLab.addEventListener('pointerleave', () => {
+    stage.addEventListener('pointerleave', () => {
       isPaused = false;
     });
 
-    carouselLab.addEventListener('focusin', () => {
+    stage.addEventListener('focusin', () => {
       if (toggles.pause.checked) isPaused = true;
     });
 
-    carouselLab.addEventListener('focusout', () => {
+    stage.addEventListener('focusout', () => {
       isPaused = false;
     });
 

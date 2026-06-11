@@ -578,7 +578,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
         'Use the previous and next buttons, dots, and arrow keys to change slides.',
       ],
       changes: [
-        'The carousel preview, checklist, and Slick code sample update together.',
+        'The carousel preview, checklist, and Splide code sample update together.',
         'Removing controls or status makes the interaction harder to understand.',
       ],
       notice: [
@@ -593,7 +593,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     teacherNotes: {
       demo: [
         'Use the carousel lab to show that controls, pagination, status text, keyboard support, and motion settings are separate concerns.',
-        'Show the Slick configuration first, then explain what the hidden teaching JavaScript adds for the interactive lab.',
+        'Show the Splide configuration first, then explain what the hidden teaching JavaScript adds for the interactive lab.',
       ],
       tryInClass: [
         'Have students identify whether their carousel needs previous and next buttons, dots, autoplay, or none of the above.',

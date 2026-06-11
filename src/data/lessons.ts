@@ -6484,29 +6484,32 @@ carousel.addEventListener('focusin', stopAutoplay);`,
         ],
       },
       {
-        title: 'Library Note',
+        title: 'Modern Library Option: Splide',
         body: [
-          '`Slick` is an older jQuery carousel plugin. You may still see it in legacy projects, but it should not be the default choice for new work.',
-          'If you use a carousel library, choose one that is maintained, works without unnecessary dependencies, supports keyboard interaction, and documents accessibility behavior.',
+          '`Splide` is a modern carousel library that works without jQuery. Use it when a project needs a polished carousel faster than you can build and test one from scratch.',
+          'The same rules still apply: keep controls visible, avoid autoplay by default, write useful slide content, and test keyboard, screen reader, motion, and responsive behavior.',
         ],
         note:
-          'A library can save time, but it does not remove your responsibility to test keyboard, screen reader, motion, and responsive behavior.',
-      },
-      {
-        title: 'Legacy Slick Example',
-        body: [
-          'This is the kind of setup you may encounter in older codebases. Treat it as legacy/library awareness rather than the main recommended build path.',
-        ],
-        code: `<link rel="stylesheet" href="slick.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="slick.min.js"></script>
+          'A library can save time, but it does not make the carousel automatically accessible or appropriate for the page.',
+        code: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
 
+<section class="splide" aria-label="Featured projects">
+  <div class="splide__track">
+    <ul class="splide__list">
+      <li class="splide__slide">Project 1</li>
+      <li class="splide__slide">Project 2</li>
+      <li class="splide__slide">Project 3</li>
+    </ul>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
 <script>
-  $('.carousel').slick({
-    dots: true,
+  new Splide('.splide', {
     arrows: true,
+    pagination: true,
     autoplay: false,
-  });
+  }).mount();
 </script>`,
       },
       {
@@ -6540,8 +6543,8 @@ carousel.addEventListener('focusin', stopAutoplay);`,
         href: 'https://www.w3.org/WAI/tutorials/carousels/',
       },
       {
-        label: 'Slick documentation',
-        href: 'https://kenwheeler.github.io/slick/',
+        label: 'Splide documentation',
+        href: 'https://splidejs.com/',
       },
     ],
   },

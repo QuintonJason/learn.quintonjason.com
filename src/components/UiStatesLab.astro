@@ -1,0 +1,76 @@
+<section class="practice-lab" aria-labelledby="states-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="states-lab-title">UI States Lab</h2>
+    <p>Switch component states and compare the visual feedback, message, and code pattern.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage states-preview" data-state-preview data-state="default">
+      <button type="button" data-state-button>Save project</button>
+      <label>
+        Email
+        <input data-state-input type="email" value="student@example.com" />
+      </label>
+      <p data-state-message>Ready to save.</p>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        State
+        <select data-state-select>
+          <option value="default">Default</option>
+          <option value="hover">Hover</option>
+          <option value="focus">Focus</option>
+          <option value="active">Active</option>
+          <option value="loading">Loading</option>
+          <option value="empty">Empty</option>
+          <option value="error">Error</option>
+          <option value="success">Success</option>
+          <option value="disabled">Disabled</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <pre><code data-state-code>{'.button:focus-visible { outline: 3px solid currentColor; }'}</code></pre>
+</section>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const lab = document.querySelector('.practice-lab:has([data-state-select])');
+
+  if (lab) {
+    const select = lab.querySelector('[data-state-select]');
+    const preview = lab.querySelector('[data-state-preview]');
+    const button = lab.querySelector('[data-state-button]');
+    const input = lab.querySelector('[data-state-input]');
+    const message = lab.querySelector('[data-state-message]');
+    const code = lab.querySelector('[data-state-code]');
+    const states = {
+      default: ['Save project', 'Ready to save.', '.button { cursor: pointer; }'],
+      hover: ['Save project', 'Hover shows that the button is interactive.', '.button:hover { background: #1742a4; }'],
+      focus: ['Save project', 'Focus makes keyboard location visible.', '.button:focus-visible { outline: 3px solid currentColor; }'],
+      active: ['Saving press', 'Active gives short pressed feedback.', '.button:active { transform: translateY(1px); }'],
+      loading: ['Saving...', 'Saving in progress. Duplicate clicks are blocked.', '<button disabled aria-busy="true">Saving...</button>'],
+      empty: ['Add project', 'No projects have been added yet. Add your first project.', '.empty-state { text-align: center; }'],
+      error: ['Try again', 'Enter an email address that includes an @ symbol.', '<input aria-invalid="true" aria-describedby="email-error">'],
+      success: ['Saved', 'Project saved. You can keep editing or submit it.', '.message--success { color: #1f7a3a; }'],
+      disabled: ['Save project', 'Complete the required fields before saving.', '.button:disabled { opacity: .55; cursor: not-allowed; }'],
+    };
+
+    function update() {
+      const state = select.value;
+      const [label, text, snippet] = states[state];
+      preview.dataset.state = state;
+      button.textContent = label;
+      button.disabled = state === 'loading' || state === 'disabled';
+      input.setAttribute('aria-invalid', String(state === 'error'));
+      message.textContent = text;
+      code.textContent = snippet;
+    }
+
+    select.addEventListener('change', update);
+    update();
+  }
+</script>

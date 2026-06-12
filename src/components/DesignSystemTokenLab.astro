@@ -1,0 +1,74 @@
+<section class="practice-lab" aria-labelledby="tokens-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="tokens-lab-title">Design System Token Lab</h2>
+    <p>Adjust a few reusable values and watch multiple components update together.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage token-preview" data-token-preview>
+      <article>
+        <p class="eyebrow">Featured</p>
+        <h3>Reusable Card</h3>
+        <p>The card, button, and form field share the same tokens.</p>
+        <button type="button">Primary action</button>
+      </article>
+      <label>
+        Email
+        <input type="email" placeholder="student@example.com" />
+      </label>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        Accent
+        <select data-token-control="accent">
+          <option value="#73d36b">Green</option>
+          <option value="#7db7ff">Blue</option>
+          <option value="#ff8fab">Pink</option>
+        </select>
+      </label>
+      <label>
+        Radius
+        <input type="range" min="0" max="24" value="8" data-token-control="radius" />
+      </label>
+      <label>
+        Spacing
+        <input type="range" min="8" max="32" value="16" data-token-control="space" />
+      </label>
+    </div>
+  </div>
+
+  <pre><code data-token-code>{':root { --accent: #73d36b; }'}</code></pre>
+</section>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const lab = document.querySelector('.practice-lab:has([data-token-control])');
+
+  if (lab) {
+    const preview = lab.querySelector('[data-token-preview]');
+    const code = lab.querySelector('[data-token-code]');
+    const controls = {
+      accent: lab.querySelector('[data-token-control="accent"]'),
+      radius: lab.querySelector('[data-token-control="radius"]'),
+      space: lab.querySelector('[data-token-control="space"]'),
+    };
+
+    function update() {
+      const radius = `${controls.radius.value}px`;
+      const space = `${controls.space.value}px`;
+      preview.style.setProperty('--token-accent', controls.accent.value);
+      preview.style.setProperty('--token-radius', radius);
+      preview.style.setProperty('--token-space', space);
+      code.textContent = `:root {
+  --color-accent: ${controls.accent.value};
+  --radius-card: ${radius};
+  --space-4: ${space};
+}`;
+    }
+
+    Object.values(controls).forEach((control) => control.addEventListener('input', update));
+    update();
+  }
+</script>

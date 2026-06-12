@@ -1,0 +1,70 @@
+<section class="practice-lab" aria-labelledby="performance-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="performance-lab-title">Performance Audit Lab</h2>
+    <p>Apply common performance fixes and watch the page weight and quality signals improve.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage performance-meter">
+      <div><span>Total page weight</span><strong data-perf-size>3950 KB</strong></div>
+      <div><span>LCP risk</span><meter min="0" max="100" value="28" data-perf-lcp></meter></div>
+      <div><span>Stability</span><meter min="0" max="100" value="35" data-perf-cls></meter></div>
+      <div><span>Interaction</span><meter min="0" max="100" value="42" data-perf-inp></meter></div>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label><input type="checkbox" data-perf-fix="images" /> Compress and resize large images</label>
+      <label><input type="checkbox" data-perf-fix="dimensions" /> Add image width and height</label>
+      <label><input type="checkbox" data-perf-fix="fonts" /> Remove unused font weights</label>
+      <label><input type="checkbox" data-perf-fix="scripts" /> Defer or remove unused scripts</label>
+      <label><input type="checkbox" data-perf-fix="embeds" /> Replace heavy embeds with links</label>
+    </div>
+  </div>
+
+  <pre><code data-perf-code>Open DevTools Network, sort by Size, and fix the biggest useful file first.</code></pre>
+</section>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const lab = document.querySelector('.practice-lab:has([data-perf-fix])');
+
+  if (lab) {
+    const fixes = [...lab.querySelectorAll('[data-perf-fix]')];
+    const size = lab.querySelector('[data-perf-size]');
+    const lcp = lab.querySelector('[data-perf-lcp]');
+    const cls = lab.querySelector('[data-perf-cls]');
+    const inp = lab.querySelector('[data-perf-inp]');
+    const code = lab.querySelector('[data-perf-code]');
+    const impact = {
+      images: { kb: 1800, lcp: 35, cls: 5, inp: 0, code: 'Resize hero.jpg from 3200px wide to the largest size used in the layout.' },
+      dimensions: { kb: 0, lcp: 0, cls: 35, inp: 0, code: '<img src="hero.webp" width="1200" height="700" alt="...">' },
+      fonts: { kb: 350, lcp: 10, cls: 5, inp: 0, code: 'Load only the 400 and 700 font weights used by the design.' },
+      scripts: { kb: 500, lcp: 5, cls: 0, inp: 30, code: 'Load site.js with defer or remove it if the page does not use it.' },
+      embeds: { kb: 900, lcp: 15, cls: 10, inp: 10, code: 'Replace a map embed with a link unless the map is essential.' },
+    };
+
+    function update() {
+      let kb = 3950;
+      let scores = { lcp: 28, cls: 35, inp: 42 };
+      const applied = [];
+      fixes.forEach((fix) => {
+        if (!fix.checked) return;
+        const item = impact[fix.dataset.perfFix];
+        kb -= item.kb;
+        scores.lcp += item.lcp;
+        scores.cls += item.cls;
+        scores.inp += item.inp;
+        applied.push(item.code);
+      });
+      size.textContent = `${Math.max(kb, 700)} KB`;
+      lcp.value = Math.min(scores.lcp, 100);
+      cls.value = Math.min(scores.cls, 100);
+      inp.value = Math.min(scores.inp, 100);
+      code.textContent = applied.at(-1) ?? 'Open DevTools Network, sort by Size, and fix the biggest useful file first.';
+    }
+
+    fixes.forEach((fix) => fix.addEventListener('change', update));
+    update();
+  }
+</script>

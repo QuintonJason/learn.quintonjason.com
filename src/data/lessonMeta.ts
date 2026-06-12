@@ -653,7 +653,212 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
       ],
     },
   },
-};
+  'debugging-web-projects': {
+    checkpoint: [
+      'I can describe the exact symptom before editing.',
+      'I can use DevTools to inspect HTML, CSS, console errors, and missing files.',
+      'I can test one possible fix at a time.',
+    ],
+    demoSourceFile: 'DebuggingChecklistLab.astro',
+    demoGuidance: {
+      try: [
+        'Switch between CSS, image, JavaScript, and selector symptoms.',
+        'Move through Describe, Inspect, Fix, and Test instead of jumping straight to editing.',
+      ],
+      changes: [
+        'The preview starts broken in a different way for each symptom.',
+        'The code sample changes to show the most likely fix pattern.',
+      ],
+      notice: [
+        'Each fix starts with a clear symptom and a clue from DevTools or the file path.',
+        'Testing one change at a time makes the bug easier to isolate.',
+      ],
+      apply: [
+        'Use the same four-step process on a real broken page before changing multiple files.',
+      ],
+    },
+    tags: ['html', 'css', 'javascript'],
+  },
+  'devtools-for-designers': {
+    checkpoint: [
+      'I can inspect an element and identify which CSS rule is affecting it.',
+      'I can test responsive widths in the browser.',
+      'I can use the network panel to find missing files.',
+    ],
+    demoSourceFile: 'DevToolsInspectorLab.astro',
+    demoGuidance: {
+      try: [
+        'Inspect the hero, card, and link, then adjust padding and accent color.',
+        'Compare a temporary inspector change with the generated CSS rule.',
+      ],
+      changes: [
+        'The selected element gets an inspected outline and temporary CSS changes.',
+        'The code sample updates with the rule students would copy into their stylesheet.',
+      ],
+      notice: [
+        'DevTools is safest as a testing space before committing CSS to the project.',
+        'Temporary browser changes disappear unless the final rule is added to the CSS file.',
+      ],
+      apply: [
+        'Use DevTools to test one spacing or color change, then copy the winning rule into the project CSS.',
+      ],
+    },
+    tags: ['css', 'ux-process'],
+  },
+  'css-grid': {
+    checkpoint: [
+      'I can explain when Grid is a better fit than Flexbox.',
+      'I can build a responsive card grid.',
+      'I can inspect grid tracks and gaps in DevTools.',
+    ],
+    demoSourceFile: 'GridLayoutLab.astro',
+    demoGuidance: {
+      try: [
+        'Change the column count, gap, layout pattern, and span toggle.',
+        'Compare the fixed column pattern with the responsive auto-fit pattern.',
+      ],
+      changes: [
+        'The grid preview and generated CSS update together.',
+        'The first item can span columns to model a featured card layout.',
+      ],
+      notice: [
+        'Gap, repeat(), minmax(), and grid-column become visible layout decisions.',
+        'Grid is strongest when the page needs rows and columns working together.',
+      ],
+      apply: [
+        'Use the generated CSS as a starting point for a card grid, gallery, or sidebar layout.',
+      ],
+    },
+    tags: ['css'],
+    teacherNotes: {
+      demo: [
+        'Start with three fixed columns, then toggle the span so students can see grid-column: span 2 visually.',
+        'Switch to responsive auto-fit and connect the generated code to the card grid pattern in the lesson.',
+      ],
+      tryInClass: [
+        'Have students recreate one lab state in their own CSS file.',
+        'Ask students to inspect the lab with DevTools Grid overlay while the visual line toggle is on.',
+      ],
+      check: [
+        'Students should know which element gets display: grid and which children become grid items.',
+        'Students should be able to explain the difference between fixed repeat columns and auto-fit/minmax columns.',
+      ],
+      watchFor: [
+        'Students applying Grid to each card instead of the card parent.',
+        'Students using spans that break the layout at small widths.',
+      ],
+    },
+  },
+  'design-systems-and-reusable-components': {
+    checkpoint: [
+      'I can define reusable color, spacing, and type values.',
+      'I can create consistent button, card, and form styles.',
+      'I can reduce one-off styling in a project.',
+    ],
+    demoSourceFile: 'DesignSystemTokenLab.astro',
+    demoGuidance: {
+      try: [
+        'Change the accent, radius, and spacing tokens.',
+        'Watch the card, button, and input update from the same reusable values.',
+      ],
+      changes: [
+        'One token change affects multiple components at once.',
+        'The generated CSS shows the custom properties behind the visual system.',
+      ],
+      notice: [
+        'Design systems reduce one-off styling by giving repeated decisions a shared name.',
+        'Tokens should describe design decisions that repeat across the project.',
+      ],
+      apply: [
+        'Create a small :root token set for colors, spacing, and radius in your own project.',
+      ],
+    },
+    tags: ['css', 'ux-process'],
+  },
+  'project-planning-and-content-strategy': {
+    checkpoint: [
+      'I can define the audience and goal for a web project.',
+      'I can create a sitemap and content inventory.',
+      'I can use wireframes to plan before building.',
+    ],
+    tags: ['ux-process'],
+  },
+  'deployment-and-launch-qa': {
+    checkpoint: [
+      'I can test the published URL, not only the local site.',
+      'I can check links, images, responsive layout, and accessibility before submission.',
+      'I can troubleshoot common GitHub Pages problems.',
+    ],
+    tags: ['ux-process'],
+  },
+  'seo-and-metadata-basics': {
+    checkpoint: [
+      'I can write a useful page title and meta description.',
+      'I can use headings, URLs, and link text to support findability.',
+      'I can add basic Open Graph metadata.',
+    ],
+    tags: ['html', 'ux-process'],
+  },
+  'web-performance-basics': {
+    checkpoint: [
+      'I can identify common causes of slow pages.',
+      'I can optimize images, fonts, and scripts.',
+      'I can measure performance before and after a change.',
+    ],
+    demoSourceFile: 'PerformanceAuditLab.astro',
+    demoGuidance: {
+      try: [
+        'Apply one performance fix at a time and compare the page weight and meters.',
+        'Start with the largest file problem before changing smaller details.',
+      ],
+      changes: [
+        'The total page weight drops as heavy assets are reduced or removed.',
+        'The LCP, stability, and interaction meters respond to different kinds of fixes.',
+      ],
+      notice: [
+        'Image fixes often have the biggest first impact on student projects.',
+        'Not every fix improves every metric; the problem determines the right fix.',
+      ],
+      apply: [
+        'Open DevTools Network, sort by Size, and make one measurable before-and-after improvement.',
+      ],
+    },
+    tags: ['ux-process'],
+  },
+  'ui-states-and-feedback': {
+    checkpoint: [
+      'I can identify hover, focus, active, loading, empty, error, success, and disabled states.',
+      'I can style visible states for interactive elements.',
+      'I can write feedback messages that explain what happened and what to do next.',
+    ],
+    demoSourceFile: 'UiStatesLab.astro',
+    demoGuidance: {
+      try: [
+        'Switch through each UI state and compare the button, input, and feedback message.',
+        'Pause on focus, loading, error, and disabled because those states are often missed.',
+      ],
+      changes: [
+        'The preview changes visual styling, disabled behavior, and message content.',
+        'The code sample shows a pattern connected to the selected state.',
+      ],
+      notice: [
+        'A state is not only decoration; it communicates what is possible or what just happened.',
+        'Helpful messages explain the next step instead of only saying Error or Failed.',
+      ],
+      apply: [
+        'Audit one project page and add missing hover, focus, loading, empty, error, or success states.',
+      ],
+    },
+    tags: ['css', 'javascript', 'ux-process'],
+  },
+  'portfolio-polish-and-presentation': {
+    checkpoint: [
+      'I can evaluate a project for clarity, hierarchy, consistency, responsiveness, accessibility, and performance.',
+      'I can improve a project without adding unnecessary complexity.',
+      'I can explain the project goal, audience, process, and result.',
+    ],
+    tags: ['ux-process', 'accessibility'],
+  },};
 
 export function getLessonTags(lesson: Lesson): LessonTag[] {
   const metadata = lessonMetadata[lesson.slug] ?? { tags: [] };

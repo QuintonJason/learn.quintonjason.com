@@ -1,0 +1,119 @@
+<section class="practice-lab" aria-labelledby="debug-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="debug-lab-title">Debugging Checklist Lab</h2>
+    <p>Choose a symptom, inspect the clues, then apply one fix at a time.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__panel">
+      <label>
+        Symptom
+        <select data-debug-symptom>
+          <option value="css">CSS is not loading</option>
+          <option value="image">Image is missing</option>
+          <option value="js">Button does nothing</option>
+          <option value="selector">Style rule is not applying</option>
+        </select>
+      </label>
+
+      <div class="practice-lab__actions" role="group" aria-label="Debugging steps">
+        <button type="button" data-debug-step="describe">Describe</button>
+        <button type="button" data-debug-step="inspect">Inspect</button>
+        <button type="button" data-debug-step="fix">Fix</button>
+        <button type="button" data-debug-step="test">Test</button>
+      </div>
+
+      <div class="practice-lab__status" data-debug-status>Start by describing the exact symptom.</div>
+    </div>
+
+    <div class="practice-lab__stage" data-debug-stage>
+      <article class="debug-card">
+        <h3>Campus Cafe</h3>
+        <div class="debug-card__image" data-debug-image>Image</div>
+        <p data-debug-copy>This card should have styling, an image, and a working details button.</p>
+        <button type="button" data-debug-button>Show details</button>
+        <p class="debug-card__details" data-debug-details hidden>Open late, has outlets, and accepts student meal plans.</p>
+      </article>
+    </div>
+  </div>
+
+  <pre><code data-debug-code>Describe the symptom before editing.</code></pre>
+</section>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const lab = document.querySelector('.practice-lab:has([data-debug-symptom])');
+
+  if (lab) {
+    const symptom = lab.querySelector('[data-debug-symptom]');
+    const status = lab.querySelector('[data-debug-status]');
+    const code = lab.querySelector('[data-debug-code]');
+    const image = lab.querySelector('[data-debug-image]');
+    const button = lab.querySelector('[data-debug-button]');
+    const details = lab.querySelector('[data-debug-details]');
+    const card = lab.querySelector('.debug-card');
+
+    const data = {
+      css: {
+        describe: 'Symptom: the content appears, but the visual styling is missing.',
+        inspect: 'Network clue: css/styles.css returns 404 because the real folder is CSS.',
+        fix: '<link rel="stylesheet" href="CSS/styles.css">',
+        test: 'Refresh the live page and confirm the stylesheet loads with status 200.',
+      },
+      image: {
+        describe: 'Symptom: the image area is broken or blank.',
+        inspect: 'Elements clue: src="img/cafe.jpg" but the file is img/Cafe.jpg.',
+        fix: '<img src="img/Cafe.jpg" alt="Students studying inside Campus Cafe">',
+        test: 'Open the image URL directly and confirm the file name matches exactly.',
+      },
+      js: {
+        describe: 'Symptom: the button is visible, but clicking it does nothing.',
+        inspect: 'Console clue: Cannot read properties of null because the selector name changed.',
+        fix: 'document.querySelector("[data-details-button]")',
+        test: 'Click the button and confirm the details text appears once.',
+      },
+      selector: {
+        describe: 'Symptom: one CSS rule is not changing the card.',
+        inspect: 'Styles clue: CSS uses .feature-card, but HTML uses class="featured-card".',
+        fix: '.featured-card { border-color: #73d36b; }',
+        test: 'Inspect the card and confirm the rule is applied, not crossed out.',
+      },
+    };
+
+    function resetPreview() {
+      card.classList.toggle('is-plain', symptom.value === 'css');
+      image.classList.toggle('is-missing', symptom.value === 'image');
+      button.dataset.broken = String(symptom.value === 'js');
+      card.classList.toggle('needs-selector-fix', symptom.value === 'selector');
+      details.hidden = true;
+    }
+
+    function setStep(step) {
+      const item = data[symptom.value][step];
+      status.textContent = item;
+      code.textContent = step === 'fix' ? item : `${step}: ${item}`;
+      if (step === 'fix' || step === 'test') {
+        card.classList.remove('is-plain', 'needs-selector-fix');
+        image.classList.remove('is-missing');
+        button.dataset.broken = 'false';
+      }
+    }
+
+    symptom.addEventListener('change', () => {
+      resetPreview();
+      setStep('describe');
+    });
+
+    lab.querySelectorAll('[data-debug-step]').forEach((control) => {
+      control.addEventListener('click', () => setStep(control.dataset.debugStep));
+    });
+
+    button.addEventListener('click', () => {
+      if (button.dataset.broken !== 'true') details.hidden = !details.hidden;
+    });
+
+    resetPreview();
+    setStep('describe');
+  }
+</script>

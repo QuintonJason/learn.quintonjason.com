@@ -6804,4 +6804,2542 @@ select:focus-visible {
       },
     ],
   },
+  {
+    slug: 'debugging-web-projects',
+    number: '25',
+    title: 'Debugging Web Projects',
+    eyebrow: 'Debugging',
+    summary:
+      'Use a calm debugging playbook to find and fix broken HTML, CSS, JavaScript, images, links, responsive layouts, and published-site problems.',
+    goals: [
+      'Use a repeatable debugging process instead of guessing',
+      'Use DevTools, the console, the network panel, and validators to locate problems',
+      'Fix common HTML, CSS, JavaScript, path, responsive, and GitHub Pages issues',
+      'Test one change at a time and confirm the fix on the live site',
+    ],
+    sections: [
+      {
+        title: 'Debugging Mindset',
+        body: [
+          'Debugging means finding the difference between what you expected and what the browser is actually doing. The goal is not to guess faster. The goal is to make the problem smaller until the cause becomes visible.',
+          'Do not change five things at once. Describe the symptom, inspect the page, test one likely cause, refresh, and keep track of what changed.',
+        ],
+        note:
+          'A calm debugging process is a professional skill. The browser gives you clues; your job is to read them before rewriting the project.',
+      },
+      {
+        title: 'The Debugging Loop',
+        table: {
+          headers: ['Step', 'Question', 'Action'],
+          rows: [
+            ['Observe', 'What exactly is broken?', 'Describe the symptom in one sentence before editing.'],
+            ['Inspect', 'What does the browser see?', 'Use DevTools to inspect HTML, CSS, console messages, and network requests.'],
+            ['Isolate', 'Can I make the problem smaller?', 'Test one file, selector, component, or line at a time.'],
+            ['Change', 'What is one likely fix?', 'Make one change and refresh.'],
+            ['Confirm', 'Did the fix work everywhere?', 'Retest locally, at mobile widths, and on the published site.'],
+          ],
+        },
+      },
+      {
+        title: 'CSS Is Not Applying',
+        body: [
+          'When CSS is not working, first decide whether the stylesheet failed to load or whether the selector/rule is not matching the element.',
+        ],
+        table: {
+          headers: ['Check', 'What To Do'],
+          rows: [
+            ['Stylesheet path', 'Open DevTools Network and confirm the CSS file returns `200`, not `404`.'],
+            ['Selector match', 'Inspect the element and check whether the selector appears in the Styles panel.'],
+            ['Cascade conflict', 'Look for crossed-out rules and stronger selectors overriding your rule.'],
+            ['Spelling', 'Compare class names in HTML and CSS exactly, including hyphens.'],
+          ],
+        },
+        code: `<!-- HTML -->
+<section class="project-card">...</section>
+
+/* CSS bug: selector does not match the class */
+.projectcard {
+  border: 1px solid currentColor;
+}
+
+/* Fix */
+.project-card {
+  border: 1px solid currentColor;
+}`,
+      },
+      {
+        title: 'Images or Links Are Broken',
+        body: [
+          'Broken images and links are usually path problems. The path starts from the file that contains the `src` or `href`, not from the project folder you see in VS Code.',
+        ],
+        code: `<!-- index.html is beside the images folder -->
+<img src="images/hero.jpg" alt="Student portfolio homepage">
+
+<!-- about/index.html is inside an about folder -->
+<img src="../images/hero.jpg" alt="Student portfolio homepage">`,
+        bullets: [
+          'Use the Network panel to find missing files with `404` status codes.',
+          'Check spelling and capitalization exactly. Published sites are often case-sensitive.',
+          'Do not use local computer paths like `C:/Users/name/Desktop/image.jpg` in HTML.',
+          'Open the image or linked page URL directly in the browser to confirm it exists.',
+        ],
+      },
+      {
+        title: 'JavaScript Does Nothing',
+        body: [
+          'When JavaScript stops working, open the console before editing. Read the first error first. Later errors may be caused by the first one.',
+        ],
+        code: `Uncaught TypeError: Cannot read properties of null
+
+Meaning:
+JavaScript tried to use an element that was not found.
+
+First checks:
+1. Does the selector match the HTML?
+2. Does the script run after the HTML exists?
+3. Is the script on the correct page?`,
+      },
+      {
+        title: 'Common JavaScript Selector Bug',
+        code: `<!-- HTML -->
+<button class="menu-button" type="button">Menu</button>
+
+// JavaScript bug: selector is missing the hyphen
+const button = document.querySelector('.menubutton');
+button.addEventListener('click', openMenu);
+
+// Fix
+const button = document.querySelector('.menu-button');
+button.addEventListener('click', openMenu);`,
+        note:
+          'If `querySelector()` cannot find the element, it returns `null`. Calling methods on `null` causes the script to fail.',
+      },
+      {
+        title: 'Script Loading Order',
+        body: [
+          'If JavaScript runs before the HTML exists, selectors may return `null`. A simple fix is to place the script at the end of the `body` or use the `defer` attribute when loading an external script.',
+        ],
+        code: `<!-- Good option: defer external JavaScript -->
+<script src="script.js" defer></script>
+
+<!-- Good option: place script before closing body tag -->
+<script src="script.js"></script>
+</body>`,
+      },
+      {
+        title: 'HTML Validation',
+        body: [
+          'Invalid HTML can create layout, styling, and accessibility problems that look like CSS or JavaScript bugs. Use a validator when the page behaves strangely and the cause is not obvious.',
+        ],
+        table: {
+          headers: ['Problem', 'Why It Matters'],
+          rows: [
+            ['Missing closing tag', 'The browser may nest content in a different place than you expect.'],
+            ['Duplicate `id` values', 'Labels, links, and JavaScript may connect to the wrong element.'],
+            ['Invalid nesting', 'Interactive elements or layout sections may behave unpredictably.'],
+            ['Missing required attributes', 'Forms, images, and metadata may lose meaning.'],
+          ],
+        },
+      },
+      {
+        title: 'Published Site Debugging',
+        body: [
+          'Always test the published URL. Local preview and GitHub Pages are different environments, so a site can work locally and fail online.',
+        ],
+        table: {
+          headers: ['Symptom', 'Likely Cause', 'First Check'],
+          rows: [
+            ['Published site shows old content', 'Latest changes were not pushed or deploy is still running', 'Check GitHub Desktop and the repository commit history.'],
+            ['CSS missing online', 'Wrong path, capitalization mismatch, or file not committed', 'Open the CSS URL from the live page.'],
+            ['Image missing online', 'Case-sensitive file name or wrong folder path', 'Compare the image file name and `src` exactly.'],
+            ['GitHub Pages shows `404`', 'Wrong branch, folder, or published URL', 'Check repository Settings > Pages.'],
+            ['Works on homepage but not subpage', 'Path assumes the wrong folder depth', 'Rewrite the path from the current HTML file.'],
+          ],
+        },
+      },
+      {
+        title: 'Mobile Overflow Debugging',
+        body: [
+          'Horizontal scrolling usually means something is wider than the viewport. Use the responsive device toolbar and inspect the widest-looking element.',
+        ],
+        bullets: [
+          'Look for fixed widths like `width: 1200px`.',
+          'Check large images, tables, long words, and wide flex rows.',
+          'Use `max-width: 100%` on images and media.',
+          'Allow grids and flex layouts to wrap or change at smaller widths.',
+        ],
+        code: `img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}`,
+      },
+      {
+        title: 'Do Not Debug by Shotgun',
+        table: {
+          headers: ['Avoid', 'Do Instead'],
+          rows: [
+            ['Renaming random files', 'Check which path the browser requested.'],
+            ['Changing many CSS rules at once', 'Change one rule and refresh.'],
+            ['Ignoring the first console error', 'Read and fix the first error first.'],
+            ['Copying absolute local file paths', 'Use relative paths inside the project.'],
+            ['Trusting only local preview', 'Test the published URL after pushing.'],
+          ],
+        },
+      },
+      {
+        title: 'Debugging Checklist',
+        bullets: [
+          'Describe the exact symptom before editing.',
+          'Inspect the element instead of guessing which CSS rule wins.',
+          'Use the Console for JavaScript errors.',
+          'Use the Network panel for missing CSS, JavaScript, images, and pages.',
+          'Validate HTML if the page structure behaves strangely.',
+          'Check file paths from the current HTML file.',
+          'Test one change at a time.',
+          'Commit, push, and test the live URL before submitting.',
+        ],
+      },
+    ],
+    practice: [
+      'Break one CSS selector on purpose, inspect the element, and fix it.',
+      'Break one image path on purpose and use the Network panel to find the missing file.',
+      'Create a `querySelector()` typo, read the console error, and fix the selector.',
+      'Run your HTML through the W3C validator and fix one issue.',
+      'Find one mobile overflow issue or confirm your project has none at small widths.',
+      'Publish your project and verify that the live URL matches your local version.',
+    ],
+    resources: [
+      {
+        label: 'Chrome DevTools Console',
+        href: 'https://developer.chrome.com/docs/devtools/console',
+      },
+      {
+        label: 'Chrome DevTools Network Panel',
+        href: 'https://developer.chrome.com/docs/devtools/network',
+      },
+      {
+        label: 'W3C Markup Validator',
+        href: 'https://validator.w3.org/',
+      },
+      {
+        label: 'MDN Debugging CSS',
+        href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Debugging_CSS',
+      },
+      {
+        label: 'MDN What Went Wrong? Troubleshooting JavaScript',
+        href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_went_wrong',
+      },
+      {
+        label: 'Can I use',
+        href: 'https://caniuse.com/',
+      },
+    ],
+  },
+  {
+    slug: 'devtools-for-designers',
+    number: '26',
+    title: 'DevTools for Designers',
+    eyebrow: 'DevTools',
+    summary:
+      'Use browser DevTools as a live design microscope to inspect layout, spacing, typography, responsive behavior, accessibility, assets, and performance clues.',
+    goals: [
+      'Inspect HTML and CSS in the browser without guessing',
+      'Use the box model, computed styles, and live CSS editing to refine design decisions',
+      'Test responsive layouts, Flexbox/Grid overlays, accessibility names, and loaded assets',
+      'Move temporary DevTools experiments back into real project files',
+    ],
+    sections: [
+      {
+        title: 'DevTools Is a Design Tool',
+        body: [
+          'DevTools lets you see the page the way the browser sees it. It is useful for debugging, but it is also one of the best tools for design refinement.',
+          'Use it to inspect spacing, type, color, layout, image size, responsive behavior, accessibility names, and which CSS rule is actually winning.',
+        ],
+        note:
+          'Changes made in DevTools are temporary. If a change works, copy it back into your real CSS, HTML, or JavaScript file before refreshing.',
+      },
+      {
+        title: 'Core Panels',
+        table: {
+          headers: ['Panel or Tool', 'Use It For', 'Student Example'],
+          rows: [
+            ['Elements', 'Inspecting HTML, CSS rules, layout, and the box model.', 'Find why a card has too much padding.'],
+            ['Computed', 'Seeing the final value the browser uses after the cascade.', 'Confirm the actual font size or color.'],
+            ['Console', 'Reading JavaScript errors and quick messages.', 'Find why a menu button stopped working.'],
+            ['Network', 'Checking loaded files, image sizes, fonts, and missing assets.', 'Find a huge image or missing stylesheet.'],
+            ['Device Toolbar', 'Testing responsive widths and touch-sized layouts.', 'Preview a site at phone and tablet sizes.'],
+            ['Lighthouse', 'Auditing accessibility, performance, SEO, and best practices.', 'Run a final project check after manual review.'],
+          ],
+        },
+      },
+      {
+        title: 'Elements Panel Workflow',
+        body: [
+          'Use this workflow when something looks wrong but you are not sure which rule controls it.',
+        ],
+        table: {
+          headers: ['Step', 'Action'],
+          rows: [
+            ['Select', 'Use the element picker and click the exact element on the page.'],
+            ['Read', 'Look at the HTML, classes, and CSS rules in the Styles panel.'],
+            ['Compare', 'Notice crossed-out rules, inherited rules, and which selector wins.'],
+            ['Test', 'Change one value in DevTools and watch the page update live.'],
+            ['Save', 'Copy the working change back into the real stylesheet.'],
+          ],
+        },
+        code: `.card {
+  padding: 1rem;
+  border: 1px solid currentColor;
+}
+
+/* Try changes live in DevTools, then copy the final version into your CSS file. */`,
+      },
+      {
+        title: 'Inspect the Box Model',
+        body: [
+          'The box model view shows the actual content size, padding, border, and margin for the selected element. This is the fastest way to understand spacing problems.',
+        ],
+        table: {
+          headers: ['Question', 'Where To Look'],
+          rows: [
+            ['Why is there space inside the card?', 'Check `padding` in the box model.'],
+            ['Why is there space outside the button?', 'Check `margin` in the box model.'],
+            ['Why is the element wider than expected?', 'Check content width, padding, border, and `box-sizing`.'],
+            ['Why does a rule not apply?', 'Look for crossed-out styles or a stronger selector.'],
+          ],
+        },
+      },
+      {
+        title: 'Computed Styles',
+        body: [
+          'The Computed panel shows the final values after the cascade, inheritance, media queries, and browser defaults are resolved.',
+        ],
+        bullets: [
+          'Use it to confirm the real `font-size`, `color`, `line-height`, `display`, and `width`.',
+          'Expand a computed value to see which CSS rule created it.',
+          'Use it when several selectors are fighting over the same property.',
+        ],
+      },
+      {
+        title: 'Responsive Testing Workflow',
+        body: [
+          'The device toolbar is not a replacement for real-device testing, but it is an excellent first pass for finding layout problems.',
+        ],
+        table: {
+          headers: ['Step', 'Action'],
+          rows: [
+            ['Open', 'Turn on the device toolbar in DevTools.'],
+            ['Resize', 'Drag slowly from wide to narrow and watch where the layout breaks.'],
+            ['Check navigation', 'Confirm menus, links, and buttons remain usable.'],
+            ['Check content', 'Look for overlapping text, cropped images, and tiny tap targets.'],
+            ['Check overflow', 'Look for horizontal scrolling or elements wider than the viewport.'],
+            ['Fix', 'Adjust CSS in DevTools, then move the final rule into your stylesheet.'],
+          ],
+        },
+      },
+      {
+        title: 'Flexbox and Grid Overlays',
+        body: [
+          'DevTools can draw visual overlays for Flexbox and Grid. These overlays help you see tracks, gaps, alignment, wrapping, and the space each layout system controls.',
+        ],
+        bullets: [
+          'Use Flexbox overlays to inspect direction, wrapping, and alignment.',
+          'Use Grid overlays to inspect columns, rows, gaps, and grid areas.',
+          'Turn overlays on when a layout feels close but spacing or alignment is hard to see.',
+        ],
+      },
+      {
+        title: 'Accessibility Inspection',
+        body: [
+          'DevTools can help you inspect how an element is exposed to assistive technology. This is especially useful for checking buttons, links, form labels, images, and custom controls.',
+        ],
+        table: {
+          headers: ['Check', 'What To Look For'],
+          rows: [
+            ['Accessible name', 'Does the button, link, image, or input have a clear name?'],
+            ['Role', 'Is the element exposed as the correct type of control?'],
+            ['Focus', 'Can the element receive keyboard focus when it should?'],
+            ['Contrast', 'Does text meet contrast expectations in Lighthouse or an accessibility tool?'],
+            ['Alt text', 'Does the image communicate useful meaning or stay decorative with empty `alt=""`?'],
+          ],
+        },
+        note:
+          'Automated accessibility tools support your review, but they do not replace keyboard testing or human judgment.',
+      },
+      {
+        title: 'Network Panel for Assets',
+        body: [
+          'The Network panel shows what the browser requested and how large those files are. Use it for missing files, oversized images, font loading, and slow pages.',
+        ],
+        table: {
+          headers: ['Signal', 'What It Means'],
+          rows: [
+            ['`404` status', 'The file path is wrong or the file was not published.'],
+            ['Large image file', 'The image may need resizing or compression.'],
+            ['Many font files', 'The page may be loading too many font families or weights.'],
+            ['Slow JavaScript', 'A script or third-party embed may be delaying the page.'],
+          ],
+        },
+      },
+      {
+        title: 'Design Review Checklist',
+        body: [
+          'Use this quick pass when polishing a page. Inspect one real example of each item instead of only looking at the page from a distance.',
+        ],
+        bullets: [
+          'Inspect one heading and confirm its font size, line height, margin, and hierarchy.',
+          'Inspect one button and confirm hover, focus, padding, and contrast.',
+          'Inspect one card and check image ratio, padding, border, and spacing.',
+          'Inspect one layout and turn on the Flexbox or Grid overlay.',
+          'Inspect one image in the Network panel and check its file size.',
+          'Inspect one form control or button and confirm its accessible name.',
+          'Resize the page and identify the first width where the layout needs help.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Better Habit'],
+          rows: [
+            ['Editing in DevTools and forgetting to save', 'Copy working changes into your real files immediately.'],
+            ['Only testing preset device sizes', 'Drag the viewport slowly and watch every width in between.'],
+            ['Ignoring crossed-out CSS', 'Use crossed-out rules to understand the cascade.'],
+            ['Running Lighthouse first', 'Inspect and manually test first, then use Lighthouse as support.'],
+            ['Guessing image size from appearance', 'Check actual file size and dimensions in the Network panel.'],
+          ],
+        },
+      },
+    ],
+    practice: [
+      'Inspect a heading and identify its final `font-size`, `line-height`, and margin.',
+      'Inspect a button and test one temporary color, padding, or focus-style change.',
+      'Use the box model view to explain the spacing around one card.',
+      'Use the device toolbar to find one responsive issue or confirm none appears.',
+      'Turn on a Flexbox or Grid overlay for one layout in your project.',
+      'Open the Network panel and identify the largest image or asset on the page.',
+      'Inspect one button, link, image, or form input for its accessible name.',
+    ],
+    resources: [
+      {
+        label: 'Chrome DevTools Overview',
+        href: 'https://developer.chrome.com/docs/devtools',
+      },
+      {
+        label: 'Chrome Inspect CSS',
+        href: 'https://developer.chrome.com/docs/devtools/css',
+      },
+      {
+        label: 'Chrome Device Mode',
+        href: 'https://developer.chrome.com/docs/devtools/device-mode',
+      },
+      {
+        label: 'Chrome CSS Grid Inspection',
+        href: 'https://developer.chrome.com/docs/devtools/css/grid',
+      },
+      {
+        label: 'Chrome Accessibility Reference',
+        href: 'https://developer.chrome.com/docs/devtools/accessibility/reference',
+      },
+      {
+        label: 'Firefox Developer Tools',
+        href: 'https://firefox-source-docs.mozilla.org/devtools-user/index.html',
+      },
+    ],
+  },
+  {
+    slug: 'css-grid',
+    number: '27',
+    title: 'CSS Grid',
+    eyebrow: 'Layout',
+    summary:
+      'Use CSS Grid to build two-dimensional layouts, card grids, page regions, galleries, feature layouts, and responsive structures.',
+    goals: [
+      'Explain when Grid is a better fit than Flexbox',
+      'Create columns and rows with `grid-template-columns`, `grid-template-rows`, `fr`, `repeat()`, and `gap`',
+      'Build responsive grids with media queries and `auto-fit` / `minmax()`',
+      'Place and align grid items with `grid-column`, `grid-row`, and alignment properties',
+    ],
+    sections: [
+      {
+        title: 'Grid Is for Two Dimensions',
+        body: [
+          'Flexbox is usually best for arranging items in one direction. Grid is best when rows and columns need to work together.',
+          'Use Grid for page layouts, galleries, cards, product listings, dashboards, feature sections, and areas where vertical and horizontal alignment both matter.',
+        ],
+      },
+      {
+        title: 'Flexbox vs Grid',
+        table: {
+          headers: ['Use Flexbox When', 'Use Grid When'],
+          rows: [
+            ['Items mainly flow in one direction.', 'You need rows and columns together.'],
+            ['You are aligning nav links, buttons, or small groups.', 'You are building page regions or card layouts.'],
+            ['Content size should influence the layout.', 'The layout structure should guide the content.'],
+            ['You need simple vertical or horizontal alignment.', 'You need tracks, gaps, spans, or named areas.'],
+          ],
+        },
+      },
+      {
+        title: 'Grid Mental Model',
+        table: {
+          headers: ['Term', 'Meaning'],
+          rows: [
+            ['Grid container', 'The parent element with `display: grid`.'],
+            ['Grid item', 'A direct child of the grid container. Nested grandchildren are not grid items unless their parent is also a grid.'],
+            ['Track', 'A row or column.'],
+            ['Cell', 'One space where a row and column cross.'],
+            ['Gap', 'The space between rows and columns.'],
+            ['Grid line', 'The numbered line at the edge of a row or column.'],
+          ],
+        },
+      },
+      {
+        title: 'Basic Grid',
+        body: [
+          'Start by turning the parent into a grid. Then define the columns, rows, and gaps the direct children should use.',
+        ],
+        code: `.gallery {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr 1fr;
+}`,
+      },
+      {
+        title: 'The `fr` Unit',
+        body: [
+          'The `fr` unit means a share of the available space. Three `1fr` columns split the available width into three equal parts.',
+        ],
+        code: `.three-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.sidebar-layout {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+}`,
+      },
+      {
+        title: '`repeat()` Shorthand',
+        body: [
+          '`repeat()` lets you write repeated tracks more clearly. These two examples create the same three equal columns.',
+        ],
+        code: `.gallery-longhand {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.gallery-repeat {
+  grid-template-columns: repeat(3, 1fr);
+}`,
+      },
+      {
+        title: 'Responsive Card Grid',
+        body: [
+          'This pattern creates cards that wrap into as many columns as fit. It is useful for projects, products, articles, image galleries, and resource lists.',
+        ],
+        code: `.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}`,
+      },
+      {
+        title: 'Breaking Down `auto-fit` and `minmax()`',
+        table: {
+          headers: ['Part', 'Meaning'],
+          rows: [
+            ['`repeat(...)`', 'Repeats a column pattern.'],
+            ['`auto-fit`', 'Creates as many columns as can fit in the available space.'],
+            ['`minmax(16rem, 1fr)`', 'Each column should be at least `16rem`, but can grow to share available space.'],
+            ['`gap: 1rem`', 'Keeps consistent space between cards without adding margins to each card.'],
+          ],
+        },
+        note:
+          'If cards become too narrow, increase the minimum value in `minmax()`. If too few cards fit, lower the minimum value carefully.',
+      },
+      {
+        title: 'Media Query Strategy',
+        body: [
+          'You can also change the number of columns with media queries. This is easier to understand when the layout needs specific breakpoints.',
+        ],
+        code: `.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 72rem) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}`,
+      },
+      {
+        title: 'Placing Items',
+        body: [
+          'Grid items can span across columns or rows. This is useful for featured cards, large images, or layouts where one item needs more space.',
+        ],
+        code: `.project-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.featured-card {
+  grid-column: span 2;
+}`,
+      },
+      {
+        title: 'Sidebar Layout',
+        body: [
+          'A common page pattern is a sidebar beside main content. On small screens, stack the layout into one column.',
+        ],
+        code: `.page-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 64rem) {
+  .page-layout {
+    grid-template-columns: 16rem 1fr;
+  }
+}`,
+      },
+      {
+        title: 'Grid Areas',
+        body: [
+          'Grid areas can make a page layout readable in CSS. Use them when the structure is clear and not too complex.',
+        ],
+        code: `.page {
+  display: grid;
+  gap: 1rem;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  grid-template-columns: 16rem 1fr;
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }
+.footer { grid-area: footer; }`,
+      },
+      {
+        title: 'Alignment in Grid',
+        body: [
+          'Grid has alignment tools for items inside their cells and for the whole grid inside the container.',
+        ],
+        table: {
+          headers: ['Property', 'What It Controls'],
+          rows: [
+            ['`justify-items`', 'Horizontal alignment of items inside their grid cells.'],
+            ['`align-items`', 'Vertical alignment of items inside their grid cells.'],
+            ['`justify-content`', 'Horizontal alignment of the whole grid when extra space exists.'],
+            ['`align-content`', 'Vertical alignment of the whole grid when extra space exists.'],
+          ],
+        },
+        code: `.logo-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  justify-items: center;
+}`,
+      },
+      {
+        title: 'Use DevTools Grid Overlays',
+        body: [
+          'Turn on the Grid overlay in DevTools to see columns, rows, line numbers, gaps, and grid areas. It makes abstract layout rules visible.',
+        ],
+        bullets: [
+          'Inspect the grid container, not only an individual card.',
+          'Turn on line numbers when using `grid-column` or `grid-row`.',
+          'Use the overlay to confirm whether gaps and tracks match your plan.',
+        ],
+      },
+      {
+        title: 'Common Layout Patterns',
+        table: {
+          headers: ['Pattern', 'Grid Feature'],
+          rows: [
+            ['Card grid', '`repeat()`, `gap`, and `minmax()`'],
+            ['Sidebar and main content', 'Two columns with a media query'],
+            ['Image gallery', 'Equal columns and consistent gaps'],
+            ['Featured card span', '`grid-column: span 2`'],
+            ['Dashboard layout', 'Rows, columns, and sometimes grid areas'],
+          ],
+        },
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Fix'],
+          rows: [
+            ['Putting `display: grid` on the wrong element', 'The grid container must be the parent of the items you want to arrange.'],
+            ['Expecting nested grandchildren to become grid items', 'Only direct children become grid items. Add another grid to the nested parent if needed.'],
+            ['Using fixed pixel columns everywhere', 'Use `fr`, percentages, `minmax()`, and media queries.'],
+            ['Forgetting `gap`', 'Use `gap` instead of adding margins to every item.'],
+            ['Making `minmax()` columns too narrow', 'Choose a minimum width that preserves readable content.'],
+            ['Using Grid for every alignment problem', 'Use Flexbox for simple one-direction alignment.'],
+          ],
+        },
+      },
+    ],
+    practice: [
+      'Convert a group of cards into a responsive CSS Grid layout.',
+      'Build a sidebar and main content layout that becomes one column on small screens.',
+      'Create a featured card that spans two columns on larger screens.',
+      'Use both a media-query strategy and an `auto-fit` / `minmax()` strategy, then compare them.',
+      'Use DevTools Grid overlays to inspect rows, columns, line numbers, and gaps.',
+    ],
+    resources: [
+      {
+        label: 'MDN CSS Grid Layout',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout',
+      },
+      {
+        label: 'MDN Basic Concepts of Grid Layout',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Basic_concepts_of_grid_layout',
+      },
+      {
+        label: 'CSS Tricks Complete Guide to Grid',
+        href: 'https://css-tricks.com/snippets/css/complete-guide-grid/',
+      },
+      {
+        label: 'CSS Grid Garden',
+        href: 'https://cssgridgarden.com/',
+      },
+      {
+        label: 'web.dev Learn CSS Grid',
+        href: 'https://web.dev/learn/css/grid',
+      },
+    ],
+  },
+  {
+    slug: 'design-systems-and-reusable-components',
+    number: '28',
+    title: 'Design Systems',
+    eyebrow: 'Systems',
+    summary:
+      'Create a mini design system with reusable colors, spacing, typography, buttons, cards, forms, navigation, states, and accessibility rules for a consistent project.',
+    goals: [
+      'Explain what a small project design system does',
+      'Define reusable tokens for color, type, spacing, radius, borders, and shadows',
+      'Build consistent buttons, cards, forms, containers, and navigation patterns',
+      'Audit a project for one-off styles and refactor them into reusable components',
+    ],
+    sections: [
+      {
+        title: 'Design Systems in Student Terms',
+        body: [
+          'A small design system is the reusable visual and code rules for your project. It helps the site feel intentional instead of like every page was styled separately.',
+          'For class projects, a design system does not need to be huge. Start with shared colors, type, spacing, buttons, cards, forms, navigation, layout containers, and states.',
+        ],
+      },
+      {
+        title: 'What Belongs in a Mini Design System',
+        table: {
+          headers: ['Part', 'Decisions To Make'],
+          rows: [
+            ['Colors', 'Background, text, brand, accent, border, muted text, success, warning, and error colors.'],
+            ['Typography', 'Font families, heading scale, body size, line height, and font weights.'],
+            ['Spacing', 'Reusable spacing values for sections, cards, grids, and form fields.'],
+            ['Components', 'Buttons, cards, forms, navigation, badges, and layout containers.'],
+            ['States', 'Hover, focus, active/current, disabled, loading, error, and success states.'],
+            ['Accessibility', 'Contrast, visible focus, semantic HTML, labels, and keyboard-friendly controls.'],
+          ],
+        },
+      },
+      {
+        title: 'Design Tokens',
+        body: [
+          'Tokens are named values. They make design decisions easier to reuse and easier to change later.',
+          'Use names that describe purpose when possible. `--color-brand` is more useful than `--blue` because the brand color may change later.',
+        ],
+        code: `:root {
+  --color-background: #ffffff;
+  --color-surface: #f7f7f4;
+  --color-text: #111111;
+  --color-muted: #5f635f;
+  --color-brand: #2f6fed;
+  --color-border: #d8ddd8;
+  --color-error: #b42318;
+
+  --font-body: system-ui, sans-serif;
+  --font-display: Georgia, serif;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --shadow-card: 0 0.75rem 2rem rgb(0 0 0 / 0.08);
+}`,
+      },
+      {
+        title: 'Naming Guidance',
+        table: {
+          headers: ['Avoid', 'Prefer', 'Why'],
+          rows: [
+            ['`--blue`', '`--color-brand`', 'Purpose survives if the color changes.'],
+            ['`--big-space`', '`--space-4` or `--space-lg`', 'A scale keeps spacing consistent.'],
+            ['`.big-blue-button`', '`.button-primary`', 'Role matters more than appearance.'],
+            ['`.left-box`', '`.sidebar` or `.card-aside`', 'Names should explain the component or purpose.'],
+          ],
+        },
+      },
+      {
+        title: 'Button Component',
+        body: [
+          'A button component should include spacing, color, hover, focus, and disabled states. Use a real `button` for actions and an `a` element for navigation links.',
+        ],
+        code: `<a class="button button-primary" href="/projects/">View projects</a>
+<button class="button button-secondary" type="button">Save draft</button>
+
+.button {
+  align-items: center;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  font-weight: 800;
+  gap: 0.5rem;
+  min-block-size: 2.75rem;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+.button-primary {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+.button-secondary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}`,
+      },
+      {
+        title: 'Card Component',
+        body: [
+          'Cards should use consistent padding, border, image ratios, heading size, and link behavior. A card is a repeated content pattern, not just a decorative box.',
+        ],
+        code: `<article class="card">
+  <img class="card-image" src="project.jpg" alt="Homepage design for a restaurant guide">
+  <div class="card-body">
+    <h2 class="card-title">Restaurant Guide</h2>
+    <p>A responsive listing project for local restaurants.</p>
+    <a href="/projects/restaurant-guide/">View project</a>
+  </div>
+</article>
+
+.card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.card-image {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card-body {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2);
+}`,
+      },
+      {
+        title: 'Form Field Component',
+        body: [
+          'Form styles should include labels, help text, errors, and focus states. Do not rely on placeholder text as the only label.',
+        ],
+        code: `<div class="form-field">
+  <label for="email">Email address</label>
+  <input id="email" name="email" type="email" aria-describedby="email-help">
+  <p id="email-help">Use the email address you check most often.</p>
+</div>
+
+.form-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-field input {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  padding: 0.75rem;
+}`,
+      },
+      {
+        title: 'Layout Container',
+        body: [
+          'A reusable container keeps page content aligned across sections. It is one of the simplest ways to make a site feel consistent.',
+        ],
+        code: `.container {
+  margin-inline: auto;
+  max-width: 72rem;
+  padding-inline: var(--space-2);
+}
+
+.section {
+  padding-block: var(--space-4);
+}`,
+      },
+      {
+        title: 'States Are Part of the System',
+        body: [
+          'A component is not complete if it only covers the default state. Include the states users will actually encounter.',
+        ],
+        table: {
+          headers: ['State', 'System Decision'],
+          rows: [
+            ['Hover', 'How links and buttons respond to pointer interaction.'],
+            ['Focus', 'Visible keyboard focus style for links, buttons, and form fields.'],
+            ['Active/current', 'How current navigation or selected filters are shown.'],
+            ['Disabled', 'How unavailable actions look without disappearing.'],
+            ['Error', 'How form fields communicate what needs to be fixed.'],
+            ['Success', 'How completed actions are confirmed.'],
+          ],
+        },
+        code: `:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 3px;
+}
+
+.button-primary:hover {
+  filter: brightness(0.92);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}`,
+      },
+      {
+        title: 'Accessibility Rules',
+        bullets: [
+          'Use semantic HTML before creating custom controls.',
+          'Keep text and button contrast readable.',
+          'Include visible focus styles in every interactive component.',
+          'Use `label` elements for form controls.',
+          'Do not make every component a generic `div`.',
+          'Test reusable components with keyboard input, not only a mouse.',
+        ],
+      },
+      {
+        title: 'Before and After Refactor',
+        body: [
+          'Design systems often begin by noticing repeated one-off styles and turning them into reusable classes.',
+        ],
+        code: `/* Before: every card has its own style */
+.homepage-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+.project-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+/* After: shared component plus optional modifier */
+.card {
+  border: 1px solid var(--color-border);
+  padding: var(--space-2);
+}
+
+.card-featured {
+  box-shadow: var(--shadow-card);
+}`,
+      },
+      {
+        title: 'Audit Your Project',
+        body: [
+          'Before building new styles, inspect what already exists. Your first design system task is often reducing inconsistency.',
+        ],
+        table: {
+          headers: ['Audit Question', 'What To Look For'],
+          rows: [
+            ['How many button styles exist?', 'Repeated button CSS that could become `.button` and modifiers.'],
+            ['Are card paddings consistent?', 'Cards with different spacing values for no clear reason.'],
+            ['Are headings using the same scale?', 'Random font sizes instead of a type system.'],
+            ['Are colors repeated directly?', 'Hex values repeated throughout CSS instead of tokens.'],
+            ['Are focus states consistent?', 'Some components with focus styles and others without.'],
+          ],
+        },
+      },
+      {
+        title: 'Mini Style Guide Deliverable',
+        body: [
+          'A style guide page or section makes the system visible. It does not need to be fancy; it needs to show the decisions clearly.',
+        ],
+        bullets: [
+          'Color swatches with token names.',
+          'Heading and body text examples.',
+          'Primary and secondary buttons, including hover and focus states.',
+          'A card component with real content.',
+          'A form field with label, help text, and error state.',
+          'Navigation or link styles.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Fix'],
+          rows: [
+            ['Creating a new button style for every page', 'Create a shared `.button` class and modifier classes.'],
+            ['Using colors directly everywhere', 'Move repeated values into custom properties.'],
+            ['Changing spacing one element at a time', 'Use a spacing scale.'],
+            ['Making components visually consistent but semantically weak', 'Use correct HTML and accessibility behavior.'],
+            ['Building a huge system before the project needs it', 'Start with the patterns your project actually uses.'],
+          ],
+        },
+      },
+    ],
+    practice: [
+      'Identify three repeated patterns in your project.',
+      'Create reusable classes for buttons, cards, and form fields.',
+      'Replace repeated color and spacing values with named custom properties.',
+      'Add hover, focus, and disabled states to one button component.',
+      'Create a mini style guide section showing colors, type, buttons, cards, and form fields.',
+      'Refactor one pair of one-off styles into a shared component class and modifier.',
+    ],
+    resources: [
+      {
+        label: 'Design Systems 101',
+        href: 'https://www.nngroup.com/articles/design-systems-101/',
+      },
+      {
+        label: 'Material Design Foundations',
+        href: 'https://m3.material.io/foundations',
+      },
+      {
+        label: 'Carbon Design System',
+        href: 'https://carbondesignsystem.com/',
+      },
+      {
+        label: 'Shopify Polaris',
+        href: 'https://polaris.shopify.com/',
+      },
+      {
+        label: 'Salesforce Lightning Design System',
+        href: 'https://www.lightningdesignsystem.com/',
+      },
+    ],
+  },
+  {
+    slug: 'project-planning-and-content-strategy',
+    number: '29',
+    title: 'Project Planning',
+    eyebrow: 'Planning',
+    summary:
+      'Create a pre-build planning packet with audience goals, project goals, scope, sitemap, content inventory, navigation plan, and low-fidelity wireframes.',
+    goals: [
+      'Define audience, user goals, project goals, and success criteria',
+      'Control project scope with must-have, should-have, nice-to-have, and save-for-later decisions',
+      'Create a sitemap, content inventory, navigation plan, and page priority list',
+      'Use mobile-aware wireframes to plan before writing layout CSS',
+    ],
+    sections: [
+      {
+        title: 'Plan Before You Build',
+        body: [
+          'A website is easier to build when the purpose is clear. Before choosing colors, effects, or layouts, define who the site is for, what they need, and what action the page should support.',
+          'Planning does not remove creativity. It gives your creativity a target so you do not spend the project timeline redesigning the same page over and over.',
+        ],
+      },
+      {
+        title: 'Project Brief Template',
+        body: [
+          'A project brief turns a vague idea into a buildable direction. Keep it short enough that you can actually use it while designing and coding.',
+        ],
+        table: {
+          headers: ['Prompt', 'Example Answer'],
+          rows: [
+            ['Project name', 'Baton Rouge Study Spots'],
+            ['Audience', 'Students looking for quiet places to work.'],
+            ['User goal', 'Find a study spot with Wi-Fi, outlets, seating, and reasonable noise levels.'],
+            ['Site goal', 'Help students compare locations quickly and choose one to visit.'],
+            ['Required pages', 'Home, listings, detail page, about, contact.'],
+            ['Required content', 'Photos, hours, location, amenities, descriptions, and links.'],
+            ['Primary action', 'Open a detail page or save a favorite location.'],
+            ['Success criteria', 'A user can find a relevant spot in under two minutes.'],
+          ],
+        },
+      },
+      {
+        title: 'User Goals vs Project Goals',
+        body: [
+          'User goals describe what visitors need. Project goals describe what the site or creator needs to accomplish. Strong websites serve both without making users work too hard.',
+        ],
+        table: {
+          headers: ['User Goal', 'Project Goal'],
+          rows: [
+            ['Find a study spot with Wi-Fi.', 'Show useful location information clearly.'],
+            ['Compare restaurant options quickly.', 'Help users browse listings and open detail pages.'],
+            ['Understand a designer\'s work.', 'Present portfolio projects with process and outcomes.'],
+            ['Register for an event.', 'Make the event details and sign-up action easy to find.'],
+          ],
+        },
+      },
+      {
+        title: 'Control Scope',
+        body: [
+          'Students often overbuild. Scope control helps you protect the core experience before adding extras.',
+        ],
+        table: {
+          headers: ['Priority', 'Meaning', 'Example'],
+          rows: [
+            ['Must-have', 'Required for the project to work.', 'Homepage, main navigation, listing cards, detail page.'],
+            ['Should-have', 'Important but not blocking the core experience.', 'Filters, related items, contact form.'],
+            ['Nice-to-have', 'Adds polish if time allows.', 'Animation, theme toggle, carousel.'],
+            ['Save-for-later', 'Out of scope for this version.', 'User accounts, real database, complex search.'],
+          ],
+        },
+      },
+      {
+        title: 'Sitemap Examples',
+        body: [
+          'A sitemap shows the pages in a site and how they relate. Keep the first version simple so you can build it within the project timeline.',
+        ],
+        code: `Portfolio Site
+- Home
+- Work
+  - Project Detail
+- About
+- Contact
+
+Listing Site
+- Home
+- Listings
+  - Listing Detail
+- About
+
+Small Business Site
+- Home
+- Services
+- Gallery
+- About
+- Contact
+
+Event Site
+- Home
+- Schedule
+- Speakers
+- Venue
+- Register`,
+      },
+      {
+        title: 'Content Inventory',
+        body: [
+          'A content inventory lists what each page needs. This prevents empty layouts that look good but have no real information.',
+        ],
+        table: {
+          headers: ['Page', 'Required Content', 'Assets'],
+          rows: [
+            ['Home', 'Intro, featured items, primary call to action', 'Hero image, logo'],
+            ['Listing', 'Card title, category, short description, link to detail', 'Thumbnail images'],
+            ['Detail', 'Full description, facts, links, related items', 'Gallery images'],
+            ['About', 'Project purpose, audience, context', 'Portrait, process image, or brand graphic'],
+            ['Contact', 'Instructions, form fields, alternate contact method', 'No required image'],
+          ],
+        },
+      },
+      {
+        title: 'Content-First Planning',
+        body: [
+          'Layout depends on content. Before designing a page, write rough versions of the headings, paragraphs, button text, links, and image needs.',
+        ],
+        table: {
+          headers: ['Content Type', 'Planning Question'],
+          rows: [
+            ['Heading', 'What should the user understand first?'],
+            ['Body copy', 'What information helps the user decide or act?'],
+            ['Button text', 'What action should the user take?'],
+            ['Links', 'Where does the user need to go next?'],
+            ['Images', 'What image would add information instead of decoration?'],
+          ],
+        },
+      },
+      {
+        title: 'Page Priority',
+        body: [
+          'Every page needs hierarchy. Decide what is primary, secondary, supporting, and optional before arranging the layout.',
+        ],
+        table: {
+          headers: ['Priority', 'Meaning', 'Example'],
+          rows: [
+            ['Primary', 'The most important thing on the page.', 'Featured project, main offer, listing search.'],
+            ['Secondary', 'Useful content that supports the main goal.', 'Featured cards, intro copy, key facts.'],
+            ['Supporting', 'Context that helps but should not dominate.', 'Related links, testimonials, metadata.'],
+            ['Optional', 'Nice detail that can move lower or be removed.', 'Decorative image, extra feature, secondary animation.'],
+          ],
+        },
+      },
+      {
+        title: 'Navigation Planning',
+        body: [
+          'Planning navigation early prevents every page from becoming equally important. Main navigation should include the pages users need most often. Footer navigation can hold secondary links.',
+        ],
+        table: {
+          headers: ['Question', 'Planning Decision'],
+          rows: [
+            ['What belongs in main navigation?', 'Top-level pages users need to reach quickly.'],
+            ['What belongs in footer navigation?', 'Secondary pages, contact, policies, credits, or repeated utility links.'],
+            ['What should stay out of main navigation?', 'Detail pages, temporary pages, and low-priority support pages.'],
+            ['What needs a call-to-action link?', 'The primary action, such as view projects, register, contact, or browse listings.'],
+          ],
+        },
+      },
+      {
+        title: 'Wireframe Fidelity Levels',
+        body: [
+          'Wireframes focus on structure, hierarchy, and content placement. They should answer what goes where before the visual design becomes detailed.',
+        ],
+        table: {
+          headers: ['Level', 'Purpose'],
+          rows: [
+            ['Sketch', 'Fast idea generation with boxes and labels.'],
+            ['Low-fidelity wireframe', 'Clear layout structure without detailed styling.'],
+            ['High-fidelity mockup', 'Closer visual design with type, color, imagery, and spacing.'],
+            ['Coded prototype', 'A working version in HTML, CSS, and JavaScript.'],
+          ],
+        },
+      },
+      {
+        title: 'Mobile-First Planning',
+        body: [
+          'Plan how the page works on a small screen before relying on a wide desktop layout. Mobile planning forces stronger content priority.',
+        ],
+        bullets: [
+          'Decide what content appears first on mobile.',
+          'Identify what stacks, wraps, collapses, or moves lower on the page.',
+          'Avoid hiding important content just because the screen is smaller.',
+          'Plan tap-friendly buttons and readable spacing.',
+          'Sketch mobile and desktop versions when the layout changes meaningfully.',
+        ],
+      },
+      {
+        title: 'Pre-Build Planning Packet',
+        body: [
+          'Before opening VS Code for a larger project, create a small planning packet. It should be practical enough to guide your build, not a separate design performance.',
+        ],
+        bullets: [
+          'Project brief with audience, goals, required pages, and success criteria.',
+          'Scope list with must-have, should-have, nice-to-have, and save-for-later items.',
+          'Sitemap showing page relationships.',
+          'Content inventory for each required page.',
+          'Navigation plan for main nav, footer nav, and calls to action.',
+          'Low-fidelity wireframes for the most important pages.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Fix'],
+          rows: [
+            ['Starting with colors before goals', 'Define audience, goal, and content first.'],
+            ['Planning too many features', 'Protect the must-have scope.'],
+            ['Wireframing without real content', 'Draft headings, body copy, buttons, and links first.'],
+            ['Putting every page in main nav', 'Prioritize top-level pages and move support links lower.'],
+            ['Only planning desktop', 'Sketch the mobile content order too.'],
+          ],
+        },
+      },
+    ],
+    practice: [
+      'Write a project brief for your current site.',
+      'Create a must-have, should-have, nice-to-have, and save-for-later scope list.',
+      'Draw a sitemap with every page you plan to build.',
+      'Create a content inventory for at least three pages.',
+      'Write the primary heading, body copy, button text, and image needs for one key page.',
+      'Sketch one mobile low-fidelity wireframe and one desktop low-fidelity wireframe.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Information Architecture Basics',
+        href: 'https://www.nngroup.com/articles/ia-study-guide/',
+      },
+      {
+        label: 'NN/g Journey Mapping 101',
+        href: 'https://www.nngroup.com/articles/journey-mapping-101/',
+      },
+      {
+        label: 'Usability.gov Content Strategy Basics',
+        href: 'https://www.usability.gov/what-and-why/content-strategy.html',
+      },
+      {
+        label: 'Figma Wireframing Guide',
+        href: 'https://www.figma.com/resource-library/what-is-wireframing/',
+      },
+    ],
+  },
+  {
+    slug: 'deployment-and-launch-qa',
+    number: '30',
+    title: 'Deployment QA',
+    eyebrow: 'Launch',
+    summary:
+      'Use a deployment-day checklist to commit, push, verify GitHub Pages, test the live URL, and catch links, paths, mobile, accessibility, metadata, and performance issues.',
+    goals: [
+      'Follow a clear commit, push, deploy, and live-site testing sequence',
+      'Verify GitHub Pages branch, folder, deploy status, and live URL',
+      'Run local and live QA checks for links, paths, responsive layout, accessibility, metadata, and performance',
+      'Prepare the correct final submission information',
+    ],
+    sections: [
+      {
+        title: 'Local Done Is Not Published Done',
+        body: [
+          'A site can work locally and still fail after publishing. Deployment QA means testing the live URL, not only the VS Code preview.',
+          'Use this lesson as a launch checklist. Do the checks in order so you know whether the problem is local, in GitHub, or on the published site.',
+        ],
+      },
+      {
+        title: 'Launch Sequence',
+        table: {
+          headers: ['Stage', 'What To Do'],
+          rows: [
+            ['Before commit', 'Remove placeholders, test locally, check responsive layout, and confirm images are optimized.'],
+            ['After commit', 'Review changed files and make sure the commit message describes the work.'],
+            ['After push', 'Confirm the latest commit appears on GitHub.'],
+            ['After deploy', 'Wait for GitHub Pages to finish publishing and open the live URL.'],
+            ['Final review', 'Test links, images, CSS, JavaScript, accessibility, metadata, and mobile layout on the live site.'],
+          ],
+        },
+      },
+      {
+        title: 'GitHub Desktop Workflow',
+        body: [
+          'Commit and push are different steps. A commit saves a snapshot locally. Push sends that snapshot to GitHub so GitHub Pages can publish it.',
+        ],
+        table: {
+          headers: ['Step', 'Action'],
+          rows: [
+            ['Check changes', 'Open GitHub Desktop and review the changed files list.'],
+            ['Write summary', 'Use a short commit message such as "Finish project homepage".'],
+            ['Commit', 'Click `Commit to main` to save the changes locally.'],
+            ['Push', 'Click `Push origin` to send the commit to GitHub.'],
+            ['Verify', 'Open the GitHub repository and confirm the latest commit is visible.'],
+          ],
+        },
+      },
+      {
+        title: 'GitHub Pages Settings',
+        body: [
+          'If the live site is missing or stale, check the Pages settings before rewriting code.',
+        ],
+        table: {
+          headers: ['Setting', 'What To Check'],
+          rows: [
+            ['Branch', 'The site is publishing from the expected branch, usually `main`.'],
+            ['Folder', 'The site is publishing from the correct folder, often `/root` for simple projects.'],
+            ['Deploy status', 'The latest deploy finished successfully.'],
+            ['Live URL', 'You are testing the Pages URL, not only the repository URL.'],
+            ['Custom domain', 'If used, the domain points to the correct Pages site.'],
+          ],
+        },
+      },
+      {
+        title: 'Path and File Name Checks',
+        body: [
+          'Published websites are less forgiving than local previews. Path spelling and capitalization matter.',
+        ],
+        table: {
+          headers: ['Problem', 'Why It Breaks'],
+          rows: [
+            ['`Image.jpg` in HTML but `image.jpg` in the folder', 'Capitalization mismatch can break on the published site.'],
+            ['`css/style.css` in HTML but folder is `CSS`', 'Folder names must match exactly.'],
+            ['Spaces in file names', 'URLs become harder to write and easier to break.'],
+            ['Local file paths', 'Paths like `C:/Users/name/Desktop/image.jpg` only work on one computer.'],
+            ['Uncommitted files', 'GitHub Pages cannot publish files that were never committed and pushed.'],
+          ],
+        },
+      },
+      {
+        title: 'Live-Site Testing Checklist',
+        body: [
+          'Run this checklist on the published URL after GitHub Pages deploys.',
+        ],
+        bullets: [
+          'Homepage loads without a `404` error.',
+          'Every main navigation link works.',
+          'Footer links and call-to-action links work.',
+          'Images load on every page.',
+          'CSS styles load on every page.',
+          'JavaScript interactions work where expected.',
+          'Forms do not fake-submit unless intentionally disabled or explained.',
+          'The browser console has no obvious errors caused by your code.',
+          'No placeholder text, broken images, or unused template content remains.',
+        ],
+      },
+      {
+        title: 'Responsive QA Checklist',
+        body: [
+          'Test more than one screen size. Drag slowly between sizes because layouts often break between preset device widths.',
+        ],
+        table: {
+          headers: ['Width or Context', 'What To Check'],
+          rows: [
+            ['Small phone around `320px`', 'Navigation, buttons, forms, and text remain usable.'],
+            ['Large phone', 'Cards, images, and hero content scale cleanly.'],
+            ['Tablet', 'Two-column areas and galleries do not feel cramped.'],
+            ['Desktop', 'Line length, spacing, and max-widths stay readable.'],
+            ['Any width', 'No horizontal scrolling unless intentionally designed.'],
+          ],
+        },
+      },
+      {
+        title: 'Accessibility QA Checklist',
+        bullets: [
+          'Navigate the live site with `Tab`, `Shift + Tab`, `Enter`, and `Space`.',
+          'Confirm focus styles are visible.',
+          'Check that images have useful `alt` text or empty `alt=""` when decorative.',
+          'Confirm every form input has a visible `label`.',
+          'Check heading order and make sure each page has one clear `h1`.',
+          'Check text, link, and button contrast.',
+          'Make sure important information is not communicated by color alone.',
+        ],
+      },
+      {
+        title: 'Metadata and Findability Checks',
+        body: [
+          'Metadata helps the page make sense in browser tabs, search results, bookmarks, and shared links. Lesson 31 goes deeper, but these checks belong in launch QA too.',
+        ],
+        bullets: [
+          'Each page has a meaningful `title`.',
+          'Important pages have a useful `meta description`.',
+          'The homepage has a clear `h1` that matches the site purpose.',
+          'The favicon appears if the project includes one.',
+          'Open Graph metadata is present if shared-link previews matter for the project.',
+        ],
+      },
+      {
+        title: 'Performance and Image Checks',
+        bullets: [
+          'Large images are resized and compressed before publishing.',
+          'Images include `width` and `height` when possible to reduce layout shift.',
+          'The first visible image is not lazy-loaded if it is important above the fold.',
+          'Unused large assets are removed from the project folder.',
+          'Only necessary fonts, scripts, and embeds are loaded.',
+          'Lighthouse or PageSpeed Insights is used as a support tool, not the only test.',
+        ],
+      },
+      {
+        title: 'Common Launch Problems',
+        table: {
+          headers: ['Problem', 'Likely Cause', 'Fix'],
+          rows: [
+            ['Site shows `404`', 'Pages settings, branch, folder, or URL is wrong.', 'Check repository Settings > Pages.'],
+            ['Old version is live', 'Latest commit was not pushed or deploy is still running.', 'Push origin and wait for the deploy to finish.'],
+            ['CSS missing', 'Stylesheet path or capitalization is wrong.', 'Open the CSS URL from the live page and fix the path.'],
+            ['Images missing', 'Wrong folder path, case mismatch, or file not committed.', 'Compare `src` values with actual file names.'],
+            ['Subpage links break', 'Path assumes the wrong folder depth.', 'Rewrite links relative to the current HTML file.'],
+            ['JavaScript does not run', 'Script path, console error, or missing element.', 'Open the console and read the first error.'],
+            ['Mobile layout breaks live', 'Fixed widths or untested responsive state.', 'Use DevTools device toolbar on the live URL.'],
+          ],
+        },
+      },
+      {
+        title: 'Final Submission Checklist',
+        body: [
+          'Before submitting, make sure you are sending the right evidence of the finished project.',
+        ],
+        bullets: [
+          'Submit the live URL, not only the GitHub repository URL.',
+          'Submit the repository URL too if the assignment asks for it.',
+          'Include the project name and your name if required.',
+          'Mention any known issues honestly and briefly.',
+          'Confirm the live URL was tested after the final push.',
+          'Do one last click-through from the homepage to the important pages.',
+        ],
+      },
+    ],
+    practice: [
+      'Publish your current project and test the live URL.',
+      'Confirm your latest commit appears on GitHub after pushing.',
+      'Find and fix one issue that appears only after publishing.',
+      'Run a live-site link, image, responsive, keyboard, and metadata pass.',
+      'Write a short final submission note with the live URL and any known issues.',
+    ],
+    resources: [
+      {
+        label: 'GitHub Pages Documentation',
+        href: 'https://docs.github.com/en/pages',
+      },
+      {
+        label: 'GitHub Pages Quickstart',
+        href: 'https://docs.github.com/en/pages/quickstart',
+      },
+      {
+        label: 'GitHub Pages Troubleshooting',
+        href: 'https://docs.github.com/en/pages/getting-started-with-github-pages/troubleshooting-404-errors-for-github-pages-sites',
+      },
+      {
+        label: 'Chrome DevTools Network Panel',
+        href: 'https://developer.chrome.com/docs/devtools/network',
+      },
+      {
+        label: 'W3C Link Checker',
+        href: 'https://validator.w3.org/checklink',
+      },
+      {
+        label: 'PageSpeed Insights',
+        href: 'https://pagespeed.web.dev/',
+      },
+    ],
+  },
+  {
+    slug: 'seo-and-metadata-basics',
+    number: '31',
+    title: 'SEO and Metadata',
+    eyebrow: 'Findability',
+    summary:
+      'Use page titles, descriptions, headings, semantic HTML, readable URLs, image text, and social metadata to make pages easier to understand and share.',
+    goals: [
+      'Write useful page titles and meta descriptions',
+      'Use headings, semantic HTML, links, URLs, and image text to support findability',
+      'Add and explain basic Open Graph metadata for shared links',
+      'Review a page with a practical SEO and metadata checklist',
+    ],
+    sections: [
+      {
+        title: 'SEO Starts With Clarity',
+        body: [
+          'Search engine optimization is not about tricking people or stuffing keywords into a page. Good beginner SEO starts with clarity.',
+          'A clear page title, useful headings, readable content, descriptive links, optimized images, accessible structure, and fast loading all help people and search engines understand the site.',
+        ],
+      },
+      {
+        title: 'What Search Engines Need',
+        body: [
+          'Search engines try to understand what a page is about, how it is organized, and whether it seems useful to someone searching for that topic.',
+        ],
+        bullets: [
+          'A specific page title that names the topic.',
+          'A short description that summarizes the page.',
+          'Headings that organize the content clearly.',
+          'Semantic HTML that identifies navigation, main content, sections, and footer content.',
+          'Descriptive links that explain where they go.',
+          'Images with useful file names and alt text when they add information.',
+          'A page that loads quickly and works on mobile devices.',
+        ],
+      },
+      {
+        title: 'Title Pattern',
+        body: [
+          'The title appears in the browser tab, bookmarks, search results, and sometimes shared links. A useful pattern is Page Topic | Site Name.',
+        ],
+        table: {
+          headers: ['Weak Title', 'Better Title'],
+          rows: [
+            ['Home', 'Home | Baton Rouge Coffee Guide'],
+            ['About', 'About | Garden Cafe'],
+            ['Projects', 'Portfolio Projects | Jordan Lee'],
+            ['Menu', 'Menu | Riverside Tacos'],
+          ],
+        },
+        code: `<title>Menu | Garden Cafe</title>`,
+      },
+      {
+        title: 'Meta Description Pattern',
+        body: [
+          'A meta description should summarize the page for a human. It does not need to list every keyword. A simple pattern is: what the page is, who it helps, and what someone can do there.',
+        ],
+        table: {
+          headers: ['Weak Description', 'Better Description'],
+          rows: [
+            ['Welcome to my website.', 'Explore Jordan Lee portfolio projects in web design, branding, and interactive media.'],
+            ['This is our menu page.', 'View Garden Cafe breakfast, lunch, coffee, and pastry options before your visit.'],
+            ['Best coffee coffee shop coffee.', 'Compare quiet Baton Rouge coffee shops by seating, Wi-Fi, outlets, and hours.'],
+          ],
+        },
+        code: `<meta
+  name="description"
+  content="Compare quiet coffee shops for studying in Baton Rouge by seating, Wi-Fi, outlets, and hours."
+>`,
+      },
+      {
+        title: 'Basic Metadata Example',
+        code: `<head>
+  <title>Local Coffee Guide | Baton Rouge Study Spots</title>
+  <meta
+    name="description"
+    content="Compare quiet coffee shops for studying in Baton Rouge by seating, Wi-Fi, outlets, and hours."
+  >
+</head>`,
+      },
+      {
+        title: 'Headings Help Structure',
+        body: [
+          'Headings should describe the structure of the page, not just make text bigger. Start with one clear h1, then use h2 and h3 headings to organize sections inside the page.',
+        ],
+        bullets: [
+          'Use one main h1 for the page topic.',
+          'Use h2 headings for major sections.',
+          'Use h3 headings for smaller groups inside an h2 section.',
+          'Do not skip heading levels just for visual size.',
+          'Use CSS to change how headings look instead of choosing a heading level for its default size.',
+        ],
+      },
+      {
+        title: 'Semantic HTML Supports SEO',
+        body: [
+          'Semantic HTML gives the page meaningful structure. It helps browsers, assistive technology, and search engines understand what each area of the page does.',
+        ],
+        code: `<header>
+  <nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Garden Cafe Menu</h1>
+  <section>
+    <h2>Coffee</h2>
+    <p>Espresso, drip coffee, cold brew, and seasonal drinks.</p>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2026 Garden Cafe</p>
+</footer>`,
+        bullets: [
+          'Use header for introductory site or page content.',
+          'Use nav for major navigation links.',
+          'Use main for the primary page content.',
+          'Use section when a group of content has its own heading.',
+          'Use article for self-contained content like a post, card, review, or project entry.',
+          'Use footer for supporting information at the end of a page or section.',
+        ],
+      },
+      {
+        title: 'Descriptive Links',
+        body: [
+          'Link text should make sense out of context. Avoid vague links like click here because they do not explain what the user will get.',
+        ],
+        table: {
+          headers: ['Weak Link Text', 'Better Link Text'],
+          rows: [
+            ['Click here', 'View the full coffee shop list'],
+            ['Read more', 'Read more about our catering options'],
+            ['Here', 'Download the project brief'],
+            ['Website', 'Visit the Garden Cafe website'],
+          ],
+        },
+      },
+      {
+        title: 'Readable URLs And File Names',
+        body: [
+          'For simple static websites, clear file names help users and search engines understand the page before they even open it.',
+        ],
+        table: {
+          headers: ['Avoid', 'Use Instead'],
+          rows: [
+            ['page2.html', 'menu.html'],
+            ['my page.html', 'my-page.html'],
+            ['finalFINAL.html', 'portfolio.html'],
+            ['IMG_2049.jpg', 'campus-study-lounge.jpg'],
+          ],
+        },
+      },
+      {
+        title: 'Image SEO Basics',
+        body: [
+          'Images help findability when they are named clearly, compressed well, and described accurately when they add information to the page.',
+        ],
+        bullets: [
+          'Use descriptive file names such as campus-study-lounge.jpg instead of IMG_2049.jpg.',
+          'Write alt text for meaningful images.',
+          'Use empty alt text, alt="", for decorative images that do not add information.',
+          'Resize and compress images so the page loads quickly.',
+          'Avoid placing important text only inside an image.',
+        ],
+        code: `<img
+  src="images/campus-study-lounge.jpg"
+  alt="Students working at tables in a bright campus study lounge"
+  width="900"
+  height="600"
+>`,
+      },
+      {
+        title: 'Open Graph Metadata',
+        body: [
+          'Open Graph metadata controls how a link may appear when shared on social platforms, messaging apps, and preview cards. Platforms can choose how they display it, but these tags give them better information to use.',
+        ],
+        table: {
+          headers: ['Tag', 'Purpose'],
+          rows: [
+            ['og:title', 'The title used in the shared preview.'],
+            ['og:description', 'The short summary used in the shared preview.'],
+            ['og:image', 'The preview image used when the link is shared.'],
+            ['og:url', 'The final public URL for the page.'],
+          ],
+        },
+        code: `<meta property="og:title" content="Baton Rouge Study Spots">
+<meta property="og:description" content="Find coffee shops and public spaces for focused study time.">
+<meta property="og:image" content="https://example.com/images/study-spots.jpg">
+<meta property="og:url" content="https://example.com/study-spots/">`,
+      },
+      {
+        title: 'Findability Checklist',
+        table: {
+          headers: ['Element', 'Good Practice'],
+          rows: [
+            ['title', 'Specific to the page, not the same on every page.'],
+            ['meta description', 'Short human-readable summary of what the page offers.'],
+            ['h1', 'One clear main heading that matches the page topic.'],
+            ['h2 and h3', 'Organize the page into clear sections.'],
+            ['Semantic HTML', 'Use header, nav, main, section, article, and footer when they match the content.'],
+            ['URLs', 'Readable words instead of random file names.'],
+            ['Link text', 'Describes where the link goes.'],
+            ['Images', 'Optimized file size, descriptive file names, and meaningful alt text when informative.'],
+            ['Mobile and speed', 'The page works on phones and does not load unnecessary large files.'],
+          ],
+        },
+      },
+      {
+        title: 'Common Mistakes',
+        bullets: [
+          'Using the same page title everywhere.',
+          'Writing a meta description that is vague or stuffed with repeated keywords.',
+          'Choosing headings only because of their default visual size.',
+          'Publishing pages with vague file names like page2.html.',
+          'Using link text like click here or read more without context.',
+          'Forgetting alt text on informative images.',
+          'Adding Open Graph tags but leaving the image URL broken.',
+          'Thinking SEO is separate from accessibility, performance, content, and page structure.',
+        ],
+      },
+    ],
+    practice: [
+      'Write a unique title and meta description for three pages using the patterns from this lesson.',
+      'Improve one vague heading and one vague link on an existing page.',
+      'Rename one vague image file and update its src path in the HTML.',
+      'Add useful alt text to one informative image and empty alt text to one decorative image.',
+      'Add Open Graph metadata to a portfolio or project page and check that the image URL is correct.',
+      'Run the findability checklist on one finished page before submission.',
+    ],
+    resources: [
+      {
+        label: 'Google SEO Starter Guide',
+        href: 'https://developers.google.com/search/docs/fundamentals/seo-starter-guide',
+      },
+      {
+        label: 'MDN Metadata in HTML',
+        href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata',
+      },
+      {
+        label: 'The Open Graph Protocol',
+        href: 'https://ogp.me/',
+      },
+      {
+        label: 'Meta Tags Preview Tool',
+        href: 'https://metatags.io/',
+      },
+    ],
+  },
+  {
+    slug: 'web-performance-basics',
+    number: '32',
+    title: 'Performance Basics',
+    eyebrow: 'Performance',
+    summary:
+      'Improve how fast a site feels by optimizing images, fonts, scripts, embeds, layout stability, and the amount of work the browser must do.',
+    goals: [
+      'Explain why performance affects real users, especially on phones and slower connections',
+      'Identify common causes of slow student websites',
+      'Use DevTools and Lighthouse to find one concrete performance improvement',
+      'Make practical improvements to images, fonts, scripts, embeds, and layout stability',
+    ],
+    sections: [
+      {
+        title: 'Performance Is User Experience',
+        body: [
+          'A slow site can feel broken. Performance affects accessibility, mobile users, search visibility, and whether people stay long enough to use the page.',
+          'Performance is felt, not just scored. A perfect report number is less important than a page that loads, responds, and stays stable for real users.',
+        ],
+      },
+      {
+        title: 'Core Web Vitals In Plain Language',
+        body: [
+          'Core Web Vitals are performance measurements that focus on how a page feels while loading and responding. You do not need to memorize every detail to use them well.',
+        ],
+        table: {
+          headers: ['Metric', 'Beginner Meaning', 'Common Fix'],
+          rows: [
+            ['LCP', 'How quickly the main visible content appears.', 'Optimize the largest hero image or main content area.'],
+            ['CLS', 'How much the page jumps around while loading.', 'Reserve space for images, embeds, and late-loading content.'],
+            ['INP', 'How quickly the page responds after someone interacts.', 'Avoid heavy JavaScript and remove unused scripts.'],
+          ],
+        },
+      },
+      {
+        title: 'What Usually Slows Student Sites',
+        table: {
+          headers: ['Problem', 'Why It Hurts', 'First Fix'],
+          rows: [
+            ['Huge images', 'The browser downloads more data than the design needs.', 'Resize and compress images before publishing.'],
+            ['Oversized background images', 'A decorative image may become the largest file on the page.', 'Use a smaller image and crop it for the layout.'],
+            ['Too many font weights', 'Each extra font file adds more loading work.', 'Load only the families and weights you actually use.'],
+            ['Unused scripts or libraries', 'The browser downloads and runs code that does not help the page.', 'Remove libraries that are not needed for the final project.'],
+            ['Heavy embeds', 'Maps, videos, social posts, and widgets can load many extra files.', 'Use embeds only when they add real value.'],
+            ['Layout shift', 'Content jumps while images, fonts, or embeds load.', 'Reserve space with width, height, or aspect-ratio.'],
+            ['Autoplay media and GIFs', 'Motion and video can be heavy and distracting.', 'Use compressed video carefully and avoid unnecessary autoplay.'],
+          ],
+        },
+      },
+      {
+        title: 'Image Performance Pass',
+        body: [
+          'The image optimization lesson covers image editing in more depth. In this lesson, focus on launch checks: file size, dimensions, loading behavior, and layout stability.',
+        ],
+        bullets: [
+          'Resize images so they are not much larger than they appear on the page.',
+          'Compress images before publishing.',
+          'Use modern formats like WebP when appropriate.',
+          'Add width and height attributes so the browser can reserve space.',
+          'Use loading="lazy" for images lower on the page.',
+          'Do not lazy-load the main hero image if it is the first important visual content.',
+        ],
+        code: `<img
+  src="restaurant-card.webp"
+  alt="Outdoor patio at Coastal Kitchen"
+  width="800"
+  height="600"
+  loading="lazy"
+>`,
+      },
+      {
+        title: 'Responsive Image Basics',
+        body: [
+          'One huge image file is rarely the best choice for every screen. Responsive images let the browser choose a better file for the current screen size.',
+          'You do not need to use srcset for every beginner project, but you should understand why a 3000px-wide image is wasteful inside a small card.',
+        ],
+        code: `<img
+  src="card-800.webp"
+  srcset="card-400.webp 400w, card-800.webp 800w, card-1200.webp 1200w"
+  sizes="(max-width: 700px) 90vw, 400px"
+  alt="Featured cafe table near a window"
+  width="800"
+  height="600"
+>`,
+      },
+      {
+        title: 'Font Loading',
+        body: [
+          'Fonts can add polish, but loading too many families or weights creates unnecessary page weight. Choose intentionally.',
+        ],
+        bullets: [
+          'Use one or two font families for most student projects.',
+          'Load only the weights you use, such as 400 and 700.',
+          'Avoid adding five Google Font styles just to experiment.',
+          'Use system fonts when the design does not require a custom font.',
+          'Always include fallback fonts so text stays readable while fonts load.',
+        ],
+        code: `body {
+  font-family: "Inter", Arial, sans-serif;
+}`,
+      },
+      {
+        title: 'Script Performance',
+        body: [
+          'JavaScript can make a page interactive, but unused scripts slow the page down and make debugging harder.',
+        ],
+        bullets: [
+          'Only include scripts needed by the current page.',
+          'Remove libraries that were tested but are no longer used.',
+          'Avoid adding a large library for a tiny interaction when simple JavaScript would work.',
+          'Use defer when loading a script from the head so HTML can keep parsing.',
+          'Check the browser console after removing or moving scripts.',
+        ],
+        code: `<script src="js/site.js" defer></script>`,
+      },
+      {
+        title: 'CSS And File Hygiene',
+        body: [
+          'CSS usually is not the biggest performance problem in beginner projects, but messy files can still slow development and make pages harder to maintain.',
+        ],
+        bullets: [
+          'Remove unused CSS from copied templates or experiments.',
+          'Avoid including a giant framework for a small project unless the project actually uses it.',
+          'Keep selectors understandable instead of making deeply nested rules.',
+          'Use reusable classes for repeated patterns like buttons, cards, and sections.',
+          'Delete unused images, videos, scripts, and duplicate files before launch.',
+        ],
+      },
+      {
+        title: 'Video And Embed Guidance',
+        body: [
+          'Videos, maps, social embeds, playlists, and large GIFs can make a page heavy very quickly. Use them when they support the content, not just as decoration.',
+        ],
+        table: {
+          headers: ['Media Choice', 'Performance Note'],
+          rows: [
+            ['YouTube or Vimeo embed', 'Can load many extra files. Use only when the video matters.'],
+            ['Map embed', 'Helpful for location pages, but heavy. Consider linking to the map instead.'],
+            ['Social media embed', 'Can add scripts and tracking files. Use screenshots or links when appropriate.'],
+            ['Animated GIF', 'Often much larger than video. Replace with compressed video when possible.'],
+            ['Autoplay background video', 'Use carefully, compress heavily, and provide a reduced-motion alternative.'],
+          ],
+        },
+      },
+      {
+        title: 'DevTools Network Workflow',
+        body: [
+          'The Network panel helps you see what the page downloads. This is one of the fastest ways to find performance problems.',
+        ],
+        bullets: [
+          'Open the live or local page in Chrome.',
+          'Open DevTools and choose the Network tab.',
+          'Reload the page so the file list appears.',
+          'Sort by Size to find the biggest files.',
+          'Ask whether each large file is needed and whether it can be smaller.',
+          'Check that CSS, JavaScript, images, fonts, and embeds are not loading twice.',
+        ],
+      },
+      {
+        title: 'Lighthouse Workflow',
+        body: [
+          'Lighthouse can help you compare before and after a change. Do not chase a perfect 100. Use the report to choose one real improvement.',
+        ],
+        bullets: [
+          'Run Lighthouse before making a performance change.',
+          'Write down one issue you understand and can fix.',
+          'Make one change, such as compressing a large image or removing an unused script.',
+          'Run Lighthouse again and compare the result.',
+          'Explain what changed and why it helped.',
+        ],
+      },
+      {
+        title: 'Performance Checklist',
+        bullets: [
+          'Images are resized and compressed.',
+          'Important images include width and height attributes.',
+          'Below-the-fold images can lazy-load.',
+          'The main hero image is not accidentally lazy-loaded.',
+          'Fonts are limited to the families and weights the design uses.',
+          'Unused scripts, libraries, embeds, and assets are removed.',
+          'The page does not jump around while loading.',
+          'The live site is tested on a phone-sized screen.',
+          'DevTools Network has been checked for unusually large files.',
+          'Lighthouse or PageSpeed Insights has been used to support one concrete improvement.',
+        ],
+      },
+    ],
+    practice: [
+      'Open DevTools Network, reload a page, and identify the largest asset.',
+      'Compress the largest image and compare file size before and after.',
+      'Add width and height attributes to three important images.',
+      'Remove one unused font weight, script, embed, or large file from a project.',
+      'Run Lighthouse before and after one performance improvement.',
+      'Write one sentence explaining what changed and why it made the page better.',
+    ],
+    resources: [
+      {
+        label: 'web.dev Learn Performance',
+        href: 'https://web.dev/learn/performance',
+      },
+      {
+        label: 'PageSpeed Insights',
+        href: 'https://pagespeed.web.dev/',
+      },
+      {
+        label: 'Chrome DevTools Network Panel',
+        href: 'https://developer.chrome.com/docs/devtools/network/',
+      },
+      {
+        label: 'Lighthouse Documentation',
+        href: 'https://developer.chrome.com/docs/lighthouse/overview/',
+      },
+      {
+        label: 'MDN Responsive Images',
+        href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Responsive_images',
+      },
+      {
+        label: 'Squoosh',
+        href: 'https://squoosh.app/',
+      },
+    ],
+  },
+  {
+    slug: 'ui-states-and-feedback',
+    number: '33',
+    title: 'UI States and Feedback',
+    eyebrow: 'Interaction',
+    summary:
+      'Design clear default, hover, focus, active, current, loading, empty, error, success, and disabled states so interfaces communicate what is happening.',
+    goals: [
+      'Identify common UI states and when each one is needed',
+      'Style states for buttons, links, navigation, forms, cards, and dynamic content',
+      'Write helpful feedback messages for empty, loading, success, and error states',
+      'Check interactive states for keyboard access, contrast, motion, and clarity',
+    ],
+    sections: [
+      {
+        title: 'Interfaces Need Feedback',
+        body: [
+          'A user should never wonder whether something is clickable, whether an action worked, or what to do next. UI states make interaction visible.',
+          'Good feedback is part of the design, not a final decoration. A button, link, card, form, or navigation item should communicate what it can do before and after someone interacts with it.',
+        ],
+      },
+      {
+        title: 'Start With The Default State',
+        body: [
+          'Every component starts in a default state. Before adding hover or animation, make sure the default version already looks usable and understandable.',
+        ],
+        bullets: [
+          'A button should look clickable before hover.',
+          'A link should look like a link before hover.',
+          'A form input should look editable before focus.',
+          'A card should make it clear whether the whole card is clickable or only a link inside it.',
+        ],
+      },
+      {
+        title: 'Common States',
+        table: {
+          headers: ['State', 'Meaning', 'Example'],
+          rows: [
+            ['Default', 'The normal resting appearance.', 'Button has a clear shape, label, and contrast.'],
+            ['Hover', 'Pointer is over an interactive element.', 'Button background changes.'],
+            ['Focus', 'Keyboard focus is on an element.', 'Outline appears on a link or input.'],
+            ['Active or pressed', 'Element is being clicked, tapped, or pressed.', 'Button moves slightly or darkens while pressed.'],
+            ['Current', 'Element represents the current page, tab, or selected item.', 'Current nav link is marked.'],
+            ['Loading', 'The system is working.', 'Button says Saving... and prevents duplicate clicks.'],
+            ['Empty', 'There is no content yet.', 'A gallery says no projects have been added.'],
+            ['Error', 'Something needs correction.', 'Form field explains what to fix.'],
+            ['Success', 'An action completed.', 'Message says the project was saved.'],
+            ['Disabled', 'An action is unavailable.', 'Submit button is disabled until required fields are complete.'],
+          ],
+        },
+      },
+      {
+        title: 'Active Is Not Current',
+        body: [
+          'Active and current are easy to mix up. Active usually means something is being pressed right now. Current means the item represents the page, section, tab, or filter that is selected.',
+        ],
+        table: {
+          headers: ['State', 'Use It For', 'Example'],
+          rows: [
+            ['Active or pressed', 'Short interaction feedback.', 'A button darkens while the mouse button is down.'],
+            ['Current', 'Orientation inside an interface.', 'The About link is highlighted while the user is on about.html.'],
+          ],
+        },
+      },
+      {
+        title: 'Button States',
+        body: [
+          'Buttons need clear default, hover, focus, active, disabled, and sometimes loading states. Focus matters because not everyone uses a mouse.',
+        ],
+        code: `.button {
+  background: #2457d6;
+  color: #ffffff;
+  border: 0;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #1742a4;
+}
+
+.button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}`,
+      },
+      {
+        title: 'Focus Visible',
+        body: [
+          'Hover helps mouse users. Focus helps keyboard users. Do not remove the browser outline unless you replace it with a visible focus style.',
+        ],
+        bullets: [
+          'Use :focus-visible for keyboard-friendly focus styling.',
+          'Make the focus style easy to see against the background.',
+          'Test with Tab, Shift + Tab, Enter, and Space.',
+          'Focus should appear on links, buttons, form controls, and custom interactive elements.',
+        ],
+      },
+      {
+        title: 'Link States',
+        body: [
+          'Links should be recognizable and usable in every state. Avoid making links depend only on color when they appear inside paragraph text.',
+        ],
+        code: `a {
+  color: #1659c7;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+a:visited {
+  color: #6b3fb5;
+}
+
+a:hover,
+a:focus-visible {
+  color: #0d347a;
+  text-decoration-thickness: 0.15em;
+}`,
+      },
+      {
+        title: 'Current Navigation',
+        body: [
+          'A current navigation state helps users know where they are. It should be visible without relying only on color.',
+        ],
+        code: `<nav aria-label="Main navigation">
+  <a href="index.html">Home</a>
+  <a href="menu.html" aria-current="page">Menu</a>
+  <a href="contact.html">Contact</a>
+</nav>`,
+      },
+      {
+        title: 'Form Feedback',
+        body: [
+          'Form feedback should be specific and connected to the field it describes. Users should know what went wrong and how to fix it.',
+        ],
+        code: `<label for="email">Email</label>
+<p id="email-help">Use an address you check often.</p>
+<input
+  id="email"
+  name="email"
+  type="email"
+  required
+  aria-describedby="email-help email-error"
+  aria-invalid="true"
+>
+<p id="email-error">Enter an email address that includes an @ symbol.</p>`,
+        bullets: [
+          'Required fields should be clear before submission.',
+          'Error messages should explain the fix.',
+          'Success messages should confirm what happened.',
+          'Helper text should make the expected input easier to understand.',
+          'aria-describedby can connect help or error text to the input.',
+        ],
+      },
+      {
+        title: 'Loading States',
+        body: [
+          'Loading states tell users that the system is working. They also prevent people from clicking the same action repeatedly because nothing appears to be happening.',
+        ],
+        bullets: [
+          'Change button text from Submit to Sending... or Save to Saving... when work is in progress.',
+          'Disable repeated submit actions while loading when appropriate.',
+          'Use skeletons or placeholders for content that will appear soon.',
+          'Keep loading messages short and specific.',
+        ],
+        code: `<button class="button" disabled aria-busy="true">Saving...</button>`,
+      },
+      {
+        title: 'Empty States',
+        body: [
+          'An empty state appears when there is no content to show yet. A good empty state explains what happened and gives the user a useful next step.',
+        ],
+        table: {
+          headers: ['Situation', 'Helpful Empty State'],
+          rows: [
+            ['Empty project gallery', 'No projects have been added yet. Add your first project to get started.'],
+            ['No search results', 'No results matched sushi. Try a different search term or clear the filters.'],
+            ['Empty cart', 'Your cart is empty. Browse the menu to add an item.'],
+            ['No saved favorites', 'You have not saved any favorites yet. Tap the heart icon to save one.'],
+          ],
+        },
+      },
+      {
+        title: 'Disabled State Caution',
+        body: [
+          'Disabled controls can be frustrating when users do not know why the control is disabled. Use disabled states carefully and explain what is needed when the reason is not obvious.',
+        ],
+        bullets: [
+          'A disabled button should still be readable.',
+          'Do not use opacity so low that the label becomes hard to read.',
+          'Add helper text when the user needs to complete another step first.',
+          'Sometimes an enabled button with a helpful error message is clearer than a disabled button with no explanation.',
+        ],
+      },
+      {
+        title: 'Writing Feedback',
+        body: [
+          'Good feedback messages are specific, human, and useful. They tell the user what happened or how to fix the problem.',
+        ],
+        table: {
+          headers: ['Weak Message', 'Better Message'],
+          rows: [
+            ['Error', 'Enter an email address that includes an @ symbol.'],
+            ['Invalid', 'Password must be at least 8 characters.'],
+            ['Failed', 'The image did not upload. Try a smaller JPG or PNG file.'],
+            ['Done', 'Project saved. You can keep editing or submit it.'],
+            ['No items', 'No projects have been added yet. Add your first project to get started.'],
+          ],
+        },
+      },
+      {
+        title: 'Motion And Micro-Interactions',
+        body: [
+          'Small transitions can make feedback feel smoother, but motion should support the interaction instead of distracting from it.',
+        ],
+        bullets: [
+          'Use short transitions for hover, focus, opening, closing, and loading feedback.',
+          'Avoid large motion for essential actions like form errors.',
+          'Respect reduced-motion preferences.',
+          'Do not hide important information behind animation timing.',
+        ],
+        code: `.button {
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}`,
+      },
+      {
+        title: 'Accessibility Checklist',
+        bullets: [
+          'Interactive elements have visible keyboard focus.',
+          'Color is not the only cue for links, errors, current pages, or success states.',
+          'Form help and error messages are connected to their inputs when possible.',
+          'Disabled states are understandable and readable.',
+          'Loading states prevent duplicate actions when needed.',
+          'Motion is subtle and respects prefers-reduced-motion.',
+          'Messages explain what happened or what to do next.',
+        ],
+      },
+      {
+        title: 'Component State Checklist',
+        table: {
+          headers: ['Component', 'States To Check'],
+          rows: [
+            ['Buttons', 'Default, hover, focus, active, disabled, loading.'],
+            ['Links', 'Default, visited, hover, focus, active.'],
+            ['Navigation', 'Default, hover, focus, current.'],
+            ['Form inputs', 'Default, focus, required, invalid, error, success, disabled.'],
+            ['Cards', 'Default, hover or focus if clickable, selected if part of a set.'],
+            ['Lists or galleries', 'Default content, empty state, loading state, error state if data can fail.'],
+          ],
+        },
+      },
+    ],
+    practice: [
+      'Audit one page and list missing states for buttons, links, navigation, and form inputs.',
+      'Add hover and focus-visible states to every button and link in a project.',
+      'Create a current state for the active navigation link.',
+      'Create one empty state for a list, gallery, cart, or search result page.',
+      'Rewrite one vague error message so it explains the fix.',
+      'Add a loading state to a button or content area.',
+      'Test the page with Tab, Shift + Tab, Enter, and Space.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Error Message Guidelines',
+        href: 'https://www.nngroup.com/articles/error-message-guidelines/',
+      },
+      {
+        label: 'MDN CSS Pseudo-classes',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes',
+      },
+      {
+        label: 'MDN :focus-visible',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible',
+      },
+      {
+        label: 'MDN Client-side Form Validation',
+        href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation',
+      },
+      {
+        label: 'WAI Forms Tutorial',
+        href: 'https://www.w3.org/WAI/tutorials/forms/',
+      },
+      {
+        label: 'Material Design Interaction States',
+        href: 'https://m3.material.io/foundations/interaction/states/overview',
+      },
+    ],
+  },
+  {
+    slug: 'portfolio-polish-and-presentation',
+    number: '34',
+    title: 'Portfolio Polish',
+    eyebrow: 'Capstone',
+    summary:
+      'Refine a final web project for presentation with stronger hierarchy, consistency, accessibility, responsiveness, performance, storytelling, and live-demo confidence.',
+    goals: [
+      'Evaluate a final project like a portfolio piece',
+      'Prioritize fixes by impact before adding new features',
+      'Improve visual consistency, content clarity, accessibility, responsiveness, performance, and interaction quality',
+      'Prepare a project story, final critique notes, and a reliable live demo',
+    ],
+    sections: [
+      {
+        title: 'Polish Is Editing',
+        body: [
+          'Polish does not mean adding more decoration. It means removing friction, strengthening hierarchy, tightening spacing, fixing inconsistencies, and making the project easier to understand.',
+          'At the end of a project, the best move is usually not a brand-new feature. The best move is making the core experience clearer, more reliable, and easier to present.',
+        ],
+      },
+      {
+        title: 'Final Polish Mindset',
+        bullets: [
+          'Protect the working version of the project before making risky changes.',
+          'Fix broken or confusing parts before adding decorative extras.',
+          'Improve what viewers will notice first: page purpose, hierarchy, navigation, and mobile layout.',
+          'Choose clarity over complexity when time is limited.',
+          'Make the project easier to explain, not just busier to look at.',
+        ],
+      },
+      {
+        title: 'Prioritize The Fixes',
+        body: [
+          'Not every issue has the same urgency. Use priority levels so the final hours go toward the work that matters most.',
+        ],
+        table: {
+          headers: ['Priority', 'Examples', 'Action'],
+          rows: [
+            ['Must fix', 'Broken links, missing images, unreadable text, mobile layout breaking, form labels missing, live URL not working.', 'Fix before submission.'],
+            ['Should fix', 'Inconsistent spacing, unclear headings, vague buttons, weak image crops, uneven card styles.', 'Fix after must-fix issues are stable.'],
+            ['Nice to fix', 'Extra animation, decorative details, additional sections, optional visual flourishes.', 'Only do if the core project is already solid.'],
+          ],
+        },
+      },
+      {
+        title: 'Portfolio Review Passes',
+        table: {
+          headers: ['Pass', 'Question'],
+          rows: [
+            ['Content', 'Does each page clearly explain what it is and why it matters?'],
+            ['Hierarchy', 'Can a viewer scan the page and understand the most important content first?'],
+            ['Consistency', 'Do buttons, cards, spacing, type, colors, and image treatments follow a system?'],
+            ['Responsive', 'Does the design work at mobile, tablet, and desktop widths?'],
+            ['Accessibility', 'Can the project be used with keyboard, readable contrast, and clear labels?'],
+            ['Performance', 'Are images optimized and unnecessary assets removed?'],
+            ['Interaction', 'Do buttons, links, forms, and navigation have clear states and feedback?'],
+            ['Presentation', 'Can you explain the project goal, audience, process, and final decisions?'],
+          ],
+        },
+      },
+      {
+        title: 'Visual Consistency Pass',
+        body: [
+          'A project feels more finished when repeated elements behave like they belong to the same system.',
+        ],
+        bullets: [
+          'Buttons use consistent colors, padding, border radius, and hover or focus styles.',
+          'Cards share a consistent layout, spacing, image ratio, and border treatment.',
+          'Headings follow a clear type scale instead of random sizes.',
+          'Spacing between sections feels intentional and repeatable.',
+          'Images use consistent cropping, alignment, and quality.',
+          'Colors support hierarchy instead of competing everywhere at once.',
+          'Edges and alignment line up cleanly across nearby elements.',
+        ],
+      },
+      {
+        title: 'Content Clarity Pass',
+        body: [
+          'Good polish is not only visual. The words on the page should make the project easier to understand.',
+        ],
+        bullets: [
+          'Replace placeholder copy with real project content.',
+          'Rewrite vague headings so they describe the section clearly.',
+          'Make calls to action specific, such as View the Menu or Explore Projects.',
+          'Make the page purpose obvious within the first screen.',
+          'Remove repeated text that does not add new information.',
+          'Check spelling, capitalization, and punctuation in visible UI text.',
+        ],
+      },
+      {
+        title: 'Project Story Formula',
+        body: [
+          'A portfolio piece should help someone understand the problem, your decisions, and the result. Even a short class project can include a clear project story.',
+        ],
+        code: `I built [type of site] for [audience] so they can [goal].
+I focused on [design or development choices].
+One challenge was [challenge], and I improved it by [solution].`,
+      },
+      {
+        title: 'Project Summary Example',
+        code: `<article class="project-summary">
+  <h1>Neighborhood Food Guide</h1>
+  <p>
+    I built a responsive listing site for students who want to compare local
+    restaurants by price, distance, and study-friendly features. I focused on
+    clear navigation, reusable cards, mobile layout, and optimized images.
+  </p>
+</article>`,
+      },
+      {
+        title: 'Before And After Critique Prompts',
+        body: [
+          'A strong critique does not only show what changed. It explains why the change made the project better.',
+        ],
+        bullets: [
+          'What was confusing, inconsistent, or unfinished before the polish pass?',
+          'What did you change?',
+          'Why does the change help the audience?',
+          'What tradeoff did you make because of time?',
+          'What would you improve next if the project continued?',
+        ],
+      },
+      {
+        title: 'Presentation Structure',
+        body: [
+          'Use a simple structure so the presentation stays focused and does not turn into clicking around randomly.',
+        ],
+        table: {
+          headers: ['Part', 'What To Say Or Show'],
+          rows: [
+            ['Goal', 'What the project is and why it exists.'],
+            ['Audience', 'Who the site is for.'],
+            ['Key pages or features', 'Show the most important page, flow, or interaction.'],
+            ['Design decisions', 'Explain layout, color, typography, navigation, or component choices.'],
+            ['Challenge', 'Mention one problem you solved or improved.'],
+            ['Live demo', 'Click through the stable parts of the published site.'],
+            ['Next step', 'Name one improvement you would make with more time.'],
+          ],
+        },
+      },
+      {
+        title: 'Live Demo Checklist',
+        bullets: [
+          'Open the live URL before presenting.',
+          'Close unrelated tabs and windows.',
+          'Click through the navigation path you plan to show.',
+          'Test the key interaction before presentation time.',
+          'Check the mobile layout if responsive design is part of the project goal.',
+          'Avoid spending presentation time explaining broken areas unless the critique asks about them.',
+          'Have backup screenshots ready if internet, hosting, or projection fails.',
+        ],
+      },
+      {
+        title: 'Portfolio Project Card Guidance',
+        body: [
+          'If the project will become part of a portfolio later, capture the important information while the work is still fresh.',
+        ],
+        bullets: [
+          'Project title',
+          'Your role',
+          'Tools and technologies used',
+          'Short project summary',
+          'Screenshot or mockup image',
+          'Live site link',
+          'Repository link, if appropriate',
+          'What you learned or improved',
+        ],
+      },
+      {
+        title: 'Quality Bar',
+        table: {
+          headers: ['Level', 'What It Means'],
+          rows: [
+            ['Unfinished', 'Core pages, links, images, or layout are broken or unclear.'],
+            ['Class-ready', 'The project meets the assignment, works live, and has been checked for responsive, accessibility, and content issues.'],
+            ['Portfolio-ready', 'The project has a clear story, polished visuals, strong screenshots, tested live links, and a concise explanation of decisions.'],
+          ],
+        },
+      },
+      {
+        title: 'Final Technical Pass',
+        bullets: [
+          'Open the live URL and click through important pages.',
+          'Test the layout at mobile, tablet, and desktop widths.',
+          'Check keyboard focus, headings, contrast, labels, and alt text.',
+          'Optimize images and remove unused assets.',
+          'Confirm links, forms, and interactions behave as expected.',
+          'Check metadata, title, favicon, and any social preview tags used by the project.',
+          'Run one final performance or Network panel check for unusually large files.',
+        ],
+      },
+      {
+        title: 'Common Last-Minute Mistakes',
+        table: {
+          headers: ['Mistake', 'Better Move'],
+          rows: [
+            ['Adding a new complex feature at the end', 'Polish the core experience first.'],
+            ['Only checking desktop', 'Run a mobile pass before submission.'],
+            ['Ignoring content quality', 'Rewrite vague headings and placeholder copy.'],
+            ['Changing many styles at once', 'Make small improvements and test after each one.'],
+            ['Over-animating the final version', 'Use motion only when it clarifies feedback or flow.'],
+            ['Submitting without testing the live URL', 'Open the published site and click through it.'],
+          ],
+        },
+      },
+      {
+        title: 'Final Polish Checklist',
+        bullets: [
+          'Remove unused sections, dead links, and placeholder content.',
+          'Make spacing and button styles consistent across pages.',
+          'Check headings, contrast, focus, and keyboard navigation.',
+          'Optimize images and confirm the live site loads correctly.',
+          'Write a short project description that explains the purpose and audience.',
+          'Prepare two or three sentences for critique or presentation.',
+          'Choose one must-fix issue and one should-fix issue to resolve before submission.',
+        ],
+      },
+    ],
+    practice: [
+      'Run a 20-minute polish sprint and fix only must-fix or should-fix issues.',
+      'Choose three improvements that make your final project clearer, not just busier.',
+      'Rewrite the project summary using the project story formula.',
+      'Prepare a two-minute presentation using the goal, audience, key feature, decision, challenge, and next-step structure.',
+      'Run one accessibility, one responsive, and one performance pass on the live URL.',
+      'Create or update one portfolio project card with title, role, tools, summary, screenshot, live link, and what you learned.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Visual Hierarchy',
+        href: 'https://www.nngroup.com/articles/visual-hierarchy-ux-definition/',
+      },
+      {
+        label: 'WebAIM Checklist',
+        href: 'https://webaim.org/standards/wcag/checklist',
+      },
+      {
+        label: 'WebAIM Contrast Checker',
+        href: 'https://webaim.org/resources/contrastchecker/',
+      },
+      {
+        label: 'PageSpeed Insights',
+        href: 'https://pagespeed.web.dev/',
+      },
+      {
+        label: 'NN/g Design Critiques',
+        href: 'https://www.nngroup.com/articles/design-critiques/',
+      },
+    ],
+  },
 ];

@@ -1,0 +1,157 @@
+<section class="grid-lab" aria-labelledby="grid-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="grid-lab-title">Grid Layout Lab</h2>
+    <p>
+      Change the layout controls and watch how columns, gaps, spans, and
+      responsive card patterns change the grid.
+    </p>
+  </div>
+
+  <div class="grid-lab__grid">
+    <div class="grid-lab__stage-wrap">
+      <div class="grid-lab__stage" data-grid-stage data-grid-lines="true" data-pattern="cards">
+        <article class="grid-lab__item grid-lab__item--featured" data-grid-item="1">
+          <span>1</span>
+          <strong>Featured</strong>
+        </article>
+        <article class="grid-lab__item" data-grid-item="2"><span>2</span></article>
+        <article class="grid-lab__item" data-grid-item="3"><span>3</span></article>
+        <article class="grid-lab__item" data-grid-item="4"><span>4</span></article>
+        <article class="grid-lab__item" data-grid-item="5"><span>5</span></article>
+        <article class="grid-lab__item" data-grid-item="6"><span>6</span></article>
+      </div>
+    </div>
+
+    <div class="grid-lab__controls" role="group" aria-label="CSS Grid controls">
+      <label>
+        Pattern
+        <select data-grid-control="pattern">
+          <option value="cards">Card grid</option>
+          <option value="gallery">Gallery</option>
+          <option value="sidebar">Sidebar layout</option>
+        </select>
+      </label>
+
+      <label>
+        Columns
+        <select data-grid-control="columns">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+        </select>
+      </label>
+
+      <label>
+        Gap
+        <input data-grid-control="gap" type="range" min="0" max="48" value="16" />
+      </label>
+
+      <label>
+        <input data-grid-control="span" type="checkbox" checked />
+        First item spans 2 columns
+      </label>
+
+      <label>
+        <input data-grid-control="responsive" type="checkbox" />
+        Responsive auto-fit pattern
+      </label>
+
+      <label>
+        <input data-grid-control="lines" type="checkbox" checked />
+        Show grid lines
+      </label>
+    </div>
+  </div>
+
+  <pre><code data-grid-code>{`.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.featured {
+  grid-column: span 2;
+}`}</code></pre>
+
+  <div class="interactive-notes">
+    <div>
+      <h3>What to notice</h3>
+      <ul>
+        <li>`gap` changes the space between tracks without adding margins to cards.</li>
+        <li>`repeat()` creates a repeated column pattern.</li>
+        <li>`grid-column: span 2` lets one item take more space.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Try this</h3>
+      <ul>
+        <li>Switch between fixed columns and the responsive auto-fit pattern.</li>
+        <li>Turn off the span and compare the first card to the rest.</li>
+        <li>Use the gallery and sidebar patterns to see when Grid changes the structure.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const gridLab = document.querySelector('.grid-lab');
+
+  if (gridLab) {
+    const stage = gridLab.querySelector('[data-grid-stage]');
+    const code = gridLab.querySelector('[data-grid-code]');
+    const firstItem = gridLab.querySelector('[data-grid-item="1"]');
+    const controls = {
+      pattern: gridLab.querySelector('[data-grid-control="pattern"]'),
+      columns: gridLab.querySelector('[data-grid-control="columns"]'),
+      gap: gridLab.querySelector('[data-grid-control="gap"]'),
+      span: gridLab.querySelector('[data-grid-control="span"]'),
+      responsive: gridLab.querySelector('[data-grid-control="responsive"]'),
+      lines: gridLab.querySelector('[data-grid-control="lines"]'),
+    };
+
+    function getTemplate(pattern, columns, responsive) {
+      if (pattern === 'sidebar') return 'minmax(10rem, 0.45fr) minmax(0, 1fr)';
+      if (responsive) return 'repeat(auto-fit, minmax(8rem, 1fr))';
+      return `repeat(${columns}, 1fr)`;
+    }
+
+    function updateGridLab() {
+      const pattern = controls.pattern.value;
+      const columns = controls.columns.value;
+      const gap = `${controls.gap.value}px`;
+      const responsive = controls.responsive.checked;
+      const spans = controls.span.checked && pattern !== 'sidebar';
+      const template = getTemplate(pattern, columns, responsive);
+
+      controls.columns.disabled = responsive || pattern === 'sidebar';
+      controls.responsive.disabled = pattern === 'sidebar';
+      controls.span.disabled = pattern === 'sidebar';
+
+      stage.dataset.pattern = pattern;
+      stage.dataset.gridLines = String(controls.lines.checked);
+      stage.style.gridTemplateColumns = template;
+      stage.style.gap = gap;
+      firstItem.classList.toggle('is-spanning', spans);
+
+      const spanRule = spans
+        ? `\n\n.featured {\n  grid-column: span 2;\n}`
+        : '';
+
+      code.textContent = `.grid {
+  display: grid;
+  gap: ${gap};
+  grid-template-columns: ${template};
+}${spanRule}`;
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', updateGridLab);
+      control.addEventListener('change', updateGridLab);
+    });
+
+    updateGridLab();
+  }
+</script>

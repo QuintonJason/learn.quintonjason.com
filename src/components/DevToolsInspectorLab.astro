@@ -1,0 +1,77 @@
+<section class="practice-lab" aria-labelledby="devtools-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="devtools-lab-title">DevTools Inspector Lab</h2>
+    <p>Select an element and test temporary CSS changes the way you would in the browser inspector.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage devtools-page" data-devtools-page>
+      <header data-devtools-target="hero">
+        <p>Study Spots</p>
+        <h3>Find a focused place to work</h3>
+      </header>
+      <article data-devtools-target="card">
+        <h4>Library Loft</h4>
+        <p>Quiet seating, outlets, and long tables.</p>
+        <a data-devtools-target="link" href="#">View details</a>
+      </article>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        Inspect element
+        <select data-devtools-select>
+          <option value="hero">Hero</option>
+          <option value="card">Card</option>
+          <option value="link">Link</option>
+        </select>
+      </label>
+      <label>
+        Padding
+        <input type="range" min="8" max="48" value="24" data-devtools-padding />
+      </label>
+      <label>
+        Accent
+        <select data-devtools-accent>
+          <option value="#73d36b">Green</option>
+          <option value="#7db7ff">Blue</option>
+          <option value="#ffd166">Gold</option>
+        </select>
+      </label>
+      <p class="practice-lab__status" data-devtools-status>Inspect the hero, then adjust a rule.</p>
+    </div>
+  </div>
+
+  <pre><code data-devtools-code>{'.hero { padding: 24px; }'}</code></pre>
+</section>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const lab = document.querySelector('.practice-lab:has([data-devtools-select])');
+
+  if (lab) {
+    const select = lab.querySelector('[data-devtools-select]');
+    const padding = lab.querySelector('[data-devtools-padding]');
+    const accent = lab.querySelector('[data-devtools-accent]');
+    const status = lab.querySelector('[data-devtools-status]');
+    const code = lab.querySelector('[data-devtools-code]');
+
+    function update() {
+      const targetName = select.value;
+      const target = lab.querySelector(`[data-devtools-target="${targetName}"]`);
+      lab.querySelectorAll('[data-devtools-target]').forEach((item) => item.classList.remove('is-inspected'));
+      target.classList.add('is-inspected');
+      target.style.padding = `${padding.value}px`;
+      target.style.setProperty('--lab-accent', accent.value);
+      status.textContent = `Temporary rule applied to ${targetName}. Copy it into CSS only after it solves the problem.`;
+      code.textContent = `.${targetName} {
+  padding: ${padding.value}px;
+  border-color: ${accent.value};
+}`;
+    }
+
+    [select, padding, accent].forEach((control) => control.addEventListener('input', update));
+    update();
+  }
+</script>

@@ -4,20 +4,26 @@ import AccessibilityCheckLab from '../../components/AccessibilityCheckLab.astro'
 import AnimationKeyframeLab from '../../components/AnimationKeyframeLab.astro';
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
 import CarouselAccessibilityLab from '../../components/CarouselAccessibilityLab.astro';
+import DebuggingChecklistLab from '../../components/DebuggingChecklistLab.astro';
+import DesignSystemTokenLab from '../../components/DesignSystemTokenLab.astro';
+import DevToolsInspectorLab from '../../components/DevToolsInspectorLab.astro';
 import DomInteractionLab from '../../components/DomInteractionLab.astro';
 import FilePathLab from '../../components/FilePathLab.astro';
 import FlexboxPlayground from '../../components/FlexboxPlayground.astro';
 import FontPairingLab from '../../components/FontPairingLab.astro';
 import FormAccessibilityLab from '../../components/FormAccessibilityLab.astro';
 import GsapTimelineLab from '../../components/GsapTimelineLab.astro';
+import GridLayoutLab from '../../components/GridLayoutLab.astro';
 import ImageOptimizationLab from '../../components/ImageOptimizationLab.astro';
 import NavigationPatternLab from '../../components/NavigationPatternLab.astro';
 import PageTemplateLab from '../../components/PageTemplateLab.astro';
+import PerformanceAuditLab from '../../components/PerformanceAuditLab.astro';
 import PositioningLab from '../../components/PositioningLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
 import TransformLab from '../../components/TransformLab.astro';
+import UiStatesLab from '../../components/UiStatesLab.astro';
 import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes, isInteractiveLesson } from '../../data/lessonMeta';
 import type { LessonSection } from '../../data/lessons';
 import { lessons } from '../../data/lessons';
@@ -231,6 +237,12 @@ const pageSections = [
               {lesson.slug === 'css-working-with-fonts' && <FontPairingLab />}
 
               {lesson.slug === 'flexbox' && <FlexboxPlayground />}
+              {lesson.slug === 'css-grid' && <GridLayoutLab />}
+              {lesson.slug === 'debugging-web-projects' && <DebuggingChecklistLab />}
+              {lesson.slug === 'devtools-for-designers' && <DevToolsInspectorLab />}
+              {lesson.slug === 'design-systems-and-reusable-components' && <DesignSystemTokenLab />}
+              {lesson.slug === 'web-performance-basics' && <PerformanceAuditLab />}
+              {lesson.slug === 'ui-states-and-feedback' && <UiStatesLab />}
 
               {lesson.slug === 'responsive-web-design' && <ResponsiveLayoutVisualizer />}
 

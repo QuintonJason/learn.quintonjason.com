@@ -13,11 +13,38 @@ import { courseModules } from '../data/modules';
         <p class="eyebrow">Modules</p>
         <h1>A date-free path through the course.</h1>
         <p class="lede">
-          Use modules when you need to know what to work on next. Each module
-          groups lessons, project progress, in-class focus, and a before-you-leave
-          checklist without tying the course to semester dates.
+          Use modules when you need to know what to work on next. The course has
+          more lessons than class meetings on purpose: core lessons guide class
+          time, while support lessons help during studio work, debugging, and
+          project polish.
         </p>
       </div>
+
+      <section class="curriculum-pathways" aria-labelledby="curriculum-pathways-title">
+        <div>
+          <p class="eyebrow">How To Use This</p>
+          <h2 id="curriculum-pathways-title">Follow the core path first, then use support lessons when the project asks for them.</h2>
+          <p>
+            The 23 class meetings are paced around project progress. Reference,
+            stretch, and studio-support lessons are still useful, but they do not
+            all need to become full lectures.
+          </p>
+        </div>
+        <div class="pathway-grid">
+          <article>
+            <h3>Must Do</h3>
+            <p>Complete the current module's core lessons and project checkpoint.</p>
+          </article>
+          <article>
+            <h3>Should Do</h3>
+            <p>Use studio-support lessons during work time to debug, revise, test, and polish.</p>
+          </article>
+          <article>
+            <h3>Could Do</h3>
+            <p>Use reference and stretch lessons when your project needs a deeper feature.</p>
+          </article>
+        </div>
+      </section>
 
       <nav class="module-index" aria-labelledby="module-index-title">
         <div class="section-heading">
@@ -29,7 +56,7 @@ import { courseModules } from '../data/modules';
             courseModules.map((module) => (
               <li>
                 <a href={`#module-${module.number}`}>
-                  <span>Module {module.number}</span>
+                  <span>Module {module.number} / {module.meetingRange}</span>
                   <strong>{module.title}</strong>
                   <small>{module.projectCheckpoint.title}</small>
                 </a>
@@ -44,7 +71,7 @@ import { courseModules } from '../data/modules';
           courseModules.map((module) => (
             <article class="module-card" id={`module-${module.number}`}>
               <header class="module-card__header">
-                <p class="eyebrow">Module {module.number}</p>
+                <p class="eyebrow">Module {module.number} / {module.meetingRange}</p>
                 <h2>{module.title}</h2>
                 <p>{module.summary}</p>
               </header>

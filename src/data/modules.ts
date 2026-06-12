@@ -1,38 +1,41 @@
 export type CourseModule = {
-  number: string;
-  title: string;
-  summary: string;
-  focus: string[];
-  lessons: Array<{
-    title: string;
-    href: string;
-  }>;
-  projectCheckpoint: {
-    title: string;
-    href: string;
-    tasks: string[];
-  };
-  inClass: string[];
   beforeYouLeave: string[];
   fixes: Array<{
     title: string;
     href: string;
   }>;
+  focus: string[];
+  inClass: string[];
+  lessons: Array<{
+    title: string;
+    href: string;
+  }>;
+  meetingRange: string;
+  number: string;
+  projectCheckpoint: {
+    title: string;
+    href: string;
+    tasks: string[];
+  };
+  summary: string;
+  title: string;
 };
 
 export const courseModules: CourseModule[] = [
   {
     number: '01',
-    title: 'Setup, Files, and HTML Foundations',
+    meetingRange: 'Classes 1-3',
+    title: 'Setup, Process, Files, and HTML Foundations',
     summary:
-      'Get the development environment working, understand site folders, and build the first semantic HTML page.',
+      'Get the toolchain working, understand the project workflow, and build a first semantic HTML page that can be published.',
     focus: [
       'GitHub, GitHub Desktop, VS Code, and GitHub Pages',
-      'Project folders and relative file paths',
-      'HTML document structure and core elements',
+      'Website process, project folders, and relative paths',
+      'HTML document structure and core content elements',
     ],
     lessons: [
       { title: 'Developer Environment Setup', href: '/lessons/developer-environment-setup/' },
+      { title: 'Website Process', href: '/lessons/website-process/' },
       { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
       { title: 'HTML Structure and Elements', href: '/lessons/basic-html-structure-and-elements/' },
     ],
@@ -46,7 +49,7 @@ export const courseModules: CourseModule[] = [
       ],
     },
     inClass: [
-      'Create a small repository and publish it with GitHub Pages.',
+      'Publish a small repository with GitHub Pages.',
       'Break and fix one image path together.',
       'Review the difference between local files, GitHub files, and the live site.',
     ],
@@ -63,6 +66,7 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '02',
+    meetingRange: 'Classes 4-5',
     title: 'CSS, Text, Fonts, and the Box Model',
     summary:
       'Move from raw HTML to intentional visual presentation with selectors, typography, spacing, and box-model reasoning.',
@@ -103,16 +107,18 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '03',
-    title: 'Layout, Flexbox, and Responsive Design',
+    meetingRange: 'Classes 6-8',
+    title: 'Layout, Flexbox, Grid, and Responsive Design',
     summary:
-      'Build layouts that adapt across screen sizes using flexible containers, wrapping, media queries, and responsive testing.',
+      'Build layouts that adapt across screen sizes using flexible containers, wrapping, grid tracks, media queries, and responsive testing.',
     focus: [
-      'Flex containers and flex items',
-      'Main axis, cross axis, wrapping, and gap',
-      'Responsive testing and layout breakpoints',
+      'Flexbox for one-dimensional alignment',
+      'Grid for page regions, card grids, and two-dimensional layout',
+      'Responsive testing, breakpoints, and image optimization',
     ],
     lessons: [
       { title: 'Flexbox', href: '/lessons/flexbox/' },
+      { title: 'CSS Grid', href: '/lessons/css-grid/' },
       { title: 'Responsive Web Design', href: '/lessons/responsive-web-design/' },
       { title: 'Image Optimization', href: '/lessons/image-optimization/' },
     ],
@@ -127,8 +133,8 @@ export const courseModules: CourseModule[] = [
     },
     inClass: [
       'Use the Flexbox playground to explain main axis and cross axis.',
+      'Build a small card grid and inspect it with DevTools.',
       'Find the first viewport width where a layout breaks.',
-      'Refactor one fixed-width layout into a flexible layout.',
     ],
     beforeYouLeave: [
       'The page has no sideways scrolling on mobile.',
@@ -142,6 +148,7 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '04',
+    meetingRange: 'Classes 9-10',
     title: 'Forms, Navigation, and Accessibility',
     summary:
       'Design interactive page structure that works for mouse, keyboard, and assistive technology users.',
@@ -181,17 +188,19 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '05',
-    title: 'JavaScript and DOM Interaction',
+    meetingRange: 'Classes 11-12',
+    title: 'JavaScript, DevTools, and Debugging',
     summary:
-      'Add behavior with JavaScript by selecting elements, listening for events, and changing classes, content, or attributes.',
+      'Add behavior with JavaScript, then use browser tools and a repeatable debugging process to keep projects moving.',
     focus: [
-      'DOM selection and event listeners',
-      'classList, attributes, and dynamic content',
-      'Debugging JavaScript with the Console',
+      'DOM selection, event listeners, and class toggles',
+      'Console, Elements, responsive mode, and Network panels',
+      'Describe, inspect, fix, and test as a debugging routine',
     ],
     lessons: [
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
-      { title: 'Page Types and Templates', href: '/lessons/page-types-templates-and-navigation/' },
+      { title: 'DevTools for Designers', href: '/lessons/devtools-for-designers/' },
+      { title: 'Debugging Web Projects', href: '/lessons/debugging-web-projects/' },
     ],
     projectCheckpoint: {
       title: 'Project 3: Interactive Web Experience',
@@ -219,19 +228,22 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '06',
-    title: 'Motion, Transitions, Animation, and GSAP',
+    meetingRange: 'Classes 13-15',
+    title: 'Position, Transforms, Motion, Animation, and GSAP',
     summary:
-      'Use motion as a design tool with transitions, keyframes, transforms, and sequenced animation.',
+      'Use positioning and motion as design tools with transforms, transitions, keyframes, and optional sequenced animation.',
     focus: [
-      'Transitions and transform-based motion',
-      'Keyframes, animation settings, and reduced motion',
-      'GSAP timelines for sequenced motion',
+      'Positioning and layered interface elements',
+      'Transform and opacity-based motion',
+      'Transitions, keyframes, reduced motion, and GSAP timelines',
     ],
     lessons: [
+      { title: 'Hero Sections', href: '/lessons/crafting-captivating-hero-sections/' },
+      { title: 'CSS Positioning', href: '/lessons/css-positioning/' },
+      { title: 'CSS Transforms and Filters', href: '/lessons/transforms-filters-and-transitions/' },
       { title: 'CSS Transitions', href: '/lessons/css-transitions/' },
       { title: 'CSS Animation', href: '/lessons/css-animation/' },
       { title: 'GSAP Web Animation', href: '/lessons/gsap-web-animation/' },
-      { title: 'CSS Transforms', href: '/lessons/transforms-filters-and-transitions/' },
     ],
     projectCheckpoint: {
       title: 'Project 3: Interactive Web Experience',
@@ -259,9 +271,10 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '07',
-    title: 'Listings, Details, Carousels, and Portfolio Structure',
+    meetingRange: 'Classes 16-18',
+    title: 'Page Types, Listings, Details, and Carousels',
     summary:
-      'Organize project content into reusable page types, listing/detail patterns, and interactive portfolio components.',
+      'Organize content into reusable page types, listing/detail patterns, and interactive portfolio components.',
     focus: [
       'Page types and template consistency',
       'Item listing and detail page patterns',
@@ -299,42 +312,122 @@ export const courseModules: CourseModule[] = [
   },
   {
     number: '08',
-    title: 'Final Portfolio Polish, Testing, and Submission',
+    meetingRange: 'Classes 19-20',
+    title: 'Project Planning, Design Systems, SEO, and Reusable Patterns',
     summary:
-      'Refine the final portfolio experience, test accessibility and responsiveness, debug deployment, and prepare submission links.',
+      'Turn a portfolio idea into a manageable system with content strategy, reusable components, consistent styles, and basic metadata.',
     focus: [
-      'Responsive polish and visual consistency',
-      'Manual accessibility testing',
-      'GitHub Pages verification and final submission quality',
+      'Audience, goals, sitemap, and content inventory',
+      'Reusable color, spacing, type, button, card, and form patterns',
+      'Page titles, descriptions, Open Graph, and findability basics',
     ],
     lessons: [
-      { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
-      { title: 'Image Optimization', href: '/lessons/image-optimization/' },
-      { title: 'Developer Environment Setup', href: '/lessons/developer-environment-setup/' },
+      { title: 'Project Planning', href: '/lessons/project-planning-and-content-strategy/' },
+      { title: 'Design Systems', href: '/lessons/design-systems-and-reusable-components/' },
+      { title: 'SEO and Metadata', href: '/lessons/seo-and-metadata-basics/' },
+    ],
+    projectCheckpoint: {
+      title: 'Project 4: Interactive Portfolio',
+      href: '/projects/interactive-portfolio/',
+      tasks: [
+        'Write the portfolio goal, audience, and page list.',
+        'Create a small style system before polishing every page.',
+        'Add titles and descriptions that make each page understandable.',
+      ],
+    },
+    inClass: [
+      'Review a project sitemap before students continue building.',
+      'Turn repeated one-off button and card styles into reusable classes.',
+      'Write one stronger page title and meta description together.',
+    ],
+    beforeYouLeave: [
+      'The portfolio has a clear page plan.',
+      'Repeated UI pieces share reusable styles.',
+      'Important pages have useful titles and descriptions.',
+    ],
+    fixes: [
+      { title: 'Mobile layout is overflowing', href: '/debugging/#mobile-layout-overflowing' },
+      { title: 'CSS is not loading', href: '/debugging/#css-not-loading' },
+    ],
+  },
+  {
+    number: '09',
+    meetingRange: 'Classes 21-22',
+    title: 'Launch QA, Performance, and UI Feedback',
+    summary:
+      'Run final checks against the live site, improve performance, and make interactive states clear before submission.',
+    focus: [
+      'Live URL testing and launch QA',
+      'Performance checks for images, fonts, scripts, and layout stability',
+      'Hover, focus, loading, empty, error, success, and disabled states',
+    ],
+    lessons: [
+      { title: 'Deployment and Launch QA', href: '/lessons/deployment-and-launch-qa/' },
+      { title: 'Web Performance Basics', href: '/lessons/web-performance-basics/' },
+      { title: 'UI States and Feedback', href: '/lessons/ui-states-and-feedback/' },
     ],
     projectCheckpoint: {
       title: 'Project 4: Interactive Portfolio',
       href: '/projects/interactive-portfolio/',
       tasks: [
         'Review every page on mobile and desktop.',
-        'Test links, forms, images, keyboard access, and live deployment.',
-        'Commit, push, and confirm the public site URL shows the final work.',
+        'Check links, images, forms, keyboard access, and loading behavior.',
+        'Fix the most visible issues before adding anything new.',
       ],
     },
     inClass: [
-      'Run a peer review with one content check, one responsive check, and one accessibility check.',
-      'Use the common fixes page to debug final blockers.',
-      'Open the live URL, not only the local file.',
+      'Open the live URL and test it separately from the local version.',
+      'Sort assets by size in DevTools Network.',
+      'Audit one button, input, or card for missing states.',
     ],
     beforeYouLeave: [
-      'The final live URL matches the local version.',
+      'The live URL matches the local version.',
       'No major mobile overflow or broken navigation remains.',
-      'The repository and public site URL are ready to submit.',
+      'Interactive elements communicate state clearly.',
     ],
     fixes: [
       { title: 'GitHub Pages is not updating', href: '/debugging/#github-pages-not-updating' },
       { title: 'Focus or keyboard behavior is broken', href: '/debugging/#focus-or-keyboard-broken' },
       { title: 'Form is hard to use', href: '/debugging/#form-accessibility' },
+    ],
+  },
+  {
+    number: '10',
+    meetingRange: 'Class 23',
+    title: 'Portfolio Polish and Presentation',
+    summary:
+      'Finish the portfolio with critique, final polish, working links, and a clear explanation of the project decisions.',
+    focus: [
+      'Portfolio clarity, hierarchy, consistency, and presentation',
+      'Final accessibility, responsiveness, and performance checks',
+      'Explaining the project goal, audience, process, and result',
+    ],
+    lessons: [
+      { title: 'Portfolio Polish and Presentation', href: '/lessons/portfolio-polish-and-presentation/' },
+    ],
+    projectCheckpoint: {
+      title: 'Project 4: Interactive Portfolio',
+      href: '/projects/interactive-portfolio/',
+      tasks: [
+        'Submit the repository link and public site URL.',
+        'Prepare a short explanation of the portfolio and strongest project.',
+        'Use critique notes for final revisions.',
+      ],
+    },
+    inClass: [
+      'Run a final peer review with one content check, one responsive check, and one accessibility check.',
+      'Make the smallest high-value fixes first.',
+      'Practice explaining project decisions clearly.',
+    ],
+    beforeYouLeave: [
+      'The repository and public site URL are ready to submit.',
+      'The strongest work is easy to find.',
+      'The student can explain what changed and why.',
+    ],
+    fixes: [
+      { title: 'GitHub Pages is not updating', href: '/debugging/#github-pages-not-updating' },
+      { title: 'Mobile layout is overflowing', href: '/debugging/#mobile-layout-overflowing' },
+      { title: 'Image is not showing', href: '/debugging/#image-not-showing' },
     ],
   },
 ];

@@ -24,7 +24,7 @@ import SelectorPlayground from '../../components/SelectorPlayground.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
 import TransformLab from '../../components/TransformLab.astro';
 import UiStatesLab from '../../components/UiStatesLab.astro';
-import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getTeacherNotes, isInteractiveLesson } from '../../data/lessonMeta';
+import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getLessonRole, getTeacherNotes, isInteractiveLesson, lessonRoleDescriptions, lessonRoleLabels } from '../../data/lessonMeta';
 import type { LessonSection } from '../../data/lessons';
 import { lessons } from '../../data/lessons';
 import { projects } from '../../data/projects';
@@ -44,6 +44,7 @@ const hasInteractiveDemo = isInteractiveLesson(lesson);
 const demoSourceUrl = getDemoSourceUrl(lesson);
 const demoGuidance = getDemoGuidance(lesson);
 const lessonMeta = getLessonMeta(lesson, currentIndex);
+const lessonRole = getLessonRole(lesson);
 const lessonCheckpoint = getLessonCheckpoint(lesson);
 const teacherNotes = getTeacherNotes(lesson);
 const supportingProjects = projects.filter((project) =>
@@ -122,6 +123,10 @@ const pageSections = [
               <dt>Level</dt>
               <dd>{lessonMeta.difficulty}</dd>
             </div>
+            <div>
+              <dt>Use</dt>
+              <dd>{lessonRoleLabels[lessonRole]}</dd>
+            </div>
           </dl>
           <p class="lede">{lesson.summary}</p>
         </header>
@@ -134,6 +139,16 @@ const pageSections = [
             {nextLesson && <a href={`/lessons/${nextLesson.slug}/`}>Next</a>}
           </div>
         </nav>
+
+        <section class="lesson-role-note" aria-labelledby="lesson-role-title">
+          <p class="eyebrow">Course Role</p>
+          <h2 id="lesson-role-title">{lessonRoleLabels[lessonRole]}</h2>
+          <p>{lessonRoleDescriptions[lessonRole]}</p>
+          <div class="button-row">
+            <a class="button" href="/modules/">See course roadmap</a>
+            <a class="button" href="/im-behind/">Minimum viable paths</a>
+          </div>
+        </section>
 
         <nav class="lesson-on-this-page" aria-labelledby="lesson-outline-title">
           <h2 id="lesson-outline-title">On This Page</h2>

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { lessons } from '../../data/lessons';
-import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLabels } from '../../data/lessonMeta';
+import { filterOptions, getLessonMeta, getLessonRole, getLessonTags, isInteractiveLesson, lessonRoleLabels, tagLabels } from '../../data/lessonMeta';
 ---
 
 <BaseLayout
@@ -57,11 +57,14 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
           lessons.map((lesson, index) => {
             const tags = getLessonTags(lesson);
             const meta = getLessonMeta(lesson, index);
+            const role = getLessonRole(lesson);
+            const roleFilter = `role-${role}`;
             const searchText = [
               lesson.number,
               lesson.eyebrow,
               lesson.title,
               lesson.summary,
+              lessonRoleLabels[role],
               ...tags.map((tag) => tagLabels[tag]),
             ].join(' ');
 
@@ -72,11 +75,12 @@ import { filterOptions, getLessonMeta, getLessonTags, isInteractiveLesson, tagLa
               data-lesson-card
               data-lesson-slug={lesson.slug}
               data-search={searchText.toLowerCase()}
-              data-tags={tags.join(' ')}
+              data-tags={[roleFilter, ...tags].join(' ')}
             >
               <span class="lesson-card__number">
                 Lesson {lesson.number} / {lesson.eyebrow}
               </span>
+              <span class={`lesson-card__role lesson-card__role--${role}`}>{lessonRoleLabels[role]}</span>
               <span class="lesson-card__complete" data-lesson-complete-badge hidden>Completed</span>
               {isInteractiveLesson(lesson) && <span class="lesson-card__badge">Interactive</span>}
               <h2>{lesson.title}</h2>

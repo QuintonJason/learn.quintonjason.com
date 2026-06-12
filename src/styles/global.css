@@ -503,6 +503,37 @@
   text-transform: uppercase;
 }
 
+.lesson-card__role {
+  align-self: start;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  justify-self: start;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.55rem;
+  text-transform: uppercase;
+}
+
+.lesson-card__role--core {
+  background: var(--color-success-soft);
+  border-color: var(--color-brand);
+  color: var(--color-brand-dark);
+}
+
+.lesson-card__role--studio-support {
+  background: color-mix(in srgb, var(--color-accent), transparent 86%);
+  border-color: color-mix(in srgb, var(--color-accent), transparent 45%);
+  color: var(--color-accent);
+}
+
+.lesson-card__role--reference,
+.lesson-card__role--stretch {
+  background: var(--color-surface-raised);
+}
+
 .lesson-card__complete {
   align-self: start;
   background: var(--color-brand);
@@ -2650,6 +2681,48 @@
   padding-block: clamp(2rem, 5vw, 3rem);
 }
 
+.curriculum-pathways,
+.lesson-role-note {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1.25rem;
+  margin-block: 1.5rem 2rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.curriculum-pathways h2,
+.lesson-role-note h2 {
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  margin: 0;
+}
+
+.curriculum-pathways p,
+.lesson-role-note p {
+  margin: 0;
+}
+
+.pathway-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pathway-grid article {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+}
+
+.pathway-grid h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
 .module-index__list {
   counter-reset: module;
   display: grid;
@@ -3230,6 +3303,7 @@
   .help-path-grid,
   .debug-principles,
   .debug-fix__grid,
+  .pathway-grid,
   .module-index__list,
   .module-card__grid {
     grid-template-columns: 1fr;

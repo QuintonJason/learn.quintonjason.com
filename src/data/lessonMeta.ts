@@ -22,16 +22,23 @@ export type LessonTag =
   | 'javascript'
   | 'ux-process';
 
+export type LessonRole = 'core' | 'studio-support' | 'reference' | 'stretch';
+
 type LessonMetadata = {
   checkpoint?: string[];
   demoGuidance?: Partial<DemoGuidance>;
   demoSourceFile?: string;
+  role?: LessonRole;
   tags: LessonTag[];
   teacherNotes?: Partial<TeacherNotes>;
 };
 
 export const filterOptions = [
   { label: 'All lessons', value: 'all' },
+  { label: 'Core path', value: 'role-core' },
+  { label: 'Studio support', value: 'role-studio-support' },
+  { label: 'Reference', value: 'role-reference' },
+  { label: 'Stretch', value: 'role-stretch' },
   { label: 'Interactive demos', value: 'interactive' },
   { label: 'HTML', value: 'html' },
   { label: 'CSS', value: 'css' },
@@ -47,6 +54,20 @@ export const tagLabels = {
   interactive: 'Interactive',
   javascript: 'JavaScript',
   'ux-process': 'UX / Process',
+};
+
+export const lessonRoleLabels: Record<LessonRole, string> = {
+  core: 'Core',
+  reference: 'Reference',
+  'studio-support': 'Studio Support',
+  stretch: 'Stretch',
+};
+
+export const lessonRoleDescriptions: Record<LessonRole, string> = {
+  core: 'Part of the main course path. Prioritize this before moving to optional polish or deeper references.',
+  reference: 'Use this when a project needs the topic. It is useful, but it does not have to become a full class lecture.',
+  'studio-support': 'Best during work sessions, critique, debugging, project planning, or final polish.',
+  stretch: 'Good for students who are ready to go further after the core version works.',
 };
 
 export const lessonMetadata: Record<string, LessonMetadata> = {
@@ -456,6 +477,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['css'],
   },
   'gsap-web-animation': {
+    role: 'stretch',
     demoSourceFile: 'GsapTimelineLab.astro',
     demoGuidance: {
       try: [
@@ -566,6 +588,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['ux-process', 'html'],
   },
   'mastering-carousels': {
+    role: 'stretch',
     checkpoint: [
       'I can explain what controls, dots, status text, and autoplay each do.',
       'I can verify only one carousel slide is visually active at a time.',
@@ -654,6 +677,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     },
   },
   'debugging-web-projects': {
+    role: 'studio-support',
     checkpoint: [
       'I can describe the exact symptom before editing.',
       'I can use DevTools to inspect HTML, CSS, console errors, and missing files.',
@@ -680,6 +704,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['html', 'css', 'javascript'],
   },
   'devtools-for-designers': {
+    role: 'studio-support',
     checkpoint: [
       'I can inspect an element and identify which CSS rule is affecting it.',
       'I can test responsive widths in the browser.',
@@ -706,6 +731,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['css', 'ux-process'],
   },
   'css-grid': {
+    role: 'core',
     checkpoint: [
       'I can explain when Grid is a better fit than Flexbox.',
       'I can build a responsive card grid.',
@@ -750,6 +776,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     },
   },
   'design-systems-and-reusable-components': {
+    role: 'studio-support',
     checkpoint: [
       'I can define reusable color, spacing, and type values.',
       'I can create consistent button, card, and form styles.',
@@ -776,6 +803,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['css', 'ux-process'],
   },
   'project-planning-and-content-strategy': {
+    role: 'studio-support',
     checkpoint: [
       'I can define the audience and goal for a web project.',
       'I can create a sitemap and content inventory.',
@@ -784,6 +812,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['ux-process'],
   },
   'deployment-and-launch-qa': {
+    role: 'studio-support',
     checkpoint: [
       'I can test the published URL, not only the local site.',
       'I can check links, images, responsive layout, and accessibility before submission.',
@@ -792,6 +821,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['ux-process'],
   },
   'seo-and-metadata-basics': {
+    role: 'reference',
     checkpoint: [
       'I can write a useful page title and meta description.',
       'I can use headings, URLs, and link text to support findability.',
@@ -800,6 +830,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['html', 'ux-process'],
   },
   'web-performance-basics': {
+    role: 'studio-support',
     checkpoint: [
       'I can identify common causes of slow pages.',
       'I can optimize images, fonts, and scripts.',
@@ -826,6 +857,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['ux-process'],
   },
   'ui-states-and-feedback': {
+    role: 'studio-support',
     checkpoint: [
       'I can identify hover, focus, active, loading, empty, error, success, and disabled states.',
       'I can style visible states for interactive elements.',
@@ -852,6 +884,7 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     tags: ['css', 'javascript', 'ux-process'],
   },
   'portfolio-polish-and-presentation': {
+    role: 'studio-support',
     checkpoint: [
       'I can evaluate a project for clarity, hierarchy, consistency, responsiveness, accessibility, and performance.',
       'I can improve a project without adding unnecessary complexity.',
@@ -876,12 +909,18 @@ export function getLessonMeta(lesson: Lesson, lessonIndex: number) {
   const estimatedMinutes = Math.min(55, 15 + lesson.sections.length * 2 + (isInteractive ? 8 : 0));
   const difficulty = lessonIndex + 1 >= 12 ? 'Intermediate' : 'Beginner';
   const type = isInteractive ? 'Reading + Interactive' : lesson.practice ? 'Reading + Practice' : 'Reading';
+  const role = getLessonRole(lesson);
 
   return {
     difficulty,
     estimatedMinutes,
+    role,
     type,
   };
+}
+
+export function getLessonRole(lesson: Lesson): LessonRole {
+  return lessonMetadata[lesson.slug]?.role ?? 'core';
 }
 
 export function getDemoSourceFile(lesson: Lesson) {

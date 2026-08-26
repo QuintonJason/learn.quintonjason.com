@@ -138,6 +138,23 @@
         home: ['../index.html', 'index.html', './index.html', '/index.html'],
       },
     };
+    const correctAnswers = {
+      index: {
+        css: ['css/styles.css', './css/styles.css'],
+        portrait: ['images/portrait.jpg', './images/portrait.jpg'],
+        home: ['index.html', './index.html'],
+      },
+      about: {
+        css: ['css/styles.css', './css/styles.css'],
+        portrait: ['images/portrait.jpg', './images/portrait.jpg'],
+        home: ['index.html', './index.html'],
+      },
+      gallery: {
+        css: ['../css/styles.css'],
+        portrait: ['../images/portrait.jpg'],
+        home: ['../index.html'],
+      },
+    };
 
     function updatePathLab() {
       const options = answers[current.value][target.value];
@@ -146,9 +163,23 @@
     }
 
     function checkAnswer() {
-      const correct = answers[current.value][target.value][0];
-      const isCorrect = answer.value === correct;
-      result.textContent = isCorrect ? 'Correct path.' : `Not quite. Start from ${current.selectedOptions[0].text}.`;
+      const correct = correctAnswers[current.value][target.value];
+      const isCorrect = correct.includes(answer.value);
+      const startsAtCurrentFolder = answer.value.startsWith('./');
+      const startsAtSiteRoot = answer.value.startsWith('/');
+      const correctText = correct.length > 1
+        ? `${correct[0]} or ${correct[1]}`
+        : correct[0];
+
+      if (isCorrect && startsAtCurrentFolder) {
+        result.textContent = 'Correct path. ./ means start in the current folder.';
+      } else if (isCorrect) {
+        result.textContent = 'Correct path.';
+      } else if (startsAtSiteRoot) {
+        result.textContent = `Not quite for this relative-path exercise. ${answer.value} starts at the site root; from this file use ${correctText}.`;
+      } else {
+        result.textContent = `Not quite. Start from ${current.selectedOptions[0].text}; use ${correctText}.`;
+      }
       result.dataset.state = isCorrect ? 'correct' : 'incorrect';
 
       const tag = target.value === 'css' ? 'link rel="stylesheet"' : 'img src';

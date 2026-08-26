@@ -201,11 +201,14 @@ export const responsiveLandingPage: Project = {
       ],
     },
     supportingLessons: [
+      { title: 'Wireframing For Responsive Interfaces', href: '/lessons/wireframing-for-responsive-interfaces/' },
+      { title: 'UI Patterns And Affordances', href: '/lessons/ui-patterns-and-affordances/' },
       { title: 'HTML Forms', href: '/lessons/html-forms-building-interactive-user-interfaces/' },
       { title: 'Box Model and Layout', href: '/lessons/box-model-and-layout/' },
       { title: 'Flexbox', href: '/lessons/flexbox/' },
       { title: 'Responsive Web Design', href: '/lessons/responsive-web-design/' },
       { title: 'Image Optimization', href: '/lessons/image-optimization/' },
+      { title: 'Microcopy And UX Writing', href: '/lessons/microcopy-and-ux-writing/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],
   };

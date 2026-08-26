@@ -1,0 +1,164 @@
+<section class="practice-lab pattern-selector" aria-labelledby="pattern-selector-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="pattern-selector-title">UI Pattern Selector</h2>
+    <p>Choose what the user needs to do and compare the pattern, semantic element, states, and accessibility checks.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage pattern-selector__stage">
+      <article class="pattern-selector__result">
+        <p class="eyebrow" data-pattern-kind>Action</p>
+        <h3 data-pattern-title>Button</h3>
+        <p data-pattern-summary>Use a button when the user triggers an action on the current page.</p>
+      </article>
+
+      <div class="pattern-selector__preview" data-pattern-preview></div>
+
+      <div class="pattern-selector__checks">
+        <h3>Checks</h3>
+        <ul data-pattern-checks></ul>
+      </div>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        User need
+        <select data-pattern-select>
+          <option value="act">Trigger an action</option>
+          <option value="navigate">Navigate somewhere</option>
+          <option value="choose-one">Choose one option</option>
+          <option value="choose-many">Choose many options</option>
+          <option value="filter">Filter a collection</option>
+          <option value="reveal">Reveal optional content</option>
+          <option value="compare">Compare repeated items</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <pre><code data-pattern-code>{'<button type="button">Save project</button>'}</code></pre>
+</section>
+
+<style>
+  .pattern-selector__stage {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .pattern-selector__result,
+  .pattern-selector__preview,
+  .pattern-selector__checks {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    background: var(--color-surface);
+  }
+
+  .pattern-selector__preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .pattern-selector__preview a,
+  .pattern-selector__preview button,
+  .pattern-selector__preview label {
+    min-width: 0;
+  }
+
+  .pattern-selector__checks ul {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0.5rem 0 0;
+    padding-left: 1.1rem;
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const patternLab = document.querySelector('[data-pattern-select]')?.closest('.pattern-selector');
+
+  if (patternLab) {
+    const select = patternLab.querySelector('[data-pattern-select]');
+    const kind = patternLab.querySelector('[data-pattern-kind]');
+    const title = patternLab.querySelector('[data-pattern-title]');
+    const summary = patternLab.querySelector('[data-pattern-summary]');
+    const preview = patternLab.querySelector('[data-pattern-preview]');
+    const checks = patternLab.querySelector('[data-pattern-checks]');
+    const code = patternLab.querySelector('[data-pattern-code]');
+
+    const patterns = {
+      act: {
+        kind: 'Action',
+        title: 'Button',
+        summary: 'Use a button when the user triggers an action on the current page.',
+        preview: '<button type="button">Save project</button>',
+        code: '<button type="button">Save project</button>',
+        checks: ['Label names the action.', 'Focus state is visible.', 'Loading and disabled states are planned.'],
+      },
+      navigate: {
+        kind: 'Navigation',
+        title: 'Link',
+        summary: 'Use a link when the user moves to another page, section, file, or external resource.',
+        preview: '<a href="#">View project details</a>',
+        code: '<a href="/projects/portfolio/">View project details</a>',
+        checks: ['Link text makes sense out of context.', 'Destination is predictable.', 'Current page state is clear when needed.'],
+      },
+      'choose-one': {
+        kind: 'Choice',
+        title: 'Radio Group',
+        summary: 'Use radio buttons when the user chooses one option from a small set.',
+        preview: '<label><input type="radio" name="view" checked /> Cards</label><label><input type="radio" name="view" /> List</label>',
+        code: '<fieldset>\\n  <legend>View</legend>\\n  <label><input type="radio" name="view" /> Cards</label>\\n</fieldset>',
+        checks: ['Group has a legend.', 'Each option has a label.', 'Selected state is visible.'],
+      },
+      'choose-many': {
+        kind: 'Choice',
+        title: 'Checkbox Group',
+        summary: 'Use checkboxes when the user can select more than one option.',
+        preview: '<label><input type="checkbox" checked /> UX</label><label><input type="checkbox" /> CSS</label>',
+        code: '<label><input type="checkbox" name="topic" value="ux" /> UX</label>',
+        checks: ['Each checkbox has a visible label.', 'Multiple selection is expected.', 'Clear/reset option is available when useful.'],
+      },
+      filter: {
+        kind: 'Collection',
+        title: 'Filter Controls',
+        summary: 'Use filters when the user narrows a collection without leaving the current context.',
+        preview: '<label>Category <select><option>All</option><option>UX</option></select></label><span>12 results</span>',
+        code: '<form aria-label="Filter projects">\\n  <label>Category <select name="category">...</select></label>\\n</form>',
+        checks: ['Selected filters are visible.', 'Result count updates.', 'No-results state explains what to do next.'],
+      },
+      reveal: {
+        kind: 'Disclosure',
+        title: 'Details Or Button Disclosure',
+        summary: 'Use disclosure when content is useful but not required for every user immediately.',
+        preview: '<details><summary>More project details</summary><p>Role, tools, and process notes.</p></details>',
+        code: '<details>\\n  <summary>More project details</summary>\\n  <p>...</p>\\n</details>',
+        checks: ['Summary label is specific.', 'Essential content stays visible.', 'Open and closed states are clear.'],
+      },
+      compare: {
+        kind: 'Content',
+        title: 'Card Or List Pattern',
+        summary: 'Use repeated cards or list rows when users need to scan and compare items.',
+        preview: '<article><h4>Project title</h4><p>Role, tools, and short summary.</p><a href="#">Details</a></article>',
+        code: '<ul class="card-grid">\\n  <li><article>...</article></li>\\n</ul>',
+        checks: ['Repeated fields are consistent.', 'Clickable area is clear.', 'Card and detail page roles are different.'],
+      },
+    };
+
+    function update() {
+      const pattern = patterns[select.value];
+      kind.textContent = pattern.kind;
+      title.textContent = pattern.title;
+      summary.textContent = pattern.summary;
+      preview.innerHTML = pattern.preview;
+      checks.innerHTML = pattern.checks.map((item) => `<li>${item}</li>`).join('');
+      code.textContent = pattern.code;
+    }
+
+    select.addEventListener('change', update);
+    update();
+  }
+</script>

@@ -16,7 +16,9 @@ type DemoGuidance = {
 
 export type LessonTag =
   | 'accessibility'
+  | 'ai'
   | 'css'
+  | 'figma'
   | 'html'
   | 'interactive'
   | 'javascript'
@@ -44,12 +46,16 @@ export const filterOptions = [
   { label: 'CSS', value: 'css' },
   { label: 'JavaScript', value: 'javascript' },
   { label: 'UX / Process', value: 'ux-process' },
+  { label: 'AI', value: 'ai' },
+  { label: 'Figma', value: 'figma' },
   { label: 'Accessibility', value: 'accessibility' },
 ];
 
 export const tagLabels = {
   accessibility: 'Accessibility',
+  ai: 'AI',
   css: 'CSS',
+  figma: 'Figma',
   html: 'HTML',
   interactive: 'Interactive',
   javascript: 'JavaScript',
@@ -192,6 +198,24 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
     },
   },
   'styling-text-with-css': {
+    demoSourceFile: 'TextStylingLab.astro',
+    demoGuidance: {
+      try: [
+        'Change one text property at a time and watch how readability and hierarchy shift.',
+        'Try a risky combination, such as centered paragraphs, no link underline, uppercase text, or heavy shadow, then tune it back.',
+      ],
+      changes: [
+        'The preview updates color, alignment, transform, decoration, line height, letter spacing, and shadow.',
+        'The warning text calls out readability and accessibility risks as the generated CSS changes.',
+      ],
+      notice: [
+        'Text styling is not only decoration; it affects scanning, reading, link recognition, and accessibility.',
+        'Small choices like line height, underline, and alignment can make a page feel much clearer.',
+      ],
+      apply: [
+        'Use the generated CSS as a starting point, then test one paragraph and one link in your own project.',
+      ],
+    },
     tags: ['css'],
   },
   'css-working-with-fonts': {
@@ -891,7 +915,279 @@ export const lessonMetadata: Record<string, LessonMetadata> = {
       'I can explain the project goal, audience, process, and result.',
     ],
     tags: ['ux-process', 'accessibility'],
-  },};
+  },
+  'ai-assisted-design-workflows': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can write a prompt that includes audience, goal, context, constraints, output format, and review criteria.',
+      'I can critique AI output before using it in a project.',
+      'I can disclose how AI was used and what I verified myself.',
+      'I can turn an app design idea into a semantic, accessible, responsive implementation plan.',
+    ],
+    teacherNotes: {
+      demo: [
+        'Start with a weak prompt, then revise it live by adding audience, constraints, states, and accessibility criteria.',
+        'Show students how the better prompt produces output that is easier to critique and adapt.',
+      ],
+      tryInClass: [
+        'Have students run the AI flow review activity on one app idea, wireframe, or current project page.',
+        'Ask students to highlight what they accepted, rejected, and changed after reading the AI response.',
+      ],
+      check: [
+        'Students should submit the final prompt, the revised screen or flow plan, an AI use note, and a short reflection on their decisions.',
+        'The final plan should include important UI states and a semantic HTML outline.',
+      ],
+      watchFor: [
+        'Students treating AI output as finished work instead of critique material.',
+        'Prompts that ask for visual decoration before the user goal, content, and structure are clear.',
+      ],
+    },
+    tags: ['ai', 'ux-process', 'accessibility'],
+  },
+  'figma-for-web-design-planning': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can organize a Figma file for a web or app project.',
+      'I can use frames, auto layout, and reusable components to plan a buildable interface.',
+      'I can prepare annotations, assets, and a semantic HTML outline for front-end implementation.',
+    ],
+    teacherNotes: {
+      demo: [
+        'Open a small project file and show how a messy screen becomes easier to build when frames, auto layout, components, and annotations are named clearly.',
+        'Connect one Figma layout decision to the matching HTML or CSS decision students will make in code.',
+      ],
+      tryInClass: [
+        'Have students create mobile and desktop frames for one current project screen.',
+        'Ask students to annotate responsive behavior, UI states, and accessibility notes before writing the HTML outline.',
+      ],
+      check: [
+        'Students should submit the Figma link, one annotated screen, and a matching semantic HTML outline.',
+        'The design should identify repeated components and mark which assets should actually be exported.',
+      ],
+      watchFor: [
+        'Students treating Figma as a final picture instead of a planning and communication tool.',
+        'Designs that rely on screenshots, flattened text, or exact pixel positioning that will not translate well to responsive code.',
+      ],
+    },
+    tags: ['figma', 'ux-process', 'accessibility'],
+  },
+  'user-flows-and-task-models': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can define a user task with an entry point and success condition.',
+      'I can map a happy path, decision points, and recovery paths.',
+      'I can turn a flow into a screen inventory and semantic implementation plan.',
+    ],
+    teacherNotes: {
+      demo: [
+        'Model a common student project as a user task before drawing any screens.',
+        'Add one edge case live so students see how flows reveal missing states and screens.',
+      ],
+      tryInClass: [
+        'Have students map one primary task from their current project.',
+        'Ask students to add three edge cases or recovery paths, then revise the screen inventory.',
+      ],
+      check: [
+        'The flow should include entry point, success condition, primary action, decision points, and at least one state.',
+        'Students should connect the flow to a screen inventory and one HTML outline.',
+      ],
+      watchFor: [
+        'Students naming screens before naming the user task.',
+        'Flows that only include the perfect path and ignore errors, empty states, or recovery.',
+      ],
+    },
+    tags: ['ux-process', 'accessibility'],
+  },
+  'wireframing-for-responsive-interfaces': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can wireframe a screen around content hierarchy and task flow.',
+      'I can plan mobile and desktop layout behavior before visual polish.',
+      'I can translate wireframe regions into semantic HTML and responsive CSS decisions.',
+    ],
+    teacherNotes: {
+      demo: [
+        'Sketch one screen at mobile width first, then expand it into desktop while narrating what stacks, wraps, or moves.',
+        'Point to each wireframe region and name the likely HTML element or landmark.',
+      ],
+      tryInClass: [
+        'Have students produce mobile and desktop wireframes for one task.',
+        'Ask students to annotate responsive behavior and write a matching HTML outline beside the wireframe.',
+      ],
+      check: [
+        'Wireframes should include realistic content, primary action, navigation, states, and responsive notes.',
+        'Students should avoid visual polish until structure and hierarchy are clear.',
+      ],
+      watchFor: [
+        'Desktop-only wireframes that become impossible to adapt later.',
+        'Pretty grayscale mockups that still do not explain content order or user action.',
+      ],
+    },
+    tags: ['ux-process', 'html', 'css'],
+  },
+  'ui-patterns-and-affordances': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can choose common UI patterns based on task needs.',
+      'I can explain how affordance, signifier, and feedback work in an interface.',
+      'I can match visual controls with correct semantic HTML and accessible states.',
+    ],
+    demoSourceFile: 'UiPatternSelector.astro',
+    demoGuidance: {
+      try: [
+        'Choose a user need such as navigating, filtering, revealing content, or comparing items.',
+        'Compare the recommended pattern, preview, semantic HTML, and checklist.',
+      ],
+      changes: [
+        'The suggested pattern changes based on what the user is trying to do.',
+        'The code sample shifts between links, buttons, forms, details, radios, checkboxes, and card lists.',
+      ],
+      notice: [
+        'Visual style comes after the semantic choice.',
+        'Each pattern needs visible states and accessibility checks.',
+      ],
+      apply: [
+        'Audit one control in your project and confirm the pattern matches the task.',
+      ],
+    },
+    teacherNotes: {
+      demo: [
+        'Compare two controls that look similar but behave differently, such as a link and a button.',
+        'Audit one project screen for affordance, signifier, feedback, and semantic markup.',
+      ],
+      tryInClass: [
+        'Have students inventory the interactive patterns on one current project screen.',
+        'Ask students to fix one confusing pattern and add missing focus or feedback states.',
+      ],
+      check: [
+        'Every control should have a clear purpose, semantic element, label, and visible state.',
+        'Students should be able to explain why a pattern fits the task.',
+      ],
+      watchFor: [
+        'Clickable-looking elements that are not keyboard accessible.',
+        'Buttons used for navigation or links used for actions without a deliberate reason.',
+      ],
+    },
+    tags: ['ux-process', 'html', 'accessibility'],
+  },
+  'microcopy-and-ux-writing': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can write specific labels, links, buttons, helper text, and feedback messages.',
+      'I can improve empty, error, and success states with useful next steps.',
+      'I can check interface copy for accessibility, tone, and clarity.',
+    ],
+    demoSourceFile: 'MicrocopyRewriteLab.astro',
+    demoGuidance: {
+      try: [
+        'Switch between copy moments such as button labels, helper text, errors, empty states, success messages, and navigation.',
+        'Compare the weak version with the stronger rewrite and read the principle behind the change.',
+      ],
+      changes: [
+        'The example copy, reason, and code pattern update together.',
+        'The stronger copy gets more specific about action, destination, requirement, or next step.',
+      ],
+      notice: [
+        'Good microcopy usually reduces uncertainty before visual design changes are needed.',
+        'Accessible copy often starts with specific labels and connected feedback.',
+      ],
+      apply: [
+        'Rewrite five pieces of copy in your current project using the same before-and-after pattern.',
+      ],
+    },
+    teacherNotes: {
+      demo: [
+        'Rewrite weak button labels and error messages from a sample interface.',
+        'Show how better copy changes the user path without changing the visual design.',
+      ],
+      tryInClass: [
+        'Have students highlight every piece of microcopy on one screen.',
+        'Ask students to rewrite five pieces and add one missing empty, error, or success message.',
+      ],
+      check: [
+        'Revised copy should be specific, action-oriented, calm, and useful on mobile.',
+        'Forms should include visible labels, helper text when needed, and actionable errors.',
+      ],
+      watchFor: [
+        'Generic labels like click here, submit, learn more, or invalid input.',
+        'Placeholder text being used as the only form label.',
+      ],
+    },
+    tags: ['ux-process', 'accessibility'],
+  },
+  'prototyping-and-usability-testing': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can choose an appropriate prototype fidelity for a design question.',
+      'I can write usability tasks that describe user goals instead of giving instructions.',
+      'I can observe a test, identify findings, and make revisions based on evidence.',
+    ],
+    teacherNotes: {
+      demo: [
+        'Run a quick test on a small prototype while students watch for hesitation, wrong clicks, and questions.',
+        'Turn one observation into a specific design revision live.',
+      ],
+      tryInClass: [
+        'Have students test one task with one classmate using Figma or a rough browser prototype.',
+        'Ask students to record three observations and choose two revisions.',
+      ],
+      check: [
+        'The task prompt should not tell the participant which UI control to use.',
+        'Findings should describe observed behavior and lead to concrete revisions.',
+      ],
+      watchFor: [
+        'Students defending the design during the test instead of observing.',
+        'Findings written as opinions without evidence from participant behavior.',
+      ],
+    },
+    tags: ['ux-process', 'accessibility'],
+  },
+  'information-architecture-and-content-models': {
+    role: 'studio-support',
+    checkpoint: [
+      'I can name the main content types in a project.',
+      'I can define fields for a repeated content type such as projects, events, posts, or resources.',
+      'I can connect IA decisions to navigation, cards, detail pages, filters, and semantic HTML.',
+    ],
+    demoSourceFile: 'ContentModelBuilder.astro',
+    demoGuidance: {
+      try: [
+        'Choose a project type and inspect the content type, fields, and views it needs.',
+        'Switch the primary view to compare card, list, detail, and filter markup.',
+      ],
+      changes: [
+        'The field list and view requirements change with the project type.',
+        'The code sample shows how IA decisions become semantic HTML patterns.',
+      ],
+      notice: [
+        'Repeated content needs fields before it needs visual polish.',
+        'Cards, lists, details, and filters each reveal different amounts of the same content model.',
+      ],
+      apply: [
+        'Choose one repeated content type in your project and define the fields before designing the card.',
+      ],
+    },
+    teacherNotes: {
+      demo: [
+        'Model a familiar project as content types before showing any screens.',
+        'Turn one content type into a card, list row, and detail page so students see how structure becomes interface.',
+      ],
+      tryInClass: [
+        'Have students inventory the content types in their current project.',
+        'Ask students to define fields for one repeated content type and sketch card/list/detail views.',
+      ],
+      check: [
+        'Students should submit content types, one field list, navigation labels, and one semantic HTML outline.',
+        'Repeated content should have enough fields to support cards, lists, filters, and details.',
+      ],
+      watchFor: [
+        'Students designing one perfect card without considering the full repeated content set.',
+        'Navigation labels that sound clever but do not predict the destination.',
+      ],
+    },
+    tags: ['ux-process', 'html', 'accessibility'],
+  },
+};
 
 export function getLessonTags(lesson: Lesson): LessonTag[] {
   const metadata = lessonMetadata[lesson.slug] ?? { tags: [] };

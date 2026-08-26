@@ -1,0 +1,206 @@
+<section class="practice-lab text-style-lab" aria-labelledby="text-style-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="text-style-lab-title">Text Styling Lab</h2>
+    <p>Adjust text properties and compare readability, hierarchy, link clarity, and generated CSS.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage text-style-lab__stage" data-text-style-preview>
+      <p class="text-style-lab__eyebrow">Course Resource</p>
+      <h3>Designing readable web pages</h3>
+      <p>
+        Text styling should help people scan headings, read paragraphs, identify links, and understand
+        emphasis without fighting the page.
+      </p>
+      <p>
+        A clear <a href="#">resource link</a> needs more than color alone, especially inside paragraph text.
+      </p>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        Text color
+        <select data-text-style-control="color">
+          <option value="#1f2937">Readable dark</option>
+          <option value="#6b7280">Muted gray</option>
+          <option value="#0b55b7">Link blue</option>
+          <option value="#d97706">Low-contrast amber</option>
+        </select>
+      </label>
+
+      <label>
+        Alignment
+        <select data-text-style-control="align">
+          <option value="left">Left</option>
+          <option value="center">Center</option>
+          <option value="right">Right</option>
+          <option value="justify">Justify</option>
+        </select>
+      </label>
+
+      <label>
+        Transform
+        <select data-text-style-control="transform">
+          <option value="none">None</option>
+          <option value="uppercase">Uppercase</option>
+          <option value="capitalize">Capitalize</option>
+        </select>
+      </label>
+
+      <label>
+        Link decoration
+        <select data-text-style-control="decoration">
+          <option value="underline">Underline</option>
+          <option value="none">None</option>
+          <option value="wavy">Wavy underline</option>
+        </select>
+      </label>
+
+      <label>
+        Line height
+        <input type="range" min="100" max="190" value="160" data-text-style-control="line" />
+      </label>
+
+      <label>
+        Letter spacing
+        <input type="range" min="0" max="18" value="0" data-text-style-control="letter" />
+      </label>
+
+      <label>
+        Shadow
+        <input type="checkbox" data-text-style-control="shadow" />
+      </label>
+    </div>
+  </div>
+
+  <p class="practice-lab__status" data-text-style-status>Readable starting point.</p>
+  <pre><code data-text-style-code>{'.text-block { line-height: 1.6; }'}</code></pre>
+</section>
+
+<style>
+  .text-style-lab__stage {
+    display: grid;
+    gap: 0.9rem;
+    color: #1f2937;
+    background: #ffffff;
+  }
+
+  .text-style-lab__stage h3 {
+    color: inherit;
+    font-size: 1.65rem;
+    line-height: 1.15;
+  }
+
+  .text-style-lab__stage p {
+    color: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
+    text-transform: inherit;
+    text-shadow: inherit;
+  }
+
+  .text-style-lab__stage a {
+    color: #0b55b7;
+    text-underline-offset: 0.18em;
+  }
+
+  .text-style-lab__eyebrow {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const textStyleLab = document.querySelector('[data-text-style-preview]')?.closest('.text-style-lab');
+
+  if (textStyleLab) {
+    const preview = textStyleLab.querySelector('[data-text-style-preview]');
+    const link = preview.querySelector('a');
+    const status = textStyleLab.querySelector('[data-text-style-status]');
+    const code = textStyleLab.querySelector('[data-text-style-code]');
+    const controls = {
+      color: textStyleLab.querySelector('[data-text-style-control="color"]'),
+      align: textStyleLab.querySelector('[data-text-style-control="align"]'),
+      transform: textStyleLab.querySelector('[data-text-style-control="transform"]'),
+      decoration: textStyleLab.querySelector('[data-text-style-control="decoration"]'),
+      line: textStyleLab.querySelector('[data-text-style-control="line"]'),
+      letter: textStyleLab.querySelector('[data-text-style-control="letter"]'),
+      shadow: textStyleLab.querySelector('[data-text-style-control="shadow"]'),
+    };
+
+    function getDecorationValue() {
+      if (controls.decoration.value === 'wavy') return 'underline wavy';
+      return controls.decoration.value;
+    }
+
+    function getStatusMessage() {
+      const notes = [];
+
+      if (controls.color.value === '#d97706') {
+        notes.push('Check color contrast before using this color for body text.');
+      }
+
+      if (controls.align.value === 'center' || controls.align.value === 'justify') {
+        notes.push('Long paragraphs are usually easier to read when left aligned.');
+      }
+
+      if (controls.transform.value === 'uppercase') {
+        notes.push('Reserve uppercase for short labels, not paragraphs.');
+      }
+
+      if (controls.decoration.value === 'none') {
+        notes.push('Links need a visible cue beyond color.');
+      }
+
+      if (Number(controls.letter.value) > 8) {
+        notes.push('Wide letter spacing can slow reading in longer text.');
+      }
+
+      if (controls.shadow.checked) {
+        notes.push('Use text shadows carefully so they do not blur body copy.');
+      }
+
+      return notes.length ? notes.join(' ') : 'Readable starting point.';
+    }
+
+    function update() {
+      const lineHeight = Number(controls.line.value) / 100;
+      const letterSpacing = Number(controls.letter.value) / 100;
+      const decoration = getDecorationValue();
+      const shadow = controls.shadow.checked ? '1px 1px 2px rgba(0, 0, 0, 0.25)' : 'none';
+
+      preview.style.color = controls.color.value;
+      preview.style.textAlign = controls.align.value;
+      preview.style.textTransform = controls.transform.value;
+      preview.style.lineHeight = String(lineHeight);
+      preview.style.letterSpacing = `${letterSpacing}em`;
+      preview.style.textShadow = shadow;
+      link.style.textDecoration = decoration;
+      status.textContent = getStatusMessage();
+      code.textContent = `.text-block {
+  color: ${controls.color.value};
+  text-align: ${controls.align.value};
+  text-transform: ${controls.transform.value};
+  line-height: ${lineHeight};
+  letter-spacing: ${letterSpacing}em;
+  text-shadow: ${shadow};
+}
+
+.text-block a {
+  text-decoration: ${decoration};
+  text-underline-offset: 0.18em;
+}`;
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener('input', update);
+      control.addEventListener('change', update);
+    });
+    update();
+  }
+</script>

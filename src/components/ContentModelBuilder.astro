@@ -1,0 +1,168 @@
+<section class="practice-lab content-model-lab" aria-labelledby="content-model-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="content-model-title">Content Model Builder</h2>
+    <p>Choose a project type and inspect the content types, fields, views, and HTML structure it needs.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage content-model-lab__stage">
+      <article class="content-model-lab__card" data-model-card>
+        <p class="eyebrow" data-model-type>Project</p>
+        <h3 data-model-title>Portfolio project</h3>
+        <p data-model-summary>A reusable content type for portfolio cards, project listings, and detail pages.</p>
+      </article>
+
+      <div>
+        <h3>Fields</h3>
+        <ul data-model-fields></ul>
+      </div>
+
+      <div>
+        <h3>Views To Plan</h3>
+        <ul data-model-views></ul>
+      </div>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        Project type
+        <select data-model-select>
+          <option value="portfolio">Portfolio</option>
+          <option value="events">Campus event app</option>
+          <option value="course">Course site</option>
+          <option value="restaurant">Restaurant site</option>
+        </select>
+      </label>
+
+      <label>
+        Primary view
+        <select data-view-select>
+          <option value="card">Card</option>
+          <option value="list">List row</option>
+          <option value="detail">Detail page</option>
+          <option value="filter">Filter view</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <pre><code data-model-code>{'<article>...</article>'}</code></pre>
+</section>
+
+<style>
+  .content-model-lab__stage {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .content-model-lab__card {
+    border: 1px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    background: color-mix(in srgb, var(--color-surface) 88%, var(--color-accent));
+  }
+
+  .content-model-lab__stage h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .content-model-lab__stage ul {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const contentModelLab = document.querySelector('[data-model-select]')?.closest('.content-model-lab');
+
+  if (contentModelLab) {
+    const modelSelect = contentModelLab.querySelector('[data-model-select]');
+    const viewSelect = contentModelLab.querySelector('[data-view-select]');
+    const type = contentModelLab.querySelector('[data-model-type]');
+    const title = contentModelLab.querySelector('[data-model-title]');
+    const summary = contentModelLab.querySelector('[data-model-summary]');
+    const fields = contentModelLab.querySelector('[data-model-fields]');
+    const views = contentModelLab.querySelector('[data-model-views]');
+    const code = contentModelLab.querySelector('[data-model-code]');
+
+    const models = {
+      portfolio: {
+        type: 'Project',
+        title: 'Portfolio project',
+        summary: 'Reusable content for portfolio cards, project listings, and detail pages.',
+        fields: ['Title', 'Summary', 'Role', 'Tools', 'Hero image', 'Live link', 'Repository link', 'Process notes'],
+        views: ['Project card', 'Project listing', 'Case study detail', 'Related projects'],
+      },
+      events: {
+        type: 'Event',
+        title: 'Campus event',
+        summary: 'Reusable content for event cards, saved events, filters, and event details.',
+        fields: ['Title', 'Date', 'Time', 'Location', 'Category', 'Description', 'Registration link', 'Status'],
+        views: ['Event card', 'Calendar list', 'Event detail', 'Category filter'],
+      },
+      course: {
+        type: 'Lesson',
+        title: 'Course lesson',
+        summary: 'Reusable content for course modules, lesson cards, resources, and progress tracking.',
+        fields: ['Title', 'Summary', 'Module', 'Learning goals', 'Practice tasks', 'Resources', 'Estimated time'],
+        views: ['Lesson card', 'Module list', 'Lesson detail', 'Progress checklist'],
+      },
+      restaurant: {
+        type: 'Menu item',
+        title: 'Restaurant menu item',
+        summary: 'Reusable content for menus, categories, detail panels, and dietary filters.',
+        fields: ['Name', 'Description', 'Price', 'Category', 'Dietary tags', 'Image', 'Availability'],
+        views: ['Menu card', 'Category list', 'Item detail', 'Dietary filter'],
+      },
+    };
+
+    const snippets = {
+      card: `<article class="card">
+  <img src="..." alt="..." />
+  <h2><a href="...">Title</a></h2>
+  <p>Short summary...</p>
+</article>`,
+      list: `<li class="list-row">
+  <a href="...">Title</a>
+  <span>Status or date</span>
+  <span>Category</span>
+</li>`,
+      detail: `<article>
+  <header>
+    <h1>Title</h1>
+    <p>Summary...</p>
+  </header>
+  <section aria-labelledby="details-title">...</section>
+</article>`,
+      filter: `<form aria-label="Filter results">
+  <label>
+    Category
+    <select name="category">...</select>
+  </label>
+</form>
+<p aria-live="polite">12 results</p>`,
+    };
+
+    function renderList(list, items) {
+      list.innerHTML = items.map((item) => `<li>${item}</li>`).join('');
+    }
+
+    function update() {
+      const model = models[modelSelect.value];
+      type.textContent = model.type;
+      title.textContent = model.title;
+      summary.textContent = model.summary;
+      renderList(fields, model.fields);
+      renderList(views, model.views);
+      code.textContent = snippets[viewSelect.value];
+    }
+
+    modelSelect.addEventListener('change', update);
+    viewSelect.addEventListener('change', update);
+    update();
+  }
+</script>

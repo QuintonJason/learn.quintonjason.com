@@ -276,11 +276,16 @@ export const courseModules: CourseModule[] = [
     summary:
       'Organize content into reusable page types, listing/detail patterns, and interactive portfolio components.',
     focus: [
+      'Information architecture, content models, and navigation labels',
+      'User flows, task models, and interface patterns',
       'Page types and template consistency',
       'Item listing and detail page patterns',
       'Carousel behavior, controls, status, and accessibility',
     ],
     lessons: [
+      { title: 'Information Architecture And Content Models', href: '/lessons/information-architecture-and-content-models/' },
+      { title: 'User Flows And Task Models', href: '/lessons/user-flows-and-task-models/' },
+      { title: 'UI Patterns And Affordances', href: '/lessons/ui-patterns-and-affordances/' },
       { title: 'Page Types and Templates', href: '/lessons/page-types-templates-and-navigation/' },
       { title: 'Item Listing and Details', href: '/lessons/item-listing-and-details/' },
       { title: 'Carousels', href: '/lessons/mastering-carousels/' },
@@ -295,11 +300,15 @@ export const courseModules: CourseModule[] = [
       ],
     },
     inClass: [
+      'Name the major content types before choosing the page layout.',
+      'Map one primary user flow before naming the screens.',
+      'Audit one project screen for pattern choice, affordance, and feedback.',
       'Map portfolio pages before writing final markup.',
       'Compare a project card with a project detail page.',
       'Use the carousel lab to inspect controls, dots, status, keyboard, and autoplay.',
     ],
     beforeYouLeave: [
+      'The project has a basic content model for repeated items.',
       'The portfolio is multi-page, not a single long page.',
       'Project cards explain what each project is.',
       'Any carousel or interaction has visible controls and keyboard support.',
@@ -318,11 +327,15 @@ export const courseModules: CourseModule[] = [
       'Turn a portfolio idea into a manageable system with content strategy, reusable components, consistent styles, and basic metadata.',
     focus: [
       'Audience, goals, sitemap, and content inventory',
+      'Responsive wireframes and screen planning',
+      'Figma planning, responsive frames, and handoff notes',
       'Reusable color, spacing, type, button, card, and form patterns',
       'Page titles, descriptions, Open Graph, and findability basics',
     ],
     lessons: [
       { title: 'Project Planning', href: '/lessons/project-planning-and-content-strategy/' },
+      { title: 'Wireframing For Responsive Interfaces', href: '/lessons/wireframing-for-responsive-interfaces/' },
+      { title: 'Figma For Web Design Planning', href: '/lessons/figma-for-web-design-planning/' },
       { title: 'Design Systems', href: '/lessons/design-systems-and-reusable-components/' },
       { title: 'SEO and Metadata', href: '/lessons/seo-and-metadata-basics/' },
     ],
@@ -337,6 +350,8 @@ export const courseModules: CourseModule[] = [
     },
     inClass: [
       'Review a project sitemap before students continue building.',
+      'Create mobile and desktop wireframes for one current project screen.',
+      'Use Figma to annotate one mobile and desktop screen before implementation.',
       'Turn repeated one-off button and card styles into reusable classes.',
       'Write one stronger page title and meta description together.',
     ],
@@ -359,11 +374,13 @@ export const courseModules: CourseModule[] = [
     focus: [
       'Live URL testing and launch QA',
       'Performance checks for images, fonts, scripts, and layout stability',
+      'Microcopy, errors, confirmations, and task feedback',
       'Hover, focus, loading, empty, error, success, and disabled states',
     ],
     lessons: [
       { title: 'Deployment and Launch QA', href: '/lessons/deployment-and-launch-qa/' },
       { title: 'Web Performance Basics', href: '/lessons/web-performance-basics/' },
+      { title: 'Microcopy And UX Writing', href: '/lessons/microcopy-and-ux-writing/' },
       { title: 'UI States and Feedback', href: '/lessons/ui-states-and-feedback/' },
     ],
     projectCheckpoint: {
@@ -378,6 +395,7 @@ export const courseModules: CourseModule[] = [
     inClass: [
       'Open the live URL and test it separately from the local version.',
       'Sort assets by size in DevTools Network.',
+      'Rewrite one unclear label, error, empty state, or confirmation.',
       'Audit one button, input, or card for missing states.',
     ],
     beforeYouLeave: [
@@ -400,10 +418,14 @@ export const courseModules: CourseModule[] = [
     focus: [
       'Portfolio clarity, hierarchy, consistency, and presentation',
       'Final accessibility, responsiveness, and performance checks',
+      'Lightweight prototypes, usability tests, and evidence-based revisions',
       'Explaining the project goal, audience, process, and result',
+      'AI-assisted critique and design workflow planning',
     ],
     lessons: [
       { title: 'Portfolio Polish and Presentation', href: '/lessons/portfolio-polish-and-presentation/' },
+      { title: 'Prototyping And Usability Testing', href: '/lessons/prototyping-and-usability-testing/' },
+      { title: 'AI-Assisted Design Workflows', href: '/lessons/ai-assisted-design-workflows/' },
     ],
     projectCheckpoint: {
       title: 'Project 4: Interactive Portfolio',
@@ -416,6 +438,7 @@ export const courseModules: CourseModule[] = [
     },
     inClass: [
       'Run a final peer review with one content check, one responsive check, and one accessibility check.',
+      'Run one five-minute usability test and choose two revisions from the observations.',
       'Make the smallest high-value fixes first.',
       'Practice explaining project decisions clearly.',
     ],

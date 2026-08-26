@@ -1090,6 +1090,51 @@
   margin-top: 0.4rem;
 }
 
+.practice-checklist {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.practice-item {
+  align-items: start;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: 1.5rem auto minmax(0, 1fr);
+  padding: 0.85rem 1rem;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.practice-item__number {
+  color: var(--color-brand-dark);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  padding-top: 0.15rem;
+}
+
+.practice-item input[type="checkbox"] {
+  accent-color: var(--color-brand);
+  block-size: 1.1rem;
+  inline-size: 1.1rem;
+  margin-top: 0.15rem;
+}
+
+.practice-item.is-complete {
+  background: var(--color-success-soft);
+  border-color: var(--color-brand);
+}
+
+.practice-item.is-complete .practice-item__text {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+
 .flex-playground,
 .box-visualizer,
 .dom-lab,

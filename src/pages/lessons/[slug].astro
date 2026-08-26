@@ -4,6 +4,7 @@ import AccessibilityCheckLab from '../../components/AccessibilityCheckLab.astro'
 import AnimationKeyframeLab from '../../components/AnimationKeyframeLab.astro';
 import BoxModelVisualizer from '../../components/BoxModelVisualizer.astro';
 import CarouselAccessibilityLab from '../../components/CarouselAccessibilityLab.astro';
+import ContentModelBuilder from '../../components/ContentModelBuilder.astro';
 import DebuggingChecklistLab from '../../components/DebuggingChecklistLab.astro';
 import DesignSystemTokenLab from '../../components/DesignSystemTokenLab.astro';
 import DevToolsInspectorLab from '../../components/DevToolsInspectorLab.astro';
@@ -15,15 +16,18 @@ import FormAccessibilityLab from '../../components/FormAccessibilityLab.astro';
 import GsapTimelineLab from '../../components/GsapTimelineLab.astro';
 import GridLayoutLab from '../../components/GridLayoutLab.astro';
 import ImageOptimizationLab from '../../components/ImageOptimizationLab.astro';
+import MicrocopyRewriteLab from '../../components/MicrocopyRewriteLab.astro';
 import NavigationPatternLab from '../../components/NavigationPatternLab.astro';
 import PageTemplateLab from '../../components/PageTemplateLab.astro';
 import PerformanceAuditLab from '../../components/PerformanceAuditLab.astro';
 import PositioningLab from '../../components/PositioningLab.astro';
 import ResponsiveLayoutVisualizer from '../../components/ResponsiveLayoutVisualizer.astro';
 import SelectorPlayground from '../../components/SelectorPlayground.astro';
+import TextStylingLab from '../../components/TextStylingLab.astro';
 import TransitionPlayground from '../../components/TransitionPlayground.astro';
 import TransformLab from '../../components/TransformLab.astro';
 import UiStatesLab from '../../components/UiStatesLab.astro';
+import UiPatternSelector from '../../components/UiPatternSelector.astro';
 import { getDemoGuidance, getDemoSourceUrl, getLessonCheckpoint, getLessonMeta, getLessonRole, getTeacherNotes, isInteractiveLesson, lessonRoleDescriptions, lessonRoleLabels } from '../../data/lessonMeta';
 import type { LessonSection } from '../../data/lessons';
 import { lessons } from '../../data/lessons';
@@ -248,6 +252,7 @@ const pageSections = [
               {lesson.slug === 'file-paths-and-site-structure' && <FilePathLab />}
 
               {lesson.slug === 'intro-to-css' && <SelectorPlayground />}
+              {lesson.slug === 'styling-text-with-css' && <TextStylingLab />}
 
               {lesson.slug === 'css-working-with-fonts' && <FontPairingLab />}
 
@@ -258,6 +263,9 @@ const pageSections = [
               {lesson.slug === 'design-systems-and-reusable-components' && <DesignSystemTokenLab />}
               {lesson.slug === 'web-performance-basics' && <PerformanceAuditLab />}
               {lesson.slug === 'ui-states-and-feedback' && <UiStatesLab />}
+              {lesson.slug === 'information-architecture-and-content-models' && <ContentModelBuilder />}
+              {lesson.slug === 'ui-patterns-and-affordances' && <UiPatternSelector />}
+              {lesson.slug === 'microcopy-and-ux-writing' && <MicrocopyRewriteLab />}
 
               {lesson.slug === 'responsive-web-design' && <ResponsiveLayoutVisualizer />}
 
@@ -398,9 +406,21 @@ const pageSections = [
           lesson.practice && (
             <section id="practice">
               <h2>Practice</h2>
-              <ul>
-                {lesson.practice.map((item) => <li set:html={renderInlineText(item)} />)}
-              </ul>
+              <ol class="practice-checklist" data-practice-list data-practice-slug={lesson.slug}>
+                {lesson.practice.map((item, index) => (
+                  <li>
+                    <label class="practice-item" data-practice-item-label>
+                      <span class="practice-item__number">{index + 1}</span>
+                      <input
+                        type="checkbox"
+                        data-practice-check
+                        data-practice-index={String(index)}
+                      />
+                      <span class="practice-item__text" set:html={renderInlineText(item)} />
+                    </label>
+                  </li>
+                ))}
+              </ol>
             </section>
           )
         }
@@ -501,6 +521,46 @@ const pageSections = [
 
       saveCompletedLessons(nextCompletedLessons);
       updateProgressLabel(progressCheckbox.checked);
+    });
+  }
+
+  const practiceList = document.querySelector('[data-practice-list]');
+  const practiceChecks = Array.from(document.querySelectorAll('[data-practice-check]'));
+
+  if (practiceList instanceof HTMLElement && practiceChecks.length > 0) {
+    const practiceStorageKey = `qj-learn-practice-${practiceList.dataset.practiceSlug ?? ''}`;
+
+    function getCompletedPractice() {
+      try {
+        const saved = window.localStorage.getItem(practiceStorageKey);
+        return new Set(saved ? JSON.parse(saved) : []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveCompletedPractice(completed) {
+      window.localStorage.setItem(practiceStorageKey, JSON.stringify([...completed]));
+    }
+
+    const completedPractice = getCompletedPractice();
+
+    practiceChecks.forEach((checkbox) => {
+      if (!(checkbox instanceof HTMLInputElement)) return;
+      const index = checkbox.dataset.practiceIndex ?? '';
+      checkbox.checked = completedPractice.has(index);
+      checkbox.closest('[data-practice-item-label]')?.classList.toggle('is-complete', checkbox.checked);
+
+      checkbox.addEventListener('change', () => {
+        const next = getCompletedPractice();
+        if (checkbox.checked) {
+          next.add(index);
+        } else {
+          next.delete(index);
+        }
+        saveCompletedPractice(next);
+        checkbox.closest('[data-practice-item-label]')?.classList.toggle('is-complete', checkbox.checked);
+      });
     });
   }
 </script>

@@ -1,0 +1,139 @@
+<section class="practice-lab microcopy-lab" aria-labelledby="microcopy-lab-title">
+  <div>
+    <p class="eyebrow">Interactive Demo</p>
+    <h2 id="microcopy-lab-title">Microcopy Rewrite Lab</h2>
+    <p>Compare weak interface copy with clearer labels, errors, empty states, and confirmations.</p>
+  </div>
+
+  <div class="practice-lab__grid">
+    <div class="practice-lab__stage microcopy-lab__stage">
+      <article class="microcopy-lab__example">
+        <p class="eyebrow" data-copy-context>Button label</p>
+        <h3>Weak</h3>
+        <p data-copy-weak>Click here</p>
+      </article>
+
+      <article class="microcopy-lab__example microcopy-lab__example--strong">
+        <h3>Stronger</h3>
+        <p data-copy-strong>View project details</p>
+      </article>
+
+      <div class="microcopy-lab__principle">
+        <h3>Why It Works</h3>
+        <p data-copy-principle>The label names the destination and still makes sense out of context.</p>
+      </div>
+    </div>
+
+    <div class="practice-lab__panel">
+      <label>
+        Copy moment
+        <select data-copy-select>
+          <option value="button">Button label</option>
+          <option value="form">Form helper text</option>
+          <option value="error">Error message</option>
+          <option value="empty">Empty state</option>
+          <option value="success">Success message</option>
+          <option value="nav">Navigation label</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <pre><code data-copy-code>{'<a href="/projects/">View project details</a>'}</code></pre>
+</section>
+
+<style>
+  .microcopy-lab__stage {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .microcopy-lab__example,
+  .microcopy-lab__principle {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    background: var(--color-surface);
+  }
+
+  .microcopy-lab__example--strong {
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+    background: color-mix(in srgb, var(--color-surface) 90%, var(--color-accent));
+  }
+
+  .microcopy-lab__example p {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+</style>
+
+<script type="module" is:inline data-astro-rerun>
+  // @ts-nocheck
+  const microcopyLab = document.querySelector('[data-copy-select]')?.closest('.microcopy-lab');
+
+  if (microcopyLab) {
+    const select = microcopyLab.querySelector('[data-copy-select]');
+    const context = microcopyLab.querySelector('[data-copy-context]');
+    const weak = microcopyLab.querySelector('[data-copy-weak]');
+    const strong = microcopyLab.querySelector('[data-copy-strong]');
+    const principle = microcopyLab.querySelector('[data-copy-principle]');
+    const code = microcopyLab.querySelector('[data-copy-code]');
+
+    const examples = {
+      button: {
+        context: 'Button label',
+        weak: 'Click here',
+        strong: 'View project details',
+        principle: 'The label names the destination and still makes sense out of context.',
+        code: '<a href="/projects/">View project details</a>',
+      },
+      form: {
+        context: 'Form helper text',
+        weak: 'Upload file',
+        strong: 'Upload a JPG or PNG under 2 MB.',
+        principle: 'The helper text gives requirements before the user makes a mistake.',
+        code: '<p id="image-help">Upload a JPG or PNG under 2 MB.</p>',
+      },
+      error: {
+        context: 'Error message',
+        weak: 'Invalid input',
+        strong: 'Enter an email address using name@example.com.',
+        principle: 'The error names the problem and gives a specific fix.',
+        code: '<p id="email-error">Enter an email address using name@example.com.</p>',
+      },
+      empty: {
+        context: 'Empty state',
+        weak: 'No items',
+        strong: 'No projects yet. Add your first project to start building your portfolio.',
+        principle: 'The message explains why the area is empty and offers a next action.',
+        code: '<p>No projects yet. <a href="/new/">Add your first project</a>.</p>',
+      },
+      success: {
+        context: 'Success message',
+        weak: 'Done',
+        strong: 'Project saved. You can keep editing or preview the live page.',
+        principle: 'The confirmation says what happened and what the user can do next.',
+        code: '<p role="status">Project saved. You can keep editing or preview the live page.</p>',
+      },
+      nav: {
+        context: 'Navigation label',
+        weak: 'Stuff',
+        strong: 'Resources',
+        principle: 'The label uses a word users can predict before opening the page.',
+        code: '<a href="/resources/">Resources</a>',
+      },
+    };
+
+    function update() {
+      const example = examples[select.value];
+      context.textContent = example.context;
+      weak.textContent = example.weak;
+      strong.textContent = example.strong;
+      principle.textContent = example.principle;
+      code.textContent = example.code;
+    }
+
+    select.addEventListener('change', update);
+    update();
+  }
+</script>

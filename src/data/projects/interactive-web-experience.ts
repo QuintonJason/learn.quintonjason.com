@@ -181,11 +181,15 @@ export const interactiveWebExperience: Project = {
       ],
     },
     supportingLessons: [
+      { title: 'User Flows And Task Models', href: '/lessons/user-flows-and-task-models/' },
+      { title: 'UI Patterns And Affordances', href: '/lessons/ui-patterns-and-affordances/' },
       { title: 'CSS Transitions', href: '/lessons/css-transitions/' },
       { title: 'CSS Animation', href: '/lessons/css-animation/' },
       { title: 'GSAP Web Animation', href: '/lessons/gsap-web-animation/' },
       { title: 'JavaScript in the DOM', href: '/lessons/javascript-in-the-dom/' },
       { title: 'Transforms, Filters, and Transitions', href: '/lessons/transforms-filters-and-transitions/' },
+      { title: 'Prototyping And Usability Testing', href: '/lessons/prototyping-and-usability-testing/' },
+      { title: 'AI-Assisted Design Workflows', href: '/lessons/ai-assisted-design-workflows/' },
       { title: 'Web Accessibility', href: '/lessons/web-accessibility/' },
     ],
   };

@@ -2906,15 +2906,15 @@ p {
       },
     ],
     practice: [
-      'Use the Flexbox Playground to test every `flex-direction` value.',
-      'Center one item horizontally and vertically with `justify-content` and `align-items`.',
-      'Build a responsive navigation bar using `display: flex`, `flex-wrap`, and `gap`.',
-      'Create a row of cards with `flex-wrap: wrap` and `flex: 1 1 16rem`.',
-      'Create a row of cards with aligned buttons.',
-      'Build a media object with an image on one side and text on the other.',
-      'Change a layout from `row` to `column` and explain which axis changed.',
-      'Use DevTools to confirm which element is the flex container and which elements are flex items.',
-      'Avoid `order` for meaningful content. Reorder the HTML instead when reading order matters.',
+      'Add `display: flex` to one parent element in your project. Use the DevTools flex overlay to confirm which elements became flex items and which did not.',
+      'Center a single element both horizontally and vertically using `justify-content: center` and `align-items: center` on the container. No margin tricks â€” only flex properties.',
+      'Build a responsive navigation bar with `display: flex`, `flex-wrap: wrap`, `gap`, and `justify-content: flex-end`. Resize the browser and confirm items wrap instead of overflow.',
+      'Create a wrapping card row with `flex-wrap: wrap` and `flex: 1 1 16rem` on each card. Resize the browser and watch the number of cards per row change naturally.',
+      'Add `flex-direction: column` to each card from the previous exercise, then add `margin-top: auto` to the card\'s button or footer link. Confirm every button sits at the bottom regardless of how much text each card has.',
+      'Build a media object: an image on the left, a heading and paragraph on the right. Use `display: flex`, `gap`, and `align-items: flex-start` so the image does not stretch to match the text height.',
+      'Take the navigation bar from exercise 3 and switch it to `flex-direction: column`. Notice which property now controls horizontal alignment and which controls vertical. Then switch it back to `row` â€” this is the change a media query will make automatically in the next lesson.',
+      'Build a sticky footer: give a page wrapper `display: flex`, `flex-direction: column`, and `min-height: 100vh`, then add `flex: 1` to the main content area. Confirm the footer stays at the bottom even when the page has little content.',
+      'Find a place in your project where you used `order` to rearrange something visually. Rewrite the HTML so the elements appear in the correct source order and `order` is no longer needed.',
     ],
   },
   {
@@ -6065,7 +6065,7 @@ html {
         <a href="portfolio-dashboard.html">Portfolio Dashboard</a>
       </h2>
       <p>A responsive dashboard interface for tracking project progress.</p>
-      <p class="item-meta">UI Design · Responsive Layout</p>
+      <p class="item-meta">UI Design ï¿½ Responsive Layout</p>
     </article>
   </li>
 </ul>`,
@@ -6108,7 +6108,7 @@ html {
       <div>
         <h2><a href="course-landing-page.html">Course Landing Page</a></h2>
         <p>Landing page design with pricing, testimonials, and enrollment CTA.</p>
-        <p class="item-meta">Landing Page · HTML · CSS</p>
+        <p class="item-meta">Landing Page ï¿½ HTML ï¿½ CSS</p>
       </div>
     </article>
   </li>
@@ -9339,6 +9339,1234 @@ One challenge was [challenge], and I improved it by [solution].`,
       {
         label: 'NN/g Design Critiques',
         href: 'https://www.nngroup.com/articles/design-critiques/',
+      },
+    ],
+  },
+  {
+    slug: 'ai-assisted-design-workflows',
+    number: '10B',
+    title: 'AI-Assisted Design Workflows',
+    eyebrow: 'AI + UX',
+    summary:
+      'Use AI to explore flows, critique interface decisions, and turn app design ideas into accessible, responsive front-end plans without outsourcing judgment.',
+    goals: [
+      'Use AI to clarify users, goals, constraints, screens, and interface states.',
+      'Write prompts that include audience, task, context, constraints, output format, and review criteria.',
+      'Critique AI-generated flows, copy, wireframes, and code outlines before using them.',
+      'Translate app design decisions into semantic, accessible, responsive implementation plans.',
+    ],
+    sections: [
+      {
+        title: 'AI Is A Design Partner, Not The Designer',
+        body: [
+          'AI can help you get unstuck, generate options, and notice missing parts of a user experience. It cannot know your audience, verify your research, or decide what belongs in the final project.',
+          'In this class, the useful question is not "Can AI make this for me?" The useful question is "Can AI help me think more clearly about the experience I am responsible for designing and building?"',
+        ],
+        bullets: [
+          'Use AI for first drafts, alternatives, critique questions, screen inventories, and implementation planning.',
+          'Keep the final judgment with the designer: you choose what fits the audience, assignment, accessibility requirements, and project scope.',
+          'Treat AI output like a classmate suggestion: useful enough to discuss, never automatically correct.',
+        ],
+      },
+      {
+        title: 'Where AI Fits In The Design Process',
+        table: {
+          headers: ['Moment', 'Useful AI Support', 'Designer Responsibility'],
+          rows: [
+            ['Problem framing', 'Restate the audience, goal, and constraints in plain language.', 'Confirm the problem is real and relevant.'],
+            ['Flow planning', 'List screens, tasks, entry points, and possible edge cases.', 'Choose the smallest flow that serves the assignment.'],
+            ['Interface states', 'Suggest empty, loading, error, success, disabled, and focus states.', 'Decide which states the user actually needs.'],
+            ['Content design', 'Draft labels, button text, help text, and error messages.', 'Revise for tone, clarity, accuracy, and inclusion.'],
+            ['Front-end planning', 'Create a semantic HTML outline and responsive CSS strategy.', 'Build, test, and debug the final implementation.'],
+            ['Critique', 'Ask questions about hierarchy, accessibility, assumptions, and missing feedback.', 'Act on the critique with visible revisions.'],
+          ],
+        },
+      },
+      {
+        title: 'Weak Prompt vs. Useful Prompt',
+        body: [
+          'A weak prompt asks for an answer without context. A useful prompt gives AI enough information to respond in a way you can evaluate.',
+        ],
+        table: {
+          headers: ['Weak Prompt', 'Useful Prompt'],
+          rows: [
+            [
+              'Make me an app screen for a campus event app.',
+              'Create a mobile-first event details screen for LSU students. Include the user goal, required content, primary action, empty and error states, accessibility concerns, and a semantic HTML outline. Do not write final visual styles yet.',
+            ],
+            [
+              'Make this look better.',
+              'Review this homepage concept for hierarchy, clarity, responsive behavior, and accessibility. Give me five specific improvements, explain why each helps the audience, and avoid adding new features.',
+            ],
+            [
+              'Write my code.',
+              'Help me plan the HTML structure for a card grid with project titles, images, descriptions, and links. Use semantic elements and explain what CSS layout approach would fit best.',
+            ],
+          ],
+        },
+      },
+      {
+        title: 'Prompt Ingredients',
+        table: {
+          headers: ['Ingredient', 'What To Include'],
+          rows: [
+            ['Audience', 'Who the interface serves and what they already know.'],
+            ['Goal', 'The task the user needs to complete.'],
+            ['Context', 'Project type, class assignment, device expectations, and available content.'],
+            ['Constraints', 'Accessibility needs, timeline, required technologies, brand tone, or scope limits.'],
+            ['Output format', 'A list, table, screen inventory, critique, HTML outline, or revision plan.'],
+            ['Review criteria', 'What makes the answer useful, complete, or class-ready.'],
+          ],
+        },
+      },
+      {
+        title: 'A Five-Step Workflow',
+        bullets: [
+          'Frame the problem: write the audience, task, project goal, and constraints before asking AI for help.',
+          'Generate options: ask for several possible flows, page structures, or interface states.',
+          'Apply constraints: narrow the options by time, assignment requirements, accessibility, and technical skill level.',
+          'Critique the output: ask what assumptions it made, what is missing, and what could confuse users.',
+          'Translate to code: turn the chosen direction into semantic HTML, reusable CSS, and tested interaction states.',
+        ],
+      },
+      {
+        title: 'Critique Questions To Ask AI',
+        bullets: [
+          'What user goal does this screen or page support?',
+          'What assumptions are being made about the audience?',
+          'What important state is missing: empty, loading, error, success, disabled, hover, focus, or active?',
+          'Can the structure still make sense without color, images, or animation?',
+          'Are labels, headings, buttons, links, and form errors clear out of context?',
+          'What would break or feel cramped on a small screen?',
+          'What part of this suggestion should I reject because it adds too much complexity?',
+        ],
+      },
+      {
+        title: 'Class Activity: AI Flow Review',
+        body: [
+          'Use this activity when moving from an app idea or rough wireframe into a buildable web interface. The goal is to improve the plan before writing too much code.',
+        ],
+        bullets: [
+          'Choose one app idea, portfolio feature, or existing wireframe.',
+          'Ask AI for a screen inventory and one primary user flow.',
+          'Revise the prompt by adding audience, constraints, required content, and accessibility concerns.',
+          'Ask for missing UI states and feedback messages.',
+          'Ask for a semantic HTML outline for the most important screen.',
+          'Mark what you accept, what you reject, and why.',
+        ],
+      },
+      {
+        title: 'What Not To Do',
+        bullets: [
+          'Do not paste final AI output into a project without reviewing and revising it.',
+          'Do not ask for visual polish before the user goal, content, and structure are clear.',
+          'Do not use AI to invent research, quotes, facts, or user needs.',
+          'Do not paste private information, student data, passwords, or unpublished client details into AI tools.',
+          'Do not skip accessibility testing because the AI response mentioned accessibility.',
+          'Do not keep code you cannot explain, debug, or adapt.',
+        ],
+      },
+      {
+        title: 'AI Use Disclosure',
+        body: [
+          'When AI meaningfully shapes a project, document the role it played. This is not about apologizing for using a tool. It is about showing judgment, authorship, and accountability.',
+        ],
+        bullets: [
+          'Name the tool or type of tool used.',
+          'Summarize the prompt or task you gave it.',
+          'Identify what you accepted, revised, or rejected.',
+          'Explain what you verified through your own testing, research, or class requirements.',
+          'Describe how the final decision changed because of your judgment.',
+        ],
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'Your prompt includes audience, goal, context, constraints, output format, and review criteria.',
+          'You can explain at least two AI suggestions you accepted and why.',
+          'You can explain at least one AI suggestion you rejected and why.',
+          'You disclose how AI was used and what you verified yourself.',
+          'Your final plan includes important interface states and accessibility considerations.',
+          'Your HTML outline uses semantic elements before visual styling decisions.',
+          'Your project still reflects your decisions, not only the AI response.',
+        ],
+      },
+    ],
+    practice: [
+      'Write a prompt for one app or web interface you are currently designing. Include audience, goal, context, constraints, output format, and review criteria.',
+      'Ask AI for a screen inventory and primary user flow, then remove anything that is too large for the assignment scope.',
+      'Ask AI to identify missing interface states and rewrite two pieces of UI copy for clarity.',
+      'Ask for a semantic HTML outline for one screen, then revise it so headings, links, buttons, forms, and regions make sense.',
+      'Write an AI use note that names the tool, summarizes the prompt, and explains what you accepted, rejected, revised, and verified.',
+      'Write a short reflection naming what you accepted, what you rejected, and what you changed after critique.',
+    ],
+    resources: [
+      {
+        label: 'MDN HTML Elements Reference',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements',
+      },
+      {
+        label: 'WebAIM Introduction to Web Accessibility',
+        href: 'https://webaim.org/intro/',
+      },
+      {
+        label: 'NN/g AI UX',
+        href: 'https://www.nngroup.com/topic/ai/',
+      },
+    ],
+  },
+  {
+    slug: 'figma-for-web-design-planning',
+    number: '08B',
+    title: 'Figma For Web Design Planning',
+    eyebrow: 'Studio',
+    summary:
+      'Use Figma to plan structure, responsive layouts, reusable components, and developer handoff before turning a design into HTML and CSS.',
+    goals: [
+      'Set up Figma frames that represent real page and app screens.',
+      'Use auto layout to think through spacing, alignment, wrapping, and responsive behavior.',
+      'Create reusable components for buttons, cards, navigation, forms, and common states.',
+      'Prepare a design for front-end implementation with clear annotations, assets, and build notes.',
+    ],
+    sections: [
+      {
+        title: 'Figma Is A Planning Tool',
+        body: [
+          'Figma helps you make decisions before code becomes expensive to change. The goal is not to create a perfect picture of a website. The goal is to clarify structure, hierarchy, content, interaction states, and reusable patterns.',
+          'For this class, Figma should help you build better HTML and CSS. If a design choice cannot be explained, tested, or translated into the browser, it needs more work.',
+        ],
+        bullets: [
+          'Use Figma to plan content hierarchy before choosing decoration.',
+          'Use frames to compare mobile and desktop layouts.',
+          'Use components to avoid redesigning the same button, card, or form field over and over.',
+          'Use annotations to explain behavior, states, and responsive changes.',
+        ],
+      },
+      {
+        title: 'A Useful Figma File Structure',
+        table: {
+          headers: ['Page', 'Purpose'],
+          rows: [
+            ['Cover', 'Project name, goal, audience, status, and key links.'],
+            ['Research or Notes', 'Audience notes, project requirements, content inventory, and references.'],
+            ['Wireframes', 'Low-pressure layout options before visual polish.'],
+            ['Design System', 'Color, type, spacing, buttons, cards, forms, icons, and repeated patterns.'],
+            ['Screens', 'Mobile and desktop frames for the pages or app screens being built.'],
+            ['Prototype or Flow', 'Clickable path through the main user task, if needed.'],
+            ['Handoff', 'Annotations, asset export notes, CSS values, and open questions.'],
+          ],
+        },
+      },
+      {
+        title: 'Frames Should Match Real Screens',
+        body: [
+          'A frame is not only an artboard. It is a way to test whether a screen has a clear purpose, readable content, and a layout that can adapt.',
+        ],
+        bullets: [
+          'Create at least one mobile frame before polishing desktop.',
+          'Name frames by user task or page purpose, such as `Event Details - Mobile` or `Portfolio Project Detail - Desktop`.',
+          'Avoid designing only at one perfect width. Test what should stack, wrap, or resize.',
+          'Keep content realistic. Layout decisions are weaker when every card has the same short placeholder text.',
+        ],
+      },
+      {
+        title: 'Auto Layout As Web Layout Thinking',
+        body: [
+          'Auto layout is valuable because it forces layout decisions that also matter in CSS: direction, gap, padding, alignment, and how content responds when it changes.',
+        ],
+        table: {
+          headers: ['Figma Decision', 'Front-End Connection'],
+          rows: [
+            ['Direction', '`flex-direction` or grid flow.'],
+            ['Gap', '`gap` between flex or grid items.'],
+            ['Padding', 'Internal spacing inside a card, button, nav, or section.'],
+            ['Alignment', '`align-items`, `justify-content`, or grid placement.'],
+            ['Hug contents', 'Content-based sizing, like buttons that grow with text.'],
+            ['Fill container', 'Flexible sizing, such as `flex: 1` or fluid grid tracks.'],
+            ['Min and max widths', 'Responsive constraints that keep layouts readable.'],
+          ],
+        },
+      },
+      {
+        title: 'Components To Build First',
+        body: [
+          'Start with repeated interface parts that need consistency. Components are most useful when they capture a decision students will reuse, not when they turn every layer into a system.',
+        ],
+        bullets: [
+          'Button with default, hover, focus, disabled, and loading notes.',
+          'Card with image, heading, text, metadata, and link action.',
+          'Navigation item with default and current-page states.',
+          'Form field with label, help text, required text, error message, and focus state.',
+          'Section heading pattern with eyebrow, title, and supporting copy.',
+          'Project or app screen header with title, summary, and primary action.',
+        ],
+      },
+      {
+        title: 'What To Annotate For Handoff',
+        bullets: [
+          'Page purpose and primary user action.',
+          'Heading order and important landmarks such as header, nav, main, section, aside, and footer.',
+          'Responsive changes between mobile and desktop.',
+          'Interactive states for links, buttons, forms, menus, cards, and feedback messages.',
+          'Images that need alt text, cropping notes, or export settings.',
+          'Content that is final, placeholder, or still waiting on revision.',
+          'Any design decision that should not be guessed during implementation.',
+        ],
+      },
+      {
+        title: 'From Figma To HTML And CSS',
+        table: {
+          headers: ['In Figma', 'In Code'],
+          rows: [
+            ['Frame name', 'Page, route, or template name.'],
+            ['Section group', 'Semantic section, header, nav, main, aside, or footer.'],
+            ['Text style', 'Reusable type scale or CSS class.'],
+            ['Color style', 'CSS custom property or design token.'],
+            ['Auto layout card row', 'Flexbox or Grid layout with gap and responsive constraints.'],
+            ['Component variant', 'Class, data attribute, state selector, or reusable partial.'],
+            ['Prototype link', 'Real anchor link, button action, route, or JavaScript interaction.'],
+          ],
+        },
+      },
+      {
+        title: 'Studio Activity: Design To Build Plan',
+        body: [
+          'Use this activity before students start coding a page or app screen. The final output is a build plan, not just a pretty frame.',
+        ],
+        bullets: [
+          'Choose one page or screen from the current project.',
+          'Create mobile and desktop frames with realistic content.',
+          'Apply auto layout to the main repeated groups.',
+          'Create at least three reusable components or component-like patterns.',
+          'Annotate responsive behavior, states, and accessibility notes.',
+          'Write the HTML outline and CSS layout plan beside the frame.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Better Move'],
+          rows: [
+            ['Designing only desktop', 'Start with mobile and add desktop once the content hierarchy works.'],
+            ['Using screenshots of text', 'Keep text editable and build it as real HTML.'],
+            ['Flattening everything into images', 'Export only true image assets, icons, or illustrations.'],
+            ['Ignoring states', 'Add hover, focus, error, empty, and disabled notes before handoff.'],
+            ['Over-polishing before structure', 'Use wireframes until the user task and content are clear.'],
+            ['Copying generated CSS blindly', 'Use Figma values as references, then write clean project CSS.'],
+          ],
+        },
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'The Figma file has clear page names and frame names.',
+          'The screen has mobile and desktop versions or clear responsive notes.',
+          'Repeated UI pieces are components or intentionally consistent patterns.',
+          'The design includes important interaction and feedback states.',
+          'Assets are marked for export only when they should really be images.',
+          'The handoff includes a semantic HTML outline and CSS layout plan.',
+        ],
+      },
+    ],
+    practice: [
+      'Create a Figma file with Cover, Wireframes, Design System, Screens, and Handoff pages.',
+      'Design one project screen in mobile and desktop with realistic content.',
+      'Use auto layout on a button, card, navigation group, and one larger page section.',
+      'Create three reusable components or consistent patterns for the project.',
+      'Annotate responsive behavior, accessibility notes, and UI states.',
+      'Write a semantic HTML outline and CSS layout plan beside the final frame.',
+    ],
+    resources: [
+      {
+        label: 'Figma Guide To Auto Layout',
+        href: 'https://help.figma.com/hc/en-us/articles/360040451373-Explore-auto-layout-properties',
+      },
+      {
+        label: 'Figma Guide To Components',
+        href: 'https://help.figma.com/hc/en-us/articles/360038662654-Guide-to%20-components-in-Figma',
+      },
+      {
+        label: 'Figma Introduction To Design Systems',
+        href: 'https://help.figma.com/hc/en-us/articles/14552901442839-Overview-Introduction-to-design-systems',
+      },
+      {
+        label: 'Figma Guide To Dev Mode',
+        href: 'https://help.figma.com/hc/en-us/articles/15023124644247-Guide-to-Dev-Mode',
+      },
+    ],
+  },
+  {
+    slug: 'user-flows-and-task-models',
+    number: '07A',
+    title: 'User Flows And Task Models',
+    eyebrow: 'UX Process',
+    summary:
+      'Map what people are trying to do, where they enter, what decisions they face, and how an interface supports a successful path.',
+    goals: [
+      'Describe a user goal as a task, not only as a screen or feature.',
+      'Map entry points, steps, decisions, success paths, and edge cases.',
+      'Use task models to decide which screens, pages, states, and content are necessary.',
+      'Turn a flow into a buildable interface plan with clear routes, actions, and feedback.',
+    ],
+    sections: [
+      {
+        title: 'Start With The Task',
+        body: [
+          'App and web projects often go sideways when students start by naming screens. A screen is only useful if it helps someone do something. A task model keeps the design focused on the person, the goal, and the decisions needed to complete that goal.',
+          'Before designing a homepage, dashboard, details screen, form, or checkout flow, write the task in plain language. If the task is unclear, the interface will usually become a pile of unrelated features.',
+        ],
+        bullets: [
+          'Weak: The app needs a profile screen.',
+          'Stronger: A student needs to check whether their profile has the right contact information before submitting a portfolio.',
+          'Weak: The site needs a project page.',
+          'Stronger: A visitor needs to understand what the project is, what role the student played, and where to see the live result.',
+        ],
+      },
+      {
+        title: 'Core Vocabulary',
+        table: {
+          headers: ['Term', 'Meaning'],
+          rows: [
+            ['Actor', 'The person using the interface, such as a student, visitor, organizer, or client.'],
+            ['Goal', 'The outcome the actor is trying to reach.'],
+            ['Entry point', 'Where the task begins: search, homepage, link, notification, dashboard, or shared URL.'],
+            ['Step', 'A meaningful action or decision in the task.'],
+            ['Decision point', 'A moment where the user must choose between paths.'],
+            ['State', 'The condition the interface is in: empty, loading, error, success, signed out, or complete.'],
+            ['Exit point', 'Where the task ends, such as confirmation, saved item, submitted form, or next recommended action.'],
+          ],
+        },
+      },
+      {
+        title: 'A Simple Flow Formula',
+        body: [
+          'Use this sentence before drawing boxes and arrows. It forces the interface to serve a concrete scenario.',
+        ],
+        code: `As a [type of user],
+I want to [complete a task],
+so I can [reach a useful outcome].
+
+The task starts when [entry point].
+The task succeeds when [success condition].
+The most likely problem is [edge case or barrier].`,
+      },
+      {
+        title: 'Flow Types',
+        table: {
+          headers: ['Flow Type', 'Use It When', 'Example'],
+          rows: [
+            ['Linear flow', 'The user completes steps in a clear order.', 'Sign up, checkout, submit a project.'],
+            ['Hub-and-spoke flow', 'The user returns to a central screen between tasks.', 'Dashboard, course portal, event app.'],
+            ['Browse-to-detail flow', 'The user scans a list, then opens one item.', 'Portfolio projects, events, articles, products.'],
+            ['Create-edit flow', 'The user makes something, saves progress, and may return later.', 'Profile editor, project planner, post editor.'],
+            ['Recovery flow', 'The user hits a problem and needs a way back.', 'Forgot password, failed upload, empty search.'],
+          ],
+        },
+      },
+      {
+        title: 'What To Map',
+        bullets: [
+          'The first screen or page the user sees.',
+          'The primary action on each step.',
+          'The information the user needs before choosing that action.',
+          'Where the interface gives feedback.',
+          'Where the user can go backward, cancel, edit, save, or recover.',
+          'What happens if there is no data yet.',
+          'What happens if something fails.',
+          'What success looks like at the end of the flow.',
+        ],
+      },
+      {
+        title: 'From Flow To Screen Inventory',
+        table: {
+          headers: ['Flow Need', 'Possible Screen Or Page'],
+          rows: [
+            ['User chooses from many items', 'Listing, gallery, dashboard, search results, or filtered view.'],
+            ['User needs details before acting', 'Detail page, modal, expanded card, or review step.'],
+            ['User submits information', 'Form page, multi-step form, or inline editor.'],
+            ['User waits for a response', 'Loading state, progress indicator, or optimistic feedback.'],
+            ['User has no content yet', 'Empty state with explanation and next action.'],
+            ['User makes a mistake', 'Error state with specific message and recovery path.'],
+            ['User completes the task', 'Confirmation, saved state, success message, or next step.'],
+          ],
+        },
+      },
+      {
+        title: 'Edge Cases Are Part Of The Design',
+        body: [
+          'A flow that only works when everything goes perfectly is incomplete. Edge cases reveal missing screens, copy, states, and controls before the project is built.',
+        ],
+        bullets: [
+          'What if the user has not signed in?',
+          'What if the list has zero items?',
+          'What if the image fails to upload?',
+          'What if the user enters invalid information?',
+          'What if the user changes their mind?',
+          'What if the task takes longer than expected?',
+          'What if the user arrives from a shared link instead of the homepage?',
+        ],
+      },
+      {
+        title: 'Studio Activity: Map One Primary Flow',
+        bullets: [
+          'Choose one current project task.',
+          'Write the task using the flow formula.',
+          'Draw the happy path from entry point to success.',
+          'Add at least three edge cases or recovery paths.',
+          'Turn the flow into a screen inventory.',
+          'Choose one screen and write the HTML outline needed to support it.',
+        ],
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'The flow starts with a user goal, not a feature name.',
+          'The entry point and success condition are clear.',
+          'Each step has one primary action.',
+          'Decision points and recovery paths are labeled.',
+          'The flow includes at least one empty, error, loading, or success state.',
+          'The screen inventory matches the flow instead of adding unrelated screens.',
+        ],
+      },
+    ],
+    practice: [
+      'Write three task statements for your current project and choose the strongest one.',
+      'Map the happy path for the chosen task from entry point to success.',
+      'Add three edge cases or recovery paths to the flow.',
+      'Create a screen inventory from the finished flow.',
+      'Write a semantic HTML outline for the most important screen in the flow.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Journey Mapping 101',
+        href: 'https://www.nngroup.com/articles/journey-mapping-101/',
+      },
+      {
+        label: 'NN/g Task Analysis',
+        href: 'https://www.nngroup.com/articles/task-analysis/',
+      },
+    ],
+  },
+  {
+    slug: 'wireframing-for-responsive-interfaces',
+    number: '08A',
+    title: 'Wireframing For Responsive Interfaces',
+    eyebrow: 'UX Process',
+    summary:
+      'Use low-fidelity wireframes to plan content hierarchy, layout behavior, and interface states before visual design or production code.',
+    goals: [
+      'Create wireframes that show structure, hierarchy, and task flow without over-polishing.',
+      'Plan mobile, tablet, and desktop layout changes around content needs.',
+      'Use wireframes to test navigation, forms, lists, details, and states.',
+      'Translate a wireframe into semantic HTML regions and responsive CSS decisions.',
+    ],
+    sections: [
+      {
+        title: 'Wireframes Are Thinking Tools',
+        body: [
+          'A wireframe is not a worse version of a finished design. It is a fast way to decide what belongs on a screen, what order it should appear in, and how a user moves through the interface.',
+          'Good wireframes reduce expensive guessing later. They let you critique structure before color, type, images, and animation make weak decisions look more finished than they are.',
+        ],
+      },
+      {
+        title: 'What A Wireframe Should Show',
+        bullets: [
+          'The page or screen purpose.',
+          'The primary user action.',
+          'Major content groups and their order.',
+          'Navigation and wayfinding.',
+          'Form fields, labels, and feedback areas.',
+          'Lists, cards, tables, or detail views.',
+          'Important states such as empty, loading, error, and success.',
+          'Responsive behavior across widths.',
+        ],
+      },
+      {
+        title: 'Low Fidelity vs. High Fidelity',
+        table: {
+          headers: ['Level', 'Best For', 'Avoid'],
+          rows: [
+            ['Sketch', 'Fast options, early critique, comparing layouts.', 'Spending time on perfect spacing.'],
+            ['Low-fidelity Figma', 'Structure, hierarchy, content order, responsive frames.', 'Final color, branding, and decorative details.'],
+            ['Mid-fidelity', 'Component placement, real content, states, and flow review.', 'Pretending the design is final before testing.'],
+            ['High-fidelity', 'Final visual direction, handoff, portfolio presentation.', 'Using polish to hide unclear structure.'],
+          ],
+        },
+      },
+      {
+        title: 'Responsive Wireframe Strategy',
+        body: [
+          'Responsive design is not a desktop design squeezed onto a phone. Start with the smallest practical layout, then add space, columns, and supporting details as the viewport grows.',
+        ],
+        table: {
+          headers: ['Question', 'What To Decide'],
+          rows: [
+            ['What must be visible first?', 'The strongest heading, context, and primary action.'],
+            ['What can stack?', 'Cards, form groups, media/text pairs, and secondary content.'],
+            ['What can move later?', 'Related links, filters, sidebars, metadata, and supporting notes.'],
+            ['What needs stable controls?', 'Navigation, search, submit buttons, close buttons, and form actions.'],
+            ['What needs a max width?', 'Paragraphs, forms, cards, and dense content areas.'],
+          ],
+        },
+      },
+      {
+        title: 'Wireframe Common Interface Patterns',
+        table: {
+          headers: ['Pattern', 'Wireframe Concern'],
+          rows: [
+            ['Landing page', 'Hierarchy, CTA, section order, proof, and responsive image behavior.'],
+            ['Dashboard', 'Priority, scanning, filters, empty states, and repeated cards or rows.'],
+            ['Listing/detail', 'Card information, filters, detail hierarchy, back paths, and related items.'],
+            ['Form flow', 'Label clarity, grouping, validation, progress, and confirmation.'],
+            ['Portfolio case study', 'Project story, process evidence, screenshots, role, result, and links.'],
+          ],
+        },
+      },
+      {
+        title: 'Wireframe To HTML Outline',
+        body: [
+          'Every major rectangle in a wireframe should eventually become a meaningful piece of markup, not a random div. Naming those regions early makes implementation easier.',
+        ],
+        code: `<body>
+  <header>
+    <nav aria-label="Primary navigation">...</nav>
+  </header>
+  <main>
+    <section aria-labelledby="page-title">
+      <h1 id="page-title">...</h1>
+      <p>...</p>
+      <a href="..." class="button">Primary action</a>
+    </section>
+    <section aria-labelledby="featured-list-title">
+      <h2 id="featured-list-title">...</h2>
+      <ul class="card-grid">...</ul>
+    </section>
+  </main>
+</body>`,
+      },
+      {
+        title: 'Studio Activity: Three Widths, One Task',
+        bullets: [
+          'Choose one screen from a user flow.',
+          'Sketch the mobile version first using only boxes, labels, and notes.',
+          'Create a tablet or medium-width version that shows what changes when more space is available.',
+          'Create a desktop version that adds layout clarity without adding unrelated content.',
+          'Label the primary action, secondary actions, and feedback areas.',
+          'Write the HTML outline and the CSS layout strategy beside the wireframes.',
+        ],
+      },
+      {
+        title: 'Common Mistakes',
+        table: {
+          headers: ['Mistake', 'Better Move'],
+          rows: [
+            ['Starting with desktop only', 'Start mobile-first, then expand.'],
+            ['Using decorative detail too early', 'Use labels and hierarchy before visual polish.'],
+            ['Making every screen unique', 'Reuse patterns so the project is easier to build.'],
+            ['Ignoring real content length', 'Wireframe with realistic headings, labels, and card text.'],
+            ['Forgetting states', 'Add empty, loading, error, and success areas before code.'],
+          ],
+        },
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'The wireframe names the user task and primary action.',
+          'Mobile and desktop versions are both planned.',
+          'Content groups have clear labels.',
+          'Navigation and feedback areas are visible.',
+          'The layout can be translated into semantic HTML.',
+          'Responsive changes are annotated instead of left to guesswork.',
+        ],
+      },
+    ],
+    practice: [
+      'Create three low-fidelity options for one screen before choosing a direction.',
+      'Build mobile and desktop wireframes for the chosen option.',
+      'Annotate what stacks, wraps, hides, moves, or changes at wider widths.',
+      'Identify which wireframe regions become header, nav, main, section, form, list, article, or aside elements.',
+      'Write a short critique explaining what changed after wireframing.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Wireflows',
+        href: 'https://www.nngroup.com/articles/wireflows/',
+      },
+      {
+        label: 'MDN Responsive Design',
+        href: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design',
+      },
+    ],
+  },
+  {
+    slug: 'ui-patterns-and-affordances',
+    number: '07B',
+    title: 'UI Patterns And Affordances',
+    eyebrow: 'Interface Design',
+    summary:
+      'Choose familiar interface patterns and make controls visually, semantically, and behaviorally understandable.',
+    goals: [
+      'Identify common UI patterns and the user problems they solve.',
+      'Choose patterns based on task needs instead of visual preference alone.',
+      'Design affordances that communicate what is clickable, editable, expandable, or selected.',
+      'Check patterns for keyboard access, state clarity, and responsive behavior.',
+    ],
+    sections: [
+      {
+        title: 'Patterns Are Promises',
+        body: [
+          'A UI pattern sets an expectation. A button promises an action. A link promises navigation. A tab promises a switch between related panels. A filter promises that the visible list will change.',
+          'When a pattern looks familiar but behaves differently, users have to slow down. Good interface design uses familiar patterns where they help and only breaks expectations for a clear reason.',
+        ],
+      },
+      {
+        title: 'Affordance, Signifier, Feedback',
+        table: {
+          headers: ['Concept', 'Meaning', 'Example'],
+          rows: [
+            ['Affordance', 'What an element can do.', 'A button can be pressed.'],
+            ['Signifier', 'The visible clue that tells the user what can happen.', 'Button shape, label, icon, hover state, or underline.'],
+            ['Feedback', 'The response after the user acts.', 'Pressed state, loading message, error, success, or changed content.'],
+          ],
+        },
+      },
+      {
+        title: 'Common Patterns And When To Use Them',
+        table: {
+          headers: ['Pattern', 'Use It For', 'Watch For'],
+          rows: [
+            ['Button', 'Triggering an action on the current page.', 'Do not use a button for normal navigation unless JavaScript behavior requires it.'],
+            ['Link', 'Moving to another page, section, document, or external resource.', 'Make link text meaningful out of context.'],
+            ['Card', 'Grouping repeated content that can be scanned.', 'Do not make the whole card clickable if internal controls also need clicks.'],
+            ['Tabs', 'Switching between related panels at the same level.', 'Do not use tabs as primary site navigation without a reason.'],
+            ['Accordion', 'Progressive disclosure for optional supporting content.', 'Keep essential content visible.'],
+            ['Modal', 'Focused interruption for a short task or confirmation.', 'Provide close controls, focus management, and escape paths.'],
+            ['Filter', 'Narrowing a collection while staying in context.', 'Show selected filters and a way to clear them.'],
+            ['Search', 'Finding a known or likely item.', 'Provide useful empty and no-results states.'],
+            ['Stepper', 'Breaking a complex task into ordered steps.', 'Show progress and preserve entered information.'],
+          ],
+        },
+      },
+      {
+        title: 'Pattern Selection Questions',
+        bullets: [
+          'What task is the user trying to complete?',
+          'Is the user navigating, changing state, entering data, choosing options, or reviewing information?',
+          'Does the pattern need to work with keyboard only?',
+          'What feedback should appear after the action?',
+          'What happens when the content is empty, long, loading, or invalid?',
+          'Will the pattern still make sense on a small screen?',
+          'Is there a simpler pattern that solves the same problem?',
+        ],
+      },
+      {
+        title: 'States Every Pattern Needs',
+        table: {
+          headers: ['Element', 'Minimum States'],
+          rows: [
+            ['Button', 'Default, hover, focus, active, loading, disabled.'],
+            ['Link', 'Default, hover, focus, visited or current when useful.'],
+            ['Input', 'Default, focus, filled, required, error, disabled.'],
+            ['Card', 'Default, hover or focus when clickable, selected when applicable.'],
+            ['Menu', 'Closed, open, current item, focus, empty or unavailable items.'],
+            ['Filter', 'Unselected, selected, changed results, no results, cleared.'],
+          ],
+        },
+      },
+      {
+        title: 'Semantic Pattern Choices',
+        body: [
+          'Visual similarity does not make two elements the same. Choose markup based on what the element does, then style it to fit the interface.',
+        ],
+        table: {
+          headers: ['Need', 'Use'],
+          rows: [
+            ['Navigate somewhere', '`<a href="...">`'],
+            ['Submit a form', '`<button type="submit">`'],
+            ['Trigger JavaScript behavior', '`<button type="button">`'],
+            ['Choose one option from a small set', 'Radio buttons or segmented controls.'],
+            ['Choose many options', 'Checkboxes.'],
+            ['Choose from many options', 'Select, combobox, search, or filter pattern.'],
+            ['Reveal optional content', 'Button-controlled disclosure or `<details>`.'],
+          ],
+        },
+      },
+      {
+        title: 'Studio Activity: Pattern Audit',
+        bullets: [
+          'Choose one project screen or page.',
+          'List every interactive element on the screen.',
+          'Name the pattern each element is using.',
+          'Confirm the markup matches the behavior.',
+          'Add missing hover, focus, active, disabled, loading, empty, error, or success states.',
+          'Replace one confusing pattern with a simpler or more familiar choice.',
+        ],
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'Every interactive element has a clear purpose.',
+          'Buttons and links are used for the right kind of behavior.',
+          'Patterns have visible signifiers and feedback.',
+          'Keyboard focus is visible and reachable.',
+          'Important states are designed and named.',
+          'Responsive behavior has been checked for cramped or hidden controls.',
+        ],
+      },
+    ],
+    practice: [
+      'Identify five UI patterns in an app or website you use often and explain what task each pattern supports.',
+      'Audit one project page for buttons, links, cards, forms, menus, filters, and feedback messages.',
+      'Add missing states for three interactive elements.',
+      'Rewrite labels for two controls so the action is clearer.',
+      'Create a small pattern inventory for your project with pattern name, purpose, states, and markup choice.',
+    ],
+    resources: [
+      {
+        label: 'MDN Button Element',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button',
+      },
+      {
+        label: 'WAI-ARIA Authoring Practices Guide',
+        href: 'https://www.w3.org/WAI/ARIA/apg/',
+      },
+    ],
+  },
+  {
+    slug: 'microcopy-and-ux-writing',
+    number: '09A',
+    title: 'Microcopy And UX Writing',
+    eyebrow: 'Content Design',
+    summary:
+      'Write labels, buttons, instructions, empty states, errors, and confirmations that help people understand what to do next.',
+    goals: [
+      'Write interface copy that is specific, useful, and easy to scan.',
+      'Improve button labels, form labels, helper text, errors, and confirmations.',
+      'Use microcopy to reduce confusion without over-explaining the interface.',
+      'Check copy for accessibility, tone, inclusion, and action clarity.',
+    ],
+    sections: [
+      {
+        title: 'Small Copy Carries Big Responsibility',
+        body: [
+          'Microcopy is the small text that helps people move through an interface: labels, buttons, errors, empty states, helper text, confirmations, and status messages.',
+          'In student projects, weak microcopy is often the difference between a page that looks finished and an interface that actually helps someone complete a task.',
+        ],
+      },
+      {
+        title: 'Where Microcopy Appears',
+        table: {
+          headers: ['Place', 'What The Copy Should Do'],
+          rows: [
+            ['Button labels', 'Name the action clearly.'],
+            ['Links', 'Describe the destination or result.'],
+            ['Form labels', 'Name the information being requested.'],
+            ['Helper text', 'Clarify format, requirements, or consequences.'],
+            ['Error messages', 'Explain what happened and how to fix it.'],
+            ['Empty states', 'Explain why the area is empty and what to do next.'],
+            ['Success messages', 'Confirm what changed and what happens next.'],
+            ['Navigation labels', 'Help users predict where they will go.'],
+          ],
+        },
+      },
+      {
+        title: 'Button And Link Labels',
+        body: [
+          'Good action labels use verbs and specific objects. Avoid labels that only make sense when the user reads everything around them.',
+        ],
+        table: {
+          headers: ['Weak', 'Stronger'],
+          rows: [
+            ['Click here', 'View project details'],
+            ['Submit', 'Submit portfolio'],
+            ['Continue', 'Continue to review'],
+            ['Learn more', 'Read the accessibility checklist'],
+            ['OK', 'Delete draft'],
+            ['Go', 'Search events'],
+          ],
+        },
+      },
+      {
+        title: 'Form Labels And Help Text',
+        bullets: [
+          'Use visible labels for every input.',
+          'Keep placeholder text as an example, not the only label.',
+          'Put requirements near the field before the user submits.',
+          'Explain format when it matters, such as date, phone, file type, or password rules.',
+          'Avoid blaming the user when something fails.',
+          'Write errors that identify the field, problem, and fix.',
+        ],
+      },
+      {
+        title: 'Empty States',
+        body: [
+          'An empty state is not blank space. It is a moment to explain what belongs there and how the user can move forward.',
+        ],
+        table: {
+          headers: ['Empty State Type', 'Useful Copy'],
+          rows: [
+            ['First use', 'No projects yet. Add your first project to start building your portfolio.'],
+            ['No results', 'No events match those filters. Clear filters or try a broader search.'],
+            ['Removed content', 'This draft was deleted. You can create a new draft from the dashboard.'],
+            ['Unavailable feature', 'Comments are closed for this post. You can still share the link.'],
+          ],
+        },
+      },
+      {
+        title: 'Error Messages',
+        table: {
+          headers: ['Weak Error', 'Better Error'],
+          rows: [
+            ['Invalid input', 'Enter an email address using name@example.com.'],
+            ['Something went wrong', 'The image did not upload. Use a JPG or PNG under 2 MB and try again.'],
+            ['Required', 'Project title is required before you can publish.'],
+            ['Failed', 'The form could not be submitted. Check your connection and try again.'],
+          ],
+        },
+      },
+      {
+        title: 'Voice And Tone',
+        bullets: [
+          'Be direct before being clever.',
+          'Use plain language over internal terminology.',
+          'Match the seriousness of the moment.',
+          'Keep error copy calm and useful.',
+          'Avoid shaming language such as wrong, failed, bad, or invalid when a more specific explanation is possible.',
+          'Use consistent words for the same action across the interface.',
+        ],
+      },
+      {
+        title: 'Accessibility Checks For Copy',
+        bullets: [
+          'Link text should make sense out of context.',
+          'Buttons should name the action, not only the visual icon.',
+          'Form labels should remain visible when fields are filled.',
+          'Error messages should be connected to the relevant field when possible.',
+          'Status messages should be visible and programmatically communicated when the interface changes.',
+          'Instructions should not rely on color, position, or shape alone.',
+        ],
+      },
+      {
+        title: 'Studio Activity: Rewrite The Interface',
+        bullets: [
+          'Choose one current project screen.',
+          'Highlight every label, button, link, helper text, error, empty state, and confirmation.',
+          'Rewrite five pieces of microcopy using specific, user-centered language.',
+          'Add one missing empty, error, or success message.',
+          'Check that the revised copy still fits on mobile.',
+          'Explain why each rewrite helps the user complete the task.',
+        ],
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'Buttons and links use specific labels.',
+          'Every form field has a visible label.',
+          'Help text explains requirements before errors happen.',
+          'Errors explain what happened and how to fix it.',
+          'Empty states include a useful next action.',
+          'Copy is consistent, calm, and easy to scan.',
+        ],
+      },
+    ],
+    practice: [
+      'Rewrite five weak buttons or links from your project.',
+      'Add helper text to one form field that needs format, file, or requirement guidance.',
+      'Write one empty state, one error state, and one success state.',
+      'Review all navigation labels and make them more predictable.',
+      'Test the revised copy on mobile and shorten anything that wraps awkwardly.',
+    ],
+    resources: [
+      {
+        label: 'Gov.uk Content Design',
+        href: 'https://www.gov.uk/guidance/content-design',
+      },
+      {
+        label: 'WebAIM Links and Hypertext',
+        href: 'https://webaim.org/techniques/hypertext/',
+      },
+    ],
+  },
+  {
+    slug: 'prototyping-and-usability-testing',
+    number: '10A',
+    title: 'Prototyping And Usability Testing',
+    eyebrow: 'UX Research',
+    summary:
+      'Create lightweight prototypes, give people realistic tasks, observe what happens, and revise the interface based on evidence.',
+    goals: [
+      'Choose the right prototype fidelity for the question being tested.',
+      'Write realistic usability tasks that do not lead the participant.',
+      'Observe behavior, confusion, hesitation, and workarounds without defending the design.',
+      'Turn findings into prioritized revisions for Figma or front-end work.',
+    ],
+    sections: [
+      {
+        title: 'Prototype To Learn',
+        body: [
+          'A prototype is not valuable because it looks impressive. It is valuable because it lets you learn something before the final version is built.',
+          'For this course, prototypes can be paper sketches, Figma click-throughs, rough HTML pages, or small JavaScript interactions. The right prototype is the fastest one that can answer the current design question.',
+        ],
+      },
+      {
+        title: 'Prototype Fidelity',
+        table: {
+          headers: ['Prototype Type', 'Best For', 'Risk'],
+          rows: [
+            ['Paper or sketch', 'Early task flow, layout options, and conversation.', 'Hard to test detailed interaction or real content.'],
+            ['Low-fidelity Figma', 'Screen order, hierarchy, and navigation labels.', 'Participants may ask about unfinished visual details.'],
+            ['High-fidelity Figma', 'Visual direction, content, and clickable flows.', 'Polish can make weak structure seem more convincing.'],
+            ['HTML/CSS prototype', 'Responsive behavior, keyboard access, forms, and layout reality.', 'May take longer if the design question is still basic.'],
+            ['JavaScript prototype', 'Dynamic behavior, state changes, carousels, filters, and feedback.', 'Can distract from core usability if overbuilt too early.'],
+          ],
+        },
+      },
+      {
+        title: 'What To Test',
+        bullets: [
+          'Can users identify what the page or screen is for?',
+          'Can users find the primary action?',
+          'Can users predict what will happen after clicking a control?',
+          'Can users complete the task without verbal help?',
+          'Can users recover from an error or empty state?',
+          'Can users understand labels, navigation, and feedback messages?',
+          'Does the interface still work on the device or viewport being tested?',
+        ],
+      },
+      {
+        title: 'Writing Better Tasks',
+        body: [
+          'A usability task should describe the participant goal, not the interface control. Do not tell them exactly what to click unless the test is about whether that control is visible.',
+        ],
+        table: {
+          headers: ['Leading Task', 'Better Task'],
+          rows: [
+            ['Click the Apply button.', 'You found an event you want to attend. Show me how you would sign up.'],
+            ['Use the filter menu to find UX projects.', 'You want to see only UX projects. How would you narrow the list?'],
+            ['Open the contact page.', 'You want to ask the designer about freelance work. What would you do?'],
+            ['Submit this form.', 'You are ready to share your project for critique. Show me how you would send it.'],
+          ],
+        },
+      },
+      {
+        title: 'Moderator Script',
+        code: `Thanks for helping test this project. I am testing the design, not you.
+Please think out loud as much as you can.
+If something is confusing, say what you expected to happen.
+I may stay quiet while you work so I do not accidentally guide you.
+
+Task:
+[Give one realistic task.]
+
+Follow-up questions:
+What felt clear?
+Where did you hesitate?
+What did you expect to happen next?
+What would you change first?`,
+      },
+      {
+        title: 'Observation Notes',
+        table: {
+          headers: ['What To Note', 'Why It Matters'],
+          rows: [
+            ['Hesitation', 'The next step may not be clear.'],
+            ['Wrong clicks', 'Labels, hierarchy, or affordances may be misleading.'],
+            ['Backtracking', 'The flow may need better wayfinding or content order.'],
+            ['Questions', 'The interface may not explain itself.'],
+            ['Workarounds', 'Users may be solving around the design instead of through it.'],
+            ['Success without confidence', 'The task may work but still feel uncertain.'],
+          ],
+        },
+      },
+      {
+        title: 'Turning Findings Into Revisions',
+        body: [
+          'A test is not finished when the participant leaves. The important work is turning observations into changes that improve the interface.',
+        ],
+        table: {
+          headers: ['Finding', 'Possible Revision'],
+          rows: [
+            ['User missed the primary action', 'Improve hierarchy, placement, label, or contrast.'],
+            ['User clicked a card expecting details', 'Make the card link clear or add a visible detail link.'],
+            ['User did not understand a form error', 'Rewrite the error and connect it to the field.'],
+            ['User could not find filters', 'Move filters closer to the list or improve the label.'],
+            ['User was unsure if the action worked', 'Add loading, success, or confirmation feedback.'],
+          ],
+        },
+      },
+      {
+        title: 'Studio Activity: Five-Minute Test',
+        bullets: [
+          'Choose one task from the current project.',
+          'Create a prototype that is just realistic enough to test the task.',
+          'Write one scenario and one task prompt.',
+          'Test with one classmate while staying mostly quiet.',
+          'Record three observations and one direct quote or paraphrased comment.',
+          'Choose two revisions and make at least one before the next critique.',
+        ],
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'The prototype matches the question being tested.',
+          'The task describes a user goal instead of telling the participant what to click.',
+          'Notes include observed behavior, not only opinions.',
+          'Findings are prioritized by impact and effort.',
+          'At least one revision is made based on the test.',
+          'The final reflection explains what changed and why.',
+        ],
+      },
+    ],
+    practice: [
+      'Write two usability tasks for your current project.',
+      'Create a lightweight prototype in Figma or HTML/CSS.',
+      'Run one five-minute test with a classmate.',
+      'Record observations about hesitation, wrong clicks, questions, and task success.',
+      'Make two revisions based on the test and explain the evidence behind each change.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Usability Testing 101',
+        href: 'https://www.nngroup.com/articles/usability-testing-101/',
+      },
+      {
+        label: 'Digital.gov Usability Testing',
+        href: 'https://digital.gov/guides/research-collaboration/testing/usability',
+      },
+    ],
+  },
+  {
+    slug: 'information-architecture-and-content-models',
+    number: '07C',
+    title: 'Information Architecture And Content Models',
+    eyebrow: 'UX Process',
+    summary:
+      'Organize pages, screens, labels, content types, and repeated data so interfaces are easier to navigate, design, and build.',
+    goals: [
+      'Define the main content types in a web or app project.',
+      'Group content and actions into clear pages, screens, sections, and navigation labels.',
+      'Create simple content models for repeated items such as projects, events, profiles, posts, and resources.',
+      'Use information architecture decisions to support semantic HTML, reusable components, and responsive layouts.',
+    ],
+    sections: [
+      {
+        title: 'Structure Before Screens',
+        body: [
+          'Information architecture is the organization of content and paths through an experience. It answers questions like what belongs together, what should be named, where content lives, and how people move between related pieces.',
+          'App design students often think in screens. Web design students often think in pages. Information architecture gives both groups a shared way to plan the underlying structure before choosing a layout.',
+        ],
+      },
+      {
+        title: 'Content Types',
+        body: [
+          'A content type is a repeatable kind of thing in the project. Once you can name the content types, patterns like listings, filters, detail pages, cards, and forms become easier to design.',
+        ],
+        table: {
+          headers: ['Project', 'Likely Content Types'],
+          rows: [
+            ['Portfolio', 'Projects, skills, roles, testimonials, articles, contact methods.'],
+            ['Campus event app', 'Events, venues, speakers, categories, saved items, users.'],
+            ['Course site', 'Lessons, modules, projects, resources, announcements, submissions.'],
+            ['Restaurant site', 'Menu items, categories, locations, hours, reservations, specials.'],
+            ['Design system', 'Components, tokens, patterns, guidelines, examples, releases.'],
+          ],
+        },
+      },
+      {
+        title: 'A Simple Content Model',
+        body: [
+          'A content model names the fields each content type needs. This helps students avoid designing one perfect card while forgetting what every card must support.',
+        ],
+        table: {
+          headers: ['Content Type', 'Fields'],
+          rows: [
+            ['Project', 'Title, summary, role, tools, image, date, live link, repository link, process notes.'],
+            ['Event', 'Title, date, time, location, description, category, image, registration link, status.'],
+            ['Profile', 'Name, photo, bio, contact, role, links, availability, preferences.'],
+            ['Article', 'Title, author, date, excerpt, body, tags, hero image, related links.'],
+            ['Resource', 'Title, type, description, URL, topic, difficulty, last updated.'],
+          ],
+        },
+      },
+      {
+        title: 'Navigation Labels',
+        bullets: [
+          'Use words the audience would recognize.',
+          'Prefer clear labels over clever labels.',
+          'Keep the same label for the same destination across the project.',
+          'Avoid labels that describe the team instead of the user need.',
+          'Test whether a label still makes sense out of context.',
+          'Use headings and links to reinforce the same structure.',
+        ],
+      },
+      {
+        title: 'Card, List, And Detail Relationships',
+        table: {
+          headers: ['View', 'Purpose', 'Content Needed'],
+          rows: [
+            ['Card', 'Help users scan and choose.', 'Title, short summary, image or icon, key metadata, clear link.'],
+            ['List row', 'Support dense comparison.', 'Title, status, date, category, primary action.'],
+            ['Detail page', 'Help users understand and act.', 'Full description, media, related content, actions, metadata.'],
+            ['Filter view', 'Help users narrow a collection.', 'Categories, selected filters, result count, no-results state.'],
+          ],
+        },
+      },
+      {
+        title: 'IA To Semantic HTML',
+        body: [
+          'Information architecture should show up in the markup. If the structure is meaningful to users, it should usually be meaningful to the browser too.',
+        ],
+        table: {
+          headers: ['IA Decision', 'HTML Connection'],
+          rows: [
+            ['Primary navigation', '`<nav aria-label="Primary navigation">`'],
+            ['Main page topic', '`<h1>` inside `<main>`'],
+            ['Repeated cards', '`<ul>` with each item as an `<li>` or repeated `<article>` elements.'],
+            ['Independent detail item', '`<article>`'],
+            ['Supporting filter controls', '`<form>` or grouped controls with labels.'],
+            ['Related content', '`<aside>` or a clearly labeled section.'],
+          ],
+        },
+      },
+      {
+        title: 'Studio Activity: Model The Project',
+        bullets: [
+          'Name the audience and primary task.',
+          'List the project content types.',
+          'Choose one content type and define its fields.',
+          'Sketch a card, list, and detail view for that content type.',
+          'Write navigation labels for the main sections.',
+          'Create a semantic HTML outline for one listing or detail page.',
+        ],
+      },
+      {
+        title: 'Submission Checklist',
+        bullets: [
+          'The project has named content types.',
+          'At least one repeated content type has a field list.',
+          'Navigation labels are clear and audience-centered.',
+          'Cards, lists, and detail pages show the right amount of information for their purpose.',
+          'Filters, empty states, and no-results states are considered when collections are used.',
+          'The planned HTML structure reflects the information architecture.',
+        ],
+      },
+    ],
+    practice: [
+      'Create a content inventory for the current project.',
+      'Name at least three content types and choose the most important one.',
+      'Write a field list for the chosen content type.',
+      'Design a card, list row, and detail view for that content type.',
+      'Write clear navigation labels and test whether a classmate can predict each destination.',
+      'Turn the structure into a semantic HTML outline.',
+    ],
+    resources: [
+      {
+        label: 'NN/g Information Architecture Study Guide',
+        href: 'https://www.nngroup.com/articles/ia-study-guide/',
+      },
+      {
+        label: 'Digital.gov Information Architecture',
+        href: 'https://digital.gov/topics/information-architecture',
       },
     ],
   },

@@ -35,9 +35,31 @@
     </article>
   </div>
 
-  <pre><code data-selector-code>{`p {
+  <div class="selector-lab__code-grid">
+    <div>
+      <h3>HTML being selected</h3>
+      <pre><code>{`<h3>Project Gallery</h3>
+<p>This paragraph sits outside the card.</p>
+
+<article class="card">
+  <h4>Card title</h4>
+  <p>This paragraph is inside the card.</p>
+  <a href="#">View project</a>
+</article>
+
+<article id="featured" class="card">
+  <h4>Featured card</h4>
+  <p>This card has an ID and a class.</p>
+</article>`}</code></pre>
+    </div>
+
+    <div>
+      <h3>CSS selector</h3>
+      <pre><code data-selector-code>{`p {
   color: green;
 }`}</code></pre>
+    </div>
+  </div>
 
   <div class="interactive-notes">
     <div>
@@ -58,6 +80,24 @@
     </div>
   </div>
 </section>
+
+<style>
+  .selector-lab__code-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .selector-lab__code-grid h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  @media (max-width: 820px) {
+    .selector-lab__code-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 
 <script type="module" is:inline data-astro-rerun>
   // @ts-nocheck

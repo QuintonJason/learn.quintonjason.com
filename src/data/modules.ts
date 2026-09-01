@@ -31,11 +31,13 @@ export const courseModules: CourseModule[] = [
     focus: [
       'GitHub, GitHub Desktop, VS Code, and GitHub Pages',
       'Website process, project folders, and relative paths',
+      'Early prototypes and usability questions',
       'HTML document structure and core content elements',
     ],
     lessons: [
       { title: 'Developer Environment Setup', href: '/lessons/developer-environment-setup/' },
       { title: 'Website Process', href: '/lessons/website-process/' },
+      { title: 'Prototyping And Usability Testing', href: '/lessons/prototyping-and-usability-testing/' },
       { title: 'File Paths', href: '/lessons/file-paths-and-site-structure/' },
       { title: 'HTML Structure and Elements', href: '/lessons/basic-html-structure-and-elements/' },
     ],
@@ -50,12 +52,14 @@ export const courseModules: CourseModule[] = [
     },
     inClass: [
       'Publish a small repository with GitHub Pages.',
+      'Use a rough prototype question to decide what the first page needs to prove.',
       'Break and fix one image path together.',
       'Review the difference between local files, GitHub files, and the live site.',
     ],
     beforeYouLeave: [
       'GitHub Desktop shows no uncommitted setup changes.',
       'The live site URL opens in the browser.',
+      'The project has one testable prototype question or page goal.',
       'One HTML page links to CSS or an image with the correct relative path.',
     ],
     fixes: [
@@ -418,13 +422,11 @@ export const courseModules: CourseModule[] = [
     focus: [
       'Portfolio clarity, hierarchy, consistency, and presentation',
       'Final accessibility, responsiveness, and performance checks',
-      'Lightweight prototypes, usability tests, and evidence-based revisions',
       'Explaining the project goal, audience, process, and result',
       'AI-assisted critique and design workflow planning',
     ],
     lessons: [
       { title: 'Portfolio Polish and Presentation', href: '/lessons/portfolio-polish-and-presentation/' },
-      { title: 'Prototyping And Usability Testing', href: '/lessons/prototyping-and-usability-testing/' },
       { title: 'AI-Assisted Design Workflows', href: '/lessons/ai-assisted-design-workflows/' },
     ],
     projectCheckpoint: {
@@ -438,7 +440,6 @@ export const courseModules: CourseModule[] = [
     },
     inClass: [
       'Run a final peer review with one content check, one responsive check, and one accessibility check.',
-      'Run one five-minute usability test and choose two revisions from the observations.',
       'Make the smallest high-value fixes first.',
       'Practice explaining project decisions clearly.',
     ],

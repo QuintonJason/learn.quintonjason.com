@@ -9344,7 +9344,7 @@ One challenge was [challenge], and I improved it by [solution].`,
   },
   {
     slug: 'ai-assisted-design-workflows',
-    number: '10B',
+    number: '10A',
     title: 'AI-Assisted Design Workflows',
     eyebrow: 'AI + UX',
     summary:
@@ -9517,7 +9517,7 @@ One challenge was [challenge], and I improved it by [solution].`,
   },
   {
     slug: 'figma-for-web-design-planning',
-    number: '08B',
+    number: '02E',
     title: 'Figma For Web Design Planning',
     eyebrow: 'Studio',
     summary:
@@ -9697,7 +9697,7 @@ One challenge was [challenge], and I improved it by [solution].`,
   },
   {
     slug: 'user-flows-and-task-models',
-    number: '07A',
+    number: '02B',
     title: 'User Flows And Task Models',
     eyebrow: 'UX Process',
     summary:
@@ -9849,7 +9849,7 @@ The most likely problem is [edge case or barrier].`,
   },
   {
     slug: 'wireframing-for-responsive-interfaces',
-    number: '08A',
+    number: '02C',
     title: 'Wireframing For Responsive Interfaces',
     eyebrow: 'UX Process',
     summary:
@@ -10289,7 +10289,7 @@ The most likely problem is [edge case or barrier].`,
   },
   {
     slug: 'prototyping-and-usability-testing',
-    number: '10A',
+    number: '02D',
     title: 'Prototyping And Usability Testing',
     eyebrow: 'UX Research',
     summary:
@@ -10437,7 +10437,7 @@ What would you change first?`,
   },
   {
     slug: 'information-architecture-and-content-models',
-    number: '07C',
+    number: '02A',
     title: 'Information Architecture And Content Models',
     eyebrow: 'UX Process',
     summary:

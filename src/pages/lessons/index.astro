@@ -2,6 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { lessons } from '../../data/lessons';
 import { filterOptions, getLessonMeta, getLessonRole, getLessonTags, isInteractiveLesson, lessonRoleLabels, tagLabels } from '../../data/lessonMeta';
+
+const getLessonSortValue = (lessonNumber: string) => {
+  const match = lessonNumber.match(/^(\d+)([A-Z])?$/);
+
+  if (!match) return Number.MAX_SAFE_INTEGER;
+
+  const baseNumber = Number(match[1]);
+  const suffix = match[2];
+
+  return suffix ? 1000 + baseNumber + (suffix.charCodeAt(0) - 64) / 100 : baseNumber;
+};
+
+const orderedLessons = [...lessons].sort((first, second) =>
+  getLessonSortValue(first.number) - getLessonSortValue(second.number)
+);
 ---
 
 <BaseLayout
@@ -54,7 +69,7 @@ import { filterOptions, getLessonMeta, getLessonRole, getLessonTags, isInteracti
 
       <div class="lesson-grid" data-lesson-grid>
         {
-          lessons.map((lesson, index) => {
+          orderedLessons.map((lesson, index) => {
             const tags = getLessonTags(lesson);
             const meta = getLessonMeta(lesson, index);
             const role = getLessonRole(lesson);

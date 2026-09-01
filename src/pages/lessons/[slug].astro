@@ -41,9 +41,22 @@ export function getStaticPaths() {
 }
 
 const { lesson } = Astro.props;
-const currentIndex = lessons.findIndex((item) => item.slug === lesson.slug);
-const previousLesson = lessons[currentIndex - 1];
-const nextLesson = lessons[currentIndex + 1];
+const getLessonSortValue = (lessonNumber: string) => {
+  const match = lessonNumber.match(/^(\d+)([A-Z])?$/);
+
+  if (!match) return Number.MAX_SAFE_INTEGER;
+
+  const baseNumber = Number(match[1]);
+  const suffix = match[2];
+
+  return suffix ? 1000 + baseNumber + (suffix.charCodeAt(0) - 64) / 100 : baseNumber;
+};
+const orderedLessons = [...lessons].sort((first, second) =>
+  getLessonSortValue(first.number) - getLessonSortValue(second.number)
+);
+const currentIndex = orderedLessons.findIndex((item) => item.slug === lesson.slug);
+const previousLesson = orderedLessons[currentIndex - 1];
+const nextLesson = orderedLessons[currentIndex + 1];
 const hasInteractiveDemo = isInteractiveLesson(lesson);
 const demoSourceUrl = getDemoSourceUrl(lesson);
 const demoGuidance = getDemoGuidance(lesson);
@@ -99,7 +112,7 @@ const pageSections = [
           <p class="eyebrow">Lessons</p>
           <ul>
             {
-              lessons.map((item) => (
+              orderedLessons.map((item) => (
                 <li>
                   <a href={`/lessons/${item.slug}/`} aria-current={item.slug === lesson.slug ? 'page' : undefined}>
                     {item.number}. {item.title}
@@ -136,7 +149,7 @@ const pageSections = [
         </header>
 
         <nav class="lesson-toolbar" aria-label="Lesson quick navigation">
-          <p>Lesson {currentIndex + 1} of {lessons.length}</p>
+          <p>Lesson {currentIndex + 1} of {orderedLessons.length}</p>
           <div>
             {previousLesson && <a href={`/lessons/${previousLesson.slug}/`}>Previous</a>}
             <a href="/lessons/">All lessons</a>

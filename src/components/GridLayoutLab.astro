@@ -29,7 +29,9 @@
         <select data-grid-control="pattern">
           <option value="cards">Card grid</option>
           <option value="gallery">Gallery</option>
+          <option value="responsive-gallery">Responsive gallery (120px auto-fit)</option>
           <option value="sidebar">Sidebar layout</option>
+          <option value="holy-grail">Holy grail (named grid areas)</option>
         </select>
       </label>
 
@@ -65,6 +67,19 @@
     </div>
   </div>
 
+  <p data-grid-areas-note hidden>
+    This page fills at least the viewport height. The header and footer size to their
+    content, while the middle row stretches to fill the remaining height. Grid's
+    <code>grid-template-rows: auto 1fr auto</code> handles the stretching without a
+    Flexbox wrapper. Content and aside share the full width of the middle row.
+  </p>
+  <pre data-grid-html hidden><code>{`<div class="page">
+  <header class="page-header">Header</header>
+  <main class="page-content">Content</main>
+  <aside class="page-aside">Aside</aside>
+  <footer class="page-footer">Footer</footer>
+</div>`}</code></pre>
+
   <pre><code data-grid-code>{`.grid {
   display: grid;
   gap: 16px;
@@ -82,12 +97,14 @@
         <li>`gap` changes the space between tracks without adding margins to cards.</li>
         <li>`repeat()` creates a repeated column pattern.</li>
         <li>`grid-column: span 2` lets one item take more space.</li>
+        <li>Named grid areas let the header and footer stretch across both columns.</li>
       </ul>
     </div>
     <div>
       <h3>Try this</h3>
       <ul>
         <li>Switch between fixed columns and the responsive auto-fit pattern.</li>
+        <li>Choose Responsive gallery and resize the window to see how many 120px columns fit.</li>
         <li>Turn off the span and compare the first card to the rest.</li>
         <li>Use the gallery and sidebar patterns to see when Grid changes the structure.</li>
       </ul>
@@ -103,6 +120,8 @@
     const stage = gridLab.querySelector('[data-grid-stage]');
     const code = gridLab.querySelector('[data-grid-code]');
     const firstItem = gridLab.querySelector('[data-grid-item="1"]');
+    const items = [...gridLab.querySelectorAll('[data-grid-item]')];
+    const areas = ['header', 'content', 'aside', 'footer'];
     const controls = {
       pattern: gridLab.querySelector('[data-grid-control="pattern"]'),
       columns: gridLab.querySelector('[data-grid-control="columns"]'),
@@ -113,6 +132,8 @@
     };
 
     function getTemplate(pattern, columns, responsive) {
+      if (pattern === 'holy-grail') return 'minmax(0, 2fr) minmax(0, 1fr)';
+      if (pattern === 'responsive-gallery') return 'repeat(auto-fit, minmax(120px, 1fr))';
       if (pattern === 'sidebar') return 'minmax(10rem, 0.45fr) minmax(0, 1fr)';
       if (responsive) return 'repeat(auto-fit, minmax(8rem, 1fr))';
       return `repeat(${columns}, 1fr)`;
@@ -120,21 +141,58 @@
 
     function updateGridLab() {
       const pattern = controls.pattern.value;
+      const isHolyGrail = pattern === 'holy-grail';
+      const isResponsiveGallery = pattern === 'responsive-gallery';
+      if (isResponsiveGallery) {
+        controls.responsive.checked = true;
+        controls.span.checked = false;
+      }
       const columns = controls.columns.value;
       const gap = `${controls.gap.value}px`;
       const responsive = controls.responsive.checked;
-      const spans = controls.span.checked && pattern !== 'sidebar';
+      const spans = controls.span.checked && pattern !== 'sidebar' && !isHolyGrail;
       const template = getTemplate(pattern, columns, responsive);
 
-      controls.columns.disabled = responsive || pattern === 'sidebar';
-      controls.responsive.disabled = pattern === 'sidebar';
-      controls.span.disabled = pattern === 'sidebar';
+      controls.columns.disabled = responsive || pattern === 'sidebar' || isHolyGrail;
+      controls.responsive.disabled = pattern === 'sidebar' || isResponsiveGallery || isHolyGrail;
+      controls.span.disabled = pattern === 'sidebar' || isResponsiveGallery || isHolyGrail;
 
       stage.dataset.pattern = pattern;
       stage.dataset.gridLines = String(controls.lines.checked);
       stage.style.gridTemplateColumns = template;
       stage.style.gap = gap;
       firstItem.classList.toggle('is-spanning', spans);
+      stage.style.gridTemplateAreas = isHolyGrail ? '"header header" "content aside" "footer footer"' : '';
+      stage.style.gridTemplateRows = isHolyGrail ? 'auto 1fr auto' : '';
+      items.forEach((item, index) => {
+        item.hidden = isHolyGrail && index >= areas.length;
+        item.style.gridArea = isHolyGrail && areas[index] ? areas[index] : '';
+        item.querySelector('span').textContent = isHolyGrail && areas[index]
+          ? areas[index][0].toUpperCase() + areas[index].slice(1)
+          : String(index + 1);
+      });
+      gridLab.querySelector('[data-grid-areas-note]').hidden = !isHolyGrail;
+      gridLab.querySelector('[data-grid-html]').hidden = !isHolyGrail;
+
+      if (isHolyGrail) {
+        code.textContent = `.page {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: ${template};
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "content aside"
+    "footer footer";
+  gap: ${gap};
+}
+
+.page-header { grid-area: header; }
+.page-content { grid-area: content; }
+.page-aside { grid-area: aside; }
+.page-footer { grid-area: footer; }`;
+        return;
+      }
 
       const spanRule = spans
         ? `\n\n.featured {\n  grid-column: span 2;\n}`

@@ -3650,8 +3650,33 @@
   background-image: none;
 }
 
-.grid-lab__stage[data-pattern='gallery'] .grid-lab__item {
+.grid-lab__stage[data-pattern='gallery'] .grid-lab__item,
+.grid-lab__stage[data-pattern='responsive-gallery'] .grid-lab__item {
   aspect-ratio: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  align-self: start;
+  overflow-wrap: anywhere;
+}
+
+.grid-lab__stage[data-pattern='responsive-gallery'] .grid-lab__item strong {
+  display: none;
+}
+
+.grid-lab__stage[data-pattern='holy-grail'] {
+  min-height: 100vh;
+}
+
+.grid-lab__stage[data-pattern='holy-grail'] .grid-lab__item {
+  min-width: 0;
+  min-height: 4rem;
+  overflow-wrap: anywhere;
+}
+
+.grid-lab__item[hidden],
+.grid-lab__stage[data-pattern='holy-grail'] .grid-lab__item strong {
+  display: none;
 }
 
 .grid-lab__stage[data-pattern='sidebar'] .grid-lab__item:not(:first-child) {

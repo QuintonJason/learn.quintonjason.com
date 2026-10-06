@@ -2522,13 +2522,14 @@
 }
 
 .box-visualizer__border {
-  background: var(--color-brand-dark);
+  background: linear-gradient(var(--color-overlay-light), var(--color-overlay-light)),
+    var(--color-brand-dark);
   border-color: var(--color-brand-dark);
   border-style: solid;
 }
 
 .box-visualizer__padding {
-  background: var(--color-overlay-light);
+  min-inline-size: 0;
 }
 
 .box-visualizer__content {
@@ -2539,6 +2540,7 @@
   font-family: var(--font-display);
   font-weight: 900;
   min-block-size: 5rem;
+  overflow-wrap: anywhere;
   place-items: center;
 }
 

@@ -43,7 +43,7 @@
       <span>margin</span>
       <div class="box-visualizer__border" data-box-border>
         <span>border</span>
-        <div class="box-visualizer__padding" data-box-padding>
+        <div class="box-visualizer__padding">
           <span>padding</span>
           <div class="box-visualizer__content" data-box-content>
             content
@@ -88,8 +88,6 @@
   if (visualizer) {
     const marginBox = visualizer.querySelector('[data-box-margin]');
     const borderBox = visualizer.querySelector('[data-box-border]');
-    const paddingBox = visualizer.querySelector('[data-box-padding]');
-    const contentBox = visualizer.querySelector('[data-box-content]');
     const code = visualizer.querySelector('[data-box-code]');
     const controls = {
       width: visualizer.querySelector('[data-box-control="width"]'),
@@ -108,9 +106,11 @@
 
       marginBox.style.padding = margin;
       borderBox.style.borderWidth = border;
-      paddingBox.style.padding = padding;
-      contentBox.style.width = width;
-      contentBox.style.boxSizing = sizing;
+      // Apply the generated box model to one element so border-box includes
+      // both padding and border in the declared width.
+      borderBox.style.padding = padding;
+      borderBox.style.width = width;
+      borderBox.style.boxSizing = sizing;
 
       code.textContent = `.box {
   box-sizing: ${sizing};
